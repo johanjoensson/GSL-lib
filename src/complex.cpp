@@ -126,6 +126,30 @@ Complex& Complex::operator/=(const Complex& b)
     return *this;
 }
 
+Complex& Complex::operator+=(const double& s)
+{
+    *this = (*this) + s;
+    return *this;
+}
+
+Complex& Complex::operator-=(const double& s)
+{
+    *this = (*this) - s;
+    return *this;
+}
+
+Complex& Complex::operator*=(const double& s)
+{
+    *this = (*this) * s;
+    return *this;
+}
+
+Complex& Complex::operator/=(const double& s)
+{
+    *this = (*this) / s;
+    return *this;
+}
+
 bool operator==(const Complex& a, const Complex& b)
 {
     return (a.re == b.re) && (a.im == b.im);
@@ -172,171 +196,176 @@ Complex Complex::negate() const
     return Complex(gsl_complex_negative(gsl_c));
 }
 
-Complex GSL::sqrt(Complex& a)
+Complex GSL::sqrt(const Complex& a)
 {
     return Complex(gsl_complex_sqrt(a.gsl_c));
 }
 
-Complex GSL::sqrt(double& s)
+Complex GSL::sqrt(const double& s)
 {
     return Complex(gsl_complex_sqrt_real(s));
 }
 
-Complex GSL::pow(Complex& a, Complex& b)
+Complex GSL::pow(const Complex& a, const Complex& b)
 {
     return Complex(gsl_complex_pow(a.gsl_c, b.gsl_c));
 }
 
-Complex GSL::pow(Complex& a, double& s)
+Complex GSL::pow(const Complex& a, const double& s)
 {
     return Complex(gsl_complex_pow_real(a.gsl_c, s));
 }
 
-Complex GSL::log(Complex& a)
+Complex GSL::exp(const Complex& a)
+{
+    return Complex(gsl_complex_exp(a.gsl_c));
+}
+
+Complex GSL::log(const Complex& a)
 {
     return Complex(gsl_complex_log(a.gsl_c));
 }
 
-Complex GSL::log10(Complex& a)
+Complex GSL::log10(const Complex& a)
 {
     return Complex(gsl_complex_log10(a.gsl_c));
 }
 
-Complex GSL::log_b(Complex& a, Complex& b)
+Complex GSL::log_b(const Complex& a, const Complex& b)
 {
     return Complex(gsl_complex_log_b(a.gsl_c, b.gsl_c));
 }
 
-Complex GSL::sin(Complex& a)
+Complex GSL::sin(const Complex& a)
 {
     return Complex(gsl_complex_sin(a.gsl_c));
 }
 
-Complex GSL::cos(Complex& a)
+Complex GSL::cos(const Complex& a)
 {
     return Complex(gsl_complex_cos(a.gsl_c));
 }
 
-Complex GSL::tan(Complex& a)
+Complex GSL::tan(const Complex& a)
 {
     return Complex(gsl_complex_tan(a.gsl_c));
 }
 
-Complex GSL::sec(Complex& a)
+Complex GSL::sec(const Complex& a)
 {
     return Complex(gsl_complex_sec(a.gsl_c));
 }
 
-Complex GSL::csc(Complex& a)
+Complex GSL::csc(const Complex& a)
 {
     return Complex(gsl_complex_csc(a.gsl_c));
 }
 
-Complex GSL::cot(Complex& a)
+Complex GSL::cot(const Complex& a)
 {
     return Complex(gsl_complex_cot(a.gsl_c));
 }
 
-Complex GSL::arcsin(Complex& a)
+Complex GSL::arcsin(const Complex& a)
 {
     return Complex(gsl_complex_arcsin(a.gsl_c));
 }
-Complex GSL::arcsin(double& s)
+Complex GSL::arcsin(const double& s)
 {
     return Complex(gsl_complex_arcsin_real(s));
 }
-Complex GSL::arccons(Complex& a)
+Complex GSL::arccos(const Complex& a)
 {
     return Complex(gsl_complex_arccos(a.gsl_c));
 }
-Complex GSL::arccos(double& s)
+Complex GSL::arccos(const double& s)
 {
     return Complex(gsl_complex_arccos_real(s));
 }
-Complex GSL::arctan(Complex& a)
+Complex GSL::arctan(const Complex& a)
 {
     return Complex(gsl_complex_arctan(a.gsl_c));
 }
-Complex GSL::arcsec(Complex& a)
+Complex GSL::arcsec(const Complex& a)
 {
     return Complex(gsl_complex_arcsec(a.gsl_c));
 }
-Complex GSL::arcsec(double& s)
+Complex GSL::arcsec(const double& s)
 {
     return Complex(gsl_complex_arcsec_real(s));
 }
-Complex GSL::arccsc(Complex& a)
+Complex GSL::arccsc(const Complex& a)
 {
     return Complex(gsl_complex_arccsc(a.gsl_c));
 }
-Complex GSL::arccsc(double& s)
+Complex GSL::arccsc(const double& s)
 {
     return Complex(gsl_complex_arccsc_real(s));
 }
-Complex GSL::arccot(Complex& a)
+Complex GSL::arccot(const Complex& a)
 {
     return Complex(gsl_complex_arccot(a.gsl_c));
 }
 
-Complex GSL::sinh(Complex& a)
+Complex GSL::sinh(const Complex& a)
 {
     return Complex(gsl_complex_sinh(a.gsl_c));
 }
-Complex GSL::cosh(Complex& a)
+Complex GSL::cosh(const Complex& a)
 {
     return Complex(gsl_complex_cosh(a.gsl_c));
 }
-Complex GSL::tanh(Complex& a)
+Complex GSL::tanh(const Complex& a)
 {
     return Complex(gsl_complex_tanh(a.gsl_c));
 }
-Complex GSL::sech(Complex& a)
+Complex GSL::sech(const Complex& a)
 {
     return Complex(gsl_complex_sech(a.gsl_c));
 }
-Complex GSL::csch(Complex& a)
+Complex GSL::csch(const Complex& a)
 {
     return Complex(gsl_complex_csch(a.gsl_c));
 }
-Complex GSL::coth(Complex& a)
+Complex GSL::coth(const Complex& a)
 {
     return Complex(gsl_complex_coth(a.gsl_c));
 }
 
-Complex GSL::arcsinh(Complex& a)
+Complex GSL::arcsinh(const Complex& a)
 {
     return Complex(gsl_complex_arcsinh(a.gsl_c));
 }
-Complex GSL::arccosh(Complex& a)
+Complex GSL::arccosh(const Complex& a)
 {
     return Complex(gsl_complex_arccosh(a.gsl_c));
 }
 
-Complex GSL::arccosh(double& s)
+Complex GSL::arccosh(const double& s)
 {
     return Complex(gsl_complex_arccosh_real(s));
 }
-Complex GSL::arctanh(Complex& a)
+Complex GSL::arctanh(const Complex& a)
 {
     return Complex(gsl_complex_arctanh(a.gsl_c));
 }
 
-Complex GSL::arctanh(double& s)
+Complex GSL::arctanh(const double& s)
 {
     return Complex(gsl_complex_arctanh_real(s));
 }
 
-Complex GSL::arcsech(Complex& a)
+Complex GSL::arcsech(const Complex& a)
 {
     return Complex(gsl_complex_arcsech(a.gsl_c));
 }
 
-Complex GSL::arccsch(Complex& a)
+Complex GSL::arccsch(const Complex& a)
 {
     return Complex(gsl_complex_arccsch(a.gsl_c));
 }
 
-Complex GSL::arccoth(Complex& a)
+Complex GSL::arccoth(const Complex& a)
 {
     return Complex(gsl_complex_arccoth(a.gsl_c));
 }

@@ -39,52 +39,52 @@ bool operator!=(const GSL::Complex&, const GSL::Complex&);
 namespace GSL{
 
 // Elementary mathematics functions
-Complex exp(Complex& a);
-Complex sqrt(Complex& a);
-Complex sqrt(double& s);
-Complex pow(Complex& a, Complex& b);
-Complex pow(Complex& a, double& s);
-Complex log(Complex& a);
-Complex log10(Complex& a);
-Complex log_b(Complex& a, Complex& b);
+Complex exp(const Complex& a);
+Complex sqrt(const Complex& a);
+Complex sqrt(const double& s);
+Complex pow(const Complex& a, const Complex& b);
+Complex pow(const Complex& a, const double& s);
+Complex log(const Complex& a);
+Complex log10(const Complex& a);
+Complex log_b(const Complex& a, const Complex& b);
 
 // Trigonometric functions
-Complex sin(Complex&a);
-Complex cos(Complex&a);
-Complex tan(Complex&a);
-Complex sec(Complex&a);
-Complex csc(Complex&a);
-Complex cot(Complex&a);
+Complex sin(const Complex&a);
+Complex cos(const Complex&a);
+Complex tan(const Complex&a);
+Complex sec(const Complex&a);
+Complex csc(const Complex&a);
+Complex cot(const Complex&a);
 
 // Inverse trigonometric functions
-Complex arcsin(Complex& a);
-Complex arcsin(double& s);
-Complex arccons(Complex& a);
-Complex arccos(double& s);
-Complex arctan(Complex& a);
-Complex arcsec(Complex& a);
-Complex arcsec(double& s);
-Complex arccsc(Complex& a);
-Complex arccsc(double& s);
-Complex arccot(Complex& a);
+Complex arcsin(const Complex& a);
+Complex arcsin(const double& s);
+Complex arccos(const Complex& a);
+Complex arccos(const double& s);
+Complex arctan(const Complex& a);
+Complex arcsec(const Complex& a);
+Complex arcsec(const double& s);
+Complex arccsc(const Complex& a);
+Complex arccsc(const double& s);
+Complex arccot(const Complex& a);
 
 // Hyperbolic functions
-Complex sinh(Complex& a);
-Complex cosh(Complex& a);
-Complex tanh(Complex& a);
-Complex sech(Complex& a);
-Complex csch(Complex& a);
-Complex coth(Complex& a);
+Complex sinh(const Complex& a);
+Complex cosh(const Complex& a);
+Complex tanh(const Complex& a);
+Complex sech(const Complex& a);
+Complex csch(const Complex& a);
+Complex coth(const Complex& a);
 
 // Inverse hyperbolic functions
-Complex arcsinh(Complex& a);
-Complex arccosh(Complex& a);
-Complex arccosh(double& s);
-Complex arctanh(Complex& a);
-Complex arctanh(double& s);
-Complex arcsech(Complex& a);
-Complex arccsch(Complex& a);
-Complex arccoth(Complex& a);
+Complex arcsinh(const Complex& a);
+Complex arccosh(const Complex& a);
+Complex arccosh(const double& s);
+Complex arctanh(const Complex& a);
+Complex arctanh(const double& s);
+Complex arcsech(const Complex& a);
+Complex arccsch(const Complex& a);
+Complex arccoth(const Complex& a);
 
 // Representation of complex numbers
 class Complex
@@ -134,41 +134,41 @@ public:
     friend bool (::operator==)(const Complex&, const Complex&);
     friend bool (::operator!=)(const Complex&, const Complex&);
 
-    friend Complex exp(Complex& a);
-    friend Complex sqrt(Complex& a);
-    friend Complex pow(Complex& a, Complex& b);
-    friend Complex pow(Complex& a, double& s);
-    friend Complex log(Complex& a);
-    friend Complex log10(Complex& a);
-    friend Complex log_b(Complex& a, Complex& b);
+    friend Complex exp(const Complex& a);
+    friend Complex sqrt(const Complex& a);
+    friend Complex pow(const Complex& a, const Complex& b);
+    friend Complex pow(const Complex& a, const double& s);
+    friend Complex log(const Complex& a);
+    friend Complex log10(const Complex& a);
+    friend Complex log_b(const Complex& a, const Complex& b);
 
-    friend Complex sin(Complex&a);
-    friend Complex cos(Complex&a);
-    friend Complex tan(Complex&a);
-    friend Complex sec(Complex&a);
-    friend Complex csc(Complex&a);
-    friend Complex cot(Complex&a);
+    friend Complex sin(const Complex&a);
+    friend Complex cos(const Complex&a);
+    friend Complex tan(const Complex&a);
+    friend Complex sec(const Complex&a);
+    friend Complex csc(const Complex&a);
+    friend Complex cot(const Complex&a);
 
-    friend Complex arcsin(Complex& a);
-    friend Complex arccons(Complex& a);
-    friend Complex arctan(Complex& a);
-    friend Complex arcsec(Complex& a);
-    friend Complex arccsc(Complex& a);
-    friend Complex arccot(Complex& a);
+    friend Complex arcsin(const Complex& a);
+    friend Complex arccos(const Complex& a);
+    friend Complex arctan(const Complex& a);
+    friend Complex arcsec(const Complex& a);
+    friend Complex arccsc(const Complex& a);
+    friend Complex arccot(const Complex& a);
 
-    friend Complex sinh(Complex& a);
-    friend Complex cosh(Complex& a);
-    friend Complex tanh(Complex& a);
-    friend Complex sech(Complex& a);
-    friend Complex csch(Complex& a);
-    friend Complex coth(Complex& a);
+    friend Complex sinh(const Complex& a);
+    friend Complex cosh(const Complex& a);
+    friend Complex tanh(const Complex& a);
+    friend Complex sech(const Complex& a);
+    friend Complex csch(const Complex& a);
+    friend Complex coth(const Complex& a);
 
-    friend Complex arcsinh(Complex& a);
-    friend Complex arccosh(Complex& a);
-    friend Complex arctanh(Complex& a);
-    friend Complex arcsech(Complex& a);
-    friend Complex arccsch(Complex& a);
-    friend Complex arccoth(Complex& a);
+    friend Complex arcsinh(const Complex& a);
+    friend Complex arccosh(const Complex& a);
+    friend Complex arctanh(const Complex& a);
+    friend Complex arcsech(const Complex& a);
+    friend Complex arccsch(const Complex& a);
+    friend Complex arccoth(const Complex& a);
 
 };
 }

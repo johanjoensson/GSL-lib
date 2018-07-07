@@ -11,7 +11,7 @@ Vector::Vector()
 
 Vector::Vector(const size_t n)
 {
-    gsl_vec = gsl_vector_alloc(n);
+    gsl_vec = gsl_vector_calloc(n);
     if(gsl_vec == nullptr){
         throw std::runtime_error("Memory allocation (gsl_vector_alloc)"
         " failed!");

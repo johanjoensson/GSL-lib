@@ -24,8 +24,8 @@ SRC_DIR = src
 BUILD_DIR = build
 
 # Flags for the above defined compilers
-CXXFLAGS = -g -std=c++11 -Wall -Wextra -Werror -W -pedantic -fpic -I $(SRC_DIR)
-CFLAGS = -g -std=c11 -Wall -Wextra -Werror -W -pedantic -fpic -I $(SRC_DIR)
+CXXFLAGS = -g -std=c++11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR)
+CFLAGS = -g -std=c11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR)
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
@@ -36,10 +36,11 @@ LDFLAGS = -lgsl -lgslcblas -lm -shared
 # List of all executables in this project
 LIB = libgsl-lib.so
 
-NUMEROV_OBJ = complex.o\
-	      vector.o
+LIB_OBJ = complex.o\
+	  vector.o\
+	  special_functions_bessel.o
 
-OBJS = $(addprefix $(BUILD_DIR)/, $(NUMEROV_OBJ))
+OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 
 # Targets to always execute, even if new files with the same names exists
 .PHONY: all clean cleanall
@@ -59,8 +60,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 libgsl-lib.so: $(OBJS)
 	$(CXX) $(LDFLAGS) $? -o $@
 
+test: $(BUILD_DIR)/main.o libgsl-lib.so
+	$(CXX)  -L./ -lgsl-lib -Wl,-rpath=. $< -o $@
+
 checkall: $(addprefix $(SRC_DIR)/, $(OBJ:o=cpp))
-	$(CXXCHECK) $^ $(CXXCHECKFLAGS)
+	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 # Remove object files
 clean:
@@ -68,4 +72,4 @@ clean:
 
 # Remove executables and object files
 cleanall:
-	rm -f $(LIB) $(BUILD_DIR)/*.o
+	rm -f $(LIB) test $(BUILD_DIR)/*.o
