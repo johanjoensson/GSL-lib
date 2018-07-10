@@ -38,7 +38,11 @@ LIB = libgsl-lib.so
 
 LIB_OBJ = complex.o\
 	  vector.o\
-	  special_functions_bessel.o
+	  special_functions_bessel.o\
+	  special_functions_legendre.o\
+	  special_functions_coupling.o\
+	  special_functions_exp.o\
+	  special_functions_results.o
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 
