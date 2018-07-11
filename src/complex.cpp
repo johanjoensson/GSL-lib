@@ -3,8 +3,9 @@
 using namespace GSL;
 
 Complex::Complex(double a, double b)
+ : gsl_c()
 {
-    gsl_c = gsl_complex_rect(a,b);
+    this->gsl_c = gsl_complex_rect(a,b);
     re = gsl_c.dat[0];
     im = gsl_c.dat[1];
 }

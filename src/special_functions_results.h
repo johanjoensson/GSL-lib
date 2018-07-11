@@ -2,6 +2,7 @@
 #define SPECIAL_FUNCTIONS_RESULTS_H
 
 #include <gsl/gsl_sf_result.h>
+#include <iostream>
 
 namespace GSL{
 
@@ -29,6 +30,12 @@ namespace GSL{
         friend Result operator/(const Result&, const Result&);
         friend Result operator/(const Result&, const double&);
         friend Result operator/(const double&, const Result&);
+        friend bool operator==(const Result& a, const Result& b);
+        friend bool operator!=(const Result& a, const Result& b);
+        friend std::ostream& operator<<(std::ostream&, const Result&);
+
+        friend Result sin(const Result&);
+        friend Result cos(const Result&);
 
         Result& operator+=(const Result&);
         Result& operator+=(const double&);
@@ -52,6 +59,15 @@ namespace GSL{
     Result operator/(const Result&, const Result&);
     Result operator/(const Result&, const double&);
     Result operator/(const double&, const Result&);
+    bool operator==(const Result& a, const Result& b);
+    bool operator!=(const Result& a, const Result& b);
+
+    Result sin(const Result&);
+    Result cos(const Result&);
+
+    std::ostream& operator<<(std::ostream&, const Result&);
+
+    Result exp(const Result& x);
 }
 
 #endif // SPECIAL_FUNCTIONS_RESULTS_H

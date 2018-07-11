@@ -17,7 +17,7 @@ void print_error_message(std::string function_name, int& gsl_err_code)
 Result GSL::wigner_3j(const int& ja, const int& jb, const int& jc,
     const int& ma, const int& mb, const int& mc)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     // Reduce computational costs slightly by using symmetry relations
     if(ma + mb + mc != 0){
         res.val = 0.;
@@ -41,7 +41,7 @@ Result GSL::wigner_3j(const int& ja, const int& jb, const int& jc,
 Result GSL::wigner_6j(const int& ja, const int& jb, const int& jc,
     const int& jd, const int& je, const int& jf)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     int stat = gsl_sf_coupling_6j_e(2*ja, 2*jb, 2*jc, 2*jd, 2*je, 2*jf, &res);
 
     if(stat){
@@ -54,7 +54,7 @@ Result GSL::wigner_9j(const int& ja, const int& jb, const int& jc,
     const int& jd, const int& je, const int& jf,
     const int& jg, const int& jh, const int& ji)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     int stat = gsl_sf_coupling_9j_e(2*ja, 2*jb, 2*jc, 2*jd, 2*je, 2*jf, 2*jg,
         2*jh, 2*ji, &res);
 

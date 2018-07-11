@@ -33,13 +33,15 @@ public:
     // Do not allocate anything, only add references!
     Vector(Vector& v);
     Vector(const Vector& v);
+    Vector(Vector&& v);
     // Deallocate vector, keeping in mind that several vectors might reference
     // the same gsl_vector.
     ~Vector();
 
     void copy(const Vector& a);
 
-    Vector& operator= (const Vector &a);
+    Vector& operator= (const Vector& a);
+    Vector& operator= (Vector&& a);
 
     void normalize() const;
     double norm() const;

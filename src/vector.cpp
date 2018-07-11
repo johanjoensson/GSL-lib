@@ -33,6 +33,14 @@ Vector::Vector(const Vector& v)
     (*count)++;
 }
 
+Vector::Vector(Vector&& v)
+ : gsl_vec(v.gsl_vec), data(v.data), count(nullptr)
+{
+    std::swap(count, v.count);
+    v.gsl_vec = nullptr;
+    v.data = nullptr;
+}
+
 Vector::~Vector()
 {
     // Make sure there is an allocated gsl_vector
@@ -79,6 +87,19 @@ Vector& Vector::operator= (const Vector &a)
     this->data = a.data;
     this->count = a.count ;
     ++(*count);
+
+    return *this;
+}
+
+Vector& Vector::operator= (Vector&& a)
+{
+    gsl_vector *tmp_vec = a.gsl_vec;
+    a.gsl_vec = this->gsl_vec;
+    this->gsl_vec = tmp_vec;
+
+    int* tmp_int = a.count;
+    a.count = this->count;
+    this->count = tmp_int;
 
     return *this;
 }
@@ -326,10 +347,12 @@ Vector GSL::cross(const Vector& a, const Vector& b)
     }
 
     double a_tmp[3], b_tmp[3];
-    for(int i = 0; i < 3; i++){
-        a_tmp[i] = gsl_vector_get(a.gsl_vec, i);
-        b_tmp[i] = gsl_vector_get(b.gsl_vec, i);
-    }
+    a_tmp[0] = gsl_vector_get(a.gsl_vec, 0);
+    b_tmp[0] = gsl_vector_get(b.gsl_vec, 0);
+    a_tmp[1] = gsl_vector_get(a.gsl_vec, 1);
+    b_tmp[1] = gsl_vector_get(b.gsl_vec, 1);
+    a_tmp[2] = gsl_vector_get(a.gsl_vec, 2);
+    b_tmp[2] = gsl_vector_get(b.gsl_vec, 2);
     Vector res(3);
 
     (res)[0] = a_tmp[1]*b_tmp[2] - a_tmp[2]*b_tmp[1];

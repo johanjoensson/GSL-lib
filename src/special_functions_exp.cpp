@@ -17,7 +17,7 @@ using namespace GSL;
 
 Result GSL::exp(const double& x)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     int stat = gsl_sf_exp_e(x, &res);
     if(stat == GSL_EUNDRFLW){
         res.val = 0.;
@@ -29,7 +29,7 @@ Result GSL::exp(const double& x)
 
 Result GSL::exp_mult(const double& x, const double& y)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     int stat = gsl_sf_exp_mult_e(x, y, &res);
     if(stat == GSL_EUNDRFLW){
         res.val = 0.;

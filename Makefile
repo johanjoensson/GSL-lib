@@ -38,10 +38,14 @@ LIB = libgsl-lib.so
 
 LIB_OBJ = complex.o\
 	  vector.o\
+	  basic_math.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
 	  special_functions_coupling.o\
 	  special_functions_exp.o\
+	  special_functions_log.o\
+	  special_functions_trig.o\
+	  special_functions_erf.o\
 	  special_functions_results.o
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
@@ -67,7 +71,7 @@ libgsl-lib.so: $(OBJS)
 test: $(BUILD_DIR)/main.o libgsl-lib.so
 	$(CXX)  -L./ -lgsl-lib -Wl,-rpath=. $< -o $@
 
-checkall: $(addprefix $(SRC_DIR)/, $(OBJ:o=cpp))
+checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 # Remove object files
