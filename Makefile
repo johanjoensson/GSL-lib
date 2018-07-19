@@ -38,6 +38,7 @@ LIB = libgsl-lib.so
 
 LIB_OBJ = complex.o\
 	  vector.o\
+	  complex_vector.o\
 	  basic_math.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\

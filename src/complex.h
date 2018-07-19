@@ -2,7 +2,6 @@
 #define COMPLEX_GSL_LIB_H
 
 #include <gsl/gsl_complex.h>
-#include <gsl/gsl_complex_math.h>
 #include <iostream>
 
 /**************************************************************************//**
@@ -11,32 +10,32 @@
 * Also try to avoid using unnecessary amounts of memory.
 *******************************************************************************/
 namespace GSL{class Complex;}
+namespace GSL{
+
 // Basic arithmetic operations
 // 2 Complex numbers
-GSL::Complex operator+(const GSL::Complex&, const GSL::Complex&);
-GSL::Complex operator-(const GSL::Complex&, const GSL::Complex&);
-GSL::Complex operator*(const GSL::Complex&, const GSL::Complex&);
-GSL::Complex operator/(const GSL::Complex&, const GSL::Complex&);
+Complex operator+(const Complex&, const Complex&);
+Complex operator-(const Complex&, const Complex&);
+Complex operator*(const Complex&, const Complex&);
+Complex operator/(const Complex&, const Complex&);
 
 // 1 Complex number and one floating point number
-GSL::Complex operator+(const GSL::Complex&, const double&);
-GSL::Complex operator-(const GSL::Complex&, const double&);
-GSL::Complex operator*(const GSL::Complex&, const double&);
-GSL::Complex operator/(const GSL::Complex&, const double&);
+Complex operator+(const Complex&, const double&);
+Complex operator-(const Complex&, const double&);
+Complex operator*(const Complex&, const double&);
+Complex operator/(const Complex&, const double&);
 
-GSL::Complex operator+(const double&, const GSL::Complex&);
-GSL::Complex operator-(const double&, const GSL::Complex&);
-GSL::Complex operator*(const double&, const GSL::Complex&);
-GSL::Complex operator/(const double&, const GSL::Complex&);
+Complex operator+(const double&, const Complex&);
+Complex operator-(const double&, const Complex&);
+Complex operator*(const double&, const Complex&);
+Complex operator/(const double&, const Complex&);
 
 //Negate complex numbers
-GSL::Complex operator-(const GSL::Complex&);
+Complex operator-(const Complex&);
 
 // Equality
-bool operator==(const GSL::Complex&, const GSL::Complex&);
-bool operator!=(const GSL::Complex&, const GSL::Complex&);
-
-namespace GSL{
+bool operator==(const Complex&, const Complex&);
+bool operator!=(const Complex&, const Complex&);
 
 // Elementary mathematics functions
 Complex exp(const Complex& a);
@@ -95,7 +94,8 @@ public:
     double re, im;
     Complex();
     Complex(double a, double b);
-    Complex(gsl_complex z);
+    Complex(gsl_complex& z);
+    Complex(const gsl_complex& z);
     double abs();
     double arg();
     double abs2();
@@ -104,22 +104,22 @@ public:
     Complex recipr() const;
     Complex negate() const;
 
-    friend Complex (::operator+)(const Complex& a, const Complex& b);
-    friend Complex (::operator-)(const Complex& a, const Complex& b);
-    friend Complex (::operator*)(const Complex& a, const Complex&);
-    friend Complex (::operator/)(const Complex& a, const Complex&);
+    friend Complex (operator+)(const Complex& a, const Complex& b);
+    friend Complex (operator-)(const Complex& a, const Complex& b);
+    friend Complex (operator*)(const Complex& a, const Complex&);
+    friend Complex (operator/)(const Complex& a, const Complex&);
 
-    friend Complex (::operator+)(const Complex& a, const double& s);
-    friend Complex (::operator-)(const Complex& a, const double& s);
-    friend Complex (::operator*)(const Complex& a, const double& s);
-    friend Complex (::operator/)(const Complex& a, const double& s);
+    friend Complex (operator+)(const Complex& a, const double& s);
+    friend Complex (operator-)(const Complex& a, const double& s);
+    friend Complex (operator*)(const Complex& a, const double& s);
+    friend Complex (operator/)(const Complex& a, const double& s);
 
-    friend Complex (::operator+)(const double& s, const Complex& a);
-    friend Complex (::operator-)(const double& s, const Complex& a);
-    friend Complex (::operator*)(const double& s, const Complex& a);
-    friend Complex (::operator/)(const double& s, const Complex& a);
+    friend Complex (operator+)(const double& s, const Complex& a);
+    friend Complex (operator-)(const double& s, const Complex& a);
+    friend Complex (operator*)(const double& s, const Complex& a);
+    friend Complex (operator/)(const double& s, const Complex& a);
 
-    friend Complex (::operator-)(const Complex& a);
+    friend Complex (operator-)(const Complex& a);
 
     Complex& (operator+=)(const Complex& b);
     Complex& (operator-=)(const Complex& b);
@@ -131,8 +131,8 @@ public:
     Complex& (operator*=)(const double& s);
     Complex& (operator/=)(const double& s);
 
-    friend bool (::operator==)(const Complex&, const Complex&);
-    friend bool (::operator!=)(const Complex&, const Complex&);
+    friend bool (operator==)(const Complex&, const Complex&);
+    friend bool (operator!=)(const Complex&, const Complex&);
 
     friend Complex exp(const Complex& a);
     friend Complex sqrt(const Complex& a);

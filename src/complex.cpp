@@ -1,16 +1,22 @@
 #include "complex.h"
+#include <gsl/gsl_complex_math.h>
 
 using namespace GSL;
 
 Complex::Complex(double a, double b)
- : gsl_c()
+ : gsl_c(), re(), im()
 {
     this->gsl_c = gsl_complex_rect(a,b);
-    re = gsl_c.dat[0];
+    re =  gsl_c.dat[0];
     im = gsl_c.dat[1];
 }
 
-Complex::Complex(gsl_complex z)
+Complex::Complex(gsl_complex& z)
+    : Complex(GSL_REAL(z), GSL_IMAG(z))
+{
+}
+
+Complex::Complex(const gsl_complex& z)
     : Complex(GSL_REAL(z), GSL_IMAG(z))
 {
 }
@@ -38,67 +44,67 @@ std::ostream& operator << (std::ostream& os, const Complex& z)
     return os;
 }
 
-Complex operator+(const Complex& a, const Complex& b)
+Complex GSL::operator+(const Complex& a, const Complex& b)
 {
     return Complex(gsl_complex_add(a.gsl_c, b.gsl_c));
 }
 
-Complex operator+(const Complex& a, const double& s)
+Complex GSL::operator+(const Complex& a, const double& s)
 {
     return Complex(gsl_complex_add_real(a.gsl_c, s));
 }
 
-Complex operator+(const double& s, const Complex& a)
+Complex GSL::operator+(const double& s, const Complex& a)
 {
     return a + s;
 }
 
-Complex operator-(const Complex& a, const Complex& b)
+Complex GSL::operator-(const Complex& a, const Complex& b)
 {
     return Complex(gsl_complex_sub(a.gsl_c, b.gsl_c));
 }
 
-Complex operator-(const Complex& a, const double& s)
+Complex GSL::operator-(const Complex& a, const double& s)
 {
     return Complex(gsl_complex_sub_real(a.gsl_c, s));
 }
 
-Complex operator-(const double& s, const Complex& a)
+Complex GSL::operator-(const double& s, const Complex& a)
 {
     return -(a - s);
 }
 
-Complex operator-(const Complex& a)
+Complex GSL::operator-(const Complex& a)
 {
     return gsl_complex_negative(a.gsl_c);
 }
 
-Complex operator*(const Complex& a, const Complex& b)
+Complex GSL::operator*(const Complex& a, const Complex& b)
 {
     return Complex(gsl_complex_mul(a.gsl_c, b.gsl_c));
 }
 
-Complex operator*(const Complex& a, const double& s)
+Complex GSL::operator*(const Complex& a, const double& s)
 {
     return Complex(gsl_complex_mul_real(a.gsl_c, s));
 }
 
-Complex operator*(const double& s, const Complex& a)
+Complex GSL::operator*(const double& s, const Complex& a)
 {
     return a*s;
 }
 
-Complex operator/(const Complex& a, const Complex& b)
+Complex GSL::operator/(const Complex& a, const Complex& b)
 {
     return Complex(gsl_complex_div(a.gsl_c, b.gsl_c));
 }
 
-Complex operator/(const Complex& a, const double& s)
+Complex GSL::operator/(const Complex& a, const double& s)
 {
     return Complex(gsl_complex_div_real(a.gsl_c, s));
 }
 
-Complex operator/(const double& s, const Complex& a)
+Complex GSL::operator/(const double& s, const Complex& a)
 {
     return gsl_complex_mul_real(gsl_complex_inverse(a.gsl_c),s);
 }
@@ -151,12 +157,12 @@ Complex& Complex::operator/=(const double& s)
     return *this;
 }
 
-bool operator==(const Complex& a, const Complex& b)
+bool GSL::operator==(const Complex& a, const Complex& b)
 {
     return (a.re == b.re) && (a.im == b.im);
 }
 
-bool operator!=(const Complex& a, const Complex& b)
+bool GSL::operator!=(const Complex& a, const Complex& b)
 {
     return !(a == b);
 }
