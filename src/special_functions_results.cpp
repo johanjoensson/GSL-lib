@@ -77,42 +77,42 @@ Result GSL::operator-(const double& a, const Result& b)
 
 Result GSL::operator*(const Result& a, const Result& b)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     gsl_sf_multiply_err_e(a.val, a.err, b.val, b.err, &res);
     return Result(res);
 }
 
 Result GSL::operator*(const Result& a, const double& b)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     gsl_sf_multiply_err_e(a.val, a.err, b, 0., &res);
     return Result(res);
 }
 
 Result GSL::operator*(const double& a, const Result& b)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     gsl_sf_multiply_err_e(a, 0., b.val, 0, &res);
     return Result(res);
 }
 
 Result GSL::operator/(const Result& a, const Result& b)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     gsl_sf_multiply_err_e(a.val, a.err, 1./b.val, b.err, &res);
     return Result(res);
 }
 
 Result GSL::operator/(const Result& a, const double& b)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     gsl_sf_multiply_err_e(a.val, a.err, 1./b, 0., &res);
     return Result(res);
 }
 
 Result GSL::operator/(const double& a, const Result& b)
 {
-    gsl_sf_result res;
+    gsl_sf_result res{0., 0.};
     gsl_sf_multiply_err_e(a, 0, 1./b.val, 0., &res);
     return Result(res);
 }
