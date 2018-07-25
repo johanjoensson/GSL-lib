@@ -38,7 +38,9 @@ LIB = libgsl-lib.so
 
 LIB_OBJ = complex.o\
 	  vector.o\
+	  matrix.o\
 	  complex_vector.o\
+	  complex_matrix.o\
 	  basic_math.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
@@ -70,7 +72,7 @@ libgsl-lib.so: $(OBJS)
 	$(CXX) $(LDFLAGS) $? -o $@
 
 test: $(BUILD_DIR)/main.o libgsl-lib.so
-	$(CXX)  -L./ -lgsl-lib -Wl,-rpath=. $< -o $@
+	$(CXX)  -L./ -lgsl-lib -lgsl -Wl,-rpath=. $< -o $@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 

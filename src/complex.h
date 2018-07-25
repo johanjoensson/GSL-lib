@@ -93,7 +93,8 @@ class Complex
 public:
     double re, im;
     Complex();
-    Complex(double a, double b);
+    Complex(double& a, double& b);
+    Complex(const double& a, const double& b);
     Complex(gsl_complex& z);
     Complex(const gsl_complex& z);
     double abs();
@@ -169,6 +170,8 @@ public:
     friend Complex arcsech(const Complex& a);
     friend Complex arccsch(const Complex& a);
     friend Complex arccoth(const Complex& a);
+
+    friend class Complex_Vector;
 
 };
 }

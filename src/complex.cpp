@@ -3,7 +3,15 @@
 
 using namespace GSL;
 
-Complex::Complex(double a, double b)
+Complex::Complex(double& a, double& b)
+ : gsl_c(), re(), im()
+{
+    this->gsl_c = gsl_complex_rect(a,b);
+    re =  gsl_c.dat[0];
+    im = gsl_c.dat[1];
+}
+
+Complex::Complex(const double& a, const double& b)
  : gsl_c(), re(), im()
 {
     this->gsl_c = gsl_complex_rect(a,b);
@@ -34,12 +42,14 @@ std::ostream& operator << (std::ostream& os, const Complex& z)
         }else{
             os << z.re << " + " << z.im << "i";
         }
-    }else{
+    }else if (z.im < 0){
         if(z.im == -1){
             os << z.re << " - " << "i";
         }else{
             os << z.re << " " << z.im << "i";
         }
+    }else{
+            os << z.re;
     }
     return os;
 }

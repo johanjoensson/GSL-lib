@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-namespace GSL{class Complex_Vector;}
+namespace GSL{class Complex_Vector; class Complex_Matrix;}
 std::ostream& operator<< (std::ostream& os, const GSL::Complex_Vector& a);
 
 
@@ -26,7 +26,7 @@ class Complex_Vector{
     // "Shortcut" to the data contained in the gsl_vector
     double* data;
     // Store the number of copies of this vector we have in play
-    int* count;
+    size_t* count;
 public:
     // Create an empty vector (no data at all)
     Complex_Vector();
@@ -75,6 +75,13 @@ public:
     Complex_Vector operator/ (const double& s) const;
 
     friend std::ostream& ::operator<< (std::ostream& os, const Complex_Vector& a);
+
+    friend class Complex_Matrix;
+    friend Complex_Vector operator* (const Complex_Vector& v, const Complex_Matrix& a);
+
+    void set(size_t i, const Complex& z);
+    Complex get(size_t i);
+
 };
 
 Complex_Vector operator*(const double& s, const Complex_Vector& a);
