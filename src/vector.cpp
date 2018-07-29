@@ -39,8 +39,10 @@ Vector::Vector(Vector&& v)
 }
 
 Vector::Vector(gsl_vector& v)
- : gsl_vec(&v)
 {
+    gsl_vec = new gsl_vector;
+    *gsl_vec = v;
+    gsl_vec->owner = 0;
     count = new size_t;
     *count = 1;
 }
@@ -95,7 +97,7 @@ Vector& Vector::operator= (const Vector &a)
     if(this == &a){
         return *this;
     }
-    
+
     if(count != nullptr){
         (*count)--;
         if(*count == 0){

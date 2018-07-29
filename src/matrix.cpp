@@ -31,7 +31,7 @@ Matrix::Matrix(Matrix&& m)
 }
 
 Matrix::Matrix(const size_t n1, const size_t n2)
- : rows(n1), cols(n2)
+ : rows(), cols()
  // rows and cols are std::vectors of empty GSL::vectors
  // The GSL::Vector::~Vector() destructor will be called automatically
  // when the std::vectors go out of scope, we therefore need to initialize them
@@ -51,27 +51,33 @@ Matrix::Matrix(const size_t n1, const size_t n2)
     for(size_t i = 0; i < n1; i++){
         // Read row i into tmp
         tmp = gsl_matrix_row(gsl_mat, i);
-        // Since rows[i] is an empty GSL::Vector we need to allocate the
-        // gsl_vector
-        rows[i] = Vector(3);
-        // Then copy the data from tmp (so that it does not go out of scope)
-        gsl_vector_memcpy(rows[i].gsl_vec, &tmp.vector);
-        rows[i].gsl_vec->owner = 1;
-        // Allocate the count variable and set it to one (only one reference to
-        // this gsl_vector)
+        // Since rows[i] is an empty GSL::Complex_Vector we need to allocate the
+        // gsl_vector_complex
+        rows.push_back(Vector(tmp.vector));
+/*
+        rows[i].gsl_vec = new gsl_vector_complex;
+        *rows[i].gsl_vec = {tmp.vector.size, // size
+                            tmp.vector.stride, // stride
+                            tmp.vector.data, // data
+                            tmp.vector.block, // block
+                            0}; // owner
         rows[i].count = new size_t;
         *rows[i].count = 1;
+*/
     }
     // Do the same thing we did for the rows for the columns
     for(size_t i = 0; i < n2; i++){
         tmp = gsl_matrix_column(gsl_mat, i);
 
-        cols[i] = Vector(3);
-        gsl_vector_memcpy(cols[i].gsl_vec, &tmp.vector);
-
-        cols[i].gsl_vec->owner = 1;
+        cols.push_back(Vector(tmp.vector));
+/*        *cols[i].gsl_vec = {tmp.vector.size, // size
+                            tmp.vector.stride, // stride
+                            tmp.vector.data, // data
+                            tmp.vector.block, // block
+                            0}; // owner
         cols[i].count = new size_t;
         *cols[i].count = 1;
+*/
     }
 }
 
@@ -79,29 +85,18 @@ Matrix::~Matrix()
 {
     // Make sure there is an allocated gsl_vector
     if(count != nullptr){
-        size_t n1 = gsl_mat->size1, n2 = gsl_mat->size2;
-        for(size_t i = 0; i < n1; i++){
-            if(rows[i].gsl_vec != nullptr){
-                delete rows[i].gsl_vec;
-                rows[i].gsl_vec = nullptr;
-            }
-        }
-        for(size_t i = 0; i < n2; i++){
-            if(cols[i].gsl_vec != nullptr){
-                delete cols[i].gsl_vec;
-                cols[i].gsl_vec = nullptr;
-            }
-        }
-        // Reduce the number of references to the gsl_vector by one
+        // Reduce the number of references to the gsl_vector_complex by one
         *count -= 1;
+        rows.clear();
+        cols.clear();
         // If there are no more references to the vector, deallocate the memory
         if(*count <= 0){
+            delete count;
+            count = nullptr;
             if(gsl_mat != nullptr){
                 gsl_matrix_free(gsl_mat);
                 gsl_mat = nullptr;
             }
-            delete count;
-            count = nullptr;
         }
     }
 }
