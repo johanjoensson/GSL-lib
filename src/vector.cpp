@@ -95,10 +95,14 @@ Vector& Vector::operator= (const Vector &a)
     if(this == &a){
         return *this;
     }
-    if(this->gsl_vec != nullptr && this->count != nullptr){
-        gsl_vector_free(gsl_vec);
+    
+    if(count != nullptr){
+        (*count)--;
+        if(*count == 0){
+            delete count;
+            gsl_vector_free(gsl_vec);
+        }
     }
-    delete count;
 
     this->gsl_vec = a.gsl_vec;
     this->count = a.count ;

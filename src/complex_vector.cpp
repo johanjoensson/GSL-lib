@@ -88,10 +88,13 @@ Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
     if(this == &a){
         return *this;
     }
-    if(this->gsl_vec != nullptr && this->count != nullptr){
-        gsl_vector_complex_free(gsl_vec);
+    if(this->count != nullptr){
+        (*count)--;
+        if(*count == 0){
+            gsl_vector_complex_free(gsl_vec);
+            delete count;
+        }
     }
-    delete count;
 
     this->gsl_vec = a.gsl_vec;
     this->count = a.count ;
