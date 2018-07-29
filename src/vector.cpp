@@ -108,6 +108,7 @@ Vector& Vector::operator= (const Vector &a)
 
     this->gsl_vec = a.gsl_vec;
     this->count = a.count ;
+
     ++(*count);
 
     return *this;
