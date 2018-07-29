@@ -15,7 +15,7 @@ Vector::Vector(const size_t n)
         throw std::runtime_error("Memory allocation (gsl_vector_calloc)"
         " failed!");
     }
-    count = new size_t;
+    count = new int;
     *count = 1;
 }
 
@@ -43,7 +43,7 @@ Vector::Vector(gsl_vector& v)
     gsl_vec = new gsl_vector;
     *gsl_vec = v;
     gsl_vec->owner = 0;
-    count = new size_t;
+    count = new int;
     *count = 1;
 }
 
@@ -52,7 +52,7 @@ Vector::Vector(const gsl_vector& v)
 {
     gsl_vec = gsl_vector_calloc(v.size);
     gsl_vector_memcpy(gsl_vec, &v);
-    count = new size_t;
+    count = new int;
     *count = 1;
 }
 
@@ -101,15 +101,22 @@ Vector& Vector::operator= (const Vector &a)
     if(count != nullptr){
         (*count)--;
         if(*count == 0){
-            delete count;
-            gsl_vector_free(gsl_vec);
-        }
+			if(gsl_vec->size != 0){
+				gsl_vector_free(gsl_vec);
+			}else{
+				delete gsl_vec;
+			}
+			delete count;
+		}else if(*count < 0){
+			gsl_vector_memcpy(this->gsl_vec, a.gsl_vec);
+			*count = 0;
+		}else{
+			this->gsl_vec = a.gsl_vec;
+			this->count = a.count ;
+			++(*count);
+		}
     }
 
-    this->gsl_vec = a.gsl_vec;
-    this->count = a.count ;
-
-    ++(*count);
 
     return *this;
 }
@@ -120,7 +127,7 @@ Vector& Vector::operator= (Vector&& a)
     a.gsl_vec = this->gsl_vec;
     this->gsl_vec = tmp_vec;
 
-    size_t* tmp_size = a.count;
+    int* tmp_size = a.count;
     a.count = this->count;
     this->count = tmp_size;
 
@@ -412,14 +419,14 @@ void Vector::copy(const Vector& a)
     // This Vector is uninitialized
     if(this->count == nullptr){
         this->gsl_vec = gsl_vector_alloc(a.gsl_vec->size);
-        this->count = new size_t;
+        this->count = new int;
         *this->count = 1;
     // Other vectors are using the data
     }else if(*this->count > 1){
         *this->count -= 1;
         // Create new data array
         this->gsl_vec = gsl_vector_alloc(a.gsl_vec->size);
-        this->count = new size_t;
+        this->count = new int;
         *this->count = 1;
     // No other vector is using the data!
     // Make sure the dimesnions of the gsl_vector s arthe same

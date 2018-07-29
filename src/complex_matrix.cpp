@@ -32,7 +32,7 @@ Complex_Matrix::Complex_Matrix(Complex_Matrix&& m)
 }
 
 Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
- : rows(), cols()
+ : rows(n1), cols(n2)
  // rows and cols are std::vectors of empty GSL::vectors
  // The GSL::Complex_Vector::~Complex_Vector() destructor will be called automatically
  // when the std::vectors go out of scope, we therefore need to initialize them
@@ -54,31 +54,21 @@ Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
         tmp = gsl_matrix_complex_row(gsl_mat, i);
         // Since rows[i] is an empty GSL::Complex_Vector we need to allocate the
         // gsl_vector_complex
-        rows.push_back(Complex_Vector(tmp.vector));
-/*
         rows[i].gsl_vec = new gsl_vector_complex;
-        *rows[i].gsl_vec = {tmp.vector.size, // size
-                            tmp.vector.stride, // stride
-                            tmp.vector.data, // data
-                            tmp.vector.block, // block
-                            0}; // owner
-        rows[i].count = new size_t;
-        *rows[i].count = 1;
-*/
+        *rows[i].gsl_vec = tmp.vector;
+        rows[i].count = new int;
+        *rows[i].count = 0;
+        rows[i].gsl_vec->owner = 0;
     }
     // Do the same thing we did for the rows for the columns
     for(size_t i = 0; i < n2; i++){
         tmp = gsl_matrix_complex_column(gsl_mat, i);
 
-        cols.push_back(Complex_Vector(tmp.vector));
-/*        *cols[i].gsl_vec = {tmp.vector.size, // size
-                            tmp.vector.stride, // stride
-                            tmp.vector.data, // data
-                            tmp.vector.block, // block
-                            0}; // owner
-        cols[i].count = new size_t;
-        *cols[i].count = 1;
-*/
+        cols[i].gsl_vec = new gsl_vector_complex;
+        *cols[i].gsl_vec = tmp.vector;
+        cols[i].count = new int;
+        *cols[i].count = 0;
+        cols[i].gsl_vec->owner = 0;
     }
 }
 

@@ -55,8 +55,8 @@ Matrix::Matrix(const size_t n1, const size_t n2)
         // gsl_vector_complex
         rows[i].gsl_vec = new gsl_vector;
         *rows[i].gsl_vec = tmp.vector;
-        rows[i].count = new size_t;
-        *rows[i].count = 1;
+        rows[i].count = new int;
+        *rows[i].count = 0;
         rows[i].gsl_vec->owner = 0;
 
     }
@@ -64,11 +64,11 @@ Matrix::Matrix(const size_t n1, const size_t n2)
     for(size_t i = 0; i < n2; i++){
         tmp = gsl_matrix_column(gsl_mat, i);
 
-        rows[i].gsl_vec = new gsl_vector;
-        *rows[i].gsl_vec = tmp.vector;
-        rows[i].count = new size_t;
-        *rows[i].count = 1;
-        rows[i].gsl_vec->owner = 0;
+        cols[i].gsl_vec = new gsl_vector;
+        *cols[i].gsl_vec = tmp.vector;
+        cols[i].count = new int;
+        *cols[i].count = 0;
+        cols[i].gsl_vec->owner = 0;
     }
 }
 
@@ -170,7 +170,7 @@ Matrix& Matrix::operator= (Matrix&& m)
 }
 
 Vector& Matrix::operator[](const size_t index)
-{
+{	
     return rows[index];
 }
 

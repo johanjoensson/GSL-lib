@@ -11,33 +11,56 @@
 
 using namespace GSL;
 
+void test_vector()
+{
+std::cout << "Testing real vectors and matrices" << std::endl;
+	Vector v(3), a1(3), a2(3), a3(3);
+	v[0] = 1.2;
+
+	a1[0] = 1.0;
+	a2[1] = 1.0;
+	a3[2] = 1.0;
+
+	Matrix m(3,3);
+	m[0][0] = 1.0;
+	m[1] = a2;
+	m[2] = a3;
+
+	std::cout << "v = " << v << std::endl;
+	std::cout << "m = " << m << std::endl;
+	std::cout << "m*v = " << m*v << std::endl;
+
+	std::cout << "m[0] = " << m[0] << std::endl;
+	std::cout << "m[1] = " << m[1] << std::endl;
+	std::cout << "m[2] = " << m[2] << std::endl;
+}
+
+void test_complex_vector()
+{
+std::cout << "Testing complex vectors and matrices" << std::endl;
+	Complex_Vector v(3), a1(3), a2(3), a3(3);
+	v[0] = Complex(1.2, 0);
+
+	a1[0] = Complex(1.0, 0);
+	a2[1] = Complex(0., 1.0);
+	a3[2] = Complex(0.5, 0.5);
+
+	Complex_Matrix m(3,3);
+	m[0][0] = Complex(1.0, 0);
+	m[1] = a2;
+	m[2] = a3;
+
+	std::cout << "v = " << v << std::endl;
+	std::cout << "m = " << m << std::endl;
+	std::cout << "m*v = " << m*v << std::endl;
+
+	std::cout << "m[0] = " << m[0] << std::endl;
+	std::cout << "m[1] = " << m[1] << std::endl;
+	std::cout << "m[2] = " << m[2] << std::endl;
+}
 int main()
 {
-	Complex_Matrix m(4,4);
-	Complex_Matrix n(4,3);
-
-	Complex_Vector v(4);
-	v.set(0, Complex(1.2, -0.4));
-	v.set(1, Complex(0.34, -0.5));
-	v.set(2, Complex(8.2,0));
-	v.set(3,Complex(3.2,0));
-
-	n[0][0] = Complex(0.25, -12.3);
-	n[1].set(1, Complex(0.25, 0));
-	n[2].set(2, Complex(0., 1.4));
-
-	m[0].set(0, Complex(0.3, 0.89));
-	m[1].set(1, Complex(1.2, 0));
-
-	std::cout << "m = " << m << std::endl;
-	std::cout << "n = " << n << std::endl;
-	std::cout << "v = " << v << std::endl;
-	std::cout << "v*m*n = " << v*m*n << std::endl;
-
-	std::cout << 2.0*m << std::endl;
-	std::cout << m*1.6 << std::endl;
-
-	std::cout << 0.5*v << std::endl;
-	std::cout << v/2 << std::endl;
+	test_vector();
+	test_complex_vector();
 	return 0;
 }

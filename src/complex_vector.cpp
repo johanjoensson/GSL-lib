@@ -15,7 +15,7 @@ Complex_Vector::Complex_Vector(const size_t n)
         throw std::runtime_error("Memory allocation (gsl_vector_complex_alloc)"
         " failed!");
     }
-    count = new size_t;
+    count = new int;
     *count = 1;
 }
 
@@ -43,7 +43,7 @@ Complex_Vector::Complex_Vector(gsl_vector_complex& v)
     gsl_vec = new gsl_vector_complex;
     *gsl_vec = v;
     gsl_vec->owner = 0;
-    count = new size_t;
+    count = new int;
     *count = 1;
 }
 
@@ -88,17 +88,26 @@ Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
     if(this == &a){
         return *this;
     }
-    if(this->count != nullptr){
+
+    if(count != nullptr){
         (*count)--;
         if(*count == 0){
-            gsl_vector_complex_free(gsl_vec);
-            delete count;
-        }
+			if(gsl_vec->size != 0){
+				gsl_vector_complex_free(gsl_vec);
+			}else{
+				delete gsl_vec;
+			}
+			delete count;
+		}else if(*count < 0){
+			gsl_vector_complex_memcpy(this->gsl_vec, a.gsl_vec);
+			*count = 0;
+		}else{
+			this->gsl_vec = a.gsl_vec;
+			this->count = a.count ;
+			++(*count);
+		}
     }
 
-    this->gsl_vec = a.gsl_vec;
-    this->count = a.count ;
-    ++(*count);
 
     return *this;
 }
@@ -109,7 +118,7 @@ Complex_Vector& Complex_Vector::operator= (Complex_Vector&& a)
     a.gsl_vec = this->gsl_vec;
     this->gsl_vec = tmp_vec;
 
-    size_t* tmp_size = a.count;
+    int* tmp_size = a.count;
     a.count = this->count;
     this->count = tmp_size;
 
@@ -118,12 +127,8 @@ Complex_Vector& Complex_Vector::operator= (Complex_Vector&& a)
 
 Complex Complex_Vector::operator[] (const int index)
 {
-    gsl_complex res = gsl_vector_complex_get(gsl_vec, index);
-/*    if (&res == nullptr){
-        throw std::runtime_error("Index outside of range!");
-    }
-*/
-    return Complex(res);
+    gsl_complex *res = gsl_vector_complex_ptr(gsl_vec, index);
+    return Complex(*res);
 }
 
 Complex_Vector& Complex_Vector::operator+= (const Complex_Vector& b)
@@ -414,14 +419,14 @@ void Complex_Vector::copy(const Complex_Vector& a)
     // This Vector is uninitialized
     if(this->count == nullptr){
         this->gsl_vec = gsl_vector_complex_alloc(a.gsl_vec->size);
-        this->count = new size_t;
+        this->count = new int;
         *this->count = 1;
     // Other vectors are using the data
     }else if(*this->count > 1){
         *this->count -= 1;
         // Create new data array
         this->gsl_vec = gsl_vector_complex_alloc(a.gsl_vec->size);
-        this->count = new size_t;
+        this->count = new int;
         *this->count = 1;
     // No other vector is using the data!
     // Make sure the dimesnions of the gsl_vector s arthe same

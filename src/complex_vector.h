@@ -24,7 +24,7 @@ class Complex_Vector{
     // Store a reference to the gsl_vector
     gsl_vector_complex* gsl_vec;
     // Store the number of copies of this vector we have in play
-    size_t* count;
+    int* count;
 public:
     // Create an empty vector (no data at all)
     Complex_Vector();

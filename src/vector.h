@@ -21,7 +21,7 @@ class Vector{
     // Store a reference to the gsl_vector
     gsl_vector* gsl_vec;
     // Store the number of copies of this vector we have in play
-    size_t* count;
+    int* count;
     Vector(gsl_vector& v);
     Vector(const gsl_vector& v);
 public:
