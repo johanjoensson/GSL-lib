@@ -5,7 +5,6 @@ using namespace GSL;
 Vector::Vector()
 {
     gsl_vec = nullptr;
-    data = nullptr;
     count = nullptr;
 }
 
@@ -13,44 +12,64 @@ Vector::Vector(const size_t n)
 {
     gsl_vec = gsl_vector_calloc(n);
     if(gsl_vec == nullptr){
-        throw std::runtime_error("Memory allocation (gsl_vector_alloc)"
+        throw std::runtime_error("Memory allocation (gsl_vector_calloc)"
         " failed!");
     }
-    data = gsl_vec->data;
-    count = new int;
+    count = new size_t;
     *count = 1;
 }
 
 Vector::Vector(Vector& v)
- : gsl_vec(v.gsl_vec), data(v.data), count(v.count)
+ : gsl_vec(v.gsl_vec),  count(v.count)
 {
     (*count)++;
 }
 
 Vector::Vector(const Vector& v)
- : gsl_vec(v.gsl_vec), data(v.data), count(v.count)
+ : gsl_vec(v.gsl_vec),  count(v.count)
 {
     (*count)++;
 }
 
 Vector::Vector(Vector&& v)
- : gsl_vec(v.gsl_vec), data(v.data), count(nullptr)
+ : gsl_vec(v.gsl_vec),  count(nullptr)
 {
     std::swap(count, v.count);
     v.gsl_vec = nullptr;
-    v.data = nullptr;
+}
+
+Vector::Vector(gsl_vector& v)
+{
+    gsl_vec = new gsl_vector;
+    *gsl_vec = v;
+    gsl_vec->owner = 0;
+    count = new size_t;
+    *count = 1;
+}
+
+
+Vector::Vector(const gsl_vector& v)
+{
+    gsl_vec = gsl_vector_calloc(v.size);
+    gsl_vector_memcpy(gsl_vec, &v);
+    count = new size_t;
+    *count = 1;
 }
 
 Vector::~Vector()
 {
     // Make sure there is an allocated gsl_vector
-    if(gsl_vec != nullptr && count != nullptr){
+    if(count != nullptr){
         // Reduce the number of references to the gsl_vector by one
         *count -= 1;
         // If there are no more references to the vector, deallocate the memory
         if(*count <= 0){
-            gsl_vector_free(gsl_vec);
             delete count;
+            count = nullptr;
+            if(gsl_vec != nullptr){
+                gsl_vector_free(gsl_vec);
+                gsl_vec = nullptr;
+            }
         }
     }
 }
@@ -78,13 +97,16 @@ Vector& Vector::operator= (const Vector &a)
     if(this == &a){
         return *this;
     }
-    if(this->gsl_vec != nullptr && this->count != nullptr){
-        gsl_vector_free(gsl_vec);
+
+    if(count != nullptr){
+        (*count)--;
+        if(*count == 0){
+            delete count;
+            gsl_vector_free(gsl_vec);
+        }
     }
-    delete count;
 
     this->gsl_vec = a.gsl_vec;
-    this->data = a.data;
     this->count = a.count ;
     ++(*count);
 
@@ -97,9 +119,9 @@ Vector& Vector::operator= (Vector&& a)
     a.gsl_vec = this->gsl_vec;
     this->gsl_vec = tmp_vec;
 
-    int* tmp_int = a.count;
+    size_t* tmp_size = a.count;
     a.count = this->count;
-    this->count = tmp_int;
+    this->count = tmp_size;
 
     return *this;
 }
@@ -108,7 +130,7 @@ double& Vector::operator[] (const int index)
 {
     double *res = gsl_vector_ptr(gsl_vec, index);
     if (res == nullptr){
-        throw std::runtime_error("Index outside of range!");
+        throw std::runtime_error("Index out of range!");
     }
     return *res;
 }
@@ -281,6 +303,7 @@ Vector GSL::operator* (const double& s, const Vector& a)
 
 Vector Vector::operator/ (const double& s) const
 {
+
     Vector res(this->gsl_vec->size);
     int stat = gsl_vector_memcpy(res.gsl_vec, this->gsl_vec);
     if(stat){
@@ -296,6 +319,13 @@ Vector Vector::operator/ (const double& s) const
 	}
 
     return res;
+}
+
+Vector GSL::operator- (const Vector& a)
+{
+    Vector res(a.gsl_vec->size);
+
+    return res - a;
 }
 
 std::ostream& operator<<(std::ostream& os, const Vector& a)
@@ -381,14 +411,14 @@ void Vector::copy(const Vector& a)
     // This Vector is uninitialized
     if(this->count == nullptr){
         this->gsl_vec = gsl_vector_alloc(a.gsl_vec->size);
-        this->count = new int;
+        this->count = new size_t;
         *this->count = 1;
     // Other vectors are using the data
     }else if(*this->count > 1){
         *this->count -= 1;
         // Create new data array
         this->gsl_vec = gsl_vector_alloc(a.gsl_vec->size);
-        this->count = new int;
+        this->count = new size_t;
         *this->count = 1;
     // No other vector is using the data!
     // Make sure the dimesnions of the gsl_vector s arthe same
@@ -405,26 +435,13 @@ void Vector::copy(const Vector& a)
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-    this->data = this->gsl_vec->data;
 }
 
-/*
-int main()
+bool GSL::operator==(const Vector& u, const Vector& v)
 {
-    Vector a(3);
-    Vector c;
-    a[0] = 1;
-    a[1] = 1;
-    a[2] = 1;
-    Vector b(2);
-    b.copy(a*2);
-    c.copy(2*b);
-    a.normalize();
-    Vector t = cross(b,a);
-    std::cout << "a : " << a << std::endl;
-    std::cout << "b : " << b << std::endl;
-    std::cout << "c : " << t << std::endl;
-
-    return 0;
+    return gsl_vector_equal(u.gsl_vec, v.gsl_vec);
 }
-*/
+bool GSL::operator!=(const Vector& u, const Vector& v)
+{
+    return !(u == v);
+}

@@ -3,7 +3,7 @@
 #include <gsl/gsl_vector.h>
 #include <iostream>
 
-namespace GSL{class Vector;}
+namespace GSL{class Vector; class Matrix;}
 std::ostream& operator<< (std::ostream& os, const GSL::Vector& a);
 
 
@@ -20,16 +20,16 @@ namespace GSL{
 class Vector{
     // Store a reference to the gsl_vector
     gsl_vector* gsl_vec;
-    // "Shortcut" to the data contained in the gsl_vector
-    double* data;
     // Store the number of copies of this vector we have in play
-    int* count;
+    size_t* count;
+    Vector(gsl_vector& v);
+    Vector(const gsl_vector& v);
 public:
     // Create an empty vector (no data at all)
     Vector();
     // Create a vector of size n
     Vector(const size_t n);
-    // Create a new reference to vector v
+    // Create a new reference to the gsl_vector inside v
     // Do not allocate anything, only add references!
     Vector(Vector& v);
     Vector(const Vector& v);
@@ -71,12 +71,25 @@ public:
     friend Vector operator*(const double& s, const Vector& a);
     Vector operator/ (const double& s) const;
 
+    friend Vector operator- (const Vector& a);
+
     friend std::ostream& ::operator<< (std::ostream& os, const Vector& a);
+
+    friend class Matrix;
+    friend Vector operator* (const Vector& v, const Matrix& a);
+
+    friend bool (operator==)(const Vector&, const Vector&);
+    friend bool (operator!=)(const Vector&, const Vector&);
+
 };
 
 Vector operator*(const double& s, const Vector& a);
 double dot(const Vector& a, const Vector& b);
 Vector cross(const Vector& a, const Vector& b);
+Vector operator- (const Vector& a);
+
+bool (operator==)(const Vector&, const Vector&);
+bool (operator!=)(const Vector&, const Vector&);
 
 }
 

@@ -35,10 +35,13 @@ LDFLAGS = -lgsl -lgslcblas -lm -shared
 
 # List of all executables in this project
 LIB = libgsl-lib.so
+TEST = test
 
 LIB_OBJ = complex.o\
 	  vector.o\
+	  matrix.o\
 	  complex_vector.o\
+	  complex_matrix.o\
 	  basic_math.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
@@ -55,7 +58,7 @@ OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 .PHONY: all clean cleanall
 
 # Build all executables
-all: $(LIB)
+all: $(LIB) $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -70,7 +73,7 @@ libgsl-lib.so: $(OBJS)
 	$(CXX) $(LDFLAGS) $? -o $@
 
 test: $(BUILD_DIR)/main.o libgsl-lib.so
-	$(CXX)  -L./ -lgsl-lib -Wl,-rpath=. $< -o $@
+	$(CXX)  -L./ -lgsl-lib -lgsl -Wl,-rpath=. $< -o $@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 

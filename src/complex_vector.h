@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-namespace GSL{class Complex_Vector;}
+namespace GSL{class Complex_Vector; class Complex_Matrix;}
 std::ostream& operator<< (std::ostream& os, const GSL::Complex_Vector& a);
 
 
@@ -23,10 +23,8 @@ namespace GSL{
 class Complex_Vector{
     // Store a reference to the gsl_vector
     gsl_vector_complex* gsl_vec;
-    // "Shortcut" to the data contained in the gsl_vector
-    double* data;
     // Store the number of copies of this vector we have in play
-    int* count;
+    size_t* count;
 public:
     // Create an empty vector (no data at all)
     Complex_Vector();
@@ -37,6 +35,7 @@ public:
     Complex_Vector(Complex_Vector& v);
     Complex_Vector(const Complex_Vector& v);
     Complex_Vector(Complex_Vector&& v);
+    Complex_Vector(gsl_vector_complex& v);
     // Deallocate vector, keeping in mind that several vectors might reference
     // the same gsl_vector.
     ~Complex_Vector();
@@ -75,12 +74,28 @@ public:
     Complex_Vector operator/ (const double& s) const;
 
     friend std::ostream& ::operator<< (std::ostream& os, const Complex_Vector& a);
+
+    friend class Complex_Matrix;
+    friend Complex_Vector operator* (const Complex_Vector& v, const Complex_Matrix& a);
+
+    friend Complex_Vector operator- (const Complex_Vector& a);
+
+
+    void set(size_t i, const Complex& z);
+    Complex get(size_t i);
+
+    friend bool (operator==)(const Complex_Vector&, const Complex_Vector&);
+    friend bool (operator!=)(const Complex_Vector&, const Complex_Vector&);
+
 };
 
 Complex_Vector operator*(const double& s, const Complex_Vector& a);
 Complex dot(const Complex_Vector& a, const Complex_Vector& b);
 Complex_Vector cross(const Complex_Vector& a, const Complex_Vector& b);
+Complex_Vector operator- (const Complex_Vector& a);
 
+bool (operator==)(const Complex_Vector&, const Complex_Vector&);
+bool (operator!=)(const Complex_Vector&, const Complex_Vector&);
 }
 
 #endif //Complex_Vector_GSL_LIB_H

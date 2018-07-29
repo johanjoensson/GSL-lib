@@ -88,14 +88,23 @@ Complex arccoth(const Complex& a);
 // Representation of complex numbers
 class Complex
 {
-    gsl_complex gsl_c;
+    gsl_complex* gsl_c;
 
 public:
     double re, im;
     Complex();
-    Complex(double a, double b);
+    Complex(double& a, double& b);
+    Complex(const double& a, const double& b);
     Complex(gsl_complex& z);
     Complex(const gsl_complex& z);
+    Complex(Complex& z);
+    Complex(const Complex& z);
+    Complex(Complex&& z);
+    ~Complex();
+
+    Complex& operator=(const Complex& z);
+    Complex& operator=(Complex&& z);
+
     double abs();
     double arg();
     double abs2();
@@ -169,6 +178,8 @@ public:
     friend Complex arcsech(const Complex& a);
     friend Complex arccsch(const Complex& a);
     friend Complex arccoth(const Complex& a);
+
+    friend class Complex_Vector;
 
 };
 }
