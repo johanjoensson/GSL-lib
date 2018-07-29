@@ -35,6 +35,7 @@ LDFLAGS = -lgsl -lgslcblas -lm -shared
 
 # List of all executables in this project
 LIB = libgsl-lib.so
+TEST = test
 
 LIB_OBJ = complex.o\
 	  vector.o\
@@ -57,7 +58,7 @@ OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 .PHONY: all clean cleanall
 
 # Build all executables
-all: $(LIB)
+all: $(LIB) $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp

@@ -32,7 +32,7 @@ Complex_Matrix::Complex_Matrix(Complex_Matrix&& m)
 }
 
 Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
- : rows(n1), cols(n2)
+ : rows(), cols()
  // rows and cols are std::vectors of empty GSL::vectors
  // The GSL::Complex_Vector::~Complex_Vector() destructor will be called automatically
  // when the std::vectors go out of scope, we therefore need to initialize them
@@ -54,47 +54,50 @@ Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
         tmp = gsl_matrix_complex_row(gsl_mat, i);
         // Since rows[i] is an empty GSL::Complex_Vector we need to allocate the
         // gsl_vector_complex
+        rows.push_back(Complex_Vector(tmp.vector));
+/*
         rows[i].gsl_vec = new gsl_vector_complex;
-        // Then copy the data from tmp (so that it does not go out of scope)
-        *rows[i].gsl_vec = tmp.vector;
-        rows[i].gsl_vec->owner = 0;
-        // Allocate the count variable and set it to one (only one reference to
-        // this gsl_vector_complex)
+        *rows[i].gsl_vec = {tmp.vector.size, // size
+                            tmp.vector.stride, // stride
+                            tmp.vector.data, // data
+                            tmp.vector.block, // block
+                            0}; // owner
         rows[i].count = new size_t;
         *rows[i].count = 1;
+*/
     }
     // Do the same thing we did for the rows for the columns
     for(size_t i = 0; i < n2; i++){
         tmp = gsl_matrix_complex_column(gsl_mat, i);
 
-        cols[i].gsl_vec = new gsl_vector_complex;
-        *cols[i].gsl_vec = tmp.vector;
-
-        cols[i].gsl_vec->owner = 0;
+        cols.push_back(Complex_Vector(tmp.vector));
+/*        *cols[i].gsl_vec = {tmp.vector.size, // size
+                            tmp.vector.stride, // stride
+                            tmp.vector.data, // data
+                            tmp.vector.block, // block
+                            0}; // owner
         cols[i].count = new size_t;
         *cols[i].count = 1;
+*/
     }
 }
 
 Complex_Matrix::~Complex_Matrix()
 {
     // Make sure there is an allocated gsl_vector_complex
-    if(gsl_mat != nullptr && count != nullptr){
-        size_t n1 = gsl_mat->size1, n2 = gsl_mat->size2;
-        for(size_t i = 0; i < n1; i++){
-            delete rows[i].gsl_vec;
-            rows[i].gsl_vec = nullptr;
-        }
-        for(size_t i = 0; i < n2; i++){
-            delete cols[i].gsl_vec;
-            cols[i].gsl_vec = nullptr;
-        }
+    if(count != nullptr){
         // Reduce the number of references to the gsl_vector_complex by one
         *count -= 1;
+        rows.clear();
+        cols.clear();
         // If there are no more references to the vector, deallocate the memory
         if(*count <= 0){
-            gsl_matrix_complex_free(gsl_mat);
             delete count;
+            count = nullptr;
+            if(gsl_mat != nullptr){
+                gsl_matrix_complex_free(gsl_mat);
+                gsl_mat = nullptr;
+            }
         }
     }
 }
@@ -338,23 +341,6 @@ Complex_Matrix GSL::operator*(const double& s, const Complex_Matrix& a)
 }
 Complex_Matrix Complex_Matrix::operator/ (const double& s) const
 {
-    /*
-    Complex_Matrix res(this->gsl_mat->size1, this->gsl_mat->size2);
-    int stat = gsl_matrix_complex_memcpy(res.gsl_mat,this->gsl_mat);
-    if(stat){
-		std::string error_str = gsl_strerror(stat);
-		throw std::runtime_error("Error in memory copying.\nGSL error: "
-        + error_str);
-	}
-    stat = gsl_matrix_complex_scale(res.gsl_mat, 1./s);
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in matrix scaling.\nGSL error: "
-        + error_str);
-	}
-
-    return res;
-    */
     return (*this)*1./s;
 }
 
@@ -393,6 +379,16 @@ Complex_Matrix Complex_Matrix::transpose() const
     gsl_matrix_complex_transpose_memcpy(res.gsl_mat, this->gsl_mat);
 
     return res;
+}
+
+
+bool GSL::operator== (const Complex_Matrix& u, const Complex_Matrix& v)
+{
+    return gsl_matrix_complex_equal(u.gsl_mat, v.gsl_mat);
+}
+bool GSL::operator!= (const Complex_Matrix& u, const Complex_Matrix& v)
+{
+    return !(u == v);
 }
 
 std::ostream& operator<<(std::ostream& os, const Complex_Matrix& m)

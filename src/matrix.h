@@ -52,12 +52,17 @@ namespace GSL{
 
         Matrix transpose() const;
 
+        friend bool operator== (const Matrix& u, const Matrix& v);
+        friend bool operator!= (const Matrix& u, const Matrix& v);
+
         friend std::ostream& ::operator<< (std::ostream& os, const Matrix& a);
 
     };
 
     Matrix operator*(const double& s, const Matrix& a);
     Vector operator* (const Vector& v, const Matrix& a);
+    bool operator== (const Matrix& u, const Matrix& v);
+    bool operator!= (const Matrix& u, const Matrix& v);
 }
 
 #endif // MATRIX_H

@@ -71,15 +71,25 @@ public:
     friend Vector operator*(const double& s, const Vector& a);
     Vector operator/ (const double& s) const;
 
+    friend Vector operator- (const Vector& a);
+
     friend std::ostream& ::operator<< (std::ostream& os, const Vector& a);
 
     friend class Matrix;
     friend Vector operator* (const Vector& v, const Matrix& a);
+
+    friend bool (operator==)(const Vector&, const Vector&);
+    friend bool (operator!=)(const Vector&, const Vector&);
+
 };
 
 Vector operator*(const double& s, const Vector& a);
 double dot(const Vector& a, const Vector& b);
 Vector cross(const Vector& a, const Vector& b);
+Vector operator- (const Vector& a);
+
+bool (operator==)(const Vector&, const Vector&);
+bool (operator!=)(const Vector&, const Vector&);
 
 }
 

@@ -4,10 +4,8 @@
 
 using namespace GSL;
 Complex_Vector::Complex_Vector()
+ : gsl_vec(nullptr), count(nullptr)
 {
-    gsl_vec = nullptr;
-    data = nullptr;
-    count = nullptr;
 }
 
 Complex_Vector::Complex_Vector(const size_t n)
@@ -17,29 +15,36 @@ Complex_Vector::Complex_Vector(const size_t n)
         throw std::runtime_error("Memory allocation (gsl_vector_complex_alloc)"
         " failed!");
     }
-    data = gsl_vec->data;
     count = new size_t;
     *count = 1;
 }
 
 Complex_Vector::Complex_Vector(Complex_Vector& v)
- : gsl_vec(v.gsl_vec), data(v.data), count(v.count)
+ : gsl_vec(v.gsl_vec), count(v.count)
 {
     (*count)++;
 }
 
 Complex_Vector::Complex_Vector(const Complex_Vector& v)
- : gsl_vec(v.gsl_vec), data(v.data), count(v.count)
+ : gsl_vec(v.gsl_vec), count(v.count)
 {
     (*count)++;
 }
 
 Complex_Vector::Complex_Vector(Complex_Vector&& v)
- : gsl_vec(v.gsl_vec), data(v.data), count(nullptr)
+ : gsl_vec(v.gsl_vec), count(nullptr)
 {
     std::swap(count, v.count);
     v.gsl_vec = nullptr;
-    v.data = nullptr;
+}
+
+Complex_Vector::Complex_Vector(gsl_vector_complex& v)
+{
+    gsl_vec = new gsl_vector_complex;
+    *gsl_vec = v;
+    gsl_vec->owner = 0;
+    count = new size_t;
+    *count = 1;
 }
 
 Complex_Vector::~Complex_Vector()
@@ -49,10 +54,12 @@ Complex_Vector::~Complex_Vector()
         // Reduce the number of references to the gsl_vector_complex by one
         *count -= 1;
         // If there are no more references to the vector, deallocate the memory
-        if(*count <= 0){
+        if(*count == 0){
             delete count;
+            count = nullptr;
             if(gsl_vec != nullptr){
                 gsl_vector_complex_free(gsl_vec);
+                gsl_vec = nullptr;
             }
         }
     }
@@ -87,7 +94,6 @@ Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
     delete count;
 
     this->gsl_vec = a.gsl_vec;
-    this->data = a.data;
     this->count = a.count ;
     ++(*count);
 
@@ -302,6 +308,23 @@ Complex_Vector Complex_Vector::operator/ (const double& s) const
     return res;
 }
 
+Complex_Vector GSL::operator- (const Complex_Vector& a)
+{
+    Complex_Vector res(a.gsl_vec->size);
+
+    return res - a;
+}
+
+bool GSL::operator==(const Complex_Vector& u, const Complex_Vector& v)
+{
+    return gsl_vector_complex_equal(u.gsl_vec, v.gsl_vec);
+}
+
+bool GSL::operator!=(const Complex_Vector& u, const Complex_Vector& v)
+{
+    return !(u == v);
+}
+
 std::ostream& operator<<(std::ostream& os, const Complex_Vector& a)
 {
     unsigned int size_a = a.gsl_vec->size;
@@ -412,12 +435,11 @@ void Complex_Vector::copy(const Complex_Vector& a)
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-    this->data = this->gsl_vec->data;
 }
 
 void Complex_Vector::set(size_t i, const Complex& z)
 {
-    gsl_vector_complex_set(this->gsl_vec, i, z.gsl_c);
+    gsl_vector_complex_set(this->gsl_vec, i, *z.gsl_c);
 }
 
 Complex Complex_Vector::get(size_t i)

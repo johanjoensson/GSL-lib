@@ -52,12 +52,18 @@ namespace GSL{
 
         Complex_Matrix transpose() const;
 
+        friend bool operator== (const Complex_Matrix& u, const Complex_Matrix& v);
+        friend bool operator!= (const Complex_Matrix& u, const Complex_Matrix& v);
+
         friend std::ostream& ::operator<< (std::ostream& os, const Complex_Matrix& a);
 
     };
 
     Complex_Matrix operator*(const double& s, const Complex_Matrix& a);
     Complex_Vector operator* (const Complex_Vector& v, const Complex_Matrix& a);
+
+    bool operator== (const Complex_Matrix& u, const Complex_Matrix& v);
+    bool operator!= (const Complex_Matrix& u, const Complex_Matrix& v);
 }
 
 #endif // MATRIX_H

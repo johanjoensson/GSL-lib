@@ -22,17 +22,22 @@ int main()
 	v.set(2, Complex(8.2,0));
 	v.set(3,Complex(3.2,0));
 
-	n[0].set(0,Complex(0.25, -12.3));
+	n[0][0] = Complex(0.25, -12.3);
 	n[1].set(1, Complex(0.25, 0));
 	n[2].set(2, Complex(0., 1.4));
 
 	m[0].set(0, Complex(0.3, 0.89));
 	m[1].set(1, Complex(1.2, 0));
 
-	std::cout << m << std::endl;
-	std::cout << n << std::endl;
-	std::cout << v << std::endl;
-	std::cout << v*m*n << std::endl;
+	std::cout << "m = " << m << std::endl;
+	std::cout << "n = " << n << std::endl;
+	std::cout << "v = " << v << std::endl;
+	std::cout << "v*m*n = " << v*m*n << std::endl;
 
+	std::cout << 2.0*m << std::endl;
+	std::cout << m*1.6 << std::endl;
+
+	std::cout << 0.5*v << std::endl;
+	std::cout << v/2 << std::endl;
 	return 0;
 }

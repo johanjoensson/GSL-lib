@@ -53,10 +53,10 @@ Matrix::Matrix(const size_t n1, const size_t n2)
         tmp = gsl_matrix_row(gsl_mat, i);
         // Since rows[i] is an empty GSL::Vector we need to allocate the
         // gsl_vector
-        rows[i].gsl_vec = new gsl_vector;
+        rows[i] = Vector(3);
         // Then copy the data from tmp (so that it does not go out of scope)
-        *rows[i].gsl_vec = tmp.vector;
-        rows[i].gsl_vec->owner = 0;
+        gsl_vector_memcpy(rows[i].gsl_vec, &tmp.vector);
+        rows[i].gsl_vec->owner = 1;
         // Allocate the count variable and set it to one (only one reference to
         // this gsl_vector)
         rows[i].count = new size_t;
@@ -66,10 +66,10 @@ Matrix::Matrix(const size_t n1, const size_t n2)
     for(size_t i = 0; i < n2; i++){
         tmp = gsl_matrix_column(gsl_mat, i);
 
-        cols[i].gsl_vec = new gsl_vector;
-        *cols[i].gsl_vec = tmp.vector;
+        cols[i] = Vector(3);
+        gsl_vector_memcpy(cols[i].gsl_vec, &tmp.vector);
 
-        cols[i].gsl_vec->owner = 0;
+        cols[i].gsl_vec->owner = 1;
         cols[i].count = new size_t;
         *cols[i].count = 1;
     }
@@ -78,22 +78,30 @@ Matrix::Matrix(const size_t n1, const size_t n2)
 Matrix::~Matrix()
 {
     // Make sure there is an allocated gsl_vector
-    if(gsl_mat != nullptr && count != nullptr){
+    if(count != nullptr){
         size_t n1 = gsl_mat->size1, n2 = gsl_mat->size2;
         for(size_t i = 0; i < n1; i++){
-            delete rows[i].gsl_vec;
-            rows[i].gsl_vec = nullptr;
+            if(rows[i].gsl_vec != nullptr){
+                delete rows[i].gsl_vec;
+                rows[i].gsl_vec = nullptr;
+            }
         }
         for(size_t i = 0; i < n2; i++){
-            delete cols[i].gsl_vec;
-            cols[i].gsl_vec = nullptr;
+            if(cols[i].gsl_vec != nullptr){
+                delete cols[i].gsl_vec;
+                cols[i].gsl_vec = nullptr;
+            }
         }
         // Reduce the number of references to the gsl_vector by one
         *count -= 1;
         // If there are no more references to the vector, deallocate the memory
         if(*count <= 0){
-            gsl_matrix_free(gsl_mat);
+            if(gsl_mat != nullptr){
+                gsl_matrix_free(gsl_mat);
+                gsl_mat = nullptr;
+            }
             delete count;
+            count = nullptr;
         }
     }
 }
@@ -394,6 +402,15 @@ Matrix Matrix::transpose() const
     return res;
 }
 
+bool GSL::operator== (const Matrix& u, const Matrix& v)
+{
+    return gsl_matrix_equal(u.gsl_mat, v.gsl_mat);
+}
+
+bool GSL::operator!= (const Matrix& u, const Matrix& v)
+{
+    return !(u == v);
+}
 std::ostream& operator<<(std::ostream& os, const Matrix& m)
 {
     size_t size_1 = m.gsl_mat->size1;

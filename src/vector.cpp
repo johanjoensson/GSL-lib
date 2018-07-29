@@ -63,8 +63,10 @@ Vector::~Vector()
         // If there are no more references to the vector, deallocate the memory
         if(*count <= 0){
             delete count;
+            count = nullptr;
             if(gsl_vec != nullptr){
                 gsl_vector_free(gsl_vec);
+                gsl_vec = nullptr;
             }
         }
     }
@@ -295,7 +297,7 @@ Vector GSL::operator* (const double& s, const Vector& a)
 
 Vector Vector::operator/ (const double& s) const
 {
-    /*
+
     Vector res(this->gsl_vec->size);
     int stat = gsl_vector_memcpy(res.gsl_vec, this->gsl_vec);
     if(stat){
@@ -309,8 +311,15 @@ Vector Vector::operator/ (const double& s) const
 		throw std::runtime_error("Error in vector scaling.\nGSL error: "
         + error_str);
 	}
-    */
-    return (*this)*1./s;
+
+    return res;
+}
+
+Vector GSL::operator- (const Vector& a)
+{
+    Vector res(a.gsl_vec->size);
+
+    return res - a;
 }
 
 std::ostream& operator<<(std::ostream& os, const Vector& a)
@@ -422,23 +431,11 @@ void Vector::copy(const Vector& a)
 	}
 }
 
-/*
-int main()
+bool GSL::operator==(const Vector& u, const Vector& v)
 {
-    Vector a(3);
-    Vector c;
-    a[0] = 1;
-    a[1] = 1;
-    a[2] = 1;
-    Vector b(2);
-    b.copy(a*2);
-    c.copy(2*b);
-    a.normalize();
-    Vector t = cross(b,a);
-    std::cout << "a : " << a << std::endl;
-    std::cout << "b : " << b << std::endl;
-    std::cout << "c : " << t << std::endl;
-
-    return 0;
+    return gsl_vector_equal(u.gsl_vec, v.gsl_vec);
 }
-*/
+bool GSL::operator!=(const Vector& u, const Vector& v)
+{
+    return !(u == v);
+}
