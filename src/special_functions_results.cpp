@@ -80,14 +80,24 @@ Result GSL::operator-(const double& a, const Result& b)
 Result GSL::operator*(const Result& a, const Result& b)
 {
     gsl_sf_result res{0., 0.};
-    gsl_sf_multiply_err_e(a.val, a.err, b.val, b.err, &res);
+    int stat = gsl_sf_multiply_err_e(a.val, a.err, b.val, b.err, &res);
+    if(stat == GSL_EUNDRFLW){
+	    res.val = 0.;
+    }else if(stat){
+        print_error_message("multiplication", stat);
+    }
     return Result(res);
 }
 
 Result GSL::operator*(const Result& a, const double& b)
 {
     gsl_sf_result res{0., 0.};
-    gsl_sf_multiply_err_e(a.val, a.err, b, 0., &res);
+    int stat = gsl_sf_multiply_err_e(a.val, a.err, b, 0., &res);
+    if(stat == GSL_EUNDRFLW){
+	    res.val = 0.;
+    }else if(stat){
+        print_error_message("multiplication", stat);
+    }
     return Result(res);
 }
 
@@ -106,21 +116,36 @@ Result GSL::operator*(const double& a, const Result& b)
 Result GSL::operator/(const Result& a, const Result& b)
 {
     gsl_sf_result res{0., 0.};
-    gsl_sf_multiply_err_e(a.val, a.err, 1./b.val, b.err, &res);
+    int stat = gsl_sf_multiply_err_e(a.val, a.err, 1./b.val, b.err, &res);
+    if(stat == GSL_EUNDRFLW){
+	    res.val = 0.;
+    }else if(stat){
+        print_error_message("division", stat);
+    }
     return Result(res);
 }
 
 Result GSL::operator/(const Result& a, const double& b)
 {
     gsl_sf_result res{0., 0.};
-    gsl_sf_multiply_err_e(a.val, a.err, 1./b, 0., &res);
+    int stat = gsl_sf_multiply_err_e(a.val, a.err, 1./b, 0., &res);
+    if(stat == GSL_EUNDRFLW){
+	    res.val = 0.;
+    }else if(stat){
+        print_error_message("mdivision", stat);
+    }
     return Result(res);
 }
 
 Result GSL::operator/(const double& a, const Result& b)
 {
     gsl_sf_result res{0., 0.};
-    gsl_sf_multiply_err_e(a, 0, 1./b.val, 0., &res);
+    int stat = gsl_sf_multiply_err_e(a, 0, 1./b.val, 0., &res);
+    if(stat == GSL_EUNDRFLW){
+	    res.val = 0.;
+    }else if(stat){
+        print_error_message("division", stat);
+    }
     return Result(res);
 }
 
@@ -173,11 +198,11 @@ Result& Result::operator/=(const double& a)
 
 Result GSL::exp(const Result& x)
 {
-    Result res;
-    res = exp(x.val);
+    gsl_sf_result res{0., 0.};
+    res.val = exp(x.val);
     res.err = std::sqrt(res.err*res.err + res.val*x.err*res.val*x.err);
 
-    return res;
+    return Result(res);
 }
 
 Result GSL::sin(const Result& x)
@@ -208,7 +233,7 @@ std::ostream& GSL::operator<<(std::ostream& os, const Result& R)
 
 bool GSL::operator==(const Result& a, const Result& b)
 {
-    return (a.val == b.val) && (abs(a.err - b.err) < 1E-10);
+    return (a.val == b.val) && (abs(a.err - b.err) < 1E-16);
 }
 
 bool GSL::operator!=(const Result& a, const Result& b)
