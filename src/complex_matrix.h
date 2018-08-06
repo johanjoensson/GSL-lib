@@ -57,6 +57,8 @@ namespace GSL{
 
         friend std::ostream& ::operator<< (std::ostream& os, const Complex_Matrix& a);
 
+
+        void set_row(const size_t& index, const Complex_Vector& r);
     };
 
     Complex_Matrix operator*(const double& s, const Complex_Matrix& a);

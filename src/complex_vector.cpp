@@ -53,8 +53,13 @@ Complex_Vector::~Complex_Vector()
     if(count != nullptr){
         // Reduce the number of references to the gsl_vector_complex by one
         *count -= 1;
+	if(matrix){
+		delete gsl_vec;
+		gsl_vec = nullptr;
+		*count = 0;
+	}
         // If there are no more references to the vector, deallocate the memory
-        if(*count == 0){
+        if(*count <= 0){
             delete count;
             count = nullptr;
             if(gsl_vec != nullptr){
@@ -91,22 +96,24 @@ Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
 
     if(count != nullptr){
         (*count)--;
-        if(*count == 0){
-			if(gsl_vec->size != 0){
-				gsl_vector_complex_free(gsl_vec);
-			}else{
-				delete gsl_vec;
-			}
-			delete count;
-		}else if(*count < 0){
-			gsl_vector_complex_memcpy(this->gsl_vec, a.gsl_vec);
-			*count = 0;
+	if(*count == 0){
+		if(gsl_vec->size != 0){
+			gsl_vector_complex_free(gsl_vec);
 		}else{
-			this->gsl_vec = a.gsl_vec;
-			this->count = a.count ;
-			++(*count);
+			delete gsl_vec;
 		}
+		delete count;
+		gsl_vec = nullptr;
+		count = nullptr;
+	}
     }
+    if(this->matrix){
+	    gsl_vector_complex_memcpy(this->gsl_vec, a.gsl_vec);
+    }else{
+	    this->gsl_vec = a.gsl_vec;
+	    this->count = a.count ;
+    }
+    ++(*count);
 
 
     return *this;
@@ -114,21 +121,27 @@ Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
 
 Complex_Vector& Complex_Vector::operator= (Complex_Vector&& a)
 {
-    gsl_vector_complex *tmp_vec = a.gsl_vec;
-    a.gsl_vec = this->gsl_vec;
-    this->gsl_vec = tmp_vec;
-
-    int* tmp_size = a.count;
-    a.count = this->count;
-    this->count = tmp_size;
+	if(matrix){
+		gsl_vector_complex tmp;
+		tmp = *this->gsl_vec;
+		gsl_vector_complex_memcpy(this->gsl_vec, a.gsl_vec);
+		gsl_vector_complex_memcpy(a.gsl_vec, &tmp);
+	}else{
+		std::swap(gsl_vec, a.gsl_vec);
+		std::swap(count, a.count);
+	}
 
     return *this;
 }
 
 Complex Complex_Vector::operator[] (const int index)
 {
-    gsl_complex *res = gsl_vector_complex_ptr(gsl_vec, index);
-    return Complex(*res);
+    gsl_complex* res = gsl_vector_complex_ptr(gsl_vec, index);
+    if(res == nullptr){
+        throw std::runtime_error("Index out of range!");
+    }
+
+    return Complex(res);
 }
 
 Complex_Vector& Complex_Vector::operator+= (const Complex_Vector& b)

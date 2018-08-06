@@ -24,6 +24,7 @@ class Vector{
     int* count;
     Vector(gsl_vector& v);
     Vector(const gsl_vector& v);
+    bool matrix = false;
 public:
     // Create an empty vector (no data at all)
     Vector();

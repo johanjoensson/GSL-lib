@@ -57,8 +57,9 @@ Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
         rows[i].gsl_vec = new gsl_vector_complex;
         *rows[i].gsl_vec = tmp.vector;
         rows[i].count = new int;
-        *rows[i].count = 0;
+        *rows[i].count = 2;
         rows[i].gsl_vec->owner = 0;
+	rows[i].matrix = true;
     }
     // Do the same thing we did for the rows for the columns
     for(size_t i = 0; i < n2; i++){
@@ -67,8 +68,9 @@ Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
         cols[i].gsl_vec = new gsl_vector_complex;
         *cols[i].gsl_vec = tmp.vector;
         cols[i].count = new int;
-        *cols[i].count = 0;
+        *cols[i].count = 2;
         cols[i].gsl_vec->owner = 0;
+	cols[i].matrix = true;
     }
 }
 
@@ -158,13 +160,10 @@ Complex_Matrix& Complex_Matrix::operator= (const Complex_Matrix& m)
 }
 Complex_Matrix& Complex_Matrix::operator= (Complex_Matrix&& m)
 {
-    gsl_matrix_complex *tmp_mat = m.gsl_mat;
-    m.gsl_mat = this->gsl_mat;
-    this->gsl_mat = tmp_mat;
-
-    size_t* tmp_size = m.count;
-    m.count = this->count;
-    this->count = tmp_size;
+    std::swap(gsl_mat, m.gsl_mat);
+    std::swap(count, m.count);
+    std::swap(rows, m.rows);
+    std::swap(cols, m.cols);
 
     return *this;
 }
@@ -376,9 +375,15 @@ bool GSL::operator== (const Complex_Matrix& u, const Complex_Matrix& v)
 {
     return gsl_matrix_complex_equal(u.gsl_mat, v.gsl_mat);
 }
+
 bool GSL::operator!= (const Complex_Matrix& u, const Complex_Matrix& v)
 {
     return !(u == v);
+}
+
+void Complex_Matrix::set_row(const size_t& index, const Complex_Vector& r)
+{
+    this->rows[index] = r;
 }
 
 std::ostream& operator<<(std::ostream& os, const Complex_Matrix& m)

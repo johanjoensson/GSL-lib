@@ -22,9 +22,10 @@ Complex::Complex(const double& a, const double& b)
 }
 
 Complex::Complex(gsl_complex& z)
- : gsl_c(nullptr), re(), im()
+ : re(), im()
 {
-    this->gsl_c = &z;
+    gsl_c = new gsl_complex;
+    *gsl_c = z;
     re = gsl_c->dat[0];
     im = gsl_c->dat[1];
 }
@@ -34,6 +35,13 @@ Complex::Complex(const gsl_complex& z)
 {
     this->gsl_c = new gsl_complex;
     *this->gsl_c = z;
+    re = gsl_c->dat[0];
+    im = gsl_c->dat[1];
+}
+
+Complex::Complex(gsl_complex* z)
+ : gsl_c(z), re(), im()
+{
     re = gsl_c->dat[0];
     im = gsl_c->dat[1];
 }
@@ -86,9 +94,15 @@ Complex& Complex::operator= (const Complex& z)
     if(this->gsl_c == nullptr){
 	    this->gsl_c = new gsl_complex;
     }
-    *this->gsl_c = *z.gsl_c;
-    this->re = this->gsl_c->dat[0];
-    this->im = this->gsl_c->dat[1];
+    if(z.gsl_c != nullptr){
+        *this->gsl_c = *z.gsl_c;
+        this->im = this->gsl_c->dat[1];
+        this->re = this->gsl_c->dat[0];
+    }
+
+    if(z.gsl_c == nullptr){
+        this->gsl_c = nullptr;
+    }
 
     return *this;
 }

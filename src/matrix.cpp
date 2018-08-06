@@ -56,8 +56,9 @@ Matrix::Matrix(const size_t n1, const size_t n2)
         rows[i].gsl_vec = new gsl_vector;
         *rows[i].gsl_vec = tmp.vector;
         rows[i].count = new int;
-        *rows[i].count = 0;
+        *rows[i].count = 2;
         rows[i].gsl_vec->owner = 0;
+	rows[i].matrix = true;
 
     }
     // Do the same thing we did for the rows for the columns
@@ -67,8 +68,9 @@ Matrix::Matrix(const size_t n1, const size_t n2)
         cols[i].gsl_vec = new gsl_vector;
         *cols[i].gsl_vec = tmp.vector;
         cols[i].count = new int;
-        *cols[i].count = 0;
+        *cols[i].count = 2;
         cols[i].gsl_vec->owner = 0;
+	cols[i].matrix = true;
     }
 }
 
@@ -145,10 +147,19 @@ Matrix& Matrix::operator= (const Matrix& m)
     if(this == &m){
         return *this;
     }
-    if(this->gsl_mat != nullptr && this->count != nullptr){
-        gsl_matrix_free(gsl_mat);
+    if(this->count != nullptr){
+	    (*count)--;
+	    if(*count == 0){
+		    if(gsl_mat->size1 != 0 && gsl_mat->size2 != 0){
+		    	    gsl_matrix_free(gsl_mat);
+		    }else{
+			    delete gsl_mat;
+		    }
+		    delete count;
+		    gsl_mat = nullptr;
+		    count = nullptr;
+	    }
     }
-    delete count;
 
     this->gsl_mat = m.gsl_mat;
     this->count = m.count ;
@@ -158,19 +169,18 @@ Matrix& Matrix::operator= (const Matrix& m)
 }
 Matrix& Matrix::operator= (Matrix&& m)
 {
-    gsl_matrix *tmp_mat = m.gsl_mat;
-    m.gsl_mat = this->gsl_mat;
-    this->gsl_mat = tmp_mat;
 
-    size_t* tmp_size = m.count;
-    m.count = this->count;
-    this->count = tmp_size;
+    std::swap(gsl_mat, m.gsl_mat);
+    std::swap(count, m.count);
+
+    std::swap(rows, m.rows);
+    std::swap(cols, m.cols);
 
     return *this;
 }
 
 Vector& Matrix::operator[](const size_t index)
-{	
+{
     return rows[index];
 }
 
@@ -348,7 +358,7 @@ Matrix Matrix::operator/ (const double& s) const
 
     return res;
     */
-    return (*this)*1./s;
+    return 1./s*(*this);
 }
 
 Vector Matrix::operator* (const Vector& v) const

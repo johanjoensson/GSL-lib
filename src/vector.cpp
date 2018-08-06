@@ -9,6 +9,7 @@ Vector::Vector()
 }
 
 Vector::Vector(const size_t n)
+ : Vector()
 {
     gsl_vec = gsl_vector_calloc(n);
     if(gsl_vec == nullptr){
@@ -39,6 +40,7 @@ Vector::Vector(Vector&& v)
 }
 
 Vector::Vector(gsl_vector& v)
+ : Vector()
 {
     gsl_vec = new gsl_vector;
     *gsl_vec = v;
@@ -49,6 +51,7 @@ Vector::Vector(gsl_vector& v)
 
 
 Vector::Vector(const gsl_vector& v)
+ : Vector()
 {
     gsl_vec = gsl_vector_calloc(v.size);
     gsl_vector_memcpy(gsl_vec, &v);
@@ -62,6 +65,11 @@ Vector::~Vector()
     if(count != nullptr){
         // Reduce the number of references to the gsl_vector by one
         *count -= 1;
+	if(matrix){
+		delete gsl_vec;
+		gsl_vec = nullptr;
+		*count = 0;
+	}
         // If there are no more references to the vector, deallocate the memory
         if(*count <= 0){
             delete count;
@@ -101,21 +109,23 @@ Vector& Vector::operator= (const Vector &a)
     if(count != nullptr){
         (*count)--;
         if(*count == 0){
-			if(gsl_vec->size != 0){
-				gsl_vector_free(gsl_vec);
-			}else{
-				delete gsl_vec;
-			}
-			delete count;
-		}else if(*count < 0){
-			gsl_vector_memcpy(this->gsl_vec, a.gsl_vec);
-			*count = 0;
+		if(gsl_vec->size != 0){
+			gsl_vector_free(gsl_vec);
 		}else{
-			this->gsl_vec = a.gsl_vec;
-			this->count = a.count ;
-			++(*count);
+			delete gsl_vec;
 		}
+		delete count;
+		gsl_vec = nullptr;
+		count = nullptr;
+	}
     }
+    if(this->matrix){
+	    gsl_vector_memcpy(this->gsl_vec, a.gsl_vec);
+    }else{
+	    this->gsl_vec = a.gsl_vec;
+	    this->count = a.count ;
+    }
+    ++(*count);
 
 
     return *this;
@@ -123,13 +133,16 @@ Vector& Vector::operator= (const Vector &a)
 
 Vector& Vector::operator= (Vector&& a)
 {
-    gsl_vector *tmp_vec = a.gsl_vec;
-    a.gsl_vec = this->gsl_vec;
-    this->gsl_vec = tmp_vec;
+	if(matrix){
+		gsl_vector tmp;
+		tmp = *this->gsl_vec;
+		gsl_vector_memcpy(this->gsl_vec, a.gsl_vec);
+		gsl_vector_memcpy(a.gsl_vec, &tmp);
 
-    int* tmp_size = a.count;
-    a.count = this->count;
-    this->count = tmp_size;
+	}else{
+		std::swap(gsl_vec, a.gsl_vec);
+		std::swap(count, a.count);
+	}
 
     return *this;
 }

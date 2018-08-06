@@ -19,8 +19,10 @@ void print_error_message(std::string function_name, int& gsl_err_code)
 using namespace GSL;
 
 Result::Result()
- : gsl_res(), val(0), err(0)
-{}
+ : val(0), err(0)
+{
+    gsl_res = {0., 0.};
+}
 
 Result::Result(gsl_sf_result res)
  : gsl_res(res), val(res.val), err(res.err)
@@ -92,7 +94,12 @@ Result GSL::operator*(const Result& a, const double& b)
 Result GSL::operator*(const double& a, const Result& b)
 {
     gsl_sf_result res{0., 0.};
-    gsl_sf_multiply_err_e(a, 0., b.val, 0, &res);
+    int stat = gsl_sf_multiply_err_e(a, 0., b.val, 0, &res);
+    if(stat == GSL_EUNDRFLW){
+	    res.val = 0.;
+    }else if(stat){
+        print_error_message("multiplication", stat);
+    }
     return Result(res);
 }
 

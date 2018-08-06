@@ -22,13 +22,16 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	a3[2] = 1.0;
 
 	Matrix m(3,3);
-	m[0][0] = 1.0;
+	m[0] = a1;
 	m[1] = a2;
 	m[2] = a3;
 
 	std::cout << "v = " << v << std::endl;
 	std::cout << "m = " << m << std::endl;
 	std::cout << "m*v = " << m*v << std::endl;
+
+	std::cout << "m/2 = " << m/2 << std::endl;
+	std::cout << "0.5*m = " << 0.5* m << std::endl;
 
 	std::cout << "m[0] = " << m[0] << std::endl;
 	std::cout << "m[1] = " << m[1] << std::endl;
@@ -37,17 +40,17 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 
 void test_complex_vector()
 {
-std::cout << "Testing complex vectors and matrices" << std::endl;
+	std::cout << "Testing complex vectors and matrices" << std::endl;
 	Complex_Vector v(3), a1(3), a2(3), a3(3);
-	v[0] = Complex(1.2, 0);
+	v.set(0, Complex(1.2, 0.43));
 
-	a1[0] = Complex(1.0, 0);
-	a2[1] = Complex(0., 1.0);
-	a3[2] = Complex(0.5, 0.5);
+	a1.set(0, Complex(1.0, 0));
+	a2.set(1, Complex(1.0, 0));
+	a3.set(2, Complex(1.0, 0));
 
 	Complex_Matrix m(3,3);
-	m[0][0] = Complex(1.0, 0);
-	m[1] = a2;
+	m[0].set(0, Complex(1.0, 0.));
+	m.set_row(1, a2);
 	m[2] = a3;
 
 	std::cout << "v = " << v << std::endl;

@@ -25,6 +25,7 @@ class Complex_Vector{
     gsl_vector_complex* gsl_vec;
     // Store the number of copies of this vector we have in play
     int* count;
+    bool matrix = false;
 public:
     // Create an empty vector (no data at all)
     Complex_Vector();
@@ -86,6 +87,7 @@ public:
 
     friend bool (operator==)(const Complex_Vector&, const Complex_Vector&);
     friend bool (operator!=)(const Complex_Vector&, const Complex_Vector&);
+
 
 };
 

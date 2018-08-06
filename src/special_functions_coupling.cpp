@@ -24,7 +24,7 @@ Result GSL::wigner_3j(const int& ja, const int& jb, const int& jc,
         res.err = 0.;
         return Result(res);
     }else if(ma == 0 && mb == 0 && mc == 0){
-        if(ja + jb + jc % 2 != 0){
+        if((ja + jb + jc) % 2 != 0){
             res.val = 0.;
             res.err = 0.;
             return Result(res);
