@@ -13,6 +13,7 @@ namespace GSL{
         gsl_sf_result gsl_res;
     public:
         Result();
+        Result(const double a, const double b);
         Result(gsl_sf_result res);
         double val;
         double err;

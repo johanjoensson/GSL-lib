@@ -24,6 +24,12 @@ Result::Result()
     gsl_res = {0., 0.};
 }
 
+Result::Result(const double a, const double b)
+ :val(a), err(b)
+{
+	gsl_res = {a, b};
+}
+
 Result::Result(gsl_sf_result res)
  : gsl_res(res), val(res.val), err(res.err)
 {
@@ -199,8 +205,10 @@ Result& Result::operator/=(const double& a)
 Result GSL::exp(const Result& x)
 {
     gsl_sf_result res{0., 0.};
-    res.val = exp(x.val);
-    res.err = std::sqrt(res.err*res.err + res.val*x.err*res.val*x.err);
+    Result tmp = exp(x.val);
+
+    res.val = tmp.val;
+    res.err = std::sqrt(tmp.err*tmp.err + res.val*x.err*res.val*x.err);
 
     return Result(res);
 }
