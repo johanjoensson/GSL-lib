@@ -19,13 +19,13 @@ void print_error_message(std::string function_name, int& gsl_err_code)
 using namespace GSL;
 
 Result::Result()
- : val(0), err(0)
+ : gsl_res(), val(0), err(0)
 {
     gsl_res = {0., 0.};
 }
 
 Result::Result(const double a, const double b)
- :val(a), err(b)
+ : gsl_res(), val(a), err(b)
 {
 	gsl_res = {a, b};
 }

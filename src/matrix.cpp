@@ -51,12 +51,12 @@ Matrix::Matrix(const size_t n1, const size_t n2)
     for(size_t i = 0; i < n1; i++){
         // Read row i into tmp
         tmp = gsl_matrix_row(gsl_mat, i);
-        // Since rows[i] is an empty GSL::Complex_Vector we need to allocate the
-        // gsl_vector_complex
+        // Since rows[i] is an empty GSL::Vector we need to allocate the
+        // gsl_vector
         rows[i].gsl_vec = new gsl_vector;
         *rows[i].gsl_vec = tmp.vector;
         rows[i].count = new int;
-        *rows[i].count = 2;
+        *rows[i].count = 1;
         rows[i].gsl_vec->owner = 0;
 	rows[i].matrix = true;
 
@@ -68,7 +68,7 @@ Matrix::Matrix(const size_t n1, const size_t n2)
         cols[i].gsl_vec = new gsl_vector;
         *cols[i].gsl_vec = tmp.vector;
         cols[i].count = new int;
-        *cols[i].count = 2;
+        *cols[i].count = 1;
         cols[i].gsl_vec->owner = 0;
 	cols[i].matrix = true;
     }

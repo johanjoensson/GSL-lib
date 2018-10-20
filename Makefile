@@ -17,6 +17,9 @@ CC  = gcc
 
 CXXCHECK = clang-tidy
 
+# List of all executables in this project
+TEST = test
+LIB = gsl-lib
 # Source files directory
 SRC_DIR = src
 
@@ -24,18 +27,16 @@ SRC_DIR = src
 BUILD_DIR = build
 
 # Flags for the above defined compilers
-CXXFLAGS = -g -std=c++11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) 
-CFLAGS = -g -std=c11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) 
+
+CXXFLAGS = -g -std=c++11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) -O0 
+CFLAGS = -g -std=c11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) -O0
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS = -lgsl -lgslcblas -lm -shared
+LDFLAGS = -lgsl -lgslcblas -lm -shared -Wl,-soname,lib$(LIB).so
 
-# List of all executables in this project
-LIB = libgsl-lib.so
-TEST = test
 
 LIB_OBJ = complex.o\
 	  vector.o\
@@ -58,7 +59,7 @@ OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 .PHONY: all clean cleanall
 
 # Build all executables
-all: $(LIB) $(TEST)
+all: lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -69,10 +70,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $? -o $@
 
 # Link numerov_test
-libgsl-lib.so: $(OBJS)
-	$(CXX) $(LDFLAGS) $? -o $@
+lib$(LIB).so: $(OBJS)
+	$(CXX) $(LDFLAGS) $^ -o $@
 
-test: $(BUILD_DIR)/main.o libgsl-lib.so
+test: $(BUILD_DIR)/main.o | lib$(LIB).so
 	$(CXX)  -L./ -lgsl-lib -lgsl -Wl,-rpath=. $< -o $@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include "vector.h"
 #include "matrix.h"
 #include "complex_matrix.h"
@@ -10,6 +11,50 @@
 #include <gsl/gsl_matrix.h>
 
 using namespace GSL;
+
+bool test_equal()
+{
+	GSL::Vector a(3), b(3);
+	a[0] = 1.0;
+	a[1] = 2.3;
+	a[2] = 0.244;
+
+	b[0] = 8;
+	b[1] = 7.42;
+	b[2] = 9.4;
+
+	if(!(a != b)){
+		throw std::runtime_error("Vector != implemented incorrectly!");
+	}
+	if(a == b){
+		throw std::runtime_error("Vector == implemented incorrectly!");
+	}
+
+	return true;
+}
+
+bool test_addition()
+{
+	GSL::Vector a(4), b(4), c(4);
+	a[0] = 1.2;
+	a[1] = 2.6;
+	a[2] = 8;
+	a[3] = 4.76;
+	b[0] = 2.98;
+	b[1] = 1./2;
+	b[2] = 0.24;
+	b[3] = 1/3.;
+	c[0] = 4.18;
+	c[1] = 3.1;
+	c[2] = 8.24;
+	c[3] = 4.76 + 1/3.;
+	if(a + b != c){
+		throw std::runtime_error("Vector addition implemented incorrectly!");
+	}
+
+	return true;
+}
+
 
 void test_vector()
 {
@@ -24,7 +69,9 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	Matrix m(3,3);
 	m[0] = a1;
 	m[1] = a2;
-	m[2] = a3;
+	m[2] = 1*a3 + 0.24*a1 + 0*a2;
+
+	GSL::Vector c = m[2] + 3*m[1] - 1.2*m[0];
 
 	std::cout << "v = " << v << std::endl;
 	std::cout << "m = " << m << std::endl;
@@ -36,6 +83,13 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	std::cout << "m[0] = " << m[0] << std::endl;
 	std::cout << "m[1] = " << m[1] << std::endl;
 	std::cout << "m[2] = " << m[2] << std::endl;
+
+	std::cout << m[0] << " == " << a1 << " = " << (m[0] == a1) << std::endl;
+	std::cout << m[0] << " != " << a1 << " = " << (m[0] != a1) << std::endl;
+	test_equal();
+	test_addition();
+
+	std::cout << "m[0] x a2 = " << m[0] << " x " << a2 << " = " << cross(m[0], a2) << std::endl;
 }
 
 void test_complex_vector()
@@ -45,13 +99,13 @@ void test_complex_vector()
 	v.set(0, Complex(1.2, 0.43));
 
 	a1.set(0, Complex(1.0, 0));
-	a2.set(1, Complex(1.0, 0));
+	a2.set(1, Complex(1.0, 0.1));
 	a3.set(2, Complex(1.0, 0));
 
 	Complex_Matrix m(3,3);
 	m[0].set(0, Complex(1.0, 0.));
 	m.set_row(1, a2);
-	m[2] = a3;
+	m[2] = a3+2*a1;
 
 	std::cout << "v = " << v << std::endl;
 	std::cout << "m = " << m << std::endl;
@@ -60,6 +114,9 @@ void test_complex_vector()
 	std::cout << "m[0] = " << m[0] << std::endl;
 	std::cout << "m[1] = " << m[1] << std::endl;
 	std::cout << "m[2] = " << m[2] << std::endl;
+
+	std::cout << m[0] << " == " << a1 << " = " << (m[0] == a1) << std::endl;
+	std::cout << m[1] << " != " << a2 << " = " << (m[0] != a1) << std::endl;
 }
 int main()
 {

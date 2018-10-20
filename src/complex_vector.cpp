@@ -3,42 +3,45 @@
 #include <gsl/gsl_complex_math.h>
 
 using namespace GSL;
-Complex_Vector::Complex_Vector()
- : gsl_vec(nullptr), count(nullptr)
-{
-}
 
 Complex_Vector::Complex_Vector(const size_t n)
+ : BaseVector()
 {
+    count = new int;
+    *count = 1;
     gsl_vec = gsl_vector_complex_calloc(n);
     if(gsl_vec == nullptr){
         throw std::runtime_error("Memory allocation (gsl_vector_complex_alloc)"
         " failed!");
     }
+}
+
+
+Complex_Vector::Complex_Vector(Complex_Vector& v)
+ : BaseVector(v), gsl_vec(v.gsl_vec)
+{}
+
+Complex_Vector::Complex_Vector(const Complex_Vector& v)
+ : BaseVector(v),  gsl_vec(v.gsl_vec)
+{}
+
+Complex_Vector::Complex_Vector(Complex_Vector&& v)
+ : BaseVector(v), gsl_vec(nullptr)
+{
+    std::swap(gsl_vec, v.gsl_vec);
+}
+
+
+Complex_Vector::Complex_Vector(gsl_vector_complex& v)
+{
+    gsl_vec = new gsl_vector_complex;
+    *gsl_vec = v;
+    gsl_vec->owner = 0;
     count = new int;
     *count = 1;
 }
 
-Complex_Vector::Complex_Vector(Complex_Vector& v)
- : gsl_vec(v.gsl_vec), count(v.count)
-{
-    (*count)++;
-}
-
-Complex_Vector::Complex_Vector(const Complex_Vector& v)
- : gsl_vec(v.gsl_vec), count(v.count)
-{
-    (*count)++;
-}
-
-Complex_Vector::Complex_Vector(Complex_Vector&& v)
- : gsl_vec(v.gsl_vec), count(nullptr)
-{
-    std::swap(count, v.count);
-    v.gsl_vec = nullptr;
-}
-
-Complex_Vector::Complex_Vector(gsl_vector_complex& v)
+Complex_Vector::Complex_Vector(const gsl_vector_complex& v)
 {
     gsl_vec = new gsl_vector_complex;
     *gsl_vec = v;
@@ -51,22 +54,22 @@ Complex_Vector::~Complex_Vector()
 {
     // Make sure there is an allocated gsl_vector_complex
     if(count != nullptr){
-        // Reduce the number of references to the gsl_vector_complex by one
-        *count -= 1;
-	if(matrix){
-		delete gsl_vec;
-		gsl_vec = nullptr;
-		*count = 0;
-	}
-        // If there are no more references to the vector, deallocate the memory
+        (*count)--;
+        if(matrix){
+            if(*count <= 0){
+                delete gsl_vec;
+                gsl_vec = nullptr;
+                *count = 0;
+            }
+        }
         if(*count <= 0){
-            delete count;
-            count = nullptr;
             if(gsl_vec != nullptr){
                 gsl_vector_complex_free(gsl_vec);
                 gsl_vec = nullptr;
             }
         }
+    }else if(gsl_vec != nullptr){
+        gsl_vector_complex_free(gsl_vec);
     }
 }
 
@@ -88,33 +91,33 @@ double Complex_Vector::norm() const
 
 Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
 {
-    // If &a and this are the same object, do nothing
-    // especially do not deallocate any memory!
     if(this == &a){
         return *this;
     }
 
-    if(count != nullptr){
-        (*count)--;
-	if(*count == 0){
-		if(gsl_vec->size != 0){
-			gsl_vector_complex_free(gsl_vec);
-		}else{
-			delete gsl_vec;
-		}
-		delete count;
-		gsl_vec = nullptr;
-		count = nullptr;
-	}
-    }
-    if(this->matrix){
-	    gsl_vector_complex_memcpy(this->gsl_vec, a.gsl_vec);
+    // this is not part of a matrix
+    if(!matrix){
+        if(count != nullptr){
+            (*count)--;
+            if(*count <= 0){
+                gsl_vector_complex_free(gsl_vec);
+                gsl_vec = nullptr;
+                delete count;
+                count = nullptr;
+            }
+        }
+        gsl_vec = a.gsl_vec;
+        matrix = a.matrix;
+        count = a.count;
+        if(count != nullptr){
+            (*count)++;
+        }
+    // this is part of a matrix
     }else{
-	    this->gsl_vec = a.gsl_vec;
-	    this->count = a.count ;
+        if(a.gsl_vec != nullptr){
+            gsl_vector_complex_memcpy(gsl_vec, a.gsl_vec);
+        }
     }
-    ++(*count);
-
 
     return *this;
 }
@@ -122,8 +125,7 @@ Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
 Complex_Vector& Complex_Vector::operator= (Complex_Vector&& a)
 {
 	if(matrix){
-		gsl_vector_complex tmp;
-		tmp = *this->gsl_vec;
+		gsl_vector_complex tmp= *this->gsl_vec;
 		gsl_vector_complex_memcpy(this->gsl_vec, a.gsl_vec);
 		gsl_vector_complex_memcpy(a.gsl_vec, &tmp);
 	}else{
@@ -346,18 +348,21 @@ bool GSL::operator!=(const Complex_Vector& u, const Complex_Vector& v)
     return !(u == v);
 }
 
-std::ostream& operator<<(std::ostream& os, const Complex_Vector& a)
+std::string Complex_Vector::to_string() const
 {
-    unsigned int size_a = a.gsl_vec->size;
-    Complex tmp;
-
-    os << "( ";
-    for(unsigned int i = 0; i < size_a; i++){
-        tmp = Complex(gsl_vector_complex_get(a.gsl_vec, i));
-        os << tmp << " ";
+    std::string res = "";
+    Complex tmp(0,0);
+    res += "( ";
+    for(unsigned int i = 0; i < this->gsl_vec->size; i++){
+        tmp = Complex(gsl_vector_complex_get(this->gsl_vec, i));
+        res += tmp.to_string();
+        if(i < this->gsl_vec->size - 1){
+            res += ",";
+        }
+        res += " ";
     }
-    os << ")";
-    return os;
+    res += ")";
+    return res;
 }
 
 
@@ -467,23 +472,3 @@ Complex Complex_Vector::get(size_t i)
 {
     return Complex(gsl_vector_complex_get(this->gsl_vec, i));
 }
-/*
-int main()
-{
-    Vector a(3);
-    Vector c;
-    a[0] = 1;
-    a[1] = 1;
-    a[2] = 1;
-    Vector b(2);
-    b.copy(a*2);
-    c.copy(2*b);
-    a.normalize();
-    Vector t = cross(b,a);
-    std::cout << "a : " << a << std::endl;
-    std::cout << "b : " << b << std::endl;
-    std::cout << "c : " << t << std::endl;
-
-    return 0;
-}
-*/

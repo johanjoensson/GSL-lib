@@ -123,6 +123,7 @@ Complex& Complex::operator= (Complex&& m)
 
 std::ostream& operator << (std::ostream& os, const Complex& z)
 {
+    /*
     if (z.im > 0){
         if (z.im == 1){
             os << z.re << " + " << "i";
@@ -138,6 +139,8 @@ std::ostream& operator << (std::ostream& os, const Complex& z)
     }else{
             os << z.re;
     }
+    */
+    os << z.to_string();
     return os;
 }
 
@@ -474,6 +477,28 @@ Complex GSL::arccoth(const Complex& a)
     return Complex(gsl_complex_arccoth(*a.gsl_c));
 }
 
+std::string Complex::to_string() const
+{
+    std::string res = "";
+    std::string real = std::to_string(this->re);
+    std::string imag = std::to_string(this->im);
+    if (this->im > 0){
+        if (this->im == 1){
+            res = real + " + " + "i";
+        }else{
+            res = real + " + " + imag + "i";
+        }
+    }else if (this->im < 0){
+        if(this->im == -1){
+            res = real + " - " + "i";
+        }else{
+            res = real + " " + imag + "i";
+        }
+    }else{
+            res = real;
+    }
+    return res;
+}
 /*
 int main()
 {

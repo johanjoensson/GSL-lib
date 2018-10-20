@@ -57,7 +57,7 @@ Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
         rows[i].gsl_vec = new gsl_vector_complex;
         *rows[i].gsl_vec = tmp.vector;
         rows[i].count = new int;
-        *rows[i].count = 2;
+        *rows[i].count = 1;
         rows[i].gsl_vec->owner = 0;
 	rows[i].matrix = true;
     }
@@ -68,7 +68,7 @@ Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
         cols[i].gsl_vec = new gsl_vector_complex;
         *cols[i].gsl_vec = tmp.vector;
         cols[i].count = new int;
-        *cols[i].count = 2;
+        *cols[i].count = 1;
         cols[i].gsl_vec->owner = 0;
 	cols[i].matrix = true;
     }
@@ -400,7 +400,12 @@ std::ostream& operator<<(std::ostream& os, const Complex_Matrix& m)
         os << "( ";
         for(size_t j = 0; j < size_2; j++){
             tmp = Complex(gsl_matrix_complex_get(m.gsl_mat, i, j));
-            os << tmp << " ";
+
+            os << tmp;
+            if(j < size_2 -1){
+                os << ",";
+            }
+            os << " ";
         }
         os << ")";
     }

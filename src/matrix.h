@@ -8,6 +8,10 @@ namespace GSL{class Matrix;}
 std::ostream& operator<< (std::ostream& os, const GSL::Matrix& a);
 
 namespace GSL{
+    class BaseMatrix{
+
+    };
+    
     class Matrix{
     private:
         gsl_matrix* gsl_mat;

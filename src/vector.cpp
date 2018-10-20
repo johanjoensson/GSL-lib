@@ -1,42 +1,116 @@
 #include "vector.h"
 #include <gsl/gsl_blas.h>
+#include <stdexcept>
 
 using namespace GSL;
-Vector::Vector()
+
+
+BaseVector::~BaseVector()
 {
-    gsl_vec = nullptr;
-    count = nullptr;
+    if(count != nullptr){
+        if(*count <= 0){
+            delete count;
+        }
+    }
+}
+
+
+BaseVector::BaseVector()
+ : count(nullptr), matrix(false)
+{}
+
+
+/*******************************************************************************
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*! This is not implemented correctly, something is wrong!
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*******************************************************************************/
+BaseVector::BaseVector(const BaseVector& v)
+: count(v.count), matrix(v.matrix)
+{
+    if(v.count != nullptr){
+        (*count)++;
+    }
+}
+
+/*******************************************************************************
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*! This is not implemented correctly, something is wrong!
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*******************************************************************************/
+BaseVector::BaseVector(BaseVector& v)
+: BaseVector()
+{
+    count = v.count;
+    if(v.count != nullptr){
+        (*count)++;
+    }
+    matrix = v.matrix;
+}
+
+/*******************************************************************************
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*! This is not implemented correctly, something is wrong!
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*******************************************************************************/
+BaseVector::BaseVector(BaseVector&& v)
+: BaseVector()
+{
+    std::swap(count, v.count);
+    std::swap(matrix, v.matrix);
+}
+
+std::ostream& GSL::operator<< (std::ostream& os, const BaseVector& a)
+{
+    return (os << a.to_string());
+}
+
+Vector::Vector()
+: BaseVector(), gsl_vec(nullptr)
+{
 }
 
 Vector::Vector(const size_t n)
- : Vector()
+ : BaseVector()
 {
+    count = new int;
+    *count = 1;
     gsl_vec = gsl_vector_calloc(n);
     if(gsl_vec == nullptr){
         throw std::runtime_error("Memory allocation (gsl_vector_calloc)"
         " failed!");
     }
-    count = new int;
-    *count = 1;
 }
 
 Vector::Vector(Vector& v)
- : gsl_vec(v.gsl_vec),  count(v.count)
+ : BaseVector(v), gsl_vec(v.gsl_vec)
 {
-    (*count)++;
 }
 
+void Vector::print_count()
+{
+    std::cout << "Adress of count pointer is " << count << std::endl;
+}
+
+/*******************************************************************************
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*! This is not implemented correctly, something is wrong!
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*******************************************************************************/
 Vector::Vector(const Vector& v)
- : gsl_vec(v.gsl_vec),  count(v.count)
+ : BaseVector(v), gsl_vec(v.gsl_vec)
 {
-    (*count)++;
 }
 
+/*******************************************************************************
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*! This is not implemented correctly, something is wrong!
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*******************************************************************************/
 Vector::Vector(Vector&& v)
- : gsl_vec(v.gsl_vec),  count(nullptr)
+ : BaseVector(v), gsl_vec(nullptr)
 {
-    std::swap(count, v.count);
-    v.gsl_vec = nullptr;
+    std::swap(gsl_vec, v.gsl_vec);
 }
 
 Vector::Vector(gsl_vector& v)
@@ -59,26 +133,31 @@ Vector::Vector(const gsl_vector& v)
     *count = 1;
 }
 
+/*******************************************************************************
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*! This is not implemented correctly, something is wrong!
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*******************************************************************************/
 Vector::~Vector()
 {
     // Make sure there is an allocated gsl_vector
     if(count != nullptr){
-        // Reduce the number of references to the gsl_vector by one
-        *count -= 1;
-	if(matrix){
-		delete gsl_vec;
-		gsl_vec = nullptr;
-		*count = 0;
-	}
-        // If there are no more references to the vector, deallocate the memory
+        (*count)--;
+        if(matrix){
+            if(*count <= 0){
+                delete gsl_vec;
+                gsl_vec = nullptr;
+                *count = 0;
+            }
+        }
         if(*count <= 0){
-            delete count;
-            count = nullptr;
             if(gsl_vec != nullptr){
                 gsl_vector_free(gsl_vec);
                 gsl_vec = nullptr;
             }
         }
+    }else if(gsl_vec != nullptr){
+        gsl_vector_free(gsl_vec);
     }
 }
 
@@ -100,33 +179,33 @@ double Vector::norm() const
 
 Vector& Vector::operator= (const Vector &a)
 {
-    // If &a and this are the same object, do nothing
-    // especially do not deallocate any memory!
     if(this == &a){
         return *this;
     }
 
-    if(count != nullptr){
-        (*count)--;
-        if(*count == 0){
-		if(gsl_vec->size != 0){
-			gsl_vector_free(gsl_vec);
-		}else{
-			delete gsl_vec;
-		}
-		delete count;
-		gsl_vec = nullptr;
-		count = nullptr;
-	}
-    }
-    if(this->matrix){
-	    gsl_vector_memcpy(this->gsl_vec, a.gsl_vec);
+    // this is not part of a matrix
+    if(!matrix){
+        if(count != nullptr){
+            (*count)--;
+            if(*count <= 0){
+                gsl_vector_free(gsl_vec);
+                gsl_vec = nullptr;
+                delete count;
+                count = nullptr;
+            }
+        }
+        gsl_vec = a.gsl_vec;
+        matrix = a.matrix;
+        count = a.count;
+        if(count != nullptr){
+            (*count)++;
+        }
+    // this is part of a matrix
     }else{
-	    this->gsl_vec = a.gsl_vec;
-	    this->count = a.count ;
+        if(a.gsl_vec != nullptr){
+            gsl_vector_memcpy(gsl_vec, a.gsl_vec);
+        }
     }
-    ++(*count);
-
 
     return *this;
 }
@@ -134,16 +213,14 @@ Vector& Vector::operator= (const Vector &a)
 Vector& Vector::operator= (Vector&& a)
 {
 	if(matrix){
-		gsl_vector tmp;
-		tmp = *this->gsl_vec;
+		gsl_vector tmp= *this->gsl_vec;
 		gsl_vector_memcpy(this->gsl_vec, a.gsl_vec);
 		gsl_vector_memcpy(a.gsl_vec, &tmp);
-
 	}else{
 		std::swap(gsl_vec, a.gsl_vec);
 		std::swap(count, a.count);
 	}
-
+    
     return *this;
 }
 
@@ -222,15 +299,18 @@ Vector& Vector::operator/= (const double s)
     return *this;
 }
 
+
 Vector Vector::operator+ (const Vector& b) const
 {
     Vector res(this->gsl_vec->size);
+
     int stat = gsl_vector_memcpy(res.gsl_vec, this->gsl_vec);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+
     stat = gsl_vector_add(res.gsl_vec, b.gsl_vec);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
@@ -240,6 +320,7 @@ Vector Vector::operator+ (const Vector& b) const
 
     return res;
 }
+
 
 Vector Vector::operator- (const Vector& b) const
 {
@@ -349,22 +430,20 @@ Vector GSL::operator- (const Vector& a)
     return res - a;
 }
 
-std::ostream& operator<<(std::ostream& os, const Vector& a)
+std::string Vector::to_string() const
 {
-    unsigned int size_a = a.gsl_vec->size;
-    double tmp;
-
-    os << "( ";
-    for(unsigned int i = 0; i < size_a; i++){
-        tmp = gsl_vector_get(a.gsl_vec, i);
-        os << tmp << " ";
+    std::string res = "";
+    double tmp = 0;
+    res += "( ";
+    for(unsigned int i = 0; i < this->gsl_vec->size; i++){
+        tmp = gsl_vector_get(this->gsl_vec, i);
+        res += std::to_string(tmp) + " ";
     }
-    os << ")";
-    return os;
+    res += ")";
+    return res;
 }
 
-
-double GSL:: dot(const Vector& a, const Vector& b)
+double GSL::dot(const Vector& a, const Vector& b)
 {
     int size_a = a.gsl_vec->size;
     int size_b = b.gsl_vec->size;
@@ -415,6 +494,11 @@ Vector GSL::cross(const Vector& a, const Vector& b)
 
 // Make this a copy of the Vector a
 // Copy the data, not just the pointers!
+/*******************************************************************************
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*! This is not implemented correctly, something is wrong!
+*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*******************************************************************************/
 void Vector::copy(const Vector& a)
 {
     if(a.count == nullptr){
@@ -442,10 +526,11 @@ void Vector::copy(const Vector& a)
         this->count = new int;
         *this->count = 1;
     // No other vector is using the data!
-    // Make sure the dimesnions of the gsl_vector s arthe same
+    // Make sure the dimesnions of the gsl_vectors are the same
     }else if(this->gsl_vec->size != a.gsl_vec->size){
         gsl_vector_free(this->gsl_vec);
         this->gsl_vec = gsl_vector_alloc(a.gsl_vec->size);
+        *this->count = 1;
     }
     if(this->gsl_vec == nullptr){
         throw std::runtime_error("Error in vector allocation!");
@@ -458,11 +543,16 @@ void Vector::copy(const Vector& a)
 	}
 }
 
-bool GSL::operator==(const Vector& u, const Vector& v)
+bool GSL::operator==(const Vector& a, const Vector& b)
 {
-    return gsl_vector_equal(u.gsl_vec, v.gsl_vec);
+    return gsl_vector_equal(a.gsl_vec, b.gsl_vec);
 }
-bool GSL::operator!=(const Vector& u, const Vector& v)
+
+// bool GSL::operator==(const Vector& u, const Vector& v)
+// {
+//     return gsl_vector_equal(u.gsl_vec, v.gsl_vec);
+// }
+bool GSL::operator!=(const Vector& a, const Vector& b)
 {
-    return !(u == v);
+    return !(a == b);
 }

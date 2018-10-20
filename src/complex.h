@@ -182,6 +182,8 @@ public:
 
     friend class Complex_Vector;
 
+    std::string to_string() const;
+
 };
 }
 
