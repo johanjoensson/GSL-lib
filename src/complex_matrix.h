@@ -1,18 +1,17 @@
 #ifndef COMPLEX_MATRIX_H
 #define COMPLEX_MATRIX_H
 #include "complex_vector.h"
+#include "matrix.h"
 #include <gsl/gsl_matrix.h>
 #include <vector>
 
 namespace GSL{class Complex_Matrix;}
-std::ostream& operator<< (std::ostream& os, const GSL::Complex_Matrix& a);
 
 namespace GSL{
-    class Complex_Matrix{
+    class Complex_Matrix : public BaseMatrix{
     private:
         gsl_matrix_complex* gsl_mat;
         std::vector<Complex_Vector> rows, cols;
-        size_t* count;
     public:
         Complex_Matrix();
         Complex_Matrix(const size_t n1, const size_t n2);
@@ -55,10 +54,10 @@ namespace GSL{
         friend bool operator== (const Complex_Matrix& u, const Complex_Matrix& v);
         friend bool operator!= (const Complex_Matrix& u, const Complex_Matrix& v);
 
-        friend std::ostream& ::operator<< (std::ostream& os, const Complex_Matrix& a);
-
+        std::string to_string() const;
 
         void set_row(const size_t& index, const Complex_Vector& r);
+        void set_col(const size_t& index, const Complex_Vector& r);
     };
 
     Complex_Matrix operator*(const double& s, const Complex_Matrix& a);

@@ -36,6 +36,7 @@ public:
     Complex_Vector(Complex_Vector&& v);
     Complex_Vector(gsl_vector_complex& v);
     Complex_Vector(const gsl_vector_complex& v);
+    Complex_Vector(std::initializer_list<Complex>);
     // Deallocate vector, keeping in mind that several vectors might reference
     // the same gsl_vector.
     ~Complex_Vector();

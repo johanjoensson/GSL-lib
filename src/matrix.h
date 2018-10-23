@@ -5,18 +5,37 @@
 #include <vector>
 
 namespace GSL{class Matrix;}
-std::ostream& operator<< (std::ostream& os, const GSL::Matrix& a);
 
 namespace GSL{
     class BaseMatrix{
+    protected:
+        size_t *count;
+
+        BaseMatrix();
+        BaseMatrix(BaseMatrix &m);
+        BaseMatrix(const BaseMatrix &m);
+        BaseMatrix(BaseMatrix &&m);
+        ~BaseMatrix();
+
+        BaseMatrix& operator=(const BaseMatrix &m) = delete;
+        BaseMatrix& operator=(BaseMatrix &&m) = delete;
+
+        virtual void copy(const BaseMatrix &m) = delete;
+
+        virtual std::string to_string() const = 0;
+
+        friend std::ostream& operator<<(std::ostream &os, const BaseMatrix &m);
+
+        void set_row(const size_t &i, const BaseVector &v) = delete;
+        void set_col(const size_t &i, const BaseVector &v) = delete;
 
     };
-    
-    class Matrix{
+    std::ostream& operator<<(std::ostream &os, const BaseMatrix &m);
+
+    class Matrix : public BaseMatrix{
     private:
         gsl_matrix* gsl_mat;
         std::vector<Vector> rows, cols;
-        size_t* count;
     public:
         Matrix();
         Matrix(const size_t n1, const size_t n2);
@@ -55,11 +74,15 @@ namespace GSL{
         friend Vector operator* (const Vector& v, const Matrix& a);
 
         Matrix transpose() const;
+        Matrix hermitian_conj() const;
+
+        void set_row(const size_t &i, const Vector &v);
+        void set_col(const size_t &i, const Vector &v);
 
         friend bool operator== (const Matrix& u, const Matrix& v);
         friend bool operator!= (const Matrix& u, const Matrix& v);
 
-        friend std::ostream& ::operator<< (std::ostream& os, const Matrix& a);
+        std::string to_string() const;
 
     };
 

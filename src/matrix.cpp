@@ -4,34 +4,63 @@
 
 using namespace GSL;
 
-Matrix::Matrix()
- : gsl_mat(nullptr), rows(), cols(), count(nullptr)
+BaseMatrix::~BaseMatrix()
 {
+    if(count != nullptr){
+        if(*count == 0){
+            delete count;
+        }
+    }
 }
+
+BaseMatrix::BaseMatrix()
+ : count(nullptr)
+{}
+
+BaseMatrix::BaseMatrix(const BaseMatrix &m)
+ : count(m.count)
+{
+    if(count != nullptr){
+        (*count)++;
+    }
+}
+
+BaseMatrix::BaseMatrix(BaseMatrix &m)
+ : count(m.count)
+{}
+
+BaseMatrix::BaseMatrix(BaseMatrix &&m)
+ : BaseMatrix()
+{
+    std::swap(this->count, m.count);
+}
+std::ostream& GSL::operator<< (std::ostream& os, const BaseMatrix& a)
+{
+    return (os << a.to_string());
+}
+
+Matrix::Matrix()
+ : BaseMatrix(), gsl_mat(nullptr), rows(), cols()
+{}
 
 Matrix::Matrix(Matrix& m)
- : gsl_mat(m.gsl_mat), rows(m.rows), cols(m.cols), count(m.count)
-{
-    (*count)++;
-}
+ : BaseMatrix(m), gsl_mat(m.gsl_mat), rows(m.rows), cols(m.cols)
+{}
 
 Matrix::Matrix(const Matrix& m)
- : gsl_mat(m.gsl_mat), rows(m.rows), cols(m.cols), count(m.count)
-{
-    (*count)++;
-}
+ : BaseMatrix(m), gsl_mat(m.gsl_mat), rows(m.rows), cols(m.cols)
+{}
 
 Matrix::Matrix(Matrix&& m)
- : gsl_mat(m.gsl_mat), rows(), cols(), count(nullptr)
+ : BaseMatrix(m), gsl_mat(nullptr), rows(), cols()
  {
-     std::swap(count, m.count);
      std::swap(rows, m.rows);
      std::swap(cols, m.cols);
-     m.gsl_mat = nullptr;
+     std::swap(gsl_mat, m.gsl_mat);
 }
 
 Matrix::Matrix(const size_t n1, const size_t n2)
- : rows(n1), cols(n2)
+ : BaseMatrix(), rows(n1), cols(n2)
  // rows and cols are std::vectors of empty GSL::vectors
  // The GSL::Vector::~Vector() destructor will be called automatically
  // when the std::vectors go out of scope, we therefore need to initialize them
@@ -84,8 +113,6 @@ Matrix::~Matrix()
         cols.clear();
         // If there are no more references to the vector, deallocate the memory
         if(*count <= 0){
-            delete count;
-            count = nullptr;
             if(gsl_mat != nullptr){
                 gsl_matrix_free(gsl_mat);
                 gsl_mat = nullptr;
@@ -397,6 +424,10 @@ Matrix Matrix::transpose() const
 
     return res;
 }
+Matrix Matrix::hermitian_conj() const
+{
+    return this->transpose();
+}
 
 bool GSL::operator== (const Matrix& u, const Matrix& v)
 {
@@ -407,24 +438,41 @@ bool GSL::operator!= (const Matrix& u, const Matrix& v)
 {
     return !(u == v);
 }
-std::ostream& operator<<(std::ostream& os, const Matrix& m)
+
+void Matrix::set_row(const size_t &i, const Vector &v)
 {
-    size_t size_1 = m.gsl_mat->size1;
-    size_t size_2 = m.gsl_mat->size2;
+    this->rows[i] = v;
+}
+
+void Matrix::set_col(const size_t &i, const Vector &v)
+{
+    this->cols[i] = v;
+}
+
+std::string Matrix::to_string() const
+{
+    size_t size_1 = this->gsl_mat->size1;
+    size_t size_2 = this->gsl_mat->size2;
     double tmp;
 
-    os << "[";
+    std::string res = "";
+
+    res = "[";
     for(size_t i = 0; i < size_1; i++){
         if(i > 0){
-            os << ", ";
+            res += ", ";
         }
-        os << "( ";
+        res += "( ";
         for(size_t j = 0; j < size_2; j++){
-            tmp = gsl_matrix_get(m.gsl_mat, i, j);
-            os << tmp << " ";
+            tmp = gsl_matrix_get(this->gsl_mat, i, j);
+            res += std::to_string(tmp);
+            if(i < size_2 - 1){
+                res += ",";
+            }
+            res += " ";
         }
-        os << ")";
+        res += ")";
     }
-    os << "]";
-    return os;
+    res += "]";
+    return res;
 }

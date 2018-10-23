@@ -60,6 +60,8 @@ void test_vector()
 {
 std::cout << "Testing real vectors and matrices" << std::endl;
 	Vector v(3), a1(3), a2(3), a3(3);
+	Vector u = {1., 2.3, 4.2, 1.24, 5};
+
 	v[0] = 1.2;
 
 	a1[0] = 1.0;
@@ -71,9 +73,15 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	m[1] = a2;
 	m[2] = 1*a3 + 0.24*a1 + 0*a2;
 
+	Matrix A(3,3);
+
+	A[1] = m[2];
+	A.set_row(1, m[1]);
+
 	GSL::Vector c = m[2] + 3*m[1] - 1.2*m[0];
 
 	std::cout << "v = " << v << std::endl;
+	std::cout << "u = " << u << std::endl;
 	std::cout << "m = " << m << std::endl;
 	std::cout << "m*v = " << m*v << std::endl;
 
@@ -96,6 +104,9 @@ void test_complex_vector()
 {
 	std::cout << "Testing complex vectors and matrices" << std::endl;
 	Complex_Vector v(3), a1(3), a2(3), a3(3);
+	Complex_Vector u = {Complex(1.0,0), Complex(1.3,2.1)};
+
+
 	v.set(0, Complex(1.2, 0.43));
 
 	a1.set(0, Complex(1.0, 0));
@@ -108,6 +119,7 @@ void test_complex_vector()
 	m[2] = a3+2*a1;
 
 	std::cout << "v = " << v << std::endl;
+	std::cout << "u = " << u << std::endl;
 	std::cout << "m = " << m << std::endl;
 	std::cout << "m*v = " << m*v << std::endl;
 

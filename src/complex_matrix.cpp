@@ -6,33 +6,27 @@
 using namespace GSL;
 
 Complex_Matrix::Complex_Matrix()
- : gsl_mat(nullptr), rows(), cols(), count(nullptr)
-{
-}
+ : BaseMatrix(), gsl_mat(nullptr), rows(), cols()
+{}
 
 Complex_Matrix::Complex_Matrix(Complex_Matrix& m)
- : gsl_mat(m.gsl_mat), rows(m.rows), cols(m.cols), count(m.count)
-{
-    (*count)++;
-}
+ : BaseMatrix(), gsl_mat(m.gsl_mat), rows(m.rows), cols(m.cols)
+{}
 
 Complex_Matrix::Complex_Matrix(const Complex_Matrix& m)
- : gsl_mat(m.gsl_mat), rows(m.rows), cols(m.cols), count(m.count)
-{
-    (*count)++;
-}
+ : BaseMatrix(), gsl_mat(m.gsl_mat), rows(m.rows), cols(m.cols)
+{}
 
 Complex_Matrix::Complex_Matrix(Complex_Matrix&& m)
- : gsl_mat(m.gsl_mat), rows(), cols(), count(nullptr)
+ : BaseMatrix(), gsl_mat(nullptr), rows(), cols()
  {
-     std::swap(count, m.count);
      std::swap(rows, m.rows);
      std::swap(cols, m.cols);
-     m.gsl_mat = nullptr;
+     std::swap(gsl_mat, m.gsl_mat);
 }
 
 Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
- : rows(n1), cols(n2)
+ : BaseMatrix(), rows(n1), cols(n2)
  // rows and cols are std::vectors of empty GSL::vectors
  // The GSL::Complex_Vector::~Complex_Vector() destructor will be called automatically
  // when the std::vectors go out of scope, we therefore need to initialize them
@@ -84,8 +78,6 @@ Complex_Matrix::~Complex_Matrix()
         cols.clear();
         // If there are no more references to the vector, deallocate the memory
         if(*count <= 0){
-            delete count;
-            count = nullptr;
             if(gsl_mat != nullptr){
                 gsl_matrix_complex_free(gsl_mat);
                 gsl_mat = nullptr;
@@ -386,29 +378,34 @@ void Complex_Matrix::set_row(const size_t& index, const Complex_Vector& r)
     this->rows[index] = r;
 }
 
-std::ostream& operator<<(std::ostream& os, const Complex_Matrix& m)
+void Complex_Matrix::set_col(const size_t& index, const Complex_Vector& r)
 {
-    size_t size_1 = m.gsl_mat->size1;
-    size_t size_2 = m.gsl_mat->size2;
+    this->cols[index] = r;
+}
+
+std::string Complex_Matrix::to_string() const
+{
+    size_t size_1 = this->gsl_mat->size1;
+    size_t size_2 = this->gsl_mat->size2;
     Complex tmp;
 
-    os << "[";
+    std::string res = "[";
     for(size_t i = 0; i < size_1; i++){
         if(i > 0){
-            os << ", ";
+            res += ", ";
         }
-        os << "( ";
+        res += "( ";
         for(size_t j = 0; j < size_2; j++){
-            tmp = Complex(gsl_matrix_complex_get(m.gsl_mat, i, j));
+            tmp = Complex(gsl_matrix_complex_get(this->gsl_mat, i, j));
 
-            os << tmp;
+            res += tmp.to_string();
             if(j < size_2 -1){
-                os << ",";
+                res += ",";
             }
-            os << " ";
+            res += " ";
         }
-        os << ")";
+        res += ")";
     }
-    os << "]";
-    return os;
+    res += "]";
+    return res;
 }

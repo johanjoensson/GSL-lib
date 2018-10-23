@@ -50,6 +50,14 @@ Complex_Vector::Complex_Vector(const gsl_vector_complex& v)
     *count = 1;
 }
 
+Complex_Vector::Complex_Vector(std::initializer_list<Complex> l)
+ : Complex_Vector(l.size())
+{
+    for(size_t i = 0; i < l.size(); i++){
+        gsl_vector_complex_set(gsl_vec, i, *l.begin()[i].gsl_c);
+    }
+}
+
 Complex_Vector::~Complex_Vector()
 {
     // Make sure there is an allocated gsl_vector_complex

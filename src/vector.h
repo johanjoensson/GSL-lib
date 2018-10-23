@@ -12,17 +12,20 @@ namespace GSL{class Vector; class Matrix; class BaseMatrix;}
 * Also try to avoid using unnecessary amounts of memory.
 *******************************************************************************/
 namespace GSL{
+
+// Abstract base class representing all types of vectors.
 class BaseVector{
 protected:
+    // Store the number of references to the data of this vector that we have
+    // in play at the moment
     int* count;
+    // Special care has to be taken if this vector is part of a matrix
+    // e.g., this vector is a row or column in a matrix
     bool matrix = false;
 public:
     BaseVector();
-
     BaseVector(BaseVector& v);
-
     BaseVector(const BaseVector& v);
-
     BaseVector(BaseVector&& v);
     ~BaseVector();
 
@@ -37,21 +40,13 @@ public:
     virtual std::string to_string() const = 0;
 
     friend class BaseMatrix;
-
-/*    // One of these has to be overwritten in a derived class
-    virtual bool (operator==)(const BaseVector&);
-    virtual bool (operator!=)(const BaseVector&);
-*/
 };
 std::ostream& operator<< (std::ostream& os, const GSL::BaseVector& a);
 
-/*******************************************************************************
-* Do not allocate more vectors than are absolutely necessary
-*******************************************************************************/
+// Class representing vectors of real numbers
 class Vector : public BaseVector{
     // Store a reference to the gsl_vector
     gsl_vector* gsl_vec;
-    // Store the number of copies of this vector we have in play
     Vector(gsl_vector& v);
     Vector(const gsl_vector& v);
 public:
@@ -60,14 +55,16 @@ public:
     // Create a vector of size n
     Vector(const size_t n);
     // Create a new reference to the gsl_vector inside v
-    // Do not allocate anything, only add references!
+    // Do not allocate anything, only reference stuff!
     Vector(Vector& v);
     Vector(const Vector& v);
     Vector(Vector&& v);
+    Vector(std::initializer_list<double>);
     // Deallocate vector, keeping in mind that several vectors might reference
     // the same gsl_vector.
     ~Vector();
 
+    // Actually copy data from the other vector, don't just reference it
     void copy(const Vector& a);
 
     Vector& operator= (const Vector& a);
@@ -108,12 +105,8 @@ public:
     friend class Matrix;
     friend Vector operator* (const Vector& v, const Matrix& a);
 
-//    bool operator==(const Vector& a);
     friend bool (operator==)(const Vector&, const Vector&);
     friend bool (operator!=)(const Vector&, const Vector&);
-
-    void print_count();
-
 };
 
 

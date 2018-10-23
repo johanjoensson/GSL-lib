@@ -20,11 +20,6 @@ BaseVector::BaseVector()
 {}
 
 
-/*******************************************************************************
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*! This is not implemented correctly, something is wrong!
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*******************************************************************************/
 BaseVector::BaseVector(const BaseVector& v)
 : count(v.count), matrix(v.matrix)
 {
@@ -33,11 +28,6 @@ BaseVector::BaseVector(const BaseVector& v)
     }
 }
 
-/*******************************************************************************
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*! This is not implemented correctly, something is wrong!
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*******************************************************************************/
 BaseVector::BaseVector(BaseVector& v)
 : BaseVector()
 {
@@ -48,11 +38,6 @@ BaseVector::BaseVector(BaseVector& v)
     matrix = v.matrix;
 }
 
-/*******************************************************************************
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*! This is not implemented correctly, something is wrong!
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*******************************************************************************/
 BaseVector::BaseVector(BaseVector&& v)
 : BaseVector()
 {
@@ -67,8 +52,7 @@ std::ostream& GSL::operator<< (std::ostream& os, const BaseVector& a)
 
 Vector::Vector()
 : BaseVector(), gsl_vec(nullptr)
-{
-}
+{}
 
 Vector::Vector(const size_t n)
  : BaseVector()
@@ -84,29 +68,12 @@ Vector::Vector(const size_t n)
 
 Vector::Vector(Vector& v)
  : BaseVector(v), gsl_vec(v.gsl_vec)
-{
-}
+{}
 
-void Vector::print_count()
-{
-    std::cout << "Adress of count pointer is " << count << std::endl;
-}
-
-/*******************************************************************************
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*! This is not implemented correctly, something is wrong!
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*******************************************************************************/
 Vector::Vector(const Vector& v)
  : BaseVector(v), gsl_vec(v.gsl_vec)
-{
-}
+{}
 
-/*******************************************************************************
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*! This is not implemented correctly, something is wrong!
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*******************************************************************************/
 Vector::Vector(Vector&& v)
  : BaseVector(v), gsl_vec(nullptr)
 {
@@ -133,11 +100,14 @@ Vector::Vector(const gsl_vector& v)
     *count = 1;
 }
 
-/*******************************************************************************
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*! This is not implemented correctly, something is wrong!
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*******************************************************************************/
+Vector::Vector(std::initializer_list<double> l)
+ : Vector(l.size())
+{
+    for(size_t i = 0; i < l.size(); i++){
+        gsl_vector_set(gsl_vec, i, l.begin()[i]);
+    }
+}
+
 Vector::~Vector()
 {
     // Make sure there is an allocated gsl_vector
@@ -220,7 +190,7 @@ Vector& Vector::operator= (Vector&& a)
 		std::swap(gsl_vec, a.gsl_vec);
 		std::swap(count, a.count);
 	}
-    
+
     return *this;
 }
 
@@ -437,7 +407,11 @@ std::string Vector::to_string() const
     res += "( ";
     for(unsigned int i = 0; i < this->gsl_vec->size; i++){
         tmp = gsl_vector_get(this->gsl_vec, i);
-        res += std::to_string(tmp) + " ";
+        res += std::to_string(tmp);
+        if(i < this->gsl_vec->size - 1){
+            res += ",";
+        }
+        res += " ";
     }
     res += ")";
     return res;
