@@ -68,6 +68,19 @@ Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
     }
 }
 
+Complex_Matrix::Complex_Matrix(std::initializer_list<std::initializer_list<Complex>> m)
+ : Complex_Matrix(m.size(), m.begin()->size())
+{
+    for(size_t i = 0; i < m.size(); i++){
+        if(m.begin()[i].size() != gsl_mat->size2){
+            throw std::runtime_error("Matrix has different row lengths!");
+        }
+        for(size_t j = 0; j < m.begin()[i].size(); j++){
+            gsl_matrix_complex_set(gsl_mat, i, j, *m.begin()[i].begin()[j].gsl_c);
+        }
+    }
+}
+
 Complex_Matrix::~Complex_Matrix()
 {
     // Make sure there is an allocated gsl_vector_complex

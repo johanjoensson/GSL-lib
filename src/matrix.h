@@ -43,6 +43,7 @@ namespace GSL{
         Matrix(Matrix& m);
         Matrix(const Matrix& m);
         Matrix(Matrix&& m);
+        Matrix(std::initializer_list<std::initializer_list<double>>);
         ~Matrix();
 
         void copy(const Matrix& m);

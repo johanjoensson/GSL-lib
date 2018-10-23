@@ -88,6 +88,9 @@ Complex arccoth(const Complex& a);
 // Representation of complex numbers
 class Complex
 {
+    friend class Complex_Vector;
+    friend class Complex_Matrix;
+
     gsl_complex* gsl_c;
 
 public:
@@ -179,8 +182,6 @@ public:
     friend Complex arcsech(const Complex& a);
     friend Complex arccsch(const Complex& a);
     friend Complex arccoth(const Complex& a);
-
-    friend class Complex_Vector;
 
     std::string to_string() const;
 

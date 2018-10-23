@@ -19,6 +19,7 @@ namespace GSL{
         Complex_Matrix(Complex_Matrix& m);
         Complex_Matrix(const Complex_Matrix& m);
         Complex_Matrix(Complex_Matrix&& m);
+        Complex_Matrix(std::initializer_list<std::initializer_list<Complex>>);
         ~Complex_Matrix();
 
         void copy(const Complex_Matrix& m);

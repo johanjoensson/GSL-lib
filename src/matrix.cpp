@@ -103,6 +103,19 @@ Matrix::Matrix(const size_t n1, const size_t n2)
     }
 }
 
+Matrix::Matrix(std::initializer_list<std::initializer_list<double>> m)
+ : Matrix(m.size(), m.begin()->size())
+{
+    for(size_t i = 0; i < m.size(); i++){
+        if(m.begin()[i].size() != gsl_mat->size2){
+            throw std::runtime_error("Matrix has different row lengths!");
+        }
+        for(size_t j = 0; j < m.begin()[i].size(); j++){
+            gsl_matrix_set(gsl_mat, i, j, m.begin()[i].begin()[j]);
+        }
+    }
+}
+
 Matrix::~Matrix()
 {
     // Make sure there is an allocated gsl_vector

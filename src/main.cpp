@@ -73,6 +73,8 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	m[1] = a2;
 	m[2] = 1*a3 + 0.24*a1 + 0*a2;
 
+	Matrix n = {{1.2 , 3}, {2,4}};
+
 	Matrix A(3,3);
 
 	A[1] = m[2];
@@ -82,6 +84,7 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 
 	std::cout << "v = " << v << std::endl;
 	std::cout << "u = " << u << std::endl;
+	std::cout << "n = " << n << std::endl;
 	std::cout << "m = " << m << std::endl;
 	std::cout << "m*v = " << m*v << std::endl;
 
@@ -118,8 +121,13 @@ void test_complex_vector()
 	m.set_row(1, a2);
 	m[2] = a3+2*a1;
 
+	Complex_Matrix n = {{Complex(1, 2.4), Complex(1.0, 0)},
+						{Complex(1.3, 2.1), Complex(0.0, 1.2)},
+						{Complex(1, 1), Complex(2.4, 4.65)}};
+
 	std::cout << "v = " << v << std::endl;
 	std::cout << "u = " << u << std::endl;
+	std::cout << "n = " << n << std::endl;
 	std::cout << "m = " << m << std::endl;
 	std::cout << "m*v = " << m*v << std::endl;
 
