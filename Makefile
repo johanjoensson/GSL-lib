@@ -28,8 +28,8 @@ BUILD_DIR = build
 
 # Flags for the above defined compilers
 
-CXXFLAGS = -g -std=c++11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) -O0 
-CFLAGS = -g -std=c11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) -O0
+CXXFLAGS = -g -std=c++11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) -O3 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
+CFLAGS = -g -std=c11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) -O3 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
