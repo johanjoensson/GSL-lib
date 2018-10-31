@@ -71,6 +71,7 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	Matrix m(3,3);
 	m[0] = a1;
 	m[1] = a2;
+	std::cout << "Setting m[2]" << std::endl;
 	m[2] = 1*a3 + 0.24*a1 + 0*a2;
 
 	Matrix n = {{1.2 , 3}, {2,4}};
@@ -95,6 +96,13 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	std::cout << "m[1] = " << m[1] << std::endl;
 	std::cout << "m[2] = " << m[2] << std::endl;
 
+	std::cout << "Changing diagoal of m" << std::endl;
+
+	std::cout << "m.diag() = m[2]." << std::endl;
+	m.diag() = m[2];
+	std::cout <<"m.diag() = " << m.diag() << std::endl;
+
+
 	std::cout << m[0] << " == " << a1 << " = " << (m[0] == a1) << std::endl;
 	std::cout << m[0] << " != " << a1 << " = " << (m[0] != a1) << std::endl;
 	test_equal();
@@ -111,6 +119,7 @@ void test_complex_vector()
 
 
 	v.set(0, Complex(1.2, 0.43));
+	v[2] = Complex(0.24, 100.345);
 
 	a1.set(0, Complex(1.0, 0));
 	a2.set(1, Complex(1.0, 0.1));

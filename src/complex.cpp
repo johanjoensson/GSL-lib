@@ -4,72 +4,82 @@
 using namespace GSL;
 
 Complex::Complex(double& a, double& b)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr), count(nullptr), re(), im()
 {
     this->gsl_c = new gsl_complex;
     *this->gsl_c = gsl_complex_rect(a,b);
     re =  gsl_c->dat[0];
     im = gsl_c->dat[1];
+    count = new int;
+    *count = 1;
 }
 
 Complex::Complex(const double& a, const double& b)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr), count(nullptr), re(), im()
 {
     this->gsl_c = new gsl_complex;
     *this->gsl_c = gsl_complex_rect(a,b);
     re =  gsl_c->dat[0];
     im = gsl_c->dat[1];
+
+    count = new int;
+    *count = 1;
 }
 
 Complex::Complex(gsl_complex& z)
- : re(), im()
+ : count(nullptr), re(), im()
 {
     gsl_c = new gsl_complex;
     *gsl_c = z;
     re = gsl_c->dat[0];
     im = gsl_c->dat[1];
+
+    count = new int;
+    *count = 1;
 }
 
 Complex::Complex(const gsl_complex& z)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr), count(nullptr), re(), im()
 {
     this->gsl_c = new gsl_complex;
     *this->gsl_c = z;
     re = gsl_c->dat[0];
     im = gsl_c->dat[1];
-}
-
-Complex::Complex(gsl_complex* z)
- : gsl_c(z), re(), im()
-{
-    re = gsl_c->dat[0];
-    im = gsl_c->dat[1];
+    count = new int;
+    *count = 1;
 }
 
 Complex::Complex(Complex& z)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr), count(nullptr), re(), im()
 {
-    this->gsl_c = new gsl_complex;
-    *this->gsl_c = *z.gsl_c;
+    this->gsl_c = z.gsl_c;
+    this->count = z.count;
+    if(this->count != nullptr){
+        (*this->count)++;
+    }
     this->re = this->gsl_c->dat[0];
     this->im = this->gsl_c->dat[1];
 }
 
 Complex::Complex(const Complex& z)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr), count(nullptr), re(), im()
 {
-    this->gsl_c = new gsl_complex;
-    *this->gsl_c = *z.gsl_c;
+    this->gsl_c = z.gsl_c;
+    this->count = z.count;
+    if(this->count != nullptr){
+        (*this->count)++;
+    }
     this->re = this->gsl_c->dat[0];
     this->im = this->gsl_c->dat[1];
 }
 
 Complex::Complex(Complex&& z)
- : gsl_c(z.gsl_c), re(), im()
+ : gsl_c(nullptr), count(nullptr), re(), im()
 {
+    std::swap(gsl_c, z.gsl_c);
+    std::swap(count, z.count);
     std::swap(re, z.re);
     std::swap(im, z.im);
-    z.gsl_c = nullptr;
 }
 
 Complex::Complex()
@@ -79,10 +89,17 @@ Complex::Complex()
 
 Complex::~Complex()
 {
-    if(gsl_c != nullptr){
-        delete gsl_c;
+    if(count != nullptr){
+        (*count)--;
+        if(*count <= 0){
+            delete count;
+            count = nullptr;
+            if(gsl_c != nullptr){
+                delete gsl_c;
+                gsl_c = nullptr;
+            }
+        }
     }
-    gsl_c = nullptr;
 }
 
 Complex& Complex::operator= (const Complex& z)
@@ -91,32 +108,30 @@ Complex& Complex::operator= (const Complex& z)
         return *this;
     }
 
-    if(this->gsl_c == nullptr){
-	    this->gsl_c = new gsl_complex;
+    if(count != nullptr){
+        (*count)--;
+        if(*count <= 0 && gsl_c != nullptr){
+            delete gsl_c;
+            delete count;
+            gsl_c = nullptr;
+            count = nullptr;
+        }
     }
-    if(z.gsl_c != nullptr){
-        *this->gsl_c = *z.gsl_c;
-        this->im = this->gsl_c->dat[1];
-        this->re = this->gsl_c->dat[0];
-    }
+    this->count = z.count;
+    this->gsl_c = z.gsl_c;
+    this->re = this->gsl_c->dat[0];
+    this->im = this->gsl_c->dat[1];
 
-    if(z.gsl_c == nullptr){
-        this->gsl_c = nullptr;
-    }
-
+    (*this->count)++;
     return *this;
 }
 
 Complex& Complex::operator= (Complex&& m)
 {
-    gsl_complex *tmp = m.gsl_c;
-    m.gsl_c = this->gsl_c;
-    m.re = m.gsl_c->dat[0];
-    m.im = m.gsl_c->dat[1];
-
-    this->gsl_c = tmp;
-    this->re = this->gsl_c->dat[0];
-    this->im = this->gsl_c->dat[1];
+    std::swap(this->gsl_c, m.gsl_c);
+    std::swap(this->count, m.count);
+    std::swap(this->re, m.re);
+    std::swap(this->im, m.im);
 
     return *this;
 }

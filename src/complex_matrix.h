@@ -10,8 +10,7 @@ namespace GSL{class Complex_Matrix;}
 namespace GSL{
     class Complex_Matrix : public BaseMatrix{
     private:
-        gsl_matrix_complex* gsl_mat;
-        std::vector<Complex_Vector> rows, cols;
+        std::shared_ptr<gsl_matrix_complex> gsl_mat;
     public:
         Complex_Matrix();
         Complex_Matrix(const size_t n1, const size_t n2);
@@ -26,7 +25,7 @@ namespace GSL{
         Complex_Matrix& operator= (const Complex_Matrix& m);
         Complex_Matrix& operator= (Complex_Matrix&& m);
 
-        Complex_Vector& operator[](const size_t index);
+        Complex_Vector operator[](const size_t index);
 
         Complex_Matrix& operator+= (const Complex_Matrix& b);
         Complex_Matrix& operator-= (const Complex_Matrix& b);
@@ -59,6 +58,7 @@ namespace GSL{
 
         void set_row(const size_t& index, const Complex_Vector& r);
         void set_col(const size_t& index, const Complex_Vector& r);
+        Complex_Vector diag();
     };
 
     Complex_Matrix operator*(const double& s, const Complex_Matrix& a);

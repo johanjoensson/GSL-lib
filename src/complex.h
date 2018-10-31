@@ -92,6 +92,7 @@ class Complex
     friend class Complex_Matrix;
 
     gsl_complex* gsl_c;
+    int* count;
 
 public:
     double re, im;
@@ -100,7 +101,6 @@ public:
     Complex(const double& a, const double& b);
     Complex(gsl_complex& z);
     Complex(const gsl_complex& z);
-    Complex(gsl_complex* z);
     Complex(Complex& z);
     Complex(const Complex& z);
     Complex(Complex&& z);

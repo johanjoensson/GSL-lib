@@ -2,6 +2,7 @@
 #define VECTOR_GSL_LIB_H
 #include <gsl/gsl_vector.h>
 #include <iostream>
+#include <memory>
 
 namespace GSL{class Vector; class Matrix; class BaseMatrix;}
 
@@ -18,15 +19,11 @@ class BaseVector{
 protected:
     // Store the number of references to the data of this vector that we have
     // in play at the moment
-    int* count;
+//    int* count;
     // Special care has to be taken if this vector is part of a matrix
     // e.g., this vector is a row or column in a matrix
-    bool matrix = false;
 public:
     BaseVector();
-    BaseVector(BaseVector& v);
-    BaseVector(const BaseVector& v);
-    BaseVector(BaseVector&& v);
     ~BaseVector();
 
     BaseVector& operator=(const BaseVector&) = delete;
@@ -46,7 +43,8 @@ std::ostream& operator<< (std::ostream& os, const GSL::BaseVector& a);
 // Class representing vectors of real numbers
 class Vector : public BaseVector{
     // Store a reference to the gsl_vector
-    gsl_vector* gsl_vec;
+//    gsl_vector* gsl_vec;
+    std::shared_ptr<gsl_vector> gsl_vec;
     Vector(gsl_vector& v);
     Vector(const gsl_vector& v);
 public:

@@ -3,18 +3,14 @@
 #include "vector.h"
 #include <gsl/gsl_matrix.h>
 #include <vector>
+#include <memory>
 
 namespace GSL{class Matrix;}
 
 namespace GSL{
     class BaseMatrix{
     protected:
-        size_t *count;
-
         BaseMatrix();
-        BaseMatrix(BaseMatrix &m);
-        BaseMatrix(const BaseMatrix &m);
-        BaseMatrix(BaseMatrix &&m);
         ~BaseMatrix();
 
         BaseMatrix& operator=(const BaseMatrix &m) = delete;
@@ -28,14 +24,14 @@ namespace GSL{
 
         void set_row(const size_t &i, const BaseVector &v) = delete;
         void set_col(const size_t &i, const BaseVector &v) = delete;
+        BaseVector& diag() = delete;
 
     };
     std::ostream& operator<<(std::ostream &os, const BaseMatrix &m);
 
     class Matrix : public BaseMatrix{
     private:
-        gsl_matrix* gsl_mat;
-        std::vector<Vector> rows, cols;
+        std::shared_ptr<gsl_matrix> gsl_mat;
     public:
         Matrix();
         Matrix(const size_t n1, const size_t n2);
@@ -50,7 +46,7 @@ namespace GSL{
         Matrix& operator= (const Matrix& m);
         Matrix& operator= (Matrix&& m);
 
-        Vector& operator[](const size_t index);
+        Vector operator[](const size_t index);
 
         Matrix& operator+= (const Matrix& b);
         Matrix& operator-= (const Matrix& b);
@@ -79,6 +75,7 @@ namespace GSL{
 
         void set_row(const size_t &i, const Vector &v);
         void set_col(const size_t &i, const Vector &v);
+        Vector diag();
 
         friend bool operator== (const Matrix& u, const Matrix& v);
         friend bool operator!= (const Matrix& u, const Matrix& v);

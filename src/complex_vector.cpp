@@ -7,10 +7,8 @@ using namespace GSL;
 Complex_Vector::Complex_Vector(const size_t n)
  : BaseVector()
 {
-    count = new int;
-    *count = 1;
-    gsl_vec = gsl_vector_complex_calloc(n);
-    if(gsl_vec == nullptr){
+    gsl_vec = std::shared_ptr<gsl_vector_complex>(gsl_vector_complex_calloc(n), gsl_vector_complex_free);
+    if(gsl_vec.get() == nullptr){
         throw std::runtime_error("Memory allocation (gsl_vector_complex_alloc)"
         " failed!");
     }
@@ -18,15 +16,15 @@ Complex_Vector::Complex_Vector(const size_t n)
 
 
 Complex_Vector::Complex_Vector(Complex_Vector& v)
- : BaseVector(v), gsl_vec(v.gsl_vec)
+ : BaseVector(), gsl_vec(v.gsl_vec)
 {}
 
 Complex_Vector::Complex_Vector(const Complex_Vector& v)
- : BaseVector(v),  gsl_vec(v.gsl_vec)
+ : BaseVector(),  gsl_vec(v.gsl_vec)
 {}
 
 Complex_Vector::Complex_Vector(Complex_Vector&& v)
- : BaseVector(v), gsl_vec(nullptr)
+ : BaseVector(), gsl_vec(nullptr)
 {
     std::swap(gsl_vec, v.gsl_vec);
 }
@@ -34,57 +32,34 @@ Complex_Vector::Complex_Vector(Complex_Vector&& v)
 
 Complex_Vector::Complex_Vector(gsl_vector_complex& v)
 {
-    gsl_vec = new gsl_vector_complex;
+    gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
     *gsl_vec = v;
     gsl_vec->owner = 0;
-    count = new int;
-    *count = 1;
 }
 
 Complex_Vector::Complex_Vector(const gsl_vector_complex& v)
 {
-    gsl_vec = new gsl_vector_complex;
+    gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
     *gsl_vec = v;
     gsl_vec->owner = 0;
-    count = new int;
-    *count = 1;
 }
 
 Complex_Vector::Complex_Vector(std::initializer_list<Complex> l)
  : Complex_Vector(l.size())
 {
     for(size_t i = 0; i < l.size(); i++){
-        gsl_vector_complex_set(gsl_vec, i, *l.begin()[i].gsl_c);
+        gsl_vector_complex_set(gsl_vec.get(), i, *l.begin()[i].gsl_c);
     }
 }
 
 Complex_Vector::~Complex_Vector()
 {
-    // Make sure there is an allocated gsl_vector_complex
-    if(count != nullptr){
-        (*count)--;
-        if(matrix){
-            if(*count <= 0){
-                delete gsl_vec;
-                gsl_vec = nullptr;
-                *count = 0;
-            }
-        }
-        if(*count <= 0){
-            if(gsl_vec != nullptr){
-                gsl_vector_complex_free(gsl_vec);
-                gsl_vec = nullptr;
-            }
-        }
-    }else if(gsl_vec != nullptr){
-        gsl_vector_complex_free(gsl_vec);
-    }
 }
 
 void Complex_Vector::normalize() const
 {
     double norm = this->norm();
-    int stat = gsl_vector_complex_scale(this->gsl_vec, gsl_complex_rect(1./norm, 0.));
+    int stat = gsl_vector_complex_scale(this->gsl_vec.get(), gsl_complex_rect(1./norm, 0.));
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in normalization.\nGSL error: "
@@ -94,7 +69,7 @@ void Complex_Vector::normalize() const
 
 double Complex_Vector::norm() const
 {
-    return gsl_blas_dznrm2(this->gsl_vec);
+    return gsl_blas_dznrm2(this->gsl_vec.get());
 }
 
 Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
@@ -104,27 +79,15 @@ Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
     }
 
     // this is not part of a matrix
-    if(!matrix){
-        if(count != nullptr){
-            (*count)--;
-            if(*count <= 0){
-                gsl_vector_complex_free(gsl_vec);
-                gsl_vec = nullptr;
-                delete count;
-                count = nullptr;
-            }
-        }
+    if(gsl_vec->owner == 1){
         gsl_vec = a.gsl_vec;
-        matrix = a.matrix;
-        count = a.count;
-        if(count != nullptr){
-            (*count)++;
+        // this is part of a matrix
+    }else if(gsl_vec->owner == 0){
+        if(a.gsl_vec.get() != nullptr){
+            gsl_vector_complex_memcpy(gsl_vec.get(), a.gsl_vec.get());
         }
-    // this is part of a matrix
     }else{
-        if(a.gsl_vec != nullptr){
-            gsl_vector_complex_memcpy(gsl_vec, a.gsl_vec);
-        }
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
 
     return *this;
@@ -132,31 +95,32 @@ Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
 
 Complex_Vector& Complex_Vector::operator= (Complex_Vector&& a)
 {
-	if(matrix){
-		gsl_vector_complex tmp= *this->gsl_vec;
-		gsl_vector_complex_memcpy(this->gsl_vec, a.gsl_vec);
-		gsl_vector_complex_memcpy(a.gsl_vec, &tmp);
-	}else{
-		std::swap(gsl_vec, a.gsl_vec);
-		std::swap(count, a.count);
-	}
+    if(gsl_vec->owner == 1){
+        std::swap(gsl_vec, a.gsl_vec);
+    }else if(gsl_vec->owner == 0){
+        if(a.gsl_vec.get() != nullptr){
+            gsl_vector_complex_memcpy(gsl_vec.get(), a.gsl_vec.get());
+        }
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
+    }
 
     return *this;
 }
 
 Complex Complex_Vector::operator[] (const int index)
 {
-    gsl_complex* res = gsl_vector_complex_ptr(gsl_vec, index);
+    gsl_complex* res = gsl_vector_complex_ptr(gsl_vec.get(), index);
     if(res == nullptr){
         throw std::runtime_error("Index out of range!");
     }
 
-    return Complex(res);
+    return Complex(*res);
 }
 
 Complex_Vector& Complex_Vector::operator+= (const Complex_Vector& b)
 {
-    int stat = gsl_vector_complex_add(this->gsl_vec, b.gsl_vec);
+    int stat = gsl_vector_complex_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -167,7 +131,7 @@ Complex_Vector& Complex_Vector::operator+= (const Complex_Vector& b)
 
 Complex_Vector& Complex_Vector::operator-= (const Complex_Vector& b)
 {
-    int stat = gsl_vector_complex_sub(this->gsl_vec, b.gsl_vec);
+    int stat = gsl_vector_complex_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector subtraction.\nGSL error: "
@@ -178,7 +142,7 @@ Complex_Vector& Complex_Vector::operator-= (const Complex_Vector& b)
 
 Complex_Vector& Complex_Vector::operator*= (const Complex_Vector& b)
 {
-    int stat = gsl_vector_complex_mul(this->gsl_vec, b.gsl_vec);
+    int stat = gsl_vector_complex_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector multiplication.\nGSL error: "
@@ -189,7 +153,7 @@ Complex_Vector& Complex_Vector::operator*= (const Complex_Vector& b)
 
 Complex_Vector& Complex_Vector::operator/= (const Complex_Vector& b)
 {
-    int stat = gsl_vector_complex_div(this->gsl_vec, b.gsl_vec);
+    int stat = gsl_vector_complex_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector division.\nGSL error: "
@@ -200,7 +164,7 @@ Complex_Vector& Complex_Vector::operator/= (const Complex_Vector& b)
 
 Complex_Vector& Complex_Vector::operator*= (const double s)
 {
-    int stat = gsl_vector_complex_scale(this->gsl_vec, gsl_complex_rect(s,0.));
+    int stat = gsl_vector_complex_scale(this->gsl_vec.get(), gsl_complex_rect(s,0.));
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector multiplication.\nGSL error: "
@@ -211,7 +175,7 @@ Complex_Vector& Complex_Vector::operator*= (const double s)
 
 Complex_Vector& Complex_Vector::operator/= (const double s)
 {
-    int stat = gsl_vector_complex_scale(this->gsl_vec, gsl_complex_rect(1./s,0.));
+    int stat = gsl_vector_complex_scale(this->gsl_vec.get(), gsl_complex_rect(1./s,0.));
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector division.\nGSL error: "
@@ -222,14 +186,14 @@ Complex_Vector& Complex_Vector::operator/= (const double s)
 
 Complex_Vector Complex_Vector::operator+ (const Complex_Vector& b) const
 {
-    Complex_Vector res(this->gsl_vec->size);
-    int stat = gsl_vector_complex_memcpy(res.gsl_vec, this->gsl_vec);
+    Complex_Vector res(this->gsl_vec.get()->size);
+    int stat = gsl_vector_complex_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-    stat = gsl_vector_complex_add(res.gsl_vec, b.gsl_vec);
+    stat = gsl_vector_complex_add(res.gsl_vec.get(), b.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -241,14 +205,14 @@ Complex_Vector Complex_Vector::operator+ (const Complex_Vector& b) const
 
 Complex_Vector Complex_Vector::operator- (const Complex_Vector& b) const
 {
-    Complex_Vector res(this->gsl_vec->size);
-    int stat = gsl_vector_complex_memcpy(res.gsl_vec, this->gsl_vec);
+    Complex_Vector res(this->gsl_vec.get()->size);
+    int stat = gsl_vector_complex_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-    stat = gsl_vector_complex_sub(res.gsl_vec, b.gsl_vec);
+    stat = gsl_vector_complex_sub(res.gsl_vec.get(), b.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector subtraction.\nGSL error: "
@@ -260,14 +224,14 @@ Complex_Vector Complex_Vector::operator- (const Complex_Vector& b) const
 
 Complex_Vector Complex_Vector::operator* (const Complex_Vector& b) const
 {
-    Complex_Vector res(this->gsl_vec->size);
-    int stat = gsl_vector_complex_memcpy(res.gsl_vec, this->gsl_vec);
+    Complex_Vector res(this->gsl_vec.get()->size);
+    int stat = gsl_vector_complex_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-    stat = gsl_vector_complex_mul(res.gsl_vec, b.gsl_vec);
+    stat = gsl_vector_complex_mul(res.gsl_vec.get(), b.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector multiplication.\nGSL error: "
@@ -279,14 +243,14 @@ Complex_Vector Complex_Vector::operator* (const Complex_Vector& b) const
 
 Complex_Vector Complex_Vector::operator/ (const Complex_Vector& b) const
 {
-    Complex_Vector res(this->gsl_vec->size);
-    int stat = gsl_vector_complex_memcpy(res.gsl_vec, this->gsl_vec);
+    Complex_Vector res(this->gsl_vec.get()->size);
+    int stat = gsl_vector_complex_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-    stat = gsl_vector_complex_div(res.gsl_vec, b.gsl_vec);
+    stat = gsl_vector_complex_div(res.gsl_vec.get(), b.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector division.\nGSL error: "
@@ -298,14 +262,14 @@ Complex_Vector Complex_Vector::operator/ (const Complex_Vector& b) const
 
 Complex_Vector Complex_Vector::operator* (const double& s) const
 {
-    Complex_Vector res(this->gsl_vec->size);
-    int stat = gsl_vector_complex_memcpy(res.gsl_vec, this->gsl_vec);
+    Complex_Vector res(this->gsl_vec.get()->size);
+    int stat = gsl_vector_complex_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-    stat = gsl_vector_complex_scale(res.gsl_vec, gsl_complex_rect(s, 0.));
+    stat = gsl_vector_complex_scale(res.gsl_vec.get(), gsl_complex_rect(s, 0.));
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector scaling.\nGSL error: "
@@ -322,14 +286,14 @@ Complex_Vector GSL::operator* (const double& s, const Complex_Vector& a)
 
 Complex_Vector Complex_Vector::operator/ (const double& s) const
 {
-    Complex_Vector res(this->gsl_vec->size);
-    int stat = gsl_vector_complex_memcpy(res.gsl_vec, this->gsl_vec);
+    Complex_Vector res(this->gsl_vec.get()->size);
+    int stat = gsl_vector_complex_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-    stat = gsl_vector_complex_scale(res.gsl_vec, gsl_complex_rect(1./s,0));
+    stat = gsl_vector_complex_scale(res.gsl_vec.get(), gsl_complex_rect(1./s,0));
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector scaling.\nGSL error: "
@@ -341,14 +305,14 @@ Complex_Vector Complex_Vector::operator/ (const double& s) const
 
 Complex_Vector GSL::operator- (const Complex_Vector& a)
 {
-    Complex_Vector res(a.gsl_vec->size);
+    Complex_Vector res(a.gsl_vec.get()->size);
 
     return res - a;
 }
 
 bool GSL::operator==(const Complex_Vector& u, const Complex_Vector& v)
 {
-    return gsl_vector_complex_equal(u.gsl_vec, v.gsl_vec);
+    return gsl_vector_complex_equal(u.gsl_vec.get(), v.gsl_vec.get());
 }
 
 bool GSL::operator!=(const Complex_Vector& u, const Complex_Vector& v)
@@ -361,10 +325,10 @@ std::string Complex_Vector::to_string() const
     std::string res = "";
     Complex tmp(0,0);
     res += "( ";
-    for(unsigned int i = 0; i < this->gsl_vec->size; i++){
-        tmp = Complex(gsl_vector_complex_get(this->gsl_vec, i));
+    for(unsigned int i = 0; i < this->gsl_vec.get()->size; i++){
+        tmp = Complex(gsl_vector_complex_get(this->gsl_vec.get(), i));
         res += tmp.to_string();
-        if(i < this->gsl_vec->size - 1){
+        if(i < this->gsl_vec.get()->size - 1){
             res += ",";
         }
         res += " ";
@@ -376,8 +340,8 @@ std::string Complex_Vector::to_string() const
 
 Complex GSL::dot(const Complex_Vector& a, const Complex_Vector& b)
 {
-    int size_a = a.gsl_vec->size;
-    int size_b = b.gsl_vec->size;
+    int size_a = a.gsl_vec.get()->size;
+    int size_b = b.gsl_vec.get()->size;
     if(size_a != size_b){
 		throw std::runtime_error("Error in dot product!\nDot product "
         "(scalar product) only defined for vectors of equal length!");
@@ -385,7 +349,7 @@ Complex GSL::dot(const Complex_Vector& a, const Complex_Vector& b)
 
 
     gsl_complex res = gsl_complex_rect(0,0);
-    int stat = gsl_blas_zdotc(a.gsl_vec, b.gsl_vec, &res);
+    int stat = gsl_blas_zdotc(a.gsl_vec.get(), b.gsl_vec.get(), &res);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector dot product.\nGSL error: "
@@ -397,8 +361,8 @@ Complex GSL::dot(const Complex_Vector& a, const Complex_Vector& b)
 
 Complex_Vector GSL::cross(const Complex_Vector& a, const Complex_Vector& b)
 {
-    int size_a = a.gsl_vec->size;
-    int size_b = b.gsl_vec->size;
+    int size_a = a.gsl_vec.get()->size;
+    int size_b = b.gsl_vec.get()->size;
     if(size_a != size_b){
 		throw std::runtime_error("Error in cross product!\nCross product "
         "(vector product) only defined for vectors of equal length!");
@@ -408,12 +372,12 @@ Complex_Vector GSL::cross(const Complex_Vector& a, const Complex_Vector& b)
     }
 
     Complex a_tmp[3], b_tmp[3], tmp;
-    a_tmp[0] = Complex(gsl_vector_complex_get(a.gsl_vec, 0));
-    b_tmp[0] = Complex(gsl_vector_complex_get(b.gsl_vec, 0));
-    a_tmp[1] = Complex(gsl_vector_complex_get(a.gsl_vec, 1));
-    b_tmp[1] = Complex(gsl_vector_complex_get(b.gsl_vec, 1));
-    a_tmp[2] = Complex(gsl_vector_complex_get(a.gsl_vec, 2));
-    b_tmp[2] = Complex(gsl_vector_complex_get(b.gsl_vec, 2));
+    a_tmp[0] = Complex(gsl_vector_complex_get(a.gsl_vec.get(), 0));
+    b_tmp[0] = Complex(gsl_vector_complex_get(b.gsl_vec.get(), 0));
+    a_tmp[1] = Complex(gsl_vector_complex_get(a.gsl_vec.get(), 1));
+    b_tmp[1] = Complex(gsl_vector_complex_get(b.gsl_vec.get(), 1));
+    a_tmp[2] = Complex(gsl_vector_complex_get(a.gsl_vec.get(), 2));
+    b_tmp[2] = Complex(gsl_vector_complex_get(b.gsl_vec.get(), 2));
     Complex_Vector res(3);
 
     tmp  = a_tmp[1]*b_tmp[2] - a_tmp[2]*b_tmp[1];
@@ -430,40 +394,10 @@ Complex_Vector GSL::cross(const Complex_Vector& a, const Complex_Vector& b)
 // Copy the data, not just the pointers!
 void Complex_Vector::copy(const Complex_Vector& a)
 {
-    if(a.count == nullptr){
-		throw std::runtime_error("Trying to copy uninitialized Vector!\n");
-    }
-    /* Special cases to consider:
-        * This Vector is not initialized => Initialize it and copy data from a
-        * This Vector shares it's data with other vectors => allocate new
-            gsl_vector and copy the data from a into it (reducing count on the
-            old vector)
-        * This Vector is the only vector using the data => copy the data
-            directly from a
-        * a is uninitialized => raise an error
-    */
-    // This Vector is uninitialized
-    if(this->count == nullptr){
-        this->gsl_vec = gsl_vector_complex_alloc(a.gsl_vec->size);
-        this->count = new int;
-        *this->count = 1;
-    // Other vectors are using the data
-    }else if(*this->count > 1){
-        *this->count -= 1;
-        // Create new data array
-        this->gsl_vec = gsl_vector_complex_alloc(a.gsl_vec->size);
-        this->count = new int;
-        *this->count = 1;
-    // No other vector is using the data!
-    // Make sure the dimesnions of the gsl_vector s arthe same
-    }else if(this->gsl_vec->size != a.gsl_vec->size){
-        gsl_vector_complex_free(this->gsl_vec);
-        this->gsl_vec = gsl_vector_complex_alloc(a.gsl_vec->size);
-    }
-    if(this->gsl_vec == nullptr){
+    if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Error in vector allocation!");
     }
-    int stat = gsl_vector_complex_memcpy(this->gsl_vec, a.gsl_vec);
+    int stat = gsl_vector_complex_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
@@ -473,10 +407,10 @@ void Complex_Vector::copy(const Complex_Vector& a)
 
 void Complex_Vector::set(size_t i, const Complex& z)
 {
-    gsl_vector_complex_set(this->gsl_vec, i, *z.gsl_c);
+    gsl_vector_complex_set(this->gsl_vec.get(), i, *z.gsl_c);
 }
 
 Complex Complex_Vector::get(size_t i)
 {
-    return Complex(gsl_vector_complex_get(this->gsl_vec, i));
+    return Complex(gsl_vector_complex_get(this->gsl_vec.get(), i));
 }

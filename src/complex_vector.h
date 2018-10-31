@@ -22,7 +22,8 @@ namespace GSL{
 *******************************************************************************/
 class Complex_Vector : public BaseVector{
     // Store a reference to the gsl_vector
-    gsl_vector_complex* gsl_vec;
+    std::shared_ptr<gsl_vector_complex> gsl_vec;
+
     // Store the number of copies of this vector we have in play
 public:
     // Create an empty vector (no data at all)
