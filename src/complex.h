@@ -3,87 +3,14 @@
 
 #include <gsl/gsl_complex.h>
 #include <iostream>
+#include <memory>
 
-/**************************************************************************//**
-* A class for using GSL complex numbers with a simpler interface than
-* the default one.
-* Also try to avoid using unnecessary amounts of memory.
+/**************************************************************************//***
+* A class for using GSL complex numbers with a simpler interface than          *
+* the default one.                                                             *
+* Also try to avoid using unnecessary amounts of memory.                       *
 *******************************************************************************/
-namespace GSL{class Complex;}
 namespace GSL{
-
-// Basic arithmetic operations
-// 2 Complex numbers
-Complex operator+(const Complex&, const Complex&);
-Complex operator-(const Complex&, const Complex&);
-Complex operator*(const Complex&, const Complex&);
-Complex operator/(const Complex&, const Complex&);
-
-// 1 Complex number and one floating point number
-Complex operator+(const Complex&, const double&);
-Complex operator-(const Complex&, const double&);
-Complex operator*(const Complex&, const double&);
-Complex operator/(const Complex&, const double&);
-
-Complex operator+(const double&, const Complex&);
-Complex operator-(const double&, const Complex&);
-Complex operator*(const double&, const Complex&);
-Complex operator/(const double&, const Complex&);
-
-//Negate complex numbers
-Complex operator-(const Complex&);
-
-// Equality
-bool operator==(const Complex&, const Complex&);
-bool operator!=(const Complex&, const Complex&);
-
-// Elementary mathematics functions
-Complex exp(const Complex& a);
-Complex sqrt(const Complex& a);
-Complex sqrt(const double& s);
-Complex pow(const Complex& a, const Complex& b);
-Complex pow(const Complex& a, const double& s);
-Complex log(const Complex& a);
-Complex log10(const Complex& a);
-Complex log_b(const Complex& a, const Complex& b);
-
-// Trigonometric functions
-Complex sin(const Complex&a);
-Complex cos(const Complex&a);
-Complex tan(const Complex&a);
-Complex sec(const Complex&a);
-Complex csc(const Complex&a);
-Complex cot(const Complex&a);
-
-// Inverse trigonometric functions
-Complex arcsin(const Complex& a);
-Complex arcsin(const double& s);
-Complex arccos(const Complex& a);
-Complex arccos(const double& s);
-Complex arctan(const Complex& a);
-Complex arcsec(const Complex& a);
-Complex arcsec(const double& s);
-Complex arccsc(const Complex& a);
-Complex arccsc(const double& s);
-Complex arccot(const Complex& a);
-
-// Hyperbolic functions
-Complex sinh(const Complex& a);
-Complex cosh(const Complex& a);
-Complex tanh(const Complex& a);
-Complex sech(const Complex& a);
-Complex csch(const Complex& a);
-Complex coth(const Complex& a);
-
-// Inverse hyperbolic functions
-Complex arcsinh(const Complex& a);
-Complex arccosh(const Complex& a);
-Complex arccosh(const double& s);
-Complex arctanh(const Complex& a);
-Complex arctanh(const double& s);
-Complex arcsech(const Complex& a);
-Complex arccsch(const Complex& a);
-Complex arccoth(const Complex& a);
 
 // Representation of complex numbers
 class Complex
@@ -91,9 +18,7 @@ class Complex
     friend class Complex_Vector;
     friend class Complex_Matrix;
 
-    gsl_complex* gsl_c;
-    int* count;
-
+    std::shared_ptr<gsl_complex> gsl_c;
 public:
     double re, im;
     Complex();
@@ -186,8 +111,82 @@ public:
     std::string to_string() const;
 
 };
-}
+
+// Basic arithmetic operations
+// 2 Complex numbers
+Complex operator+(const Complex&, const Complex&);
+Complex operator-(const Complex&, const Complex&);
+Complex operator*(const Complex&, const Complex&);
+Complex operator/(const Complex&, const Complex&);
+
+// 1 Complex number and one floating point number
+Complex operator+(const Complex&, const double&);
+Complex operator-(const Complex&, const double&);
+Complex operator*(const Complex&, const double&);
+Complex operator/(const Complex&, const double&);
+
+Complex operator+(const double&, const Complex&);
+Complex operator-(const double&, const Complex&);
+Complex operator*(const double&, const Complex&);
+Complex operator/(const double&, const Complex&);
+
+//Negate complex numbers
+Complex operator-(const Complex&);
+
+// Equality
+bool operator==(const Complex&, const Complex&);
+bool operator!=(const Complex&, const Complex&);
+
+// Elementary mathematics functions
+Complex exp(const Complex& a);
+Complex sqrt(const Complex& a);
+Complex sqrt(const double& s);
+Complex pow(const Complex& a, const Complex& b);
+Complex pow(const Complex& a, const double& s);
+Complex log(const Complex& a);
+Complex log10(const Complex& a);
+Complex log_b(const Complex& a, const Complex& b);
+
+// Trigonometric functions
+Complex sin(const Complex&a);
+Complex cos(const Complex&a);
+Complex tan(const Complex&a);
+Complex sec(const Complex&a);
+Complex csc(const Complex&a);
+Complex cot(const Complex&a);
+
+// Inverse trigonometric functions
+Complex arcsin(const Complex& a);
+Complex arcsin(const double& s);
+Complex arccos(const Complex& a);
+Complex arccos(const double& s);
+Complex arctan(const Complex& a);
+Complex arcsec(const Complex& a);
+Complex arcsec(const double& s);
+Complex arccsc(const Complex& a);
+Complex arccsc(const double& s);
+Complex arccot(const Complex& a);
+
+// Hyperbolic functions
+Complex sinh(const Complex& a);
+Complex cosh(const Complex& a);
+Complex tanh(const Complex& a);
+Complex sech(const Complex& a);
+Complex csch(const Complex& a);
+Complex coth(const Complex& a);
+
+// Inverse hyperbolic functions
+Complex arcsinh(const Complex& a);
+Complex arccosh(const Complex& a);
+Complex arccosh(const double& s);
+Complex arctanh(const Complex& a);
+Complex arctanh(const double& s);
+Complex arcsech(const Complex& a);
+Complex arccsch(const Complex& a);
+Complex arccoth(const Complex& a);
 
 std::ostream& operator << (std::ostream&, const GSL::Complex&);
+}
+
 
 #endif //COMPLEX_GSL_LIB_H

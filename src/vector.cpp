@@ -95,7 +95,7 @@ Vector& Vector::operator= (const Vector &a)
     }
 
     // this is not part of a matrix
-    if(gsl_vec->owner == 1){
+    if(gsl_vec == nullptr || gsl_vec->owner == 1){
         gsl_vec = a.gsl_vec;
         // this is part of a matrix
     }else if(gsl_vec->owner == 0){
@@ -111,7 +111,7 @@ Vector& Vector::operator= (const Vector &a)
 
 Vector& Vector::operator= (Vector&& a)
 {
-    if(gsl_vec->owner == 1){
+    if(gsl_vec == nullptr || gsl_vec->owner == 1){
         std::swap(gsl_vec, a.gsl_vec);
     }else if(gsl_vec->owner == 0){
         gsl_vector_memcpy(gsl_vec.get(), a.gsl_vec.get());

@@ -71,7 +71,6 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	Matrix m(3,3);
 	m[0] = a1;
 	m[1] = a2;
-	std::cout << "Setting m[2]" << std::endl;
 	m[2] = 1*a3 + 0.24*a1 + 0*a2;
 
 	Matrix n = {{1.2 , 3}, {2,4}};
