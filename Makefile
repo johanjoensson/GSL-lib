@@ -35,7 +35,7 @@ CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugpr
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS = -lgsl -lopenblas -lm -shared -Wl,-soname,lib$(LIB).so
+LDFLAGS = -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so
 
 
 LIB_OBJ = complex.o\

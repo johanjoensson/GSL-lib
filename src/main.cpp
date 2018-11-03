@@ -6,6 +6,7 @@
 #include "complex_vector.h"
 #include "complex.h"
 #include "special_functions.h"
+#include "polynomial.h"
 
 #include <gsl/gsl_sf_result.h>
 #include <gsl/gsl_matrix.h>
@@ -58,7 +59,8 @@ bool test_addition()
 
 void test_vector()
 {
-std::cout << "Testing real vectors and matrices" << std::endl;
+	std::cout << "Testing real vectors and matrices" << std::endl;
+	std::cout << std::string(80, '*') << std::endl;
 	Vector v(3), a1(3), a2(3), a3(3);
 	Vector u = {1., 2.3, 4.2, 1.24, 5};
 
@@ -108,11 +110,13 @@ std::cout << "Testing real vectors and matrices" << std::endl;
 	test_addition();
 
 	std::cout << "m[0] x a2 = " << m[0] << " x " << a2 << " = " << cross(m[0], a2) << std::endl;
+	std::cout << std::string(80, '*') << std::endl;
 }
 
 void test_complex_vector()
 {
 	std::cout << "Testing complex vectors and matrices" << std::endl;
+	std::cout << std::string(80, '*') << std::endl;
 	Complex_Vector v(3), a1(3), a2(3), a3(3);
 	Complex_Vector u = {Complex(1.0,0), Complex(1.3,2.1)};
 
@@ -145,10 +149,26 @@ void test_complex_vector()
 
 	std::cout << m[0] << " == " << a1 << " = " << (m[0] == a1) << std::endl;
 	std::cout << m[1] << " != " << a2 << " = " << (m[0] != a1) << std::endl;
+	std::cout << std::string(80, '*') << std::endl;
 }
 int main()
 {
 	test_vector();
 	test_complex_vector();
+
+	std::cout << "Polynomials" << std::endl << std::string(80, '*') << std::endl;
+	Polynomial<Complex, Complex> p = {{3.6708, 0.0}, {3.234, -1.9228}, {0.352, 1.694}, {1.54, 1.1}, {1.0, 0.0}};
+	Polynomial<Complex, Complex> a = {{0.0, 4.83}, {2.3, 2.1}, {1.0, 0.}};
+//	Polynomial<double, double> p = {1.0, 0.0, 2.5, 0.0, 3.2};
+//	Polynomial<double, double> a = {0.0, 2.0, 2.5, 0.0, 0.0};
+
+	std::cout << "p = " << p << std::endl;
+	std::cout << "a = " << a << std::endl;
+
+	std::pair<Polynomial<Complex, Complex>, Polynomial<Complex, Complex>> tmp = p/a;
+//	std::pair<Polynomial<double, double>, Polynomial<double, double>> tmp = p/a;
+	std::cout << "p/a = (" << tmp.first << ") + [" << tmp.second << "]" << std::endl;
+	std::cout << "p/a (0.24) = " << tmp.first(0.24) + tmp.second(0.24) << std::endl;
+	std::cout << std::string(80, '*') << std::endl;
 	return 0;
 }

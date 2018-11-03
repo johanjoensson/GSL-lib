@@ -1,16 +1,8 @@
 #include "complex.h"
+#include "special_functions.h"
 #include <gsl/gsl_complex_math.h>
 
 using namespace GSL;
-
-Complex::Complex(double& a, double& b)
- : gsl_c(nullptr),  re(), im()
-{
-    this->gsl_c = std::shared_ptr<gsl_complex>(new gsl_complex);
-    *this->gsl_c = gsl_complex_rect(a,b);
-    re =  gsl_c->dat[0];
-    im = gsl_c->dat[1];
-}
 
 Complex::Complex(const double& a, const double& b)
  : gsl_c(nullptr), re(), im()
@@ -21,15 +13,6 @@ Complex::Complex(const double& a, const double& b)
     im = gsl_c->dat[1];
 }
 
-Complex::Complex(gsl_complex& z)
- : re(), im()
-{
-    this->gsl_c = std::shared_ptr<gsl_complex>(new gsl_complex);
-    *gsl_c = z;
-    re = gsl_c->dat[0];
-    im = gsl_c->dat[1];
-}
-
 Complex::Complex(const gsl_complex& z)
  : gsl_c(nullptr), re(), im()
 {
@@ -37,14 +20,6 @@ Complex::Complex(const gsl_complex& z)
     *this->gsl_c = z;
     re = gsl_c->dat[0];
     im = gsl_c->dat[1];
-}
-
-Complex::Complex(Complex& z)
- : gsl_c(nullptr), re(), im()
-{
-    this->gsl_c = z.gsl_c;
-    this->re = this->gsl_c->dat[0];
-    this->im = this->gsl_c->dat[1];
 }
 
 Complex::Complex(const Complex& z)
@@ -64,7 +39,7 @@ Complex::Complex(Complex&& z)
 }
 
 Complex::Complex()
-    : Complex(0,0)
+    : Complex(0.0,0.0)
 {
 }
 
@@ -92,7 +67,7 @@ Complex& Complex::operator= (Complex&& m)
     return *this;
 }
 
-std::ostream& operator << (std::ostream& os, const Complex& z)
+std::ostream& GSL::operator<< (std::ostream& os, const Complex& z)
 {
     os << z.to_string();
     return os;
@@ -431,6 +406,11 @@ Complex GSL::arccoth(const Complex& a)
     return Complex(gsl_complex_arccoth(*a.gsl_c.get()));
 }
 
+double abs(GSL::Complex z)
+{
+    return z.abs();
+}
+
 std::string Complex::to_string() const
 {
     std::string res = "";
@@ -438,13 +418,13 @@ std::string Complex::to_string() const
     std::string imag = std::to_string(this->im);
     if (this->im > 0){
         if (this->im == 1){
-            res = real + " + " + "i";
+            res = real + " + i";
         }else{
             res = real + " + " + imag + "i";
         }
     }else if (this->im < 0){
         if(this->im == -1){
-            res = real + " - " + "i";
+            res = real + " - i";
         }else{
             res = real + " " + imag + "i";
         }

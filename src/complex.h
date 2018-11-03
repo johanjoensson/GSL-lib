@@ -4,29 +4,35 @@
 #include <gsl/gsl_complex.h>
 #include <iostream>
 #include <memory>
+#include <vector>
 
 /**************************************************************************//***
 * A class for using GSL complex numbers with a simpler interface than          *
 * the default one.                                                             *
 * Also try to avoid using unnecessary amounts of memory.                       *
 *******************************************************************************/
-namespace GSL{
 
+namespace GSL{
+    class Complex;
+namespace PolynomialInternal{
+    Complex evaluate_polynomial(const std::vector<double>& coeffs, const int order, const Complex& z);
+    Complex evaluate_polynomial(const std::vector<Complex>& coeffs, const int order, const Complex& z);
+}
 // Representation of complex numbers
 class Complex
 {
     friend class Complex_Vector;
     friend class Complex_Matrix;
 
+    friend Complex PolynomialInternal::evaluate_polynomial(const std::vector<double>& coeffs, const int order, const Complex& z);
+    friend Complex GSL::PolynomialInternal::evaluate_polynomial(const std::vector<Complex>& coeffs, const int order, const Complex& z);
+
     std::shared_ptr<gsl_complex> gsl_c;
 public:
     double re, im;
     Complex();
-    Complex(double& a, double& b);
-    Complex(const double& a, const double& b);
-    Complex(gsl_complex& z);
+    Complex(const double& a, const double& b = 0);
     Complex(const gsl_complex& z);
-    Complex(Complex& z);
     Complex(const Complex& z);
     Complex(Complex&& z);
     ~Complex();
@@ -109,6 +115,7 @@ public:
     friend Complex arccoth(const Complex& a);
 
     std::string to_string() const;
+    friend std::ostream& operator<<(std::ostream& os, const Complex& z);
 
 };
 
@@ -185,8 +192,10 @@ Complex arcsech(const Complex& a);
 Complex arccsch(const Complex& a);
 Complex arccoth(const Complex& a);
 
-std::ostream& operator << (std::ostream&, const GSL::Complex&);
+
+std::ostream& operator<< (std::ostream&, const GSL::Complex&);
 }
+double abs(GSL::Complex z);
 
 
 #endif //COMPLEX_GSL_LIB_H
