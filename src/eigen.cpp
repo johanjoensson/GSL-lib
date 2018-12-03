@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <functional>
+#include <stdexcept>
 
 using namespace GSL;
 
@@ -14,8 +15,14 @@ void GSL::hermitian_eigen(Complex_Matrix& eigvecs, Vector& eigvals)
             w(gsl_eigen_hermv_alloc(N),
                 gsl_eigen_hermv_free);
     Complex_Matrix tmp_mat(N, N);
-    gsl_eigen_hermv(eigvecs.gsl_mat.get(), eigvals.gsl_vec.get(),
+    int status = gsl_eigen_hermv(eigvecs.gsl_mat.get(), eigvals.gsl_vec.get(),
         tmp_mat.gsl_mat.get(), w.get());
+
+    if(status){
+        std::string error_str =   gsl_strerror(status);
+        throw std::runtime_error("Error in solving Hermitian eigenproblem.\nGSL error: "
+        + error_str);
+    }
 
     eigvecs.copy(tmp_mat);
 }
@@ -31,8 +38,13 @@ void GSL::general_hermitian_eigen(const Complex_Matrix&A, const Complex_Matrix&B
             w(gsl_eigen_genhermv_alloc(N),
                 gsl_eigen_genhermv_free);
     Complex_Matrix tmp_mat(N, N);
-    gsl_eigen_genhermv(a.gsl_mat.get(), b.gsl_mat.get(), eigvals.gsl_vec.get(),
+    int status = gsl_eigen_genhermv(a.gsl_mat.get(), b.gsl_mat.get(), eigvals.gsl_vec.get(),
         tmp_mat.gsl_mat.get(), w.get());
+    if(status){
+        std::string error_str =   gsl_strerror(status);
+        throw std::runtime_error("Error in solving Hermitian eigenproblem.\nGSL error: "
+        + error_str);
+    }
 
     eigvecs.copy(tmp_mat);
 }
