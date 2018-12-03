@@ -13,6 +13,14 @@ Complex::Complex(const double& a, const double& b)
     im = gsl_c->dat[1];
 }
 
+void del(gsl_complex*){}
+Complex::Complex(gsl_complex* z)
+ : gsl_c(z, del), re(), im()
+{
+    re = gsl_c->dat[0];
+    gsl_c->dat[1];
+}
+
 Complex::Complex(const gsl_complex& z)
  : gsl_c(nullptr), re(), im()
 {

@@ -32,6 +32,7 @@ public:
     double re, im;
     Complex();
     Complex(const double& a, const double& b = 0);
+    Complex(gsl_complex* z);
     Complex(const gsl_complex& z);
     Complex(const Complex& z);
     Complex(Complex&& z);

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 
-namespace GSL{class Vector; class Matrix; class BaseMatrix;}
+namespace GSL{class Vector; class Matrix; class Complex_Matrix; class BaseMatrix;}
 
 
 /**************************************************************************//**
@@ -17,17 +17,9 @@ namespace GSL{
 // Abstract base class representing all types of vectors.
 class BaseVector{
 protected:
-    // Store the number of references to the data of this vector that we have
-    // in play at the moment
-//    int* count;
     // Special care has to be taken if this vector is part of a matrix
     // e.g., this vector is a row or column in a matrix
 public:
-    BaseVector();
-    ~BaseVector();
-
-    BaseVector& operator=(const BaseVector&) = delete;
-    BaseVector& operator=(BaseVector&&) = delete;
 
     virtual void copy(const BaseVector& v) = delete;
     virtual double norm() const = 0;
@@ -86,16 +78,12 @@ public:
 
 
     // Basic arithmetic operations
-    Vector operator+ (const Vector& b) const;
-    Vector operator- (const Vector& b) const;
-    // Element wise multiplication and division
-    Vector operator* (const Vector& b) const;
-    Vector operator/ (const Vector& b) const;
-    // Scaling of vectors
-    Vector operator* (const double& s) const;
-    friend Vector operator*(const double& s, const Vector& a);
-    Vector operator/ (const double& s) const;
-
+    friend Vector operator+(Vector a, const Vector& b);
+    friend Vector operator-(Vector a, const Vector& b);
+    friend Vector operator*(Vector a, const Vector& b);
+    friend Vector operator/(Vector a, const Vector& b);
+    friend Vector operator*(Vector a, const double s);
+    friend Vector operator/(Vector a, const double s);
     friend Vector operator- (const Vector& a);
 
     std::string to_string() const;
@@ -105,10 +93,19 @@ public:
 
     friend bool (operator==)(const Vector&, const Vector&);
     friend bool (operator!=)(const Vector&, const Vector&);
+
+    friend void hermitian_eigen(Complex_Matrix& eigves, Vector& eigvals);
+    friend void general_hermitian_eigen(const Complex_Matrix& A, const Complex_Matrix& B, Complex_Matrix& eigvecs, Vector& eigvals);
 };
 
 
-Vector operator*(const double& s, const Vector& a);
+Vector operator+(Vector a, const Vector& b);
+Vector operator-(Vector a, const Vector& b);
+Vector operator*(Vector a, const Vector& b);
+Vector operator/(Vector a, const Vector& b);
+Vector operator*(Vector a, const double s);
+Vector operator/(Vector a, const double s);
+Vector operator*(const double s, Vector a);
 double dot(const Vector& a, const Vector& b);
 Vector cross(const Vector& a, const Vector& b);
 Vector operator- (const Vector& a);

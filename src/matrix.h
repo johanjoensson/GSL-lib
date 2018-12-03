@@ -10,12 +10,6 @@ namespace GSL{class Matrix;}
 namespace GSL{
     class BaseMatrix{
     protected:
-        BaseMatrix();
-        ~BaseMatrix();
-
-        BaseMatrix& operator=(const BaseMatrix &m) = delete;
-        BaseMatrix& operator=(BaseMatrix &&m) = delete;
-
         virtual void copy(const BaseMatrix &m) = delete;
 
         virtual std::string to_string() const = 0;

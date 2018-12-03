@@ -320,6 +320,10 @@ Complex_Vector Complex_Matrix::diag()
     return res;
 }
 
+Complex_Vector Complex_Matrix::get_col(const size_t i)
+{
+    return Complex_Vector(gsl_matrix_complex_column(this->gsl_mat.get(), i).vector);
+}
 
 std::string Complex_Matrix::to_string() const
 {

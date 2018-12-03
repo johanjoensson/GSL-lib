@@ -4,13 +4,6 @@
 
 using namespace GSL;
 
-BaseMatrix::~BaseMatrix()
-{
-}
-
-BaseMatrix::BaseMatrix()
-{}
-
 std::ostream& GSL::operator<< (std::ostream& os, const BaseMatrix& a)
 {
     return (os << a.to_string());

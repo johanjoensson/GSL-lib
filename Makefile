@@ -38,11 +38,13 @@ CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 LDFLAGS = -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so
 
 
-LIB_OBJ = complex.o\
+LIB_OBJ = divided_difference.o\
+	  complex.o\
 	  vector.o\
 	  matrix.o\
 	  complex_vector.o\
 	  complex_matrix.o\
+	  eigen.o\
 	  basic_math.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\

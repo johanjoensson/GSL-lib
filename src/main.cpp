@@ -7,6 +7,7 @@
 #include "complex.h"
 #include "special_functions.h"
 #include "polynomial.h"
+#include "divided_difference.h"
 
 #include <gsl/gsl_sf_result.h>
 #include <gsl/gsl_matrix.h>
@@ -155,20 +156,6 @@ int main()
 {
 	test_vector();
 	test_complex_vector();
-
-	std::cout << "Polynomials" << std::endl << std::string(80, '*') << std::endl;
-	Polynomial<Complex, Complex> p = {{3.6708, 0.0}, {3.234, -1.9228}, {0.352, 1.694}, {1.54, 1.1}, {1.0, 0.0}};
-	Polynomial<Complex, Complex> a = {{0.0, 4.83}, {2.3, 2.1}, {1.0, 0.}};
-//	Polynomial<double, double> p = {1.0, 0.0, 2.5, 0.0, 3.2};
-//	Polynomial<double, double> a = {0.0, 2.0, 2.5, 0.0, 0.0};
-
-	std::cout << "p = " << p << std::endl;
-	std::cout << "a = " << a << std::endl;
-
-	std::pair<Polynomial<Complex, Complex>, Polynomial<Complex, Complex>> tmp = p/a;
-//	std::pair<Polynomial<double, double>, Polynomial<double, double>> tmp = p/a;
-	std::cout << "p/a = (" << tmp.first << ") + [" << tmp.second << "]" << std::endl;
-	std::cout << "p/a (0.24) = " << tmp.first(0.24) + tmp.second(0.24) << std::endl;
-	std::cout << std::string(80, '*') << std::endl;
+	
 	return 0;
 }

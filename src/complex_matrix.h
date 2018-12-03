@@ -59,6 +59,10 @@ namespace GSL{
         void set_row(const size_t& index, const Complex_Vector& r);
         void set_col(const size_t& index, const Complex_Vector& r);
         Complex_Vector diag();
+        Complex_Vector get_col(const size_t i);
+
+        friend void hermitian_eigen(Complex_Matrix& eigvecs, Vector& eigvals);
+        friend void general_hermitian_eigen(const Complex_Matrix& A, const Complex_Matrix& B, Complex_Matrix& eigvecs, Vector& eigvals);
     };
 
     Complex_Matrix operator*(const double& s, const Complex_Matrix& a);

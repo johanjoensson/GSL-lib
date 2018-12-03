@@ -101,10 +101,7 @@ Complex_Vector& Complex_Vector::operator= (Complex_Vector&& a)
         if(a.gsl_vec.get() != nullptr){
             gsl_vector_complex_memcpy(gsl_vec.get(), a.gsl_vec.get());
         }
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
-
     return *this;
 }
 
@@ -115,7 +112,7 @@ Complex Complex_Vector::operator[] (const int index)
         throw std::runtime_error("Index out of range!");
     }
 
-    return Complex(*res);
+    return Complex(res);
 }
 
 Complex_Vector& Complex_Vector::operator+= (const Complex_Vector& b)

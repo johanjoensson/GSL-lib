@@ -4,26 +4,19 @@
 
 using namespace GSL;
 
-BaseVector::~BaseVector()
-{}
-
-
-BaseVector::BaseVector()
-{}
-
 std::ostream& GSL::operator<< (std::ostream& os, const BaseVector& a)
 {
     return (os << a.to_string());
 }
 
 Vector::Vector()
-: BaseVector(), gsl_vec(nullptr)
+: gsl_vec(nullptr)
 {}
 
 Vector::Vector(const size_t n)
- : BaseVector()
+ : gsl_vec(gsl_vector_calloc(n), gsl_vector_free)
 {
-    gsl_vec = std::shared_ptr<gsl_vector>(gsl_vector_calloc(n), gsl_vector_free);
+//    gsl_vec = std::shared_ptr<gsl_vector>(gsl_vector_calloc(n), gsl_vector_free);
     if(gsl_vec == nullptr){
         throw std::runtime_error("Memory allocation (gsl_vector_calloc)"
         " failed!");
@@ -31,15 +24,15 @@ Vector::Vector(const size_t n)
 }
 
 Vector::Vector(Vector& v)
- : BaseVector(), gsl_vec(v.gsl_vec)
+ : gsl_vec(v.gsl_vec)
 {}
 
 Vector::Vector(const Vector& v)
- : BaseVector(), gsl_vec(v.gsl_vec)
+ : gsl_vec(v.gsl_vec)
 {}
 
 Vector::Vector(Vector&& v)
- : BaseVector(), gsl_vec(nullptr)
+ : gsl_vec(nullptr)
 {
     std::swap(gsl_vec, v.gsl_vec);
 }
@@ -111,14 +104,14 @@ Vector& Vector::operator= (const Vector &a)
 
 Vector& Vector::operator= (Vector&& a)
 {
+    // Check if the vector owns the data
     if(gsl_vec == nullptr || gsl_vec->owner == 1){
         std::swap(gsl_vec, a.gsl_vec);
+    // If not, this vector is part of a matrix
+    // -> copy the data, dont move the reference
     }else if(gsl_vec->owner == 0){
         gsl_vector_memcpy(gsl_vec.get(), a.gsl_vec.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
-
     return *this;
 }
 
@@ -197,131 +190,54 @@ Vector& Vector::operator/= (const double s)
     return *this;
 }
 
-
-Vector Vector::operator+ (const Vector& b) const
+Vector GSL::operator+(Vector a, const Vector& b)
 {
-    Vector res(this->gsl_vec.get()->size);
-
-    int stat = gsl_vector_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in memory copying.\nGSL error: "
-        + error_str);
-	}
-
-    stat = gsl_vector_add(res.gsl_vec.get(), b.gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in vector addition.\nGSL error: "
-        + error_str);
-	}
-
-    return res;
+	Vector tmp(a.gsl_vec->size);
+	gsl_vector_memcpy(tmp.gsl_vec.get(), a.gsl_vec.get());
+	return tmp += b;
 }
 
-
-Vector Vector::operator- (const Vector& b) const
+Vector GSL::operator-(Vector a, const Vector& b)
 {
-    Vector res(this->gsl_vec.get()->size);
-    int stat = gsl_vector_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in memory copying.\nGSL error: "
-        + error_str);
-	}
-    stat = gsl_vector_sub(res.gsl_vec.get(), b.gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in vector subtraction.\nGSL error: "
-        + error_str);
-	}
-
-    return res;
+	Vector tmp(a.gsl_vec->size);
+	gsl_vector_memcpy(tmp.gsl_vec.get(), a.gsl_vec.get());
+	return tmp -= b;
 }
 
-Vector Vector::operator* (const Vector& b) const
+Vector GSL::operator*(Vector a, const Vector& b)
 {
-    Vector res(this->gsl_vec.get()->size);
-    int stat = gsl_vector_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in memory copying.\nGSL error: "
-        + error_str);
-	}
-    stat = gsl_vector_mul(res.gsl_vec.get(), b.gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in vector multiplication.\nGSL error: "
-        + error_str);
-	}
-
-    return res;
+	Vector tmp(a.gsl_vec->size);
+	gsl_vector_memcpy(tmp.gsl_vec.get(), a.gsl_vec.get());
+	return tmp *= b;
 }
 
-Vector Vector::operator/ (const Vector& b) const
+Vector GSL::operator/(Vector a, const Vector& b)
 {
-    Vector res(this->gsl_vec.get()->size);
-    int stat = gsl_vector_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in memory copying.\nGSL error: "
-        + error_str);
-	}
-    stat = gsl_vector_div(res.gsl_vec.get(), b.gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in vector division.\nGSL error: "
-        + error_str);
-	}
-
-    return res;
+	Vector tmp(a.gsl_vec->size);
+	gsl_vector_memcpy(tmp.gsl_vec.get(), a.gsl_vec.get());
+	return tmp /= b;
 }
 
-Vector Vector::operator* (const double& s) const
+Vector GSL::operator*(Vector a, const double s)
 {
-    Vector res(this->gsl_vec.get()->size);
-    int stat = gsl_vector_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in memory copying.\nGSL error: "
-        + error_str);
-	}
-    stat = gsl_vector_scale(res.gsl_vec.get(), s);
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in vector scaling.\nGSL error: "
-        + error_str);
-	}
-
-    return res;
+	Vector tmp(a.gsl_vec->size);
+	gsl_vector_memcpy(tmp.gsl_vec.get(), a.gsl_vec.get());
+	return tmp *= s;
 }
 
-Vector GSL::operator* (const double& s, const Vector& a)
+Vector GSL::operator* (const double s, Vector a)
 {
     return a*s;
 }
 
-Vector Vector::operator/ (const double& s) const
+Vector GSL::operator/(Vector a, const double s)
 {
-
-    Vector res(this->gsl_vec.get()->size);
-    int stat = gsl_vector_memcpy(res.gsl_vec.get(), this->gsl_vec.get());
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in memory copying.\nGSL error: "
-        + error_str);
-	}
-    stat = gsl_vector_scale(res.gsl_vec.get(), 1./s);
-    if(stat){
-		std::string error_str =   gsl_strerror(stat);
-		throw std::runtime_error("Error in vector scaling.\nGSL error: "
-        + error_str);
-	}
-
-    return res;
+	Vector tmp(a.gsl_vec->size);
+	gsl_vector_memcpy(tmp.gsl_vec.get(), a.gsl_vec.get());
+	return tmp /= s;
 }
 
-Vector GSL::operator- (const Vector& a)
+Vector GSL::operator-(const Vector& a)
 {
     Vector res(a.gsl_vec.get()->size);
 
