@@ -332,6 +332,11 @@ void Vector::copy(const Vector& a)
 
 bool GSL::operator==(const Vector& a, const Vector& b)
 {
+    if(a.gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
+        return true;
+    }else if(a.gsl_vec.get() == nullptr || b.gsl_vec.get() == nullptr){
+        return false;
+    }
     return gsl_vector_equal(a.gsl_vec.get(), b.gsl_vec.get());
 }
 
