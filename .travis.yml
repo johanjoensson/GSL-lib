@@ -23,9 +23,6 @@ matrix:
       sudo: false
       env: GCC_VER="6"
       compiler: gcc
-    - os: linux
-      sudo false
-      compiler: clang
 
 before_install:
   - if [ "${GCC_VER}" != "" ]; then export CXX="g++-$GCC_VER" CC="gcc-$GCC_VER" GCOV="gcov-$GCC_VER" ; fi
