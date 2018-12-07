@@ -1,9 +1,5 @@
 language: cpp
 
-branches:
-    only:
-        - master
-
 addons:
   apt:
     sources: 
@@ -38,4 +34,4 @@ before_install:
 
 script:
     - mkdir build;
-      make all
+    - make all
