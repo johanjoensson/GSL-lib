@@ -1,11 +1,5 @@
 language: cpp
 
-os: linux
-
-compiler:
-        - clang
-        - gcc
-
 branches:
     only:
         - master
@@ -25,10 +19,6 @@ matrix:
       sudo: false
       env: GCC_VER="4.9"
       compiler: gcc
-      #    - os: linux
-      #sudo: false
-      #env: GCC_VER="6" CMAKE_OPTIONS="-D DYNLOAD_ENABLED:BOOL=FALSE -D MULTITHREAD_SUPPORT_ENABLED:BOOL=FALSE -D USE_STD_MAKE_SHARED:BOOL=TRUE" BUILD_ONLY=1
-      #compiler: gcc
     - os: linux
       sudo: false
       env: GCC_VER="5"
@@ -47,5 +37,5 @@ before_install:
   - sudo apt-get install -y libgsl-dev openblas
 
 script:
-        - mkdir build;
-          make all
+    - mkdir build;
+      make all
