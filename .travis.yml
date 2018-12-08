@@ -6,10 +6,10 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
         - gcc-4.9
-        - gcc-5.0
-        - gcc-6.0
-        - gcc-7.0
-        - gcc-8.0
+        - gcc-5
+        - gcc-6
+        - gcc-7
+        - gcc-8
 
 matrix:
   include:
