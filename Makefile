@@ -19,7 +19,7 @@ CXXCHECK = clang-tidy
 
 # List of all executables in this project
 TEST = test
-LIB = gsl-lib
+LIB = GSLpp
 # Source files directory
 SRC_DIR = src
 
@@ -76,7 +76,7 @@ lib$(LIB).so: $(OBJS)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
 test: $(BUILD_DIR)/main.o | lib$(LIB).so
-	$(CXX)  -L./ -lgsl-lib -lgsl -Wl,-rpath=. $< -o $@
+	$(CXX)  -L. -l$(LIB) -lgsl -Wl,-rpath=. $< -o $@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
