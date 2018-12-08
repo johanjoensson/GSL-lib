@@ -5,11 +5,26 @@ addons:
     sources: 
       - ubuntu-toolchain-r-test
     packages:
+        - gcc-4.9
+        - gcc-5.0
+        - gcc-6.0
         - gcc-7.0
         - gcc-8.0
 
 matrix:
   include:
+    - os: linux
+      sudo: false
+      env: GCC_VER="4.9"
+      compiler: gcc
+    - os: linux
+      sudo: false
+      env: GCC_VER="5"
+      compiler: gcc
+    - os: linux
+      sudo: false
+      env: GCC_VER="6"
+      compiler: gcc
     - os: linux
       sudo: false
       env: GCC_VER="7"
