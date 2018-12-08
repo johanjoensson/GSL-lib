@@ -83,7 +83,7 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 travis: CXXFLAGS = -g -std=c++11 -I$(SRC_DIR) -O0 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
-travis: all
+travis: lib$(LIB).so
 
 # Remove object files
 clean:
