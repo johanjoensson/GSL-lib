@@ -30,5 +30,5 @@ before_install:
   - sudo apt-get install -y libgsl0-dev libopenblas-dev
 
 script:
-    - mkdir build;
+    - mkdir build
     - make
