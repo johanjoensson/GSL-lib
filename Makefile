@@ -54,7 +54,8 @@ LIB_OBJ = divided_difference.o\
 	  special_functions_log.o\
 	  special_functions_trig.o\
 	  special_functions_erf.o\
-	  special_functions_results.o
+	  special_functions_results.o\
+	  error.o
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 

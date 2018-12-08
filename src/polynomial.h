@@ -20,26 +20,24 @@ namespace GSL{
     * complex polynomials.
     **************************************************************************/
     namespace PolynomialInternal{
-        double evaluate_polynomial(const std::vector<double>& coeffs, const int order, const double& x)
+        double evaluate_polynomial(const std::vector<double>& coeffs, const size_t order, const double& x)
         {
-            return gsl_poly_eval(&coeffs[0], order + 1, x);
+            return gsl_poly_eval(&coeffs[0], static_cast<int>(order + 1), x);
         }
 
-        Complex evaluate_polynomial(const std::vector<double>& coeffs, const int order, const Complex& z)
+        Complex evaluate_polynomial(const std::vector<double>& coeffs, const size_t order, const Complex& z)
         {
-            return Complex(gsl_poly_complex_eval(&coeffs[0], order + 1, *z.gsl_c));
+            return Complex(gsl_poly_complex_eval(&coeffs[0], static_cast<int>(order + 1), *z.gsl_c));
         }
 
-        Complex evaluate_polynomial(const std::vector<Complex>& coeffs, const int order, const Complex& z)
+        Complex evaluate_polynomial(const std::vector<Complex>& coeffs, const size_t order, const Complex& z)
         {
-            size_t idx = 0;
             std::unique_ptr<gsl_complex[]> ar(new gsl_complex[order + 1]);
-            for(int i = 0; i < order + 1; i++){
-                idx = static_cast<size_t>(i);
-                ar[idx] = *coeffs[idx].gsl_c;
+            for(size_t i = 0; i < order + 1; i++){
+                ar[i] = *coeffs[i].gsl_c;
             }
 
-            gsl_complex res = gsl_complex_poly_complex_eval(ar.get(), order + 1, *z.gsl_c);
+            gsl_complex res = gsl_complex_poly_complex_eval(ar.get(), static_cast<int>(order + 1), *z.gsl_c);
 
             return res;
         }
@@ -49,13 +47,13 @@ namespace GSL{
          * polynomial, nothing else has a valid implementation.
          * solve<Complex> is the general root finding method*/
         template<class C>
-        std::vector<C> solve_polynomial(const std::vector<double>& coeffs, const int orer);
+        std::vector<C> solve_polynomial(const std::vector<double>& coeffs, const size_t orer);
 
         /* This function finds the real roots of a quadratic or cubic polynomial
          * An error is raised if you try to solve a higher order polynomial with
          * it                                                                 */
         template<>
-        std::vector<double> solve_polynomial(const std::vector<double>& coeffs, const int order)
+        std::vector<double> solve_polynomial(const std::vector<double>& coeffs, const size_t order)
         {
             std::unique_ptr<double[]> roots(new double[order]);
             int n_roots = 0;
@@ -87,7 +85,7 @@ namespace GSL{
         }
 
         template<>
-        std::vector<Complex> solve_polynomial(const std::vector<double>& coeffs, const int order)
+        std::vector<Complex> solve_polynomial(const std::vector<double>& coeffs, const size_t order)
         {
             std::unique_ptr<gsl_complex[]> roots(new gsl_complex[order]);
             if(roots == nullptr){
@@ -102,18 +100,16 @@ namespace GSL{
                     &roots[0], &roots[1], &roots[2]);
             }else{
                 /* General polynomial solver! */
-                gsl_poly_complex_workspace* w = gsl_poly_complex_workspace_alloc(static_cast<size_t>(order + 1));
+                gsl_poly_complex_workspace* w = gsl_poly_complex_workspace_alloc(order + 1);
                 std::unique_ptr<double[]> z(new double[2*order]);
                 if(w == nullptr){
                     throw std::runtime_error("Error allocating complex polynomial workspace.");
                 }
-                stat =  gsl_poly_complex_solve(&coeffs[0], static_cast<size_t>(order + 1), w, z.get());
-                size_t idx = 0;
-                for(int i = 0; i < order; i++){
-                    idx = static_cast<size_t>(i);
-                    roots[idx] = gsl_complex_rect(z[2*idx], z[2*idx + 1]);
+                stat =  gsl_poly_complex_solve(&coeffs[0], order + 1, w, z.get());
+                for(size_t i = 0; i < order; i++){
+                    roots[i] = gsl_complex_rect(z[2*i], z[2*i + 1]);
                 }
-                n_roots = order;
+                n_roots = static_cast<int>(order);
                 gsl_poly_complex_workspace_free(w);
             }
 
@@ -147,25 +143,25 @@ namespace GSL{
     template<class X, class C>
     class Polynomial{
     private:
-        int order;
+        size_t order;
         std::vector<C> coeffs;
-        int calc_order()
+        size_t calc_order()
         {
             C zero = {};
             size_t i = 0;
             for(i = 0; i < coeffs.size(); i--){
-                if(abs(coeffs[coeffs.size() - i - 1] - zero) > 5e-16){
+                if(abs(coeffs[coeffs.size() - i - 1] - zero) > 1e-15){
                     break;
                 }
             }
-            return static_cast<int>(i);
+            return i;
         };
     public:
         Polynomial(const std::vector<C>& c)
          : order(0), coeffs(c)
         {
             order = calc_order();
-            coeffs.resize(static_cast<size_t>(order + 1));
+            coeffs.resize(order + 1);
         };
 
         Polynomial(std::initializer_list<C> c)
@@ -256,7 +252,7 @@ namespace GSL{
             Polynomial<X, C> d = p;
 
 
-            int shift = r.order - p.order;
+            size_t shift = r.order - p.order;
             while(shift >= 0){
                 d = p;
                 for(int i = 0; i < shift; i++){
@@ -317,7 +313,7 @@ namespace GSL{
         {
 		bool first = true;
 		C zero = {};
-		for(int i = p.order; i >= 0; i--){
+		for(int i = static_cast<int>(p.order); i >= 0; i--){
 			if(!first && p.coeffs[i] != zero){
 				os <<  " + ";
 			}

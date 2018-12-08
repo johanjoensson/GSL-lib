@@ -15,8 +15,8 @@
 namespace GSL{
     class Complex;
 namespace PolynomialInternal{
-    Complex evaluate_polynomial(const std::vector<double>& coeffs, const int order, const Complex& z);
-    Complex evaluate_polynomial(const std::vector<Complex>& coeffs, const int order, const Complex& z);
+    Complex evaluate_polynomial(const std::vector<double>& coeffs, const size_t order, const Complex& z);
+    Complex evaluate_polynomial(const std::vector<Complex>& coeffs, const size_t order, const Complex& z);
 }
 // Representation of complex numbers
 class Complex
@@ -24,8 +24,8 @@ class Complex
     friend class Complex_Vector;
     friend class Complex_Matrix;
 
-    friend Complex PolynomialInternal::evaluate_polynomial(const std::vector<double>& coeffs, const int order, const Complex& z);
-    friend Complex GSL::PolynomialInternal::evaluate_polynomial(const std::vector<Complex>& coeffs, const int order, const Complex& z);
+    friend Complex PolynomialInternal::evaluate_polynomial(const std::vector<double>& coeffs, const size_t order, const Complex& z);
+    friend Complex GSL::PolynomialInternal::evaluate_polynomial(const std::vector<Complex>& coeffs, const size_t order, const Complex& z);
 
     std::shared_ptr<gsl_complex> gsl_c;
 public:
