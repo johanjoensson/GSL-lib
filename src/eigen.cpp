@@ -9,7 +9,7 @@ using namespace GSL;
 
 void GSL::hermitian_eigen(Complex_Matrix& eigvecs, Vector& eigvals)
 {
-    int N = eigvecs.gsl_mat.get()->size1;
+    size_t N = eigvecs.gsl_mat.get()->size1;
     std::unique_ptr<gsl_eigen_hermv_workspace,
         std::function<void(gsl_eigen_hermv_workspace*)>>
             w(gsl_eigen_hermv_alloc(N),
@@ -29,7 +29,7 @@ void GSL::hermitian_eigen(Complex_Matrix& eigvecs, Vector& eigvals)
 
 void GSL::general_hermitian_eigen(const Complex_Matrix&A, const Complex_Matrix&B, Complex_Matrix& eigvecs, Vector& eigvals)
 {
-    int N = A.gsl_mat.get()->size1;
+    size_t N = A.gsl_mat.get()->size1;
     Complex_Matrix a(N,N), b(N,N);
     a.copy(A);
     b.copy(B);

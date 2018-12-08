@@ -32,10 +32,8 @@ public:
     Complex_Vector(const size_t n);
     // Create a new reference to vector v
     // Do not allocate anything, only add references!
-    Complex_Vector(Complex_Vector& v);
     Complex_Vector(const Complex_Vector& v);
     Complex_Vector(Complex_Vector&& v);
-    Complex_Vector(gsl_vector_complex& v);
     Complex_Vector(const gsl_vector_complex& v);
     Complex_Vector(std::initializer_list<Complex>);
     // Deallocate vector, keeping in mind that several vectors might reference
@@ -50,7 +48,7 @@ public:
     void normalize() const;
     double norm() const;
 
-    Complex operator[] (const int index);
+    Complex operator[] (const size_t index);
 
     // Define dot and cross products of vectors
     friend Complex dot(const Complex_Vector& a, const Complex_Vector& b);

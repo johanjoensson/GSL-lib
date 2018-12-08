@@ -21,7 +21,8 @@ protected:
     // e.g., this vector is a row or column in a matrix
 public:
 
-    virtual void copy(const BaseVector& v) = delete;
+    virtual ~BaseVector(){};
+//    virtual void copy(const BaseVector& v);
     virtual double norm() const = 0;
     virtual void normalize() const = 0;
 
@@ -63,7 +64,7 @@ public:
     void normalize() const;
     double norm() const;
 
-    double& operator[] (const int index);
+    double& operator[] (const size_t index);
 
     // Define dot and cross products of vectors
     friend double dot(const Vector& a, const Vector& b);

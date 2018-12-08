@@ -24,13 +24,12 @@ Complex_Matrix::Complex_Matrix(Complex_Matrix&& m)
 }
 
 Complex_Matrix::Complex_Matrix(const size_t n1, const size_t n2)
- : BaseMatrix()
+ : BaseMatrix(), gsl_mat(gsl_matrix_complex_calloc(n1, n2), gsl_matrix_complex_free)
  // rows and cols are std::vectors of empty GSL::vectors
  // The GSL::Complex_Vector::~Complex_Vector() destructor will be called automatically
  // when the std::vectors go out of scope, we therefore need to initialize them
  // correctly!
  {
-    gsl_mat = std::shared_ptr<gsl_matrix_complex>(gsl_matrix_complex_calloc(n1, n2), gsl_matrix_complex_free);
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_complex_calloc)"
         " failed!");

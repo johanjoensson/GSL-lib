@@ -115,7 +115,7 @@ Vector& Vector::operator= (Vector&& a)
     return *this;
 }
 
-double& Vector::operator[] (const int index)
+double& Vector::operator[] (const size_t index)
 {
     double *res = gsl_vector_ptr(gsl_vec.get(), index);
     if (res == nullptr){
@@ -263,8 +263,8 @@ std::string Vector::to_string() const
 
 double GSL::dot(const Vector& a, const Vector& b)
 {
-    int size_a = a.gsl_vec.get()->size;
-    int size_b = b.gsl_vec.get()->size;
+    size_t size_a = a.gsl_vec.get()->size;
+    size_t size_b = b.gsl_vec.get()->size;
     if(size_a != size_b){
 		throw std::runtime_error("Error in dot product!\nDot product "
         "(scalar product) only defined for vectors of equal length!");
@@ -284,8 +284,8 @@ double GSL::dot(const Vector& a, const Vector& b)
 
 Vector GSL::cross(const Vector& a, const Vector& b)
 {
-    int size_a = a.gsl_vec.get()->size;
-    int size_b = b.gsl_vec.get()->size;
+    size_t size_a = a.gsl_vec.get()->size;
+    size_t size_b = b.gsl_vec.get()->size;
     if(size_a != size_b){
 		throw std::runtime_error("Error in cross product!\nCross product "
         "(vector product) only defined for vectors of equal length!");

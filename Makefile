@@ -28,8 +28,10 @@ BUILD_DIR = build
 
 # Flags for the above defined compilers
 
-CXXFLAGS = -g -std=c++11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) -O0 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
-CFLAGS = -g -std=c11 -Wall -Wextra -Werror -W -pedantic -fPIC -I $(SRC_DIR) -O0 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
+WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2 -Weffc++
+
+CXXFLAGS = -g -std=c++11 $(WFLAGS) -I $(SRC_DIR) -O0 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
+CFLAGS = -g -std=c11 $(WFLAGS) -I $(SRC_DIR) -O0 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
@@ -65,18 +67,18 @@ all: lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $? -o $@
+	$(CXX) $(CXXFLAGS) -fPIC -c $? -o $@
 
 # Create object files from c sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c $? -o $@
+	$(CC) $(CFLAGS) -fPIC -c $? -o $@
 
 # Link numerov_test
 lib$(LIB).so: $(OBJS)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
 test: $(BUILD_DIR)/main.o | lib$(LIB).so
-	$(CXX)  -L. -l$(LIB) -lgsl -Wl,-rpath=. $< -o $@
+	$(CXX)  -L. -lgsl -l$(LIB) -Wl,-rpath=. $< -o $@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 

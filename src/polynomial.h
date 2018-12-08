@@ -33,7 +33,7 @@ namespace GSL{
         Complex evaluate_polynomial(const std::vector<Complex>& coeffs, const int order, const Complex& z)
         {
             std::unique_ptr<gsl_complex[]> ar(new gsl_complex[order + 1]);
-            for(int i = 0; i < order + 1; i++){
+            for(size_t i = 0; i < static_cast<size_t>(order + 1); i++){
                 ar[i] = *coeffs[i].gsl_c;
             }
 
@@ -76,8 +76,8 @@ namespace GSL{
                 + error_str);
             }
 
-            std::vector<double> res(n_roots);
-            for(int i = 0; i < n_roots; i++){
+            std::vector<double> res(static_cast<size_t>(n_roots));
+            for(size_t i = 0; i < static_cast<size_t>(n_roots); i++){
                 res[i] = roots[i];
             }
 
@@ -100,13 +100,13 @@ namespace GSL{
                     &roots[0], &roots[1], &roots[2]);
             }else{
                 /* General polynomial solver! */
-                gsl_poly_complex_workspace* w = gsl_poly_complex_workspace_alloc(order + 1);
+                gsl_poly_complex_workspace* w = gsl_poly_complex_workspace_alloc(static_cast<size_t>(order + 1));
                 std::unique_ptr<double[]> z(new double[2*order]);
                 if(w == nullptr){
                     throw std::runtime_error("Error allocating complex polynomial workspace.");
                 }
-                stat =  gsl_poly_complex_solve(&coeffs[0], order + 1, w, z.get());
-                for(int i = 0; i < order; i++){
+                stat =  gsl_poly_complex_solve(&coeffs[0], static_cast<size_t>(order + 1), w, z.get());
+                for(size_t i = 0; i < static_cast<size_t>(order); i++){
                     roots[i] = gsl_complex_rect(z[2*i], z[2*i + 1]);
                 }
                 n_roots = order;
@@ -119,8 +119,8 @@ namespace GSL{
                 + error_str);
             }
 
-            std::vector<Complex> res(n_roots);
-            for(int i = 0; i < n_roots; i++){
+            std::vector<Complex> res(static_cast<size_t>(n_roots));
+            for(size_t i = 0; i < static_cast<size_t>(n_roots); i++){
                 res[i] = Complex(roots[i]);
             }
 
@@ -148,20 +148,20 @@ namespace GSL{
         int calc_order()
         {
             C zero = {};
-            int i = 0;
-            for(i = coeffs.size() - 1; i >= 0; i--){
-                if(abs(coeffs[i] - zero) > 5e-16){
+            size_t i = 0;
+            for(i = 0; i < coeffs.size(); i--){
+                if(abs(coeffs[coeffs.size() - i - 1] - zero) > 5e-16){
                     break;
                 }
             }
-            return i;
+            return static_cast<int>(i);
         };
     public:
         Polynomial(const std::vector<C>& c)
          : order(0), coeffs(c)
         {
             order = calc_order();
-            coeffs.resize(order + 1);
+            coeffs.resize(static_cast<size_t>(order + 1));
         };
 
         Polynomial(std::initializer_list<C> c)
@@ -197,45 +197,45 @@ namespace GSL{
         Polynomial<X,C> operator+(const Polynomial<X,C> &p) const
         {
             int n = std::max(this->coeffs.size(), p.coeffs.size());
-            std::vector<C> coeffs(n);
-            for(size_t i = 0; i < n; i++){
+            std::vector<C> coeffs_n(n);
+            for(size_t i = 0; i < static_cast<size_t>(n); i++){
                 if(i < this->coeffs.size()){
-                    coeffs[i] += this->coeffs[i];
+                    coeffs_n[i] += this->coeffs[i];
                 }
                 if(i < p.coeffs.size()){
-                    coeffs[i] += p.coeffs[i];
+                    coeffs_n[i] += p.coeffs[i];
                 }
             }
 
-            return Polynomial<X, C>(coeffs);
+            return Polynomial<X, C>(coeffs_n);
         };
 
         Polynomial<X,C> operator-(const Polynomial<X,C> &p) const
         {
             size_t n = std::max(this->coeffs.size(), p.coeffs.size());
-            std::vector<C> coeffs(n, C {});
+            std::vector<C> coeffs_n(n, C {});
             for(size_t i = 0; i < n; i++){
                 if(i < this->coeffs.size()){
-                    coeffs[i] += this->coeffs[i];
+                    coeffs_n[i] += this->coeffs[i];
                 }
                 if(i < p.coeffs.size()){
-                    coeffs[i] -= p.coeffs[i];
+                    coeffs_n[i] -= p.coeffs[i];
                 }
             }
-            return Polynomial<X, C>(coeffs);
+            return Polynomial<X, C>(coeffs_n);
         };
 
         Polynomial<X,C> operator*(const Polynomial<X,C> &p) const
         {
             int n = this->coeffs.size() + p.coeffs.size();
-            std::vector<C> coeffs(n);
+            std::vector<C> coeffs_n(n);
             for(size_t i = 0; i < this->coeffs.size(); i++){
                 for(size_t j = 0; j < p.coeffs.size(); j++){
-                    coeffs[i + j] += this->coeffs[i]*p.coeffs[j];
+                    coeffs_n[i + j] += this->coeffs[i]*p.coeffs[j];
                 }
             }
 
-            return Polynomial<X, C>(coeffs);
+            return Polynomial<X, C>(coeffs_n);
         };
 
         std::pair<Polynomial<X,C>, Polynomial<X,C>> operator/(const Polynomial<X,C> &p) const

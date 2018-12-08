@@ -5,19 +5,14 @@
 using namespace GSL;
 
 Complex_Vector::Complex_Vector(const size_t n)
- : BaseVector()
+ : BaseVector(), gsl_vec(gsl_vector_complex_calloc(n), gsl_vector_complex_free)
 {
-    gsl_vec = std::shared_ptr<gsl_vector_complex>(gsl_vector_complex_calloc(n), gsl_vector_complex_free);
     if(gsl_vec.get() == nullptr){
         throw std::runtime_error("Memory allocation (gsl_vector_complex_alloc)"
         " failed!");
     }
 }
 
-
-Complex_Vector::Complex_Vector(Complex_Vector& v)
- : BaseVector(), gsl_vec(v.gsl_vec)
-{}
 
 Complex_Vector::Complex_Vector(const Complex_Vector& v)
  : BaseVector(),  gsl_vec(v.gsl_vec)
@@ -29,18 +24,10 @@ Complex_Vector::Complex_Vector(Complex_Vector&& v)
     std::swap(gsl_vec, v.gsl_vec);
 }
 
-
-Complex_Vector::Complex_Vector(gsl_vector_complex& v)
-{
-    gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
-    *gsl_vec = v;
-    gsl_vec->owner = 0;
-}
-
 Complex_Vector::Complex_Vector(const gsl_vector_complex& v)
+ : Complex_Vector(v.size)
 {
-    gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
-    *gsl_vec = v;
+    gsl_vector_complex_memcpy(gsl_vec.get(), &v);
     gsl_vec->owner = 0;
 }
 
@@ -53,8 +40,7 @@ Complex_Vector::Complex_Vector(std::initializer_list<Complex> l)
 }
 
 Complex_Vector::~Complex_Vector()
-{
-}
+{}
 
 void Complex_Vector::normalize() const
 {
@@ -105,7 +91,7 @@ Complex_Vector& Complex_Vector::operator= (Complex_Vector&& a)
     return *this;
 }
 
-Complex Complex_Vector::operator[] (const int index)
+Complex Complex_Vector::operator[] (const size_t index)
 {
     gsl_complex* res = gsl_vector_complex_ptr(gsl_vec.get(), index);
     if(res == nullptr){
@@ -337,8 +323,8 @@ std::string Complex_Vector::to_string() const
 
 Complex GSL::dot(const Complex_Vector& a, const Complex_Vector& b)
 {
-    int size_a = a.gsl_vec.get()->size;
-    int size_b = b.gsl_vec.get()->size;
+    size_t size_a = a.gsl_vec.get()->size;
+    size_t size_b = b.gsl_vec.get()->size;
     if(size_a != size_b){
 		throw std::runtime_error("Error in dot product!\nDot product "
         "(scalar product) only defined for vectors of equal length!");
@@ -358,8 +344,8 @@ Complex GSL::dot(const Complex_Vector& a, const Complex_Vector& b)
 
 Complex_Vector GSL::cross(const Complex_Vector& a, const Complex_Vector& b)
 {
-    int size_a = a.gsl_vec.get()->size;
-    int size_b = b.gsl_vec.get()->size;
+    size_t size_a = a.gsl_vec.get()->size;
+    size_t size_b = b.gsl_vec.get()->size;
     if(size_a != size_b){
 		throw std::runtime_error("Error in cross product!\nCross product "
         "(vector product) only defined for vectors of equal length!");

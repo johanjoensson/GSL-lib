@@ -28,13 +28,12 @@ Matrix::Matrix(Matrix&& m)
 }
 
 Matrix::Matrix(const size_t n1, const size_t n2)
- : BaseMatrix()
+ : BaseMatrix(), gsl_mat(gsl_matrix_calloc(n1, n2), gsl_matrix_free)
  // rows and cols are std::vectors of empty GSL::vectors
  // The GSL::Vector::~Vector() destructor will be called automatically
  // when the std::vectors go out of scope, we therefore need to initialize them
  // correctly!
  {
-    gsl_mat = std::shared_ptr<gsl_matrix>(gsl_matrix_calloc(n1, n2), gsl_matrix_free);
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_calloc)"
         " failed!");
