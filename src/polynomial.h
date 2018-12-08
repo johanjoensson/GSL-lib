@@ -32,9 +32,11 @@ namespace GSL{
 
         Complex evaluate_polynomial(const std::vector<Complex>& coeffs, const int order, const Complex& z)
         {
+            size_t idx = 0;
             std::unique_ptr<gsl_complex[]> ar(new gsl_complex[order + 1]);
-            for(size_t i = 0; i < static_cast<size_t>(order + 1); i++){
-                ar[i] = *coeffs[i].gsl_c;
+            for(int i = 0; i < order + 1; i++){
+                idx = static_cast<size_t>(i);
+                ar[idx] = *coeffs[idx].gsl_c;
             }
 
             gsl_complex res = gsl_complex_poly_complex_eval(ar.get(), order + 1, *z.gsl_c);
@@ -106,8 +108,10 @@ namespace GSL{
                     throw std::runtime_error("Error allocating complex polynomial workspace.");
                 }
                 stat =  gsl_poly_complex_solve(&coeffs[0], static_cast<size_t>(order + 1), w, z.get());
-                for(size_t i = 0; i < static_cast<size_t>(order); i++){
-                    roots[i] = gsl_complex_rect(z[2*i], z[2*i + 1]);
+                size_t idx = 0;
+                for(int i = 0; i < order; i++){
+                    idx = static_cast<size_t>(i);
+                    roots[idx] = gsl_complex_rect(z[2*idx], z[2*idx + 1]);
                 }
                 n_roots = order;
                 gsl_poly_complex_workspace_free(w);

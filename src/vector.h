@@ -22,6 +22,12 @@ protected:
 public:
 
     virtual ~BaseVector(){};
+    BaseVector(){};
+    BaseVector(const BaseVector&) = default;
+    BaseVector(BaseVector&&) = default;
+
+    BaseVector& operator=(const BaseVector&){ return *this;};
+    BaseVector& operator=(BaseVector&&){ return *this;};
 //    virtual void copy(const BaseVector& v);
     virtual double norm() const = 0;
     virtual void normalize() const = 0;
@@ -38,7 +44,6 @@ class Vector : public BaseVector{
     // Store a reference to the gsl_vector
 //    gsl_vector* gsl_vec;
     std::shared_ptr<gsl_vector> gsl_vec;
-    Vector(gsl_vector& v);
     Vector(const gsl_vector& v);
 public:
     // Create an empty vector (no data at all)

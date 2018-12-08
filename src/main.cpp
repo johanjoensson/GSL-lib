@@ -156,6 +156,6 @@ int main()
 {
 	test_vector();
 	test_complex_vector();
-	
+
 	return 0;
 }

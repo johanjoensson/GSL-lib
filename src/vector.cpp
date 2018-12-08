@@ -10,11 +10,11 @@ std::ostream& GSL::operator<< (std::ostream& os, const BaseVector& a)
 }
 
 Vector::Vector()
-: gsl_vec(nullptr)
+ : BaseVector(), gsl_vec(nullptr)
 {}
 
 Vector::Vector(const size_t n)
- : gsl_vec(gsl_vector_calloc(n), gsl_vector_free)
+ :  BaseVector(),gsl_vec(gsl_vector_calloc(n), gsl_vector_free)
 {
 //    gsl_vec = std::shared_ptr<gsl_vector>(gsl_vector_calloc(n), gsl_vector_free);
     if(gsl_vec == nullptr){
@@ -24,34 +24,24 @@ Vector::Vector(const size_t n)
 }
 
 Vector::Vector(Vector& v)
- : gsl_vec(v.gsl_vec)
+ :  BaseVector(), gsl_vec(v.gsl_vec)
 {}
 
 Vector::Vector(const Vector& v)
- : gsl_vec(v.gsl_vec)
+ :  BaseVector(), gsl_vec(v.gsl_vec)
 {}
 
 Vector::Vector(Vector&& v)
- : gsl_vec(nullptr)
+ :  BaseVector(), gsl_vec(nullptr)
 {
     std::swap(gsl_vec, v.gsl_vec);
 }
-
-Vector::Vector(gsl_vector& v)
- : Vector()
-{
-    gsl_vec = std::shared_ptr<gsl_vector>(new gsl_vector);
-    *gsl_vec = v;
-    gsl_vec->owner = 0;
-}
-
 
 Vector::Vector(const gsl_vector& v)
  : Vector()
 {
     gsl_vec = std::shared_ptr<gsl_vector>(new gsl_vector);
     *gsl_vec = v;
-    gsl_vec->owner = 0;
 }
 
 Vector::Vector(std::initializer_list<double> l)

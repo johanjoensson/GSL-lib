@@ -25,10 +25,10 @@ Complex_Vector::Complex_Vector(Complex_Vector&& v)
 }
 
 Complex_Vector::Complex_Vector(const gsl_vector_complex& v)
- : Complex_Vector(v.size)
+ : Complex_Vector()
 {
-    gsl_vector_complex_memcpy(gsl_vec.get(), &v);
-    gsl_vec->owner = 0;
+    gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
+    *gsl_vec = v;
 }
 
 Complex_Vector::Complex_Vector(std::initializer_list<Complex> l)

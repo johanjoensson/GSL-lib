@@ -10,8 +10,13 @@ namespace GSL{class Matrix;}
 namespace GSL{
     class BaseMatrix{
     protected:
-//        virtual void copy(const BaseMatrix &m) = delete;
-	virtual ~BaseMatrix(){};
+        BaseMatrix(){};
+        BaseMatrix(BaseMatrix &m) = default;
+        BaseMatrix(BaseMatrix &&m) = default;
+
+        BaseMatrix& operator=(const BaseMatrix &m) = default;
+        BaseMatrix& operator=(BaseMatrix &&m) = default;
+        virtual ~BaseMatrix(){};
         virtual std::string to_string() const = 0;
 
         friend std::ostream& operator<<(std::ostream &os, const BaseMatrix &m);
