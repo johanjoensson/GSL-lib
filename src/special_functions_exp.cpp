@@ -21,6 +21,7 @@ Result GSL::exp(const double& x)
     int stat = gsl_sf_exp_e(x, &res);
     if(stat == GSL_EUNDRFLW){
         res.val = 0.;
+        res.err = 0.;
     }else if(stat){
         print_error_message("exponential", stat);
     }
@@ -33,6 +34,7 @@ Result GSL::exp_mult(const double& x, const double& y)
     int stat = gsl_sf_exp_mult_e(x, y, &res);
     if(stat == GSL_EUNDRFLW){
         res.val = 0.;
+        res.err = 0.;
     }else if(stat){
         print_error_message("exponential and mult", stat);
     }

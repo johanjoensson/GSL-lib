@@ -30,7 +30,7 @@ BUILD_DIR = build
 
 WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2 -Weffc++
 
-CXXFLAGS = -g -std=c++11 $(WFLAGS) -I $(SRC_DIR) -O0 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
+CXXFLAGS = -std=c++11 $(WFLAGS) -I $(SRC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -O2
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
@@ -45,7 +45,9 @@ LIB_OBJ = divided_difference.o\
 	  matrix.o\
 	  complex_vector.o\
 	  complex_matrix.o\
+	  permutation.o\
 	  eigen.o\
+	  linalg.o\
 	  basic_math.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\

@@ -2,6 +2,7 @@
 #define COMPLEX_MATRIX_H
 #include "complex_vector.h"
 #include "matrix.h"
+#include "permutation.h"
 #include <gsl/gsl_matrix.h>
 #include <vector>
 
@@ -50,6 +51,7 @@ namespace GSL{
         friend Complex_Vector operator* (const Complex_Vector& v, const Complex_Matrix& a);
 
         Complex_Matrix transpose() const;
+        Complex_Matrix hermitian_transpose() const;
 
         friend bool operator== (const Complex_Matrix& u, const Complex_Matrix& v);
         friend bool operator!= (const Complex_Matrix& u, const Complex_Matrix& v);
@@ -61,8 +63,15 @@ namespace GSL{
         Complex_Vector diag();
         Complex_Vector get_col(const size_t i);
 
-        friend void hermitian_eigen(Complex_Matrix& eigvecs, Vector& eigvals);
-        friend void general_hermitian_eigen(const Complex_Matrix& A, const Complex_Matrix& B, Complex_Matrix& eigvecs, Vector& eigvals);
+        friend Complex_Matrix cholesky_decomp(const Complex_Matrix& a);
+        friend Complex_Matrix lu_inverse(const Complex_Matrix& a);
+        friend std::pair<Complex_Matrix, Permutation&> lu_decomp(
+            const Complex_Matrix& a);
+
+        friend std::pair<Complex_Matrix, Vector> hermitian_eigen(
+            const Complex_Matrix& A);
+        friend std::pair<Complex_Matrix, Vector> general_hermitian_eigen(
+            const Complex_Matrix& A, const Complex_Matrix& B);
     };
 
     Complex_Matrix operator*(const double& s, const Complex_Matrix& a);

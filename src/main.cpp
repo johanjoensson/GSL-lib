@@ -8,6 +8,7 @@
 #include "special_functions.h"
 #include "polynomial.h"
 #include "divided_difference.h"
+#include "linalg.h"
 
 #include <gsl/gsl_sf_result.h>
 #include <gsl/gsl_matrix.h>
@@ -72,7 +73,7 @@ void test_vector()
 	a3[2] = 1.0;
 
 	Matrix m(3,3);
-	m[0] = a1;
+	m[0][0] = a1[0];
 	m[1] = a2;
 	m[2] = 1*a3 + 0.24*a1 + 0*a2;
 
@@ -130,7 +131,7 @@ void test_complex_vector()
 	a3.set(2, Complex(1.0, 0));
 
 	Complex_Matrix m(3,3);
-	m[0].set(0, Complex(1.0, 0.));
+	m[0][0] = Complex(1.0, 0.);
 	m.set_row(1, a2);
 	m[2] = a3+2*a1;
 
@@ -152,10 +153,23 @@ void test_complex_vector()
 	std::cout << m[1] << " != " << a2 << " = " << (m[0] != a1) << std::endl;
 	std::cout << std::string(80, '*') << std::endl;
 }
+
+void test_linalg()
+{
+	Complex_Matrix m(3,3);
+	m[0].set(0, Complex(1, 0));
+	m[1].set(1, Complex(1, 0));
+	m[2].set(2, Complex(1, 0));
+	std::cout << m << std::endl;
+	std::cout << cholesky_decomp(m) << std::endl;
+}
+
 int main()
 {
 	test_vector();
 	test_complex_vector();
+
+	test_linalg();
 
 	return 0;
 }

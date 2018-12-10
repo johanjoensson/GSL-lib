@@ -7,16 +7,17 @@
 
 using namespace GSL;
 
-void GSL::hermitian_eigen(Complex_Matrix& eigvecs, Vector& eigvals)
+std::pair<Complex_Matrix, Vector> GSL::hermitian_eigen(const Complex_Matrix& A)
 {
-    size_t N = eigvecs.gsl_mat.get()->size1;
+    size_t N = A.gsl_mat->size1;
     std::unique_ptr<gsl_eigen_hermv_workspace,
         std::function<void(gsl_eigen_hermv_workspace*)>>
             w(gsl_eigen_hermv_alloc(N),
                 gsl_eigen_hermv_free);
-    Complex_Matrix tmp_mat(N, N);
-    int status = gsl_eigen_hermv(eigvecs.gsl_mat.get(), eigvals.gsl_vec.get(),
-        tmp_mat.gsl_mat.get(), w.get());
+    Complex_Matrix eigvecs(N, N);
+    Vector eigvals(N);
+    int status = gsl_eigen_hermv(A.gsl_mat.get(), eigvals.gsl_vec.get(),
+        eigvecs.gsl_mat.get(), w.get());
 
     if(status){
         std::string error_str =   gsl_strerror(status);
@@ -24,27 +25,30 @@ void GSL::hermitian_eigen(Complex_Matrix& eigvecs, Vector& eigvals)
         + error_str);
     }
 
-    eigvecs.copy(tmp_mat);
+    return std::pair<Complex_Matrix, Vector>(eigvecs, eigvals);
 }
 
-void GSL::general_hermitian_eigen(const Complex_Matrix&A, const Complex_Matrix&B, Complex_Matrix& eigvecs, Vector& eigvals)
+std::pair<Complex_Matrix, Vector> GSL::general_hermitian_eigen(
+    const Complex_Matrix&A, const Complex_Matrix&B)
 {
     size_t N = A.gsl_mat.get()->size1;
     Complex_Matrix a(N,N), b(N,N);
+    GSL::Vector eigvals(N);
+    Complex_Matrix eigvecs(N, N);
     a.copy(A);
     b.copy(B);
+
     std::unique_ptr<gsl_eigen_genhermv_workspace,
         std::function<void(gsl_eigen_genhermv_workspace*)>>
             w(gsl_eigen_genhermv_alloc(N),
                 gsl_eigen_genhermv_free);
-    Complex_Matrix tmp_mat(N, N);
     int status = gsl_eigen_genhermv(a.gsl_mat.get(), b.gsl_mat.get(), eigvals.gsl_vec.get(),
-        tmp_mat.gsl_mat.get(), w.get());
+        eigvecs.gsl_mat.get(), w.get());
     if(status){
         std::string error_str =   gsl_strerror(status);
-        throw std::runtime_error("Error in solving Hermitian eigenproblem.\nGSL error: "
+        throw std::runtime_error("Error in solving general Hermitian eigenproblem.\nGSL error: "
         + error_str);
     }
 
-    eigvecs.copy(tmp_mat);
+    return std::pair<Complex_Matrix, Vector>(eigvecs, eigvals);
 }

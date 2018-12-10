@@ -89,6 +89,7 @@ Result GSL::operator*(const Result& a, const Result& b)
     int stat = gsl_sf_multiply_err_e(a.val, a.err, b.val, b.err, &res);
     if(stat == GSL_EUNDRFLW){
 	    res.val = 0.;
+        res.err = 0;
     }else if(stat){
         print_error_message("multiplication", stat);
     }
@@ -101,6 +102,7 @@ Result GSL::operator*(const Result& a, const double& b)
     int stat = gsl_sf_multiply_err_e(a.val, a.err, b, 0., &res);
     if(stat == GSL_EUNDRFLW){
 	    res.val = 0.;
+        res.err = 0;
     }else if(stat){
         print_error_message("multiplication", stat);
     }
@@ -113,6 +115,7 @@ Result GSL::operator*(const double& a, const Result& b)
     int stat = gsl_sf_multiply_err_e(a, 0., b.val, 0, &res);
     if(stat == GSL_EUNDRFLW){
 	    res.val = 0.;
+        res.err = 0;
     }else if(stat){
         print_error_message("multiplication", stat);
     }
@@ -125,6 +128,7 @@ Result GSL::operator/(const Result& a, const Result& b)
     int stat = gsl_sf_multiply_err_e(a.val, a.err, 1./b.val, b.err, &res);
     if(stat == GSL_EUNDRFLW){
 	    res.val = 0.;
+        res.err = 0;
     }else if(stat){
         print_error_message("division", stat);
     }
@@ -137,6 +141,7 @@ Result GSL::operator/(const Result& a, const double& b)
     int stat = gsl_sf_multiply_err_e(a.val, a.err, 1./b, 0., &res);
     if(stat == GSL_EUNDRFLW){
 	    res.val = 0.;
+        res.err = 0;
     }else if(stat){
         print_error_message("mdivision", stat);
     }
@@ -149,6 +154,7 @@ Result GSL::operator/(const double& a, const Result& b)
     int stat = gsl_sf_multiply_err_e(a, 0, 1./b.val, 0., &res);
     if(stat == GSL_EUNDRFLW){
 	    res.val = 0.;
+        res.err = 0;
     }else if(stat){
         print_error_message("division", stat);
     }

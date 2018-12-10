@@ -143,7 +143,7 @@ namespace GSL{
     template<class X, class C>
     class Polynomial{
     private:
-        size_t order;
+        size_t  order;
         std::vector<C> coeffs;
         size_t calc_order()
         {

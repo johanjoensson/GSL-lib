@@ -290,6 +290,16 @@ Complex_Matrix Complex_Matrix::transpose() const
     return res;
 }
 
+Complex_Matrix Complex_Matrix::hermitian_transpose() const
+{
+    Complex_Matrix tmp = this->transpose();
+    for(size_t i = 0; i < this->gsl_mat->size1; i++){
+        for(size_t j = 0; j < this->gsl_mat->size1; j++){
+            tmp[i][j] = tmp[i][j].conjugate();
+        }
+    }
+    return tmp;
+}
 
 bool GSL::operator== (const Complex_Matrix& u, const Complex_Matrix& v)
 {

@@ -100,8 +100,10 @@ public:
     friend bool (operator==)(const Vector&, const Vector&);
     friend bool (operator!=)(const Vector&, const Vector&);
 
-    friend void hermitian_eigen(Complex_Matrix& eigves, Vector& eigvals);
-    friend void general_hermitian_eigen(const Complex_Matrix& A, const Complex_Matrix& B, Complex_Matrix& eigvecs, Vector& eigvals);
+    friend std::pair<Complex_Matrix, Vector> hermitian_eigen(
+        const Complex_Matrix& A);
+    friend std::pair<Complex_Matrix, Vector> general_hermitian_eigen(
+        const Complex_Matrix& A, const Complex_Matrix& B);
 };
 
 

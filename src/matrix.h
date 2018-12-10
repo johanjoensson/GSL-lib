@@ -81,6 +81,8 @@ namespace GSL{
 
         std::string to_string() const;
 
+        friend Matrix cholesky_decomp(const Matrix& a);
+
     };
 
     Matrix operator*(const double& s, const Matrix& a);

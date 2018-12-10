@@ -1,5 +1,6 @@
 #ifndef LINALG_H
 #define LINALG_H
+
 #include "vector.h"
 #include "matrix.h"
 #include "complex_vector.h"
@@ -13,9 +14,10 @@ namespace GSL{
         ANTISYMMETRIC,
 
     };
-    void hermitian_eigen(Complex_Matrix& eigvecs, Vector& eigvals);
-    void general_hermitian_eigen(const Complex_Matrix& A, const Complex_Matrix& B, Complex_Matrix& eigvecs, Vector& eigvals);
 
+    std::pair<Complex_Matrix, Vector> hermitian_eigen(const Complex_Matrix& A);
+    std::pair<Complex_Matrix, Vector> general_hermitian_eigen(
+        const Complex_Matrix& A, const Complex_Matrix& B);
 }
 
 
