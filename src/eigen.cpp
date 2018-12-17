@@ -10,13 +10,15 @@ using namespace GSL;
 std::pair<Complex_Matrix, Vector> GSL::hermitian_eigen(const Complex_Matrix& A)
 {
     size_t N = A.gsl_mat->size1;
+    Complex_Matrix a(N,N);
     std::unique_ptr<gsl_eigen_hermv_workspace,
         std::function<void(gsl_eigen_hermv_workspace*)>>
             w(gsl_eigen_hermv_alloc(N),
                 gsl_eigen_hermv_free);
     Complex_Matrix eigvecs(N, N);
     Vector eigvals(N);
-    int status = gsl_eigen_hermv(A.gsl_mat.get(), eigvals.gsl_vec.get(),
+    a.copy(A);
+    int status = gsl_eigen_hermv(a.gsl_mat.get(), eigvals.gsl_vec.get(),
         eigvecs.gsl_mat.get(), w.get());
 
     if(status){
