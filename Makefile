@@ -26,11 +26,17 @@ SRC_DIR = src
 # Build directory
 BUILD_DIR = build
 
+# Library directory
+LIB_DIR = lib/GSLpp
+
+# include directory
+INC_DIR = include/GSLpp
+
 # Flags for the above defined compilers
 
 WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2 -Weffc++
 
-CXXFLAGS = -std=c++11 $(WFLAGS) -I $(SRC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -O2
+CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -O0 -g
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
@@ -62,10 +68,10 @@ LIB_OBJ = divided_difference.o\
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 
 # Targets to always execute, even if new files with the same names exists
-.PHONY: all clean cleanall
+.PHONY: all clean cleanall bin $(LIB_DIR) $(INC_DIR)
 
 # Build all executables
-all: lib$(LIB).so $(TEST)
+all: bin $(LIB_DIR) $(INC_DIR) lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -77,10 +83,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 
 # Link numerov_test
 lib$(LIB).so: $(OBJS)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CXX) $(LDFLAGS) $^ -o $(LIB_DIR)/$@
 
 test: $(BUILD_DIR)/main.o | lib$(LIB).so
-	$(CXX)  -L. -lgsl -l$(LIB) -Wl,-rpath=. $< -o $@
+	$(CXX)  -L$(LIB_DIR) -lgsl -l$(LIB) -Wl,-rpath=$(LIB_DIR) $< -o $@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
@@ -88,10 +94,20 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 travis: CXXFLAGS = -g -std=c++11 -I$(SRC_DIR) -O0 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
 travis: lib$(LIB).so
 
+bin : 
+	mkdir -p build
+
+$(LIB_DIR) : 
+	mkdir -p $(LIB_DIR)
+
+$(INC_DIR) : 
+	mkdir -p $(INC_DIR)
+	cp $(SRC_DIR)/*.h $(INC_DIR)
+
 # Remove object files
 clean:
 	rm -f $(BUILD_DIR)/*.o
 
 # Remove executables and object files
 cleanall:
-	rm -f $(LIB) test $(BUILD_DIR)/*.o
+	rm -f $(LIB_DIR)/lib$(LIB).so* $(INC_DIR)/*.h test $(BUILD_DIR)/*.o
