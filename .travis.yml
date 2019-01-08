@@ -62,6 +62,10 @@ before_install:
     - $CXX --version
     - pip install --user cpp-coveralls
     - sudo apt-get install -y libgsl0-dev libopenblas-dev libgtest-dev
+    - cd /usr/src/gtest
+    - cmake CMakeLists.txt
+    - make
+    - cp *.a /usr/lib
 
 script:
     - make travis
