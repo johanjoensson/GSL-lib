@@ -63,7 +63,7 @@ before_install:
     - pip install --user cpp-coveralls
     - sudo apt-get install -y libgsl0-dev libopenblas-dev libgtest-dev cmake
     - wget https://github.com/google/googletest/archive/master.zip
-    - unzip googletest-master.zip
+    - unzip master.zip
     - cd googletest-master
     - cmake cmake -DBUILD_SHARED_LIBS=ON .
     - make
