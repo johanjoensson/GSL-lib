@@ -95,8 +95,8 @@ lib$(LIB).so: $(OBJS)
 lib$(LIB)cov.so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$@ $(LDFLAGS)
 
-test: lib$(LIB).so | $(BUILD_DIR)/main.o
-	$(CXX) $< -o $@ -L$(LIB_DIR) -l$(LIB) -Wl,-rpath=$(LIB_DIR)
+tester:   $(BUILD_DIR)/main.o | lib$(LIB).so
+	$(CXX) $< -o $@ -L$(LIB_DIR) -l$(LIB) -lgsl -Wl,-rpath=$(LIB_DIR)
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
@@ -127,4 +127,4 @@ clean:
 
 # Remove executables and object files
 cleanall:
-	rm -f $(LIB_DIR)/lib$(LIB).so* $(INC_DIR)/*.h tests $(BUILD_DIR)/*.o
+	rm -f $(LIB_DIR)/lib$(LIB).so* $(INC_DIR)/*.h tests tester $(BUILD_DIR)/*.o
