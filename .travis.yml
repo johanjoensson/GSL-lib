@@ -67,8 +67,8 @@ before_install:
     - cd googletest-master
     - cmake cmake -DBUILD_SHARED_LIBS=ON .
     - make
-    - cp -a googletest/include/gtest /usr/include
-    - cp -a lib/*.so /usr/lib
+    - sudo cp -a googletest/include/gtest /usr/include
+    - sudo cp -a lib/*.so /usr/lib
     - cd "${TRAVIS_BUILD_DIR}"
 
 script:
