@@ -61,7 +61,7 @@ before_install:
     - eval "${MATRIX_EVAL}"
     - $CXX --version
     - pip install --user cpp-coveralls
-    - sudo apt-get install -y libgsl0-dev libopenblas-dev
+    - sudo apt-get install -y libgsl0-dev libopenblas-dev libgtest-dev
 
 script:
     - make travis
