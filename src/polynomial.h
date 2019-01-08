@@ -150,7 +150,7 @@ namespace GSL{
             C zero = {};
             size_t i = 0;
             for(i = 0; i < coeffs.size(); i--){
-                if(abs(coeffs[coeffs.size() - i - 1] - zero) > 1e-15){
+                if(std::abs(coeffs[coeffs.size() - i - 1] - zero) > 1e-15){
                     break;
                 }
             }

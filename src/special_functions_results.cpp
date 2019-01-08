@@ -247,7 +247,7 @@ std::ostream& GSL::operator<<(std::ostream& os, const Result& R)
 
 bool GSL::operator==(const Result& a, const Result& b)
 {
-    return (a.val == b.val) && (abs(a.err - b.err) < 1E-16);
+    return (a.val == b.val) && (std::abs(a.err - b.err) < 1E-16);
 }
 
 bool GSL::operator!=(const Result& a, const Result& b)
