@@ -98,6 +98,7 @@ Complex Complex_Vector::operator[] (const size_t index)
         throw std::runtime_error("Index out of range!");
     }
 
+//    Complex* tmp = new Complex(res);
     return Complex(res);
 }
 
@@ -364,11 +365,11 @@ Complex_Vector GSL::cross(const Complex_Vector& a, const Complex_Vector& b)
     Complex_Vector res(3);
 
     tmp  = a_tmp[1]*b_tmp[2] - a_tmp[2]*b_tmp[1];
-    (res)[0] = gsl_complex_rect(tmp.re, tmp.im);
+    (res)[0] = gsl_complex_rect(tmp.re(), tmp.im());
     tmp = a_tmp[2]*b_tmp[0] - a_tmp[0]*b_tmp[2];
-    (res)[1] = gsl_complex_rect(tmp.re, tmp.im);
+    (res)[1] = gsl_complex_rect(tmp.re(), tmp.im());
     tmp = a_tmp[0]*b_tmp[1] - a_tmp[1]*b_tmp[0];
-    (res)[2] = gsl_complex_rect(tmp.re, tmp.im);
+    (res)[2] = gsl_complex_rect(tmp.re(), tmp.im());
 
     return res;
 }

@@ -1,4 +1,0 @@
-# TODO
-1. Create base classes Vector and Matrix
-2. Write derived classes for real and complex vectors and matrices
-3. Expand implementation of GSL linalg

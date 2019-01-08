@@ -6,6 +6,7 @@
 #include <gsl/gsl_complex.h>
 #include <iostream>
 #include <vector>
+#include <memory>
 
 namespace GSL{class Complex_Vector; class Complex_Matrix;}
 

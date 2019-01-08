@@ -29,9 +29,7 @@ class Complex
 
     std::shared_ptr<gsl_complex> gsl_c;
 public:
-    double re, im;
-    Complex();
-    Complex(const double& a, const double& b = 0);
+    Complex(const double& a = 0, const double& b = 0);
     Complex(gsl_complex* z);
     Complex(const gsl_complex& z);
     Complex(const Complex& z);
@@ -41,10 +39,12 @@ public:
     Complex& operator=(const Complex& z);
     Complex& operator=(Complex&& z);
 
-    double abs();
-    double arg();
-    double abs2();
-    double logabs();
+    double& re() const; 
+    double& im() const;
+    double abs() const;
+    double arg() const;
+    double abs2() const;
+    double logabs() const;
     Complex conjugate() const;
     Complex recipr() const;
     Complex negate() const;

@@ -5,72 +5,69 @@
 using namespace GSL;
 
 Complex::Complex(const double& a, const double& b)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr)
 {
     this->gsl_c = std::shared_ptr<gsl_complex>(new gsl_complex);
     *this->gsl_c = gsl_complex_rect(a,b);
-    re =  gsl_c->dat[0];
-    im = gsl_c->dat[1];
 }
 
 void del(gsl_complex*){}
 Complex::Complex(gsl_complex* z)
- : gsl_c(z, del), re(), im()
-{
-    re = gsl_c->dat[0];
-    im = gsl_c->dat[1];
-}
+ : gsl_c(z, del)
+{}
 
 Complex::Complex(const gsl_complex& z)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr)
 {
     this->gsl_c = std::shared_ptr<gsl_complex>(new gsl_complex);
     *this->gsl_c = z;
-    re = gsl_c->dat[0];
-    im = gsl_c->dat[1];
 }
 
 Complex::Complex(const Complex& z)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr)
 {
     this->gsl_c = z.gsl_c;
-    this->re = this->gsl_c->dat[0];
-    this->im = this->gsl_c->dat[1];
 }
 
 Complex::Complex(Complex&& z)
- : gsl_c(nullptr), re(), im()
+ : gsl_c(nullptr)
 {
     std::swap(gsl_c, z.gsl_c);
-    std::swap(re, z.re);
-    std::swap(im, z.im);
-}
-
-Complex::Complex()
-    : Complex(0.0,0.0)
-{
 }
 
 Complex::~Complex()
 {}
+
+double& Complex::re() const
+{
+	return this->gsl_c->dat[0];
+}
+
+double& Complex::im() const
+{
+	return this->gsl_c->dat[1];
+}
 
 Complex& Complex::operator= (const Complex& z)
 {
     if(this == &z){
         return *this;
     }
+    //this->gsl_c->dat[0] = z.gsl_c->dat[0];
+    //this->gsl_c->dat[1] = z.gsl_c->dat[1];
     this->gsl_c = z.gsl_c;
-    this->re = this->gsl_c->dat[0];
-    this->im = this->gsl_c->dat[1];
 
     return *this;
 }
 
 Complex& Complex::operator= (Complex&& m)
 {
-    std::swap(this->gsl_c, m.gsl_c);
-    std::swap(this->re, m.re);
-    std::swap(this->im, m.im);
+	if(this->gsl_c != nullptr && m.gsl_c != nullptr){
+		std::swap(this->gsl_c->dat[0], m.gsl_c->dat[0]);
+		std::swap(this->gsl_c->dat[1], m.gsl_c->dat[1]);
+	}else{
+		std::swap(this->gsl_c, m.gsl_c);
+	}
 
     return *this;
 }
@@ -196,7 +193,7 @@ Complex& Complex::operator/=(const double& s)
 
 bool GSL::operator==(const Complex& a, const Complex& b)
 {
-    return (a.re == b.re) && (a.im == b.im);
+    return (a.re() == b.re()) && (a.im() == b.im());
 }
 
 bool GSL::operator!=(const Complex& a, const Complex& b)
@@ -204,22 +201,22 @@ bool GSL::operator!=(const Complex& a, const Complex& b)
     return !(a == b);
 }
 
-double Complex::abs()
+double Complex::abs() const
 {
     return gsl_complex_abs(*gsl_c.get());
 }
 
-double Complex::abs2()
+double Complex::abs2() const
 {
     return gsl_complex_abs2(*gsl_c.get());
 }
 
-double Complex::logabs()
+double Complex::logabs() const
 {
     return gsl_complex_logabs(*gsl_c.get());
 }
 
-double Complex::arg()
+double Complex::arg() const
 {
     return gsl_complex_arg(*gsl_c.get());
 }
@@ -422,16 +419,16 @@ double abs(GSL::Complex z)
 std::string Complex::to_string() const
 {
     std::string res = "";
-    std::string real = std::to_string(this->re);
-    std::string imag = std::to_string(this->im);
-    if (this->im > 0){
-        if (this->im == 1){
+    std::string real = std::to_string(this->re());
+    std::string imag = std::to_string(this->im());
+    if (this->im() > 0){
+        if (this->im() == 1){
             res = real + " + i";
         }else{
             res = real + " + " + imag + "i";
         }
-    }else if (this->im < 0){
-        if(this->im == -1){
+    }else if (this->im() < 0){
+        if(this->im() == -1){
             res = real + " - i";
         }else{
             res = real + " " + imag + "i";
