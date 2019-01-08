@@ -83,10 +83,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 
 # Link numerov_test
 lib$(LIB).so: $(OBJS)
-	$(CXX) $(LDFLAGS) $^ -o $(LIB_DIR)/$@
+	$(CXX) $^ $(LDFLAGS) -o $(LIB_DIR)/$@
 
 test: $(BUILD_DIR)/main.o | lib$(LIB).so
-	$(CXX)  -L$(LIB_DIR) -lgsl -l$(LIB) -Wl,-rpath=$(LIB_DIR) $< -o $@
+	$(CXX) $< -L$(LIB_DIR) -lgsl -l$(LIB) -Wl,-rpath=$(LIB_DIR) -o $@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
