@@ -76,4 +76,4 @@ script:
     - make tests && ./tests
 
 after_success:
-    - coveralls --exclude lib --exclude test --gcov-options '\lp'
+    - coveralls --exclude lib --exclude test
