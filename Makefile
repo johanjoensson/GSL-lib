@@ -11,9 +11,9 @@
 
 # Compilers to use
 #CXX = clang++
-CXX = g++
+CXX ?= g++
 #CC  = clang
-CC  = gcc
+CC  ?= gcc
 
 CXXCHECK = clang-tidy
 
