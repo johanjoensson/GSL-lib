@@ -65,3 +65,7 @@ before_install:
 
 script:
     - make travis
+    - make tests && ./tests
+
+after_success:
+    - coveralls --exclude lib --exclude test --gcov-options '\lp'

@@ -18,10 +18,10 @@ CC  ?= gcc
 CXXCHECK = clang-tidy
 
 # List of all executables in this project
-TEST = test
 LIB = GSLpp
 # Source files directory
 SRC_DIR = src
+TEST_DIR = test
 
 # Build directory
 BUILD_DIR = build
@@ -42,7 +42,7 @@ CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugpr
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS = -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so
+LDFLAGS =-lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so
 
 
 LIB_OBJ = divided_difference.o\
@@ -65,7 +65,11 @@ LIB_OBJ = divided_difference.o\
 	  special_functions_results.o\
 	  error.o
 
+TEST_OBJ =  main_tests.o\
+ 	    complex_test.o\
+
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
+TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
 
 # Targets to always execute, even if new files with the same names exists
 .PHONY: all clean cleanall bin $(LIB_DIR) $(INC_DIR)
@@ -77,6 +81,9 @@ all: bin $(LIB_DIR) $(INC_DIR) lib$(LIB).so $(TEST)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $? -o $@
 
+$(BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $? -o $@
+
 # Create object files from c sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -fPIC -c $? -o $@
@@ -85,13 +92,23 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 lib$(LIB).so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$@ $(LDFLAGS)
 
-test: $(BUILD_DIR)/main.o | lib$(LIB).so
-	$(CXX) $< -o $@ -L$(LIB_DIR) -lgsl -l$(LIB) -Wl,-rpath=$(LIB_DIR)
+lib$(LIB)cov.so: $(OBJS)
+	$(CXX) $^ -o $(LIB_DIR)/$@ $(LDFLAGS)
+
+test: lib$(LIB).so | $(BUILD_DIR)/main.o
+	$(CXX) $< -o $@ -L$(LIB_DIR) -l$(LIB) -Wl,-rpath=$(LIB_DIR)
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
-travis: CXXFLAGS = -std=c++11 -I$(SRC_DIR) -O0 -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
+
+tests: 	CXXFLAGS = -std=c++11 -I$(SRC_DIR) -I$(TEST_DIR) -O0 -fprofile-arcs -ftest-coverage
+tests:  LDFLAGS = -lgcov -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB)cov.so
+tests: 	clean $(TEST_OBJS) | lib$(LIB)cov.so
+	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR) -l$(LIB)cov -lgcov -lgtest -Wl,-rpath=$(LIB_DIR)
+
+
+travis: CXXFLAGS = -std=c++11 -I$(SRC_DIR) -O0
 travis: $(BUILD_DIR) $(LIB_DIR) $(INC_DIR) lib$(LIB).so
 
 $(BUILD_DIR) : 
@@ -110,4 +127,4 @@ clean:
 
 # Remove executables and object files
 cleanall:
-	rm -f $(LIB_DIR)/lib$(LIB).so* $(INC_DIR)/*.h test $(BUILD_DIR)/*.o
+	rm -f $(LIB_DIR)/lib$(LIB).so* $(INC_DIR)/*.h tests $(BUILD_DIR)/*.o
