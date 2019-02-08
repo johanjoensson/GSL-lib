@@ -338,14 +338,14 @@ std::string Matrix::to_string() const
 
     res = "[";
     for(size_t i = 0; i < size_1; i++){
-        if(i > 0){
+        if(i > 0 && i < size_1 - 1){
             res += ", ";
         }
         res += "( ";
         for(size_t j = 0; j < size_2; j++){
             tmp = gsl_matrix_get(this->gsl_mat.get(), i, j);
             res += std::to_string(tmp);
-            if(i < size_2 - 1){
+            if(j < size_2 - 1){
                 res += ",";
             }
             res += " ";

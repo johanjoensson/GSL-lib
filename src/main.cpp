@@ -113,6 +113,12 @@ void test_vector()
 
 	std::cout << "m[0] x a2 = " << m[0] << " x " << a2 << " = " << cross(m[0], a2) << std::endl;
 	std::cout << std::string(80, '*') << std::endl;
+
+	std::cout << "Iterating over v :\n";
+	for(auto val : v){
+		std::cout << val << " ";
+	}
+	std::cout << "\n";
 }
 
 void test_complex_vector()

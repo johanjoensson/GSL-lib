@@ -14,18 +14,13 @@ Vector::Vector()
 {}
 
 Vector::Vector(const size_t n)
- :  BaseVector(),gsl_vec(gsl_vector_calloc(n), gsl_vector_free)
+ :  BaseVector(), gsl_vec(gsl_vector_calloc(n), gsl_vector_free)
 {
-//    gsl_vec = std::shared_ptr<gsl_vector>(gsl_vector_calloc(n), gsl_vector_free);
     if(gsl_vec == nullptr){
         throw std::runtime_error("Memory allocation (gsl_vector_calloc)"
         " failed!");
     }
 }
-
-Vector::Vector(Vector& v)
- :  BaseVector(), gsl_vec(v.gsl_vec)
-{}
 
 Vector::Vector(const Vector& v)
  :  BaseVector(), gsl_vec(v.gsl_vec)
@@ -38,7 +33,7 @@ Vector::Vector(Vector&& v)
 }
 
 Vector::Vector(const gsl_vector& v)
- : Vector()
+ : BaseVector(), gsl_vec(nullptr)
 {
     gsl_vec = std::shared_ptr<gsl_vector>(new gsl_vector);
     *gsl_vec = v;
@@ -69,6 +64,15 @@ void Vector::normalize() const
 double Vector::norm() const
 {
     return gsl_blas_dnrm2(this->gsl_vec.get());
+}
+
+size_t Vector::dim() const
+{
+	if(gsl_vec != nullptr){
+		return gsl_vec->size;
+	}else{
+		return 0;
+	}
 }
 
 Vector& Vector::operator= (const Vector &a)
@@ -302,11 +306,6 @@ Vector GSL::cross(const Vector& a, const Vector& b)
 
 // Make this a copy of the Vector a
 // Copy the data, not just the pointers!
-/*******************************************************************************
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*! This is not implemented correctly, something is wrong!
-*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-*******************************************************************************/
 void Vector::copy(const Vector& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -334,3 +333,322 @@ bool GSL::operator!=(const Vector& a, const Vector& b)
 {
     return !(a == b);
 }
+
+bool Vector::iterator::operator==(const Vector::iterator& it) const
+{
+    return data_m == it.data_m;
+}
+
+bool Vector::iterator::operator!=(const Vector::iterator& it) const
+{
+    return !(*this == it);
+}
+
+bool Vector::iterator::operator<(const Vector::iterator& it) const
+{
+    return data_m < it.data_m;
+}
+
+bool Vector::iterator::operator>(const Vector::iterator& it) const
+{
+    return data_m > it.data_m;
+}
+
+bool Vector::iterator::operator<=(const Vector::iterator& it) const
+{
+    return !(*this > it);
+}
+
+bool Vector::iterator::operator>=(const Vector::iterator& it) const
+{
+    return !(*this < it);
+}
+
+Vector::iterator& Vector::iterator::operator++()
+{
+    (this->data_m)++;
+    return *this;
+}
+
+Vector::iterator Vector::iterator::operator++(int)
+{
+    Vector::iterator tmp = *this;
+    (*this)++;
+    return tmp;
+}
+
+
+Vector::iterator& Vector::iterator::operator--()
+{
+    (this->data_m)--;
+    return *this;
+}
+
+Vector::iterator Vector::iterator::operator--(int)
+{
+    Vector::iterator tmp = *this;
+    (*this)--;
+    return tmp;
+}
+
+Vector::iterator& Vector::iterator::operator+=(Vector::size_type n)
+{
+    this->data_m += n;
+    return *this;
+}
+
+
+Vector::iterator Vector::iterator::operator+(Vector::size_type n) const
+{
+    Vector::iterator tmp = *this;
+    tmp += n;
+    return tmp;
+}
+
+Vector::iterator GSL::operator+(Vector::size_type n, const Vector::iterator& it)
+{
+    Vector::iterator tmp = it;
+    tmp += n;
+    return tmp;
+}
+
+Vector::iterator& Vector::iterator::operator-=(Vector::size_type n)
+{
+    this->data_m -= n;
+    return *this;
+}
+
+
+Vector::iterator Vector::iterator::operator-(Vector::size_type n) const
+{
+    Vector::iterator tmp = *this;
+    tmp -= n;
+    return tmp;
+}
+
+
+Vector::difference_type Vector::iterator::operator-(const Vector::iterator it) const
+{
+    return data_m - it.data_m;
+}
+
+
+Vector::reference Vector::iterator::operator*() const
+{
+    return *data_m;
+}
+
+Vector::const_iterator::const_iterator(const Vector::iterator& it)
+ : data_m(it.data_m)
+{}
+
+bool Vector::const_iterator::operator==(const Vector::const_iterator& it) const
+{
+    return data_m == it.data_m;
+}
+
+bool Vector::const_iterator::operator!=(const Vector::const_iterator& it) const
+{
+    return !(*this == it);
+}
+
+bool Vector::const_iterator::operator<(const Vector::const_iterator& it) const
+{
+    return data_m < it.data_m;
+}
+
+bool Vector::const_iterator::operator>(const Vector::const_iterator& it) const
+{
+    return data_m > it.data_m;
+}
+
+bool Vector::const_iterator::operator<=(const Vector::const_iterator& it) const
+{
+    return !(*this > it);
+}
+
+bool Vector::const_iterator::operator>=(const Vector::const_iterator& it) const
+{
+    return !(*this < it);
+}
+
+
+Vector::const_iterator& Vector::const_iterator::operator++()
+{
+    (this->data_m)++;
+    return *this;
+}
+
+Vector::const_iterator Vector::const_iterator::operator++(int)
+{
+    Vector::const_iterator tmp = *this;
+    (*this)++;
+    return tmp;
+}
+
+Vector::const_iterator& Vector::const_iterator::operator--()
+{
+    (this->data_m)--;
+    return *this;
+}
+
+Vector::const_iterator Vector::const_iterator::operator--(int)
+{
+    Vector::const_iterator tmp = *this;
+    (*this)--;
+    return tmp;
+}
+
+Vector::const_iterator& Vector::const_iterator::operator+=(size_type n)
+{
+    this->data_m += n;
+    return *this;
+}
+
+Vector::const_iterator Vector::const_iterator::operator+(size_type n) const
+{
+    Vector::const_iterator tmp = *this;
+    tmp += n;
+    return tmp;
+}
+
+Vector::const_iterator GSL::operator+(Vector::size_type n, const Vector::const_iterator& it)
+{
+    Vector::const_iterator tmp = it;
+    tmp += n;
+    return tmp;
+}
+
+Vector::const_iterator& Vector::const_iterator::operator-=(Vector::size_type n)
+{
+    this->data_m -= n;
+    return *this;
+}
+
+Vector::const_iterator Vector::const_iterator::operator-(Vector::size_type n) const
+{
+    Vector::const_iterator tmp = *this;
+    tmp -= n;
+    return tmp;
+}
+
+Vector::difference_type Vector::const_iterator::operator-(Vector::const_iterator it) const
+{
+    return data_m - it.data_m;
+}
+
+const Vector::reference Vector::const_iterator::operator*() const
+{
+    return *data_m;
+}
+
+Vector::iterator Vector::begin()
+{
+    return iterator(gsl_vector_ptr(gsl_vec.get(), 0));
+}
+
+Vector::const_iterator Vector::begin() const
+{
+    return const_iterator(gsl_vector_ptr(gsl_vec.get(), 0));
+}
+
+Vector::const_iterator Vector::cbegin() const
+{
+    return const_iterator(gsl_vector_ptr(gsl_vec.get(), 0));
+}
+
+Vector::iterator Vector::end()
+{
+    return this->begin() + gsl_vec.get()->size;
+}
+
+Vector::const_iterator Vector::end() const
+{
+    return this->begin() + gsl_vec.get()->size;
+}
+Vector::const_iterator Vector::cend() const
+{
+    return this->begin() + gsl_vec.get()->size;
+}
+
+Vector::reverse_iterator Vector::rbegin()
+{
+    return reverse_iterator(--(this->end()));
+}
+
+Vector::const_reverse_iterator Vector::rbegin() const
+{
+    return const_reverse_iterator(--(this->end()));
+}
+
+Vector::const_reverse_iterator Vector::crbegin() const
+{
+    return const_reverse_iterator(--(this->cend()));
+}
+
+Vector::reverse_iterator Vector::rend()
+{
+    return reverse_iterator(--(this->begin()));
+}
+
+Vector::const_reverse_iterator Vector::rend() const
+{
+    return const_reverse_iterator(--(this->begin()));
+}
+
+Vector::const_reverse_iterator Vector::crend() const
+{
+    return const_reverse_iterator(--(this->cbegin()));
+}
+
+Vector::reference Vector::front()
+{
+    return *(this->begin());
+}
+
+Vector::const_reference Vector::front() const
+{
+    return *(this->cbegin());
+}
+
+Vector::reference Vector::back()
+{
+    return *(this->rbegin());
+}
+
+Vector::const_reference Vector::back() const
+{
+    return *(this->crend());
+}
+/*
+template<class ...Args>
+void emplace_front(Args&&...); //optional
+template<class ...Args>
+void emplace_back(Args&&...); //optional
+void push_front(const T&); //optional
+void push_front(T&&); //optional
+void push_back(const T&); //optional
+void push_back(T&&); //optional
+void pop_front(); //optional
+void pop_back(); //optional
+reference operator[](size_type); //optional
+const_reference operator[](size_type) const; //optional
+reference at(size_type); //optional
+const_reference at(size_type) const; //optional
+
+template<class ...Args>
+iterator emplace(const_iterator, Args&&...); //optional
+iterator insert(const_iterator, const T&); //optional
+iterator insert(const_iterator, T&&); //optional
+iterator insert(const_iterator, size_type, T&); //optional
+template<class iter>
+iterator insert(const_iterator, iter, iter); //optional
+iterator insert(const_iterator, std::initializer_list<T>); //optional
+iterator erase(const_iterator); //optional
+iterator erase(const_iterator, const_iterator); //optional
+void clear(); //optional
+template<class iter>
+void assign(iter, iter); //optional
+void assign(std::initializer_list<T>); //optional
+void assign(size_type, const T&); //optional
+*/

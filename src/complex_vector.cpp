@@ -15,7 +15,7 @@ Complex_Vector::Complex_Vector(const size_t n)
 
 
 Complex_Vector::Complex_Vector(const Complex_Vector& v)
- : BaseVector(),  gsl_vec(v.gsl_vec)
+ : BaseVector(), gsl_vec(v.gsl_vec)
 {}
 
 Complex_Vector::Complex_Vector(Complex_Vector&& v)
@@ -25,7 +25,7 @@ Complex_Vector::Complex_Vector(Complex_Vector&& v)
 }
 
 Complex_Vector::Complex_Vector(const gsl_vector_complex& v)
- : Complex_Vector()
+ : BaseVector(), gsl_vec(nullptr)
 {
     gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
     *gsl_vec = v;
@@ -56,6 +56,15 @@ void Complex_Vector::normalize() const
 double Complex_Vector::norm() const
 {
     return gsl_blas_dznrm2(this->gsl_vec.get());
+}
+
+size_t Complex_Vector::dim() const
+{
+	if(gsl_vec != nullptr){
+		return gsl_vec->size;
+	}else{
+		return 0;
+	}
 }
 
 Complex_Vector& Complex_Vector::operator= (const Complex_Vector &a)
@@ -397,4 +406,210 @@ void Complex_Vector::set(size_t i, const Complex& z)
 Complex Complex_Vector::get(size_t i)
 {
     return Complex(gsl_vector_complex_get(this->gsl_vec.get(), i));
+}
+
+bool Complex_Vector::iterator::operator==(const Complex_Vector::iterator& it) const
+{
+    return data_m == it.data_m;
+}
+
+bool Complex_Vector::iterator::operator!=(const Complex_Vector::iterator& it) const
+{
+    return !(*this == it);
+}
+
+bool Complex_Vector::iterator::operator<(const Complex_Vector::iterator& it) const
+{
+    return data_m < it.data_m;
+}
+
+bool Complex_Vector::iterator::operator>(const Complex_Vector::iterator& it) const
+{
+    return data_m > it.data_m;
+}
+
+bool Complex_Vector::iterator::operator<=(const Complex_Vector::iterator& it) const
+{
+    return !(*this > it);
+}
+
+bool Complex_Vector::iterator::operator>=(const Complex_Vector::iterator& it) const
+{
+    return !(*this < it);
+}
+
+Complex_Vector::iterator& Complex_Vector::iterator::operator++()
+{
+    (this->data_m)++;
+    return *this;
+}
+
+Complex_Vector::iterator Complex_Vector::iterator::operator++(int)
+{
+    Complex_Vector::iterator tmp = *this;
+    (*this)++;
+    return tmp;
+}
+
+
+Complex_Vector::iterator& Complex_Vector::iterator::operator--()
+{
+    (this->data_m)--;
+    return *this;
+}
+
+Complex_Vector::iterator Complex_Vector::iterator::operator--(int)
+{
+    Complex_Vector::iterator tmp = *this;
+    (*this)--;
+    return tmp;
+}
+
+Complex_Vector::iterator& Complex_Vector::iterator::operator+=(Complex_Vector::size_type n)
+{
+    this->data_m += n;
+    return *this;
+}
+
+
+Complex_Vector::iterator Complex_Vector::iterator::operator+(Complex_Vector::size_type n) const
+{
+    Complex_Vector::iterator tmp = *this;
+    tmp += n;
+    return tmp;
+}
+
+Complex_Vector::iterator GSL::operator+(Complex_Vector::size_type n, const Complex_Vector::iterator& it)
+{
+    Complex_Vector::iterator tmp = it;
+    tmp += n;
+    return tmp;
+}
+
+Complex_Vector::iterator& Complex_Vector::iterator::operator-=(Complex_Vector::size_type n)
+{
+    this->data_m -= n;
+    return *this;
+}
+
+
+Complex_Vector::iterator Complex_Vector::iterator::operator-(Complex_Vector::size_type n) const
+{
+    Complex_Vector::iterator tmp = *this;
+    tmp -= n;
+    return tmp;
+}
+
+
+Complex_Vector::difference_type Complex_Vector::iterator::operator-(const Complex_Vector::iterator it) const
+{
+    return data_m - it.data_m;
+}
+
+
+Complex_Vector::reference Complex_Vector::iterator::operator*()
+{
+    c_m = Complex(data_m);
+    return c_m;
+}
+
+bool Complex_Vector::const_iterator::operator==(const Complex_Vector::const_iterator& it) const
+{
+    return data_m == it.data_m;
+}
+
+bool Complex_Vector::const_iterator::operator!=(const Complex_Vector::const_iterator& it) const
+{
+    return !(*this == it);
+}
+
+bool Complex_Vector::const_iterator::operator<(const Complex_Vector::const_iterator& it) const
+{
+    return data_m < it.data_m;
+}
+
+bool Complex_Vector::const_iterator::operator>(const Complex_Vector::const_iterator& it) const
+{
+    return data_m > it.data_m;
+}
+
+bool Complex_Vector::const_iterator::operator<=(const Complex_Vector::const_iterator& it) const
+{
+    return !(*this > it);
+}
+
+bool Complex_Vector::const_iterator::operator>=(const Complex_Vector::const_iterator& it) const
+{
+    return !(*this < it);
+}
+
+
+Complex_Vector::const_iterator& Complex_Vector::const_iterator::operator++()
+{
+    (this->data_m)++;
+    return *this;
+}
+
+Complex_Vector::const_iterator Complex_Vector::const_iterator::operator++(int)
+{
+    Complex_Vector::const_iterator tmp = *this;
+    (*this)++;
+    return tmp;
+}
+
+Complex_Vector::const_iterator& Complex_Vector::const_iterator::operator--()
+{
+    (this->data_m)--;
+    return *this;
+}
+
+Complex_Vector::const_iterator Complex_Vector::const_iterator::operator--(int)
+{
+    Complex_Vector::const_iterator tmp = *this;
+    (*this)--;
+    return tmp;
+}
+
+Complex_Vector::const_iterator& Complex_Vector::const_iterator::operator+=(size_type n)
+{
+    this->data_m += n;
+    return *this;
+}
+
+Complex_Vector::const_iterator Complex_Vector::const_iterator::operator+(size_type n) const
+{
+    Complex_Vector::const_iterator tmp = *this;
+    tmp += n;
+    return tmp;
+}
+
+Complex_Vector::const_iterator GSL::operator+(Complex_Vector::size_type n, const Complex_Vector::const_iterator& it)
+{
+    Complex_Vector::const_iterator tmp = it;
+    tmp += n;
+    return tmp;
+}
+
+Complex_Vector::const_iterator& Complex_Vector::const_iterator::operator-=(Complex_Vector::size_type n)
+{
+    this->data_m -= n;
+    return *this;
+}
+
+Complex_Vector::const_iterator Complex_Vector::const_iterator::operator-(Complex_Vector::size_type n) const
+{
+    Complex_Vector::const_iterator tmp = *this;
+    tmp -= n;
+    return tmp;
+}
+
+Complex_Vector::difference_type Complex_Vector::const_iterator::operator-(Complex_Vector::const_iterator it) const
+{
+    return data_m - it.data_m;
+}
+
+const Complex_Vector::reference Complex_Vector::const_iterator::operator*()
+{
+    c_m = Complex(data_m);
+    return c_m;
 }

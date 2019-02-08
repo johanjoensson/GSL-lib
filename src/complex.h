@@ -39,7 +39,7 @@ public:
     Complex& operator=(const Complex& z);
     Complex& operator=(Complex&& z);
 
-    double& re() const; 
+    double& re() const;
     double& im() const;
     double abs() const;
     double arg() const;
