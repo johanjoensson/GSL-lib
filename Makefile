@@ -10,10 +10,10 @@
 ################################################################################
 
 # Compilers to use
-CXX = clang++
-#CXX ?= g++
-CC  = clang
-#CC  ?= gcc
+#CXX = clang++
+CXX ?= g++
+#CC  = clang
+CC  ?= gcc
 
 CXXCHECK = clang-tidy
 
