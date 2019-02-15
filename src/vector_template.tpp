@@ -3192,17 +3192,17 @@ typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
 }
 
 template<class T, class G, class A> template<class iter>
-void Vector_t<T, G, A>::assign(iter start, iter end)
+void Vector_t<T, G, A>::assign(iter start_it, iter end_it)
 {
-    if(end - start < 0){
+    if(end_it - start_it < 0){
         throw(std::runtime_error("Error in assign! End point comes before starting point\n"));
-    }else if(static_cast<Vector_t<T, G, A>::size_type>(end - start) > this->size() ){
+    }else if(static_cast<Vector_t<T, G, A>::size_type>(end_it - start_it) > this->size() ){
         throw(std::runtime_error("Attemptingto assign too many values! Vector too short\n"));
     }
 
     auto current = this->begin();
-    iter counter = start;
-    while(counter != end){
+    iter counter = start_it;
+    while(counter != end_it){
         *current = *counter;
         current++;
         counter++;

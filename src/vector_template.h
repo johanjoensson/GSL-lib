@@ -74,8 +74,8 @@ public:
     Vector_t(const size_type n);
     // Create a new reference to the gsl_vector inside v
     // Do not allocate anything, only reference stuff!
-    Vector_t(const Vector_t& v) = default;
-    Vector_t(Vector_t&& v) = default;
+    Vector_t(const Vector_t& v);
+    Vector_t(Vector_t&& v);
     Vector_t(std::initializer_list<T>);
     // Deallocate vector, keeping in mind that several vectors might reference
     // the same gsl_vector.
