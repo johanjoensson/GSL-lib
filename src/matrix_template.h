@@ -92,10 +92,10 @@ public:
     Matrix_t(const size_type n1, const size_type n2);
     // Create a new reference to the gsl_matrix inside v
     // Do not allocate anything, only reference stuff!
-    Matrix_t(const Matrix_t& v);
-    Matrix_t(Matrix_t&& v);
+    Matrix_t(const Matrix_t& v) = default;
+    Matrix_t(Matrix_t&& v) = default;
     Matrix_t(std::initializer_list<std::initializer_list<T>>);
-    ~Matrix_t(){};
+    ~Matrix_t() = default;
 
     operator GSL_MAT() const {return *this->gsl_mat;};
 

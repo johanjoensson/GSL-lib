@@ -93,10 +93,10 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 
-tests: 	CXXFLAGS = -std=c++11 -I$(SRC_DIR) -I$(TEST_DIR) -O0 -fprofile-arcs -ftest-coverage
+tests: 	CXXFLAGS = -std=c++11 -I$(TEST_DIR) -O0 -fprofile-arcs -ftest-coverage
 tests:  LDFLAGS = -lgcov --coverage -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB)cov.so
 tests: 	clean $(TEST_OBJS) | lib$(LIB)cov.so
-	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB)cov -lgcov --coverage -lgtest -lgsl -Wl,-rpath=$(LIB_DIR)/$(LIB)
+	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB)cov -lgcov --coverage -lgsl -lopenblas
 
 
 travis: CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0
@@ -119,4 +119,4 @@ clean:
 
 # Remove executables and object files
 cleanall: clean
-	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(INC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)/*.tpp tests tester
+	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(LIB_DIR)/$(LIB)/lib$(LIB)cov.so* $(INC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)/*.tpp tests tester

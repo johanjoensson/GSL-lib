@@ -168,19 +168,6 @@ inline Matrix_t<Complex_f, gsl_matrix_complex_float,
     }
 }
 
-template<class T, class GSL_MAT, class GSL_VEC, class A>
-Matrix_t<T, GSL_MAT, GSL_VEC, A>::Matrix_t(const Matrix_t& v)
- : gsl_mat(v.gsl_mat), v_m(v.v_m)
-{}
-
-template<class T, class GSL_MAT, class GSL_VEC, class A>
-Matrix_t<T, GSL_MAT, GSL_VEC, A>::Matrix_t(Matrix_t&& v)
- : gsl_mat(nullptr), v_m()
-{
-    std::swap(this->gsl_mat, v.gsl_mat);
-    std::swap(this->v_m, v.v_m);
-}
-
 template<>
 inline Matrix_t<double, gsl_matrix, gsl_vector>::
 Matrix_t(std::initializer_list<std::initializer_list<double>> l)
