@@ -451,6 +451,12 @@ Matrix_t(std::initializer_list<std::initializer_list<Complex_f>> l)
     }
 }
 
+template<class T, class GSL_MAT, class GSL_VEC, class A>
+Matrix_t<T, GSL_MAT, GSL_VEC, A>::operator GSL_MAT() const
+{
+    return *this->gsl_mat;
+}
+
 template<>
 inline void Matrix_t<double, gsl_matrix, gsl_vector>::copy(const Matrix_t<double, gsl_matrix, gsl_vector>& a)
 {

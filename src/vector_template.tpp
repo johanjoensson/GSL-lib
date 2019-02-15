@@ -331,6 +331,12 @@ Vector_t(std::initializer_list<Complex_f> l)
     }
 }
 
+template<class T, class GSL_VEC, class A>
+Vector_t<T, GSL_VEC, A>::operator GSL_VEC() const
+{
+    return *this->gsl_vec;
+}
+
 template<>
 inline void Vector_t<double, gsl_vector>::copy(const Vector_t<double, gsl_vector>& a)
 {

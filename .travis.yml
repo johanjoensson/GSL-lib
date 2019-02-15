@@ -65,7 +65,7 @@ before_install:
     - wget https://github.com/google/googletest/archive/master.zip
     - unzip master.zip
     - cd googletest-master
-    - cmake cmake -DBUILD_SHARED_LIBS=ON .
+    - cmake -DBUILD_SHARED_LIBS=ON .
     - make
     - sudo cp -a googletest/include/gtest /usr/include
     - sudo cp -a lib/*.so /usr/lib

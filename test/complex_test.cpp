@@ -1,4 +1,4 @@
-#include "complex.h"
+#include "GSLpp/complex.h"
 #include <gtest/gtest.h>
 
 TEST(ComplexTest, TestEqual)

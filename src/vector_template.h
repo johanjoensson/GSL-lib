@@ -81,7 +81,8 @@ public:
     // the same gsl_vector.
     ~Vector_t() = default;
 
-    operator GSL_VEC() const {return *this->gsl_vec;};
+    // operator GSL_VEC() const {return *this->gsl_vec;};
+    operator GSL_VEC() const;
 
     size_type size() const;
     size_type dim() const;

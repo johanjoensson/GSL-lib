@@ -97,7 +97,8 @@ public:
     Matrix_t(std::initializer_list<std::initializer_list<T>>);
     ~Matrix_t() = default;
 
-    operator GSL_MAT() const {return *this->gsl_mat;};
+    // operator GSL_MAT() const {return *this->gsl_mat;};
+    operator GSL_MAT() const;
 
     // Actually copy data from the other matrix, don't just reference it
     void copy(const Matrix_t& a);
