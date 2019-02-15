@@ -342,7 +342,7 @@ std::string Complex_Matrix::to_string() const
 
     std::string res = "[";
     for(size_t i = 0; i < size_1; i++){
-        if(i > 0){
+        if(i > 0 && i < size_1){
             res += ", ";
         }
         res += "( ";

@@ -7,15 +7,15 @@
 
 using namespace GSL;
 
-std::pair<Complex_Matrix, Vector> GSL::hermitian_eigen(const Complex_Matrix& A)
+std::pair<Matrix_cx, Vector> GSL::hermitian_eigen(const Matrix_cx& A)
 {
     size_t N = A.gsl_mat->size1;
-    Complex_Matrix a(N,N);
+    Matrix_cx a(N,N);
     std::unique_ptr<gsl_eigen_hermv_workspace,
         std::function<void(gsl_eigen_hermv_workspace*)>>
             w(gsl_eigen_hermv_alloc(N),
                 gsl_eigen_hermv_free);
-    Complex_Matrix eigvecs(N, N);
+    Matrix_cx eigvecs(N, N);
     Vector eigvals(N);
     a.copy(A);
     int status = gsl_eigen_hermv(a.gsl_mat.get(), eigvals.gsl_vec.get(),
@@ -27,16 +27,16 @@ std::pair<Complex_Matrix, Vector> GSL::hermitian_eigen(const Complex_Matrix& A)
         + error_str + "\n");
     }
 
-    return std::pair<Complex_Matrix, Vector>(eigvecs, eigvals);
+    return std::pair<Matrix_cx, Vector>(eigvecs, eigvals);
 }
 
-std::pair<Complex_Matrix, Vector> GSL::general_hermitian_eigen(
-    const Complex_Matrix&A, const Complex_Matrix&B)
+std::pair<Matrix_cx, Vector> GSL::general_hermitian_eigen(
+    const Matrix_cx&A, const Matrix_cx&B)
 {
     size_t N = A.gsl_mat.get()->size1;
-    Complex_Matrix a(N,N), b(N,N);
+    Matrix_cx a(N,N), b(N,N);
     GSL::Vector eigvals(N);
-    Complex_Matrix eigvecs(N, N);
+    Matrix_cx eigvecs(N, N);
     a.copy(A);
     b.copy(B);
 
@@ -52,5 +52,5 @@ std::pair<Complex_Matrix, Vector> GSL::general_hermitian_eigen(
         + error_str + "\n");
     }
 
-    return std::pair<Complex_Matrix, Vector>(eigvecs, eigvals);
+    return std::pair<Matrix_cx, Vector>(eigvecs, eigvals);
 }

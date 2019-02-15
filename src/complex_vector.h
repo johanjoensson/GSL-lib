@@ -49,6 +49,8 @@ public:
     void normalize() const;
     double norm() const;
 
+    size_t dim() const;
+
     Complex operator[] (const size_t index);
 
     // Define dot and cross products of vectors
@@ -88,6 +90,131 @@ public:
 
     std::string to_string() const;
 
+    typedef std::allocator<Complex> allocator_type;
+    typedef typename std::allocator<Complex>::value_type value_type;
+    typedef typename std::allocator<Complex>::reference reference;
+    typedef typename std::allocator<Complex>::const_reference const_reference;
+    typedef typename std::allocator<Complex>::difference_type difference_type;
+    typedef typename std::allocator<Complex>::size_type size_type;
+
+    class const_iterator;
+    class iterator {
+    public:
+        typedef typename std::allocator<Complex>::difference_type difference_type;
+        typedef typename std::allocator<Complex>::value_type value_type;
+        typedef typename std::allocator<Complex>::reference reference;
+        typedef typename std::allocator<Complex>::pointer pointer;
+        typedef std::random_access_iterator_tag iterator_category;
+
+        iterator():data_m(nullptr), c_m() {};
+        iterator(const iterator& it) : data_m(it.data_m), c_m(data_m) {};
+        iterator(iterator&& it) : data_m(nullptr), c_m()
+        {
+            std::swap(data_m, it.data_m);
+            std::swap(c_m, it.c_m);
+        };
+        ~iterator(){};
+
+        iterator& operator=(const iterator& it)
+        {
+            data_m = it.data_m;
+            c_m = it.c_m;
+            return *this;
+        };
+
+        iterator& operator=(iterator&& it)
+        {
+            std::swap(data_m, it.data_m);
+            std::swap(c_m, it.c_m);
+            return *this;
+        };
+
+        bool operator==(const iterator&) const;
+        bool operator!=(const iterator&) const;
+        bool operator<(const iterator&) const;
+        bool operator>(const iterator&) const;
+        bool operator<=(const iterator&) const;
+        bool operator>=(const iterator&) const;
+
+        iterator& operator++();
+        iterator operator++(int);
+        iterator& operator--();
+        iterator operator--(int);
+        iterator& operator+=(size_type);
+        iterator operator+(size_type) const;
+        friend iterator operator+(size_type, const iterator&);
+        iterator& operator-=(size_type);
+        iterator operator-(size_type) const;
+        difference_type operator-(iterator) const;
+
+        reference operator*();
+        friend class const_iterator;
+    private:
+        gsl_complex* data_m;
+        Complex c_m;
+    };
+
+    class const_iterator{
+    public:
+        typedef typename std::allocator<Complex>::difference_type difference_type;
+        typedef typename std::allocator<Complex>::value_type value_type;
+        typedef typename std::allocator<Complex>::reference reference;
+        typedef typename std::allocator<Complex>::pointer pointer;
+        typedef std::random_access_iterator_tag iterator_category;
+
+
+        const_iterator():data_m(nullptr), c_m() {};
+        const_iterator(const const_iterator& it) : data_m(it.data_m), c_m(data_m) {};
+        const_iterator(const iterator& it) : data_m(it.data_m), c_m(data_m) {};
+        const_iterator(const_iterator&& it) : data_m(nullptr), c_m()
+        {
+            std::swap(data_m, it.data_m);
+            std::swap(c_m, it.c_m);
+        };
+        const_iterator(iterator&& it) : data_m(nullptr), c_m()
+        {
+            std::swap(data_m, it.data_m);
+            std::swap(c_m, it.c_m);
+        };
+        ~const_iterator(){};
+
+        const_iterator& operator=(const const_iterator& it)
+        {
+            data_m = it.data_m;
+            c_m = it.c_m;
+            return *this;
+        };
+
+        const_iterator& operator=(const_iterator&& it)
+        {
+            std::swap(data_m, it.data_m);
+            std::swap(c_m, it.c_m);
+            return *this;
+        };
+
+        bool operator==(const const_iterator&) const;
+        bool operator!=(const const_iterator&) const;
+        bool operator<(const const_iterator&) const; //optional
+        bool operator>(const const_iterator&) const; //optional
+        bool operator<=(const const_iterator&) const; //optional
+        bool operator>=(const const_iterator&) const; //optional
+
+        const_iterator& operator++();
+        const_iterator operator++(int); //optional
+        const_iterator& operator--(); //optional
+        const_iterator operator--(int); //optional
+        const_iterator& operator+=(size_type); //optional
+        const_iterator operator+(size_type) const; //optional
+        friend const_iterator operator+(size_type, const const_iterator&); //optional
+        const_iterator& operator-=(size_type); //optional
+        const_iterator operator-(size_type) const; //optional
+        difference_type operator-(const_iterator) const; //optional
+
+        const reference operator*();
+    private:
+        gsl_complex* data_m;
+        Complex c_m;
+    };
 };
 
 Complex_Vector operator*(const double& s, const Complex_Vector& a);
@@ -98,6 +225,8 @@ Complex_Vector operator- (const Complex_Vector& a);
 bool operator==(const Complex_Vector&, const Complex_Vector&);
 bool operator!=(const Complex_Vector&, const Complex_Vector&);
 
+Complex_Vector::const_iterator operator+(Complex_Vector::size_type, const Complex_Vector::const_iterator&);
+Complex_Vector::iterator operator+(Complex_Vector::size_type, const Complex_Vector::iterator&);
 }
 
 #endif //Complex_Vector_GSL_LIB_H
