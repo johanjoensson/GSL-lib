@@ -42,7 +42,7 @@ CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugpr
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS =-lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so
+LDFLAGS =-lgsl -lopenblas_seq_lp64 -shared -Wl,-soname,lib$(LIB).so -L/software/sse/manual/OpenBLAS/0.3.4_skx/g73/lib/
 
 
 LIB_OBJ = divided_difference.o\
