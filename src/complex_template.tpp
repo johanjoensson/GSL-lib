@@ -7,14 +7,14 @@ using namespace GSL;
 
 
 template<>
-inline Complex_t<double, gsl_complex>::Complex_t(const double& a, const double& b)
+inline GSL::Complex_t<double, gsl_complex>::Complex_t(const double& a, const double& b)
  : gsl_c(new gsl_complex)
 {
     *this->gsl_c = gsl_complex_rect(a,b);
 }
 
 template<>
-inline Complex_t<long double, gsl_complex_long_double>::Complex_t(const long double& a, const long double& b)
+inline GSL::Complex_t<long double, gsl_complex_long_double>::Complex_t(const long double& a, const long double& b)
  : gsl_c(new gsl_complex_long_double)
 {
     this->gsl_c->dat[0] = a;
@@ -22,7 +22,7 @@ inline Complex_t<long double, gsl_complex_long_double>::Complex_t(const long dou
 }
 
 template<>
-inline Complex_t<float, gsl_complex_float>::Complex_t(const float& a, const float& b)
+inline GSL::Complex_t<float, gsl_complex_float>::Complex_t(const float& a, const float& b)
  : gsl_c(new gsl_complex_float)
 {
     this->gsl_c->dat[0] = a;
@@ -38,26 +38,26 @@ inline void no_op<gsl_complex_long_double>(gsl_complex_long_double*){}
 template<>
 inline void no_op<gsl_complex_float>(gsl_complex_float*){}
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>::Complex_t(const GSL_COMPLEX& z)
+GSL::Complex_t<T, GSL_COMPLEX>::Complex_t(const GSL_COMPLEX& z)
  : gsl_c(new GSL_COMPLEX)
 {
     *gsl_c = z;
 }
 
 template<class T, class GSL_COMPLEX>
-T& Complex_t<T, GSL_COMPLEX>::re() const
+T& GSL::Complex_t<T, GSL_COMPLEX>::re() const
 {
 	return this->gsl_c->dat[0];
 }
 
 template<class T, class GSL_COMPLEX>
-T& Complex_t<T, GSL_COMPLEX>::im() const
+T& GSL::Complex_t<T, GSL_COMPLEX>::im() const
 {
 	return this->gsl_c->dat[1];
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator= (const Complex_t<T, GSL_COMPLEX>& z)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator= (const GSL::Complex_t<T, GSL_COMPLEX>& z)
 {
     if(this == &z){
         return *this;
@@ -68,250 +68,250 @@ Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator= (const Complex_t
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator= (Complex_t<T, GSL_COMPLEX>&& m)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator= (GSL::Complex_t<T, GSL_COMPLEX>&& m)
 {
     std::swap(this->gsl_c, m.gsl_c);
     return *this;
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator+(const Complex_t<T, G>& b) const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator+(const GSL::Complex_t<T, G>& b) const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res.re() += b.re();
     res.im() += b.im();
     return res;
 }
 
 template<>
-inline Complex Complex::operator+(const Complex& b) const
+inline GSL::Complex GSL::Complex::operator+(const GSL::Complex& b) const
 {
-    return Complex_t(gsl_complex_add(*this->gsl_c.get(), *b.gsl_c.get()));
+    return GSL::Complex(gsl_complex_add(*this->gsl_c.get(), *b.gsl_c.get()));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator+(const T& s) const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator+(const T& s) const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res.re() += s;
     return res;
 }
 
 template<>
-inline Complex Complex::operator+(const double& s) const
+inline GSL::Complex GSL::Complex::operator+(const double& s) const
 {
-    return Complex_t(gsl_complex_add_real(*this->gsl_c.get(), s));
+    return GSL::Complex(gsl_complex_add_real(*this->gsl_c.get(), s));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator-(const Complex_t<T, G>& b) const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator-(const GSL::Complex_t<T, G>& b) const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res.re() -= b.re();
     res.im() -= b.im();
     return res;
 }
 
 template<>
-inline Complex Complex::operator-(const Complex& b) const
+inline GSL::Complex GSL::Complex::operator-(const GSL::Complex& b) const
 {
-    return Complex_t(gsl_complex_sub(*this->gsl_c.get(), *b.gsl_c.get()));
+    return GSL::Complex(gsl_complex_sub(*this->gsl_c.get(), *b.gsl_c.get()));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator-(const T& s) const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator-(const T& s) const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res.re() -= s;
     return res;
 }
 
 template<>
-inline Complex Complex::operator-(const double& s) const
+inline GSL::Complex GSL::Complex::operator-(const double& s) const
 {
-    return Complex_t(gsl_complex_sub_real(*this->gsl_c.get(), s));
+    return GSL::Complex(gsl_complex_sub_real(*this->gsl_c.get(), s));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator-() const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator-() const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res.re() *= -1;
     res.im() *= -1;
     return res;
 }
 
 template<>
-inline Complex Complex::operator-() const
+inline GSL::Complex GSL::Complex::operator-() const
 {
-    return Complex(gsl_complex_negative(*this->gsl_c.get()));
+    return GSL::Complex(gsl_complex_negative(*this->gsl_c.get()));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator*(const Complex_t<T, G>& b) const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator*(const GSL::Complex_t<T, G>& b) const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res.re() = res.re()*b.re() - res.im()*b.im();
     res.im() = res.re()*b.im() + res.im()*b.re();
     return res;
 }
 
 template<>
-inline Complex Complex::operator*(const Complex& b) const
+inline GSL::Complex GSL::Complex::operator*(const GSL::Complex& b) const
 {
-    return Complex(gsl_complex_mul(*this->gsl_c.get(), *b.gsl_c.get()));
+    return GSL::Complex(gsl_complex_mul(*this->gsl_c.get(), *b.gsl_c.get()));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator*(const T& s) const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator*(const T& s) const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res.re() *= s;
     res.im() *= s;
     return res;
 }
 
 template<>
-inline Complex Complex::operator*(const double& s) const
+inline GSL::Complex GSL::Complex::operator*(const double& s) const
 {
-    return Complex(gsl_complex_mul_real(*this->gsl_c.get(), s));
+    return GSL::Complex(gsl_complex_mul_real(*this->gsl_c.get(), s));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator/(const Complex_t<T, G>& b) const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator/(const GSL::Complex_t<T, G>& b) const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res *= b.conjugate()/b.abs2();
     return res;
 }
 
 template<>
-inline Complex Complex::operator/(const Complex& b) const
+inline GSL::Complex GSL::Complex::operator/(const GSL::Complex& b) const
 {
-    return Complex(gsl_complex_div(*this->gsl_c.get(), *b.gsl_c.get()));
+    return GSL::Complex(gsl_complex_div(*this->gsl_c.get(), *b.gsl_c.get()));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::operator/(const T& s) const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::operator/(const T& s) const
 {
-    Complex_t<T, G> res = *this;
+    GSL::Complex_t<T, G> res = *this;
     res.re() /= s;
     res.im() /= s;
     return res;
 }
 
 template<>
-inline Complex Complex::operator/(const double& s) const
+inline GSL::Complex GSL::Complex::operator/(const double& s) const
 {
-    return Complex(gsl_complex_div_real(*this->gsl_c.get(), s));
+    return GSL::Complex(gsl_complex_div_real(*this->gsl_c.get(), s));
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator+=(const Complex_t<T, GSL_COMPLEX>& b)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator+=(const GSL::Complex_t<T, GSL_COMPLEX>& b)
 {
     *this = (*this) + b;
     return *this;
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator-=(const Complex_t<T, GSL_COMPLEX>& b)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator-=(const GSL::Complex_t<T, GSL_COMPLEX>& b)
 {
     *this = (*this) - b;
     return *this;
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator*=(const Complex_t<T, GSL_COMPLEX>& b)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator*=(const GSL::Complex_t<T, GSL_COMPLEX>& b)
 {
     *this = (*this) * b;
     return *this;
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator/=(const Complex_t<T, GSL_COMPLEX>& b)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator/=(const GSL::Complex_t<T, GSL_COMPLEX>& b)
 {
     *this = (*this) / b;
     return *this;
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator+=(const T& s)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator+=(const T& s)
 {
     *this = (*this) + s;
     return *this;
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator-=(const T& s)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator-=(const T& s)
 {
     *this = (*this) - s;
     return *this;
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator*=(const T& s)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator*=(const T& s)
 {
     *this = (*this) * s;
     return *this;
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator/=(const T& s)
+GSL::Complex_t<T, GSL_COMPLEX>& GSL::Complex_t<T, GSL_COMPLEX>::operator/=(const T& s)
 {
     *this = (*this) / s;
     return *this;
 }
 
 template<class T, class GSL_COMPLEX>
-bool Complex_t<T, GSL_COMPLEX>::operator==(const Complex_t<T, GSL_COMPLEX>& b) const
+bool GSL::Complex_t<T, GSL_COMPLEX>::operator==(const GSL::Complex_t<T, GSL_COMPLEX>& b) const
 {
     return (this->re() == b.re()) && (this->im() == b.im());
 }
 
 template<class T, class GSL_COMPLEX>
-bool Complex_t<T, GSL_COMPLEX>::operator!=(const Complex_t<T, GSL_COMPLEX>& b) const
+bool GSL::Complex_t<T, GSL_COMPLEX>::operator!=(const GSL::Complex_t<T, GSL_COMPLEX>& b) const
 {
     return !(*this == b);
 }
 
 template<class T, class G>
-T Complex_t<T, G>::abs() const
+T GSL::Complex_t<T, G>::abs() const
 {
     return std::sqrt(this->abs2());
 }
 
 template<>
-inline double Complex::abs() const
+inline double GSL::Complex::abs() const
 {
     return gsl_complex_abs(*this->gsl_c.get());
 }
 
 template<class T, class G>
-T Complex_t<T, G>::abs2() const
+T GSL::Complex_t<T, G>::abs2() const
 {
     return this->re()*this->re() + this->im()*this->im();
 }
 
 template<>
-inline double Complex::abs2() const
+inline double GSL::Complex::abs2() const
 {
     return gsl_complex_abs2(*this->gsl_c.get());
 }
 
 template<class T, class G>
-T Complex_t<T, G>::logabs() const
+T GSL::Complex_t<T, G>::logabs() const
 {
     return std::log(this->abs());
 }
 
 template<>
-inline double Complex::logabs() const
+inline double GSL::Complex::logabs() const
 {
     return gsl_complex_logabs(*this->gsl_c.get());
 }
 
 template<class T, class G>
-T Complex_t<T, G>::arg() const
+T GSL::Complex_t<T, G>::arg() const
 {
     T res = 0;
     if(this->im() != 0){
@@ -327,246 +327,246 @@ T Complex_t<T, G>::arg() const
 }
 
 template<>
-inline double Complex::arg() const
+inline double GSL::Complex::arg() const
 {
     return gsl_complex_arg(*this->gsl_c.get());
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::conjugate() const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::conjugate() const
 {
-    Complex_t<T, G> tmp = *this;
+    GSL::Complex_t<T, G> tmp = *this;
     tmp.im() *= -1;
     return tmp;
 }
 
 template<>
-inline Complex Complex::conjugate() const
+inline GSL::Complex GSL::Complex::conjugate() const
 {
-    return Complex(gsl_complex_conjugate(*gsl_c.get()));
+    return GSL::Complex(gsl_complex_conjugate(*gsl_c.get()));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::recipr() const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::recipr() const
 {
-    Complex_t<T, G> tmp = this->conjugate();
+    GSL::Complex_t<T, G> tmp = this->conjugate();
     tmp /= tmp.abs2();
     return tmp;
 }
 
 template<>
-inline Complex Complex::recipr() const
+inline GSL::Complex GSL::Complex::recipr() const
 {
-    return Complex(gsl_complex_inverse(*gsl_c.get()));
+    return GSL::Complex(gsl_complex_inverse(*gsl_c.get()));
 }
 
-inline Complex GSL::sqrt(const double& s)
+inline GSL::Complex GSL::sqrt(const double& s)
 {
-    return Complex(gsl_complex_sqrt_real(s));
+    return GSL::Complex(gsl_complex_sqrt_real(s));
 }
 
 template<class T, class G>
-Complex_t<T, G> Complex_t<T, G>::negate() const
+GSL::Complex_t<T, G> GSL::Complex_t<T, G>::negate() const
 {
-    Complex_t<T, G> tmp = *this;
+    GSL::Complex_t<T, G> tmp = *this;
     this->re() *= -1;
     this->im() *= -1;
     return tmp;
 }
 
 template<>
-inline Complex Complex::negate() const
+inline GSL::Complex GSL::Complex::negate() const
 {
-    return Complex(gsl_complex_negative(*gsl_c.get()));
+    return GSL::Complex(gsl_complex_negative(*gsl_c.get()));
 }
 
-inline Complex GSL::sqrt(const Complex& a)
+inline GSL::Complex GSL::sqrt(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_sqrt(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_sqrt(*a.gsl_c.get()));
 }
 
-inline Complex GSL::pow(const Complex& a, const Complex& b)
+inline GSL::Complex GSL::pow(const GSL::Complex& a, const GSL::Complex& b)
 {
-    return Complex(gsl_complex_pow(*a.gsl_c.get(), *b.gsl_c.get()));
+    return GSL::Complex(gsl_complex_pow(*a.gsl_c.get(), *b.gsl_c.get()));
 }
 
-inline Complex GSL::pow(const Complex& a, const double& s)
+inline GSL::Complex GSL::pow(const GSL::Complex& a, const double& s)
 {
-    return Complex(gsl_complex_pow_real(*a.gsl_c.get(), s));
+    return GSL::Complex(gsl_complex_pow_real(*a.gsl_c.get(), s));
 }
 
-inline Complex GSL::exp(const Complex& a)
+inline GSL::Complex GSL::exp(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_exp(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_exp(*a.gsl_c.get()));
 }
 
-inline Complex GSL::log(const Complex& a)
+inline GSL::Complex GSL::log(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_log(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_log(*a.gsl_c.get()));
 }
 
-inline Complex GSL::log10(const Complex& a)
+inline GSL::Complex GSL::log10(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_log10(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_log10(*a.gsl_c.get()));
 }
 
-inline Complex GSL::log_b(const Complex& a, const Complex& b)
+inline GSL::Complex GSL::log_b(const GSL::Complex& a, const GSL::Complex& b)
 {
-    return Complex(gsl_complex_log_b(*a.gsl_c.get(), *b.gsl_c.get()));
+    return GSL::Complex(gsl_complex_log_b(*a.gsl_c.get(), *b.gsl_c.get()));
 }
 
-inline Complex GSL::sin(const Complex& a)
+inline GSL::Complex GSL::sin(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_sin(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_sin(*a.gsl_c.get()));
 }
 
-inline Complex GSL::cos(const Complex& a)
+inline GSL::Complex GSL::cos(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_cos(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_cos(*a.gsl_c.get()));
 }
 
-inline Complex GSL::tan(const Complex& a)
+inline GSL::Complex GSL::tan(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_tan(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_tan(*a.gsl_c.get()));
 }
 
-inline Complex GSL::sec(const Complex& a)
+inline GSL::Complex GSL::sec(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_sec(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_sec(*a.gsl_c.get()));
 }
 
-inline Complex GSL::csc(const Complex& a)
+inline GSL::Complex GSL::csc(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_csc(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_csc(*a.gsl_c.get()));
 }
 
-inline Complex GSL::cot(const Complex& a)
+inline GSL::Complex GSL::cot(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_cot(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_cot(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arcsin(const Complex& a)
+inline GSL::Complex GSL::arcsin(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arcsin(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arcsin(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arcsin(const double& s)
+inline GSL::Complex GSL::arcsin(const double& s)
 {
-    return Complex(gsl_complex_arcsin_real(s));
+    return GSL::Complex(gsl_complex_arcsin_real(s));
 }
 
-inline Complex GSL::arccos(const Complex& a)
+inline GSL::Complex GSL::arccos(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arccos(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arccos(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arccos(const double& s)
+inline GSL::Complex GSL::arccos(const double& s)
 {
-    return Complex(gsl_complex_arccos_real(s));
+    return GSL::Complex(gsl_complex_arccos_real(s));
 }
 
-inline Complex GSL::arctan(const Complex& a)
+inline GSL::Complex GSL::arctan(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arctan(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arctan(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arcsec(const Complex& a)
+inline GSL::Complex GSL::arcsec(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arcsec(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arcsec(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arcsec(const double& s)
+inline GSL::Complex GSL::arcsec(const double& s)
 {
-    return Complex(gsl_complex_arcsec_real(s));
+    return GSL::Complex(gsl_complex_arcsec_real(s));
 }
 
-inline Complex GSL::arccsc(const Complex& a)
+inline GSL::Complex GSL::arccsc(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arccsc(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arccsc(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arccsc(const double& s)
+inline GSL::Complex GSL::arccsc(const double& s)
 {
-    return Complex(gsl_complex_arccsc_real(s));
+    return GSL::Complex(gsl_complex_arccsc_real(s));
 }
 
-inline Complex GSL::arccot(const Complex& a)
+inline GSL::Complex GSL::arccot(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arccot(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arccot(*a.gsl_c.get()));
 }
 
-inline Complex GSL::sinh(const Complex& a)
+inline GSL::Complex GSL::sinh(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_sinh(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_sinh(*a.gsl_c.get()));
 }
 
-inline Complex GSL::cosh(const Complex& a)
+inline GSL::Complex GSL::cosh(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_cosh(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_cosh(*a.gsl_c.get()));
 }
 
-inline Complex GSL::tanh(const Complex& a)
+inline GSL::Complex GSL::tanh(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_tanh(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_tanh(*a.gsl_c.get()));
 }
 
-inline Complex GSL::sech(const Complex& a)
+inline GSL::Complex GSL::sech(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_sech(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_sech(*a.gsl_c.get()));
 }
 
-inline Complex GSL::csch(const Complex& a)
+inline GSL::Complex GSL::csch(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_csch(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_csch(*a.gsl_c.get()));
 }
 
-inline Complex GSL::coth(const Complex& a)
+inline GSL::Complex GSL::coth(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_coth(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_coth(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arcsinh(const Complex& a)
+inline GSL::Complex GSL::arcsinh(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arcsinh(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arcsinh(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arccosh(const Complex& a)
+inline GSL::Complex GSL::arccosh(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arccosh(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arccosh(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arccosh(const double& s)
+inline GSL::Complex GSL::arccosh(const double& s)
 {
-    return Complex(gsl_complex_arccosh_real(s));
+    return GSL::Complex(gsl_complex_arccosh_real(s));
 }
 
-inline Complex GSL::arctanh(const Complex& a)
+inline GSL::Complex GSL::arctanh(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arctanh(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arctanh(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arctanh(const double& s)
+inline GSL::Complex GSL::arctanh(const double& s)
 {
-    return Complex(gsl_complex_arctanh_real(s));
+    return GSL::Complex(gsl_complex_arctanh_real(s));
 }
 
-inline Complex GSL::arcsech(const Complex& a)
+inline GSL::Complex GSL::arcsech(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arcsech(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arcsech(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arccsch(const Complex& a)
+inline GSL::Complex GSL::arccsch(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arccsch(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arccsch(*a.gsl_c.get()));
 }
 
-inline Complex GSL::arccoth(const Complex& a)
+inline GSL::Complex GSL::arccoth(const GSL::Complex& a)
 {
-    return Complex(gsl_complex_arccoth(*a.gsl_c.get()));
+    return GSL::Complex(gsl_complex_arccoth(*a.gsl_c.get()));
 }
 
 template<class T, class GSL_COMPLEX>
-std::string Complex_t<T, GSL_COMPLEX>::to_string() const
+std::string GSL::Complex_t<T, GSL_COMPLEX>::to_string() const
 {
     std::string res = "";
     std::string real = std::to_string(this->re());

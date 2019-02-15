@@ -6,21 +6,21 @@
 using namespace GSL;
 
 template<class T, class GSL_VEC, class A>
-Vector_t<T, GSL_VEC, A>::Vector_t(const GSL_VEC& v)
+GSL::Vector_t<T, GSL_VEC, A>::Vector_t(const GSL_VEC& v)
 : gsl_vec(new GSL_VEC)
 {
     *gsl_vec = v;
 }
 
 template<class T, class GSL_VEC, class A>
-Vector_t<T, GSL_VEC, A>::Vector_t(const GSL_VEC* v)
+GSL::Vector_t<T, GSL_VEC, A>::Vector_t(const GSL_VEC* v)
 : gsl_vec(new GSL_VEC)
 {
     *gsl_vec = *v;
 }
 
 template<>
-inline Vector_t<double, gsl_vector>::Vector_t
+inline GSL::Vector_t<double, gsl_vector>::Vector_t
 (const Vector_t<double, gsl_vector>::size_type n)
  : gsl_vec(gsl_vector_calloc(n), gsl_vector_free)
 {
@@ -31,7 +31,7 @@ inline Vector_t<double, gsl_vector>::Vector_t
 }
 
 template<>
-inline Vector_t<long double, gsl_vector_long_double>::Vector_t
+inline GSL::Vector_t<long double, gsl_vector_long_double>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_long_double_calloc(n), gsl_vector_long_double_free)
 {
@@ -43,7 +43,7 @@ inline Vector_t<long double, gsl_vector_long_double>::Vector_t
 }
 
 template<>
-inline Vector_t<float, gsl_vector_float>::Vector_t
+inline GSL::Vector_t<float, gsl_vector_float>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_float_calloc(n), gsl_vector_float_free)
 {
@@ -54,7 +54,7 @@ inline Vector_t<float, gsl_vector_float>::Vector_t
 }
 
 template<>
-inline Vector_t<int, gsl_vector_int>::Vector_t
+inline GSL::Vector_t<int, gsl_vector_int>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_int_calloc(n), gsl_vector_int_free)
 {
@@ -65,7 +65,7 @@ inline Vector_t<int, gsl_vector_int>::Vector_t
 }
 
 template<>
-inline Vector_t<unsigned int, gsl_vector_uint>::Vector_t
+inline GSL::Vector_t<unsigned int, gsl_vector_uint>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_uint_calloc(n), gsl_vector_uint_free)
 {
@@ -76,7 +76,7 @@ inline Vector_t<unsigned int, gsl_vector_uint>::Vector_t
 }
 
 template<>
-inline Vector_t<long, gsl_vector_long>::Vector_t
+inline GSL::Vector_t<long, gsl_vector_long>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_long_calloc(n), gsl_vector_long_free)
 {
@@ -87,7 +87,7 @@ inline Vector_t<long, gsl_vector_long>::Vector_t
 }
 
 template<>
-inline Vector_t<unsigned long, gsl_vector_ulong>::Vector_t
+inline GSL::Vector_t<unsigned long, gsl_vector_ulong>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_ulong_calloc(n), gsl_vector_ulong_free)
 {
@@ -98,7 +98,7 @@ inline Vector_t<unsigned long, gsl_vector_ulong>::Vector_t
 }
 
 template<>
-inline Vector_t<short, gsl_vector_short>::Vector_t
+inline GSL::Vector_t<short, gsl_vector_short>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_short_calloc(n), gsl_vector_short_free)
 {
@@ -109,7 +109,7 @@ inline Vector_t<short, gsl_vector_short>::Vector_t
 }
 
 template<>
-inline Vector_t<unsigned short, gsl_vector_ushort>::Vector_t
+inline GSL::Vector_t<unsigned short, gsl_vector_ushort>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_ushort_calloc(n), gsl_vector_ushort_free)
 {
@@ -120,7 +120,7 @@ inline Vector_t<unsigned short, gsl_vector_ushort>::Vector_t
 }
 
 template<>
-inline Vector_t<char, gsl_vector_char>::Vector_t
+inline GSL::Vector_t<char, gsl_vector_char>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_char_calloc(n), gsl_vector_char_free)
 {
@@ -131,7 +131,7 @@ inline Vector_t<char, gsl_vector_char>::Vector_t
 }
 
 template<>
-inline Vector_t<unsigned char, gsl_vector_uchar>::Vector_t
+inline GSL::Vector_t<unsigned char, gsl_vector_uchar>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_uchar_calloc(n), gsl_vector_uchar_free)
 {
@@ -142,7 +142,7 @@ inline Vector_t<unsigned char, gsl_vector_uchar>::Vector_t
 }
 
 template<>
-inline Vector_t<GSL::Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::Vector_t
+inline GSL::Vector_t<GSL::Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_complex_calloc(n), gsl_vector_complex_free)
 {
@@ -153,7 +153,7 @@ inline Vector_t<GSL::Complex_t<double, gsl_complex>, gsl_vector_complex, std::al
 }
 
 template<>
-inline Vector_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::Vector_t
+inline GSL::Vector_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_complex_long_double_calloc(n), gsl_vector_complex_long_double_free)
 {
@@ -164,7 +164,7 @@ inline Vector_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_vector
 }
 
 template<>
-inline Vector_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::Vector_t
+inline GSL::Vector_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_complex_float_calloc(n), gsl_vector_complex_float_free)
 {
@@ -175,7 +175,7 @@ inline Vector_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_complex_flo
 }
 
 template<>
-inline Vector_t<double, gsl_vector>::Vector_t(std::initializer_list<double> l)
+inline GSL::Vector_t<double, gsl_vector>::Vector_t(std::initializer_list<double> l)
  : gsl_vec(gsl_vector_alloc(l.size()), gsl_vector_free)
 {
     auto current = l.begin();
@@ -186,7 +186,7 @@ inline Vector_t<double, gsl_vector>::Vector_t(std::initializer_list<double> l)
 }
 
 template<>
-inline Vector_t<long double, gsl_vector_long_double>::Vector_t(std::initializer_list<long double> l)
+inline GSL::Vector_t<long double, gsl_vector_long_double>::Vector_t(std::initializer_list<long double> l)
  : gsl_vec(gsl_vector_long_double_alloc(l.size()), gsl_vector_long_double_free)
 {
     auto current = l.begin();
@@ -197,7 +197,7 @@ inline Vector_t<long double, gsl_vector_long_double>::Vector_t(std::initializer_
 }
 
 template<>
-inline Vector_t<float, gsl_vector_float>::Vector_t(std::initializer_list<float> l)
+inline GSL::Vector_t<float, gsl_vector_float>::Vector_t(std::initializer_list<float> l)
  : gsl_vec(gsl_vector_float_alloc(l.size()), gsl_vector_float_free)
 {
     auto current = l.begin();
@@ -208,7 +208,7 @@ inline Vector_t<float, gsl_vector_float>::Vector_t(std::initializer_list<float> 
 }
 
 template<>
-inline Vector_t<int, gsl_vector_int>::Vector_t(std::initializer_list<int> l)
+inline GSL::Vector_t<int, gsl_vector_int>::Vector_t(std::initializer_list<int> l)
  : gsl_vec(gsl_vector_int_alloc(l.size()), gsl_vector_int_free)
 {
     auto current = l.begin();
@@ -219,7 +219,7 @@ inline Vector_t<int, gsl_vector_int>::Vector_t(std::initializer_list<int> l)
 }
 
 template<>
-inline Vector_t<unsigned int, gsl_vector_uint>::Vector_t(std::initializer_list<unsigned int> l)
+inline GSL::Vector_t<unsigned int, gsl_vector_uint>::Vector_t(std::initializer_list<unsigned int> l)
  : gsl_vec(gsl_vector_uint_alloc(l.size()), gsl_vector_uint_free)
 {
     auto current = l.begin();
@@ -230,7 +230,7 @@ inline Vector_t<unsigned int, gsl_vector_uint>::Vector_t(std::initializer_list<u
 }
 
 template<>
-inline Vector_t<long, gsl_vector_long>::Vector_t(std::initializer_list<long> l)
+inline GSL::Vector_t<long, gsl_vector_long>::Vector_t(std::initializer_list<long> l)
  : gsl_vec(gsl_vector_long_alloc(l.size()), gsl_vector_long_free)
 {
     auto current = l.begin();
@@ -241,7 +241,7 @@ inline Vector_t<long, gsl_vector_long>::Vector_t(std::initializer_list<long> l)
 }
 
 template<>
-inline Vector_t<unsigned long, gsl_vector_ulong>::Vector_t(std::initializer_list<unsigned long> l)
+inline GSL::Vector_t<unsigned long, gsl_vector_ulong>::Vector_t(std::initializer_list<unsigned long> l)
  : gsl_vec(gsl_vector_ulong_alloc(l.size()), gsl_vector_ulong_free)
 {
     auto current = l.begin();
@@ -252,7 +252,7 @@ inline Vector_t<unsigned long, gsl_vector_ulong>::Vector_t(std::initializer_list
 }
 
 template<>
-inline Vector_t<short, gsl_vector_short>::Vector_t(std::initializer_list<short> l)
+inline GSL::Vector_t<short, gsl_vector_short>::Vector_t(std::initializer_list<short> l)
  : gsl_vec(gsl_vector_short_alloc(l.size()), gsl_vector_short_free)
 {
     auto current = l.begin();
@@ -263,7 +263,7 @@ inline Vector_t<short, gsl_vector_short>::Vector_t(std::initializer_list<short> 
 }
 
 template<>
-inline Vector_t<unsigned short, gsl_vector_ushort>::Vector_t(std::initializer_list<unsigned short> l)
+inline GSL::Vector_t<unsigned short, gsl_vector_ushort>::Vector_t(std::initializer_list<unsigned short> l)
  : gsl_vec(gsl_vector_ushort_alloc(l.size()), gsl_vector_ushort_free)
 {
     auto current = l.begin();
@@ -274,7 +274,7 @@ inline Vector_t<unsigned short, gsl_vector_ushort>::Vector_t(std::initializer_li
 }
 
 template<>
-inline Vector_t<char, gsl_vector_char>::Vector_t(std::initializer_list<char> l)
+inline GSL::Vector_t<char, gsl_vector_char>::Vector_t(std::initializer_list<char> l)
  : gsl_vec(gsl_vector_char_alloc(l.size()), gsl_vector_char_free)
 {
     auto current = l.begin();
@@ -285,7 +285,7 @@ inline Vector_t<char, gsl_vector_char>::Vector_t(std::initializer_list<char> l)
 }
 
 template<>
-inline Vector_t<unsigned char, gsl_vector_uchar>::Vector_t(std::initializer_list<unsigned char> l)
+inline GSL::Vector_t<unsigned char, gsl_vector_uchar>::Vector_t(std::initializer_list<unsigned char> l)
  : gsl_vec(gsl_vector_uchar_alloc(l.size()), gsl_vector_uchar_free)
 {
     auto current = l.begin();
@@ -296,7 +296,7 @@ inline Vector_t<unsigned char, gsl_vector_uchar>::Vector_t(std::initializer_list
 }
 
 template<>
-inline Vector_t<Complex, gsl_vector_complex, std::allocator<gsl_complex>>::
+inline GSL::Vector_t<Complex, gsl_vector_complex, std::allocator<gsl_complex>>::
 Vector_t(std::initializer_list<Complex> l)
  : gsl_vec(gsl_vector_complex_alloc(l.size()), gsl_vector_complex_free)
 {
@@ -308,7 +308,7 @@ Vector_t(std::initializer_list<Complex> l)
 }
 
 template<>
-inline Vector_t<Complex_ld, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::
+inline GSL::Vector_t<Complex_ld, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::
 Vector_t(std::initializer_list<Complex_ld> l)
  : gsl_vec(gsl_vector_complex_long_double_alloc(l.size()), gsl_vector_complex_long_double_free)
 {
@@ -320,7 +320,7 @@ Vector_t(std::initializer_list<Complex_ld> l)
 }
 
 template<>
-inline Vector_t<Complex_f, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::
+inline GSL::Vector_t<Complex_f, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::
 Vector_t(std::initializer_list<Complex_f> l)
  : gsl_vec(gsl_vector_complex_float_alloc(l.size()), gsl_vector_complex_float_free)
 {
@@ -332,7 +332,7 @@ Vector_t(std::initializer_list<Complex_f> l)
 }
 
 template<>
-inline void Vector_t<double, gsl_vector>::copy(const Vector_t<double, gsl_vector>& a)
+inline void GSL::Vector_t<double, gsl_vector>::copy(const Vector_t<double, gsl_vector>& a)
 {
     if(this->gsl_vec.get() == nullptr){
         this->gsl_vec = std::shared_ptr<gsl_vector>(gsl_vector_alloc(a.size()), gsl_vector_free);
@@ -349,7 +349,7 @@ inline void Vector_t<double, gsl_vector>::copy(const Vector_t<double, gsl_vector
 }
 
 template<>
-inline void Vector_t<long double, gsl_vector_long_double>::copy
+inline void GSL::Vector_t<long double, gsl_vector_long_double>::copy
 (const Vector_t<long double, gsl_vector_long_double>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -368,13 +368,13 @@ inline void Vector_t<long double, gsl_vector_long_double>::copy
 }
 
 template<class T, class GSL_VEC, class A>
-typename Vector_t<T, GSL_VEC, A>::size_type Vector_t<T, GSL_VEC, A>::size() const
+typename GSL::Vector_t<T, GSL_VEC, A>::size_type GSL::Vector_t<T, GSL_VEC, A>::size() const
 {
     return this->gsl_vec->size;
 }
 
 template<>
-inline void Vector_t<float, gsl_vector_float>::copy
+inline void GSL::Vector_t<float, gsl_vector_float>::copy
 (const Vector_t<float, gsl_vector_float>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -393,7 +393,7 @@ inline void Vector_t<float, gsl_vector_float>::copy
 }
 
 template<>
-inline void Vector_t<int, gsl_vector_int>::copy
+inline void GSL::Vector_t<int, gsl_vector_int>::copy
 (const Vector_t<int, gsl_vector_int>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -412,7 +412,7 @@ inline void Vector_t<int, gsl_vector_int>::copy
 }
 
 template<>
-inline void Vector_t<unsigned int, gsl_vector_uint>::copy
+inline void GSL::Vector_t<unsigned int, gsl_vector_uint>::copy
 (const Vector_t<unsigned int, gsl_vector_uint>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -431,7 +431,7 @@ inline void Vector_t<unsigned int, gsl_vector_uint>::copy
 }
 
 template<>
-inline void Vector_t<long, gsl_vector_long>::copy
+inline void GSL::Vector_t<long, gsl_vector_long>::copy
 (const Vector_t<long, gsl_vector_long>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -450,7 +450,7 @@ inline void Vector_t<long, gsl_vector_long>::copy
 }
 
 template<>
-inline void Vector_t<unsigned long, gsl_vector_ulong>::copy
+inline void GSL::Vector_t<unsigned long, gsl_vector_ulong>::copy
 (const Vector_t<unsigned long, gsl_vector_ulong>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -469,7 +469,7 @@ inline void Vector_t<unsigned long, gsl_vector_ulong>::copy
 }
 
 template<>
-inline void Vector_t<short, gsl_vector_short>::copy
+inline void GSL::Vector_t<short, gsl_vector_short>::copy
 (const Vector_t<short, gsl_vector_short>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -488,7 +488,7 @@ inline void Vector_t<short, gsl_vector_short>::copy
 }
 
 template<>
-inline void Vector_t<unsigned short, gsl_vector_ushort>::copy
+inline void GSL::Vector_t<unsigned short, gsl_vector_ushort>::copy
 (const Vector_t<unsigned short, gsl_vector_ushort>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -507,7 +507,7 @@ inline void Vector_t<unsigned short, gsl_vector_ushort>::copy
 }
 
 template<>
-inline void Vector_t<char, gsl_vector_char>::copy
+inline void GSL::Vector_t<char, gsl_vector_char>::copy
 (const Vector_t<char, gsl_vector_char>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -526,7 +526,7 @@ inline void Vector_t<char, gsl_vector_char>::copy
 }
 
 template<>
-inline void Vector_t<unsigned char, gsl_vector_uchar>::copy
+inline void GSL::Vector_t<unsigned char, gsl_vector_uchar>::copy
 (const Vector_t<unsigned char, gsl_vector_uchar>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -545,7 +545,7 @@ inline void Vector_t<unsigned char, gsl_vector_uchar>::copy
 }
 
 template<>
-inline void Vector_t<GSL::Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::copy
+inline void GSL::Vector_t<GSL::Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::copy
 (const Vector_t<GSL::Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -564,7 +564,7 @@ inline void Vector_t<GSL::Complex_t<double, gsl_complex>, gsl_vector_complex, st
 }
 
 template<>
-inline void Vector_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::copy
+inline void GSL::Vector_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::copy
 (const Vector_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -583,7 +583,7 @@ inline void Vector_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_v
 }
 
 template<>
-inline void Vector_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::copy
+inline void GSL::Vector_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::copy
 (const Vector_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -602,7 +602,7 @@ inline void Vector_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_comple
 }
 
 template<>
-inline Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator=(const Vector_t<double, gsl_vector>& a)
+inline Vector_t<double, gsl_vector>& GSL::Vector_t<double, gsl_vector>::operator=(const Vector_t<double, gsl_vector>& a)
 {
     if( gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -620,7 +620,7 @@ inline Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator=(con
 }
 
 template<>
-inline Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_vector_long_double>::operator=(const Vector_t<long double, gsl_vector_long_double>& a)
+inline Vector_t<long double, gsl_vector_long_double>& GSL::Vector_t<long double, gsl_vector_long_double>::operator=(const Vector_t<long double, gsl_vector_long_double>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -633,7 +633,7 @@ inline Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_
 }
 
 template<>
-inline Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::operator=(const Vector_t<float, gsl_vector_float>& a)
+inline Vector_t<float, gsl_vector_float>& GSL::Vector_t<float, gsl_vector_float>::operator=(const Vector_t<float, gsl_vector_float>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -646,7 +646,7 @@ inline Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::ope
 }
 
 template<>
-inline Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator=(const Vector_t<int, gsl_vector_int>& a)
+inline Vector_t<int, gsl_vector_int>& GSL::Vector_t<int, gsl_vector_int>::operator=(const Vector_t<int, gsl_vector_int>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -659,7 +659,7 @@ inline Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator=(c
 }
 
 template<>
-inline Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vector_uint>::operator=(const Vector_t<unsigned int, gsl_vector_uint>& a)
+inline Vector_t<unsigned int, gsl_vector_uint>& GSL::Vector_t<unsigned int, gsl_vector_uint>::operator=(const Vector_t<unsigned int, gsl_vector_uint>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -672,7 +672,7 @@ inline Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vecto
 }
 
 template<>
-inline Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operator=(const Vector_t<long, gsl_vector_long>& a)
+inline Vector_t<long, gsl_vector_long>& GSL::Vector_t<long, gsl_vector_long>::operator=(const Vector_t<long, gsl_vector_long>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -685,7 +685,7 @@ inline Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operato
 }
 
 template<>
-inline Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_vector_ulong>::operator=(const Vector_t<unsigned long, gsl_vector_ulong>& a)
+inline Vector_t<unsigned long, gsl_vector_ulong>& GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator=(const Vector_t<unsigned long, gsl_vector_ulong>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -698,7 +698,7 @@ inline Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_ve
 }
 
 template<>
-inline Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::operator=(const Vector_t<short, gsl_vector_short>& a)
+inline Vector_t<short, gsl_vector_short>& GSL::Vector_t<short, gsl_vector_short>::operator=(const Vector_t<short, gsl_vector_short>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -711,7 +711,7 @@ inline Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::ope
 }
 
 template<>
-inline Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl_vector_ushort>::operator=(const Vector_t<unsigned short, gsl_vector_ushort>& a)
+inline Vector_t<unsigned short, gsl_vector_ushort>& GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator=(const Vector_t<unsigned short, gsl_vector_ushort>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -724,7 +724,7 @@ inline Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl
 }
 
 template<>
-inline Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operator=(const Vector_t<char, gsl_vector_char>& a)
+inline Vector_t<char, gsl_vector_char>& GSL::Vector_t<char, gsl_vector_char>::operator=(const Vector_t<char, gsl_vector_char>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -737,7 +737,7 @@ inline Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operato
 }
 
 template<>
-inline Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_vector_uchar>::operator=(const Vector_t<unsigned char, gsl_vector_uchar>& a)
+inline Vector_t<unsigned char, gsl_vector_uchar>& GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator=(const Vector_t<unsigned char, gsl_vector_uchar>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -750,7 +750,7 @@ inline Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_ve
 }
 
 template<>
-inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& a)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -763,7 +763,7 @@ inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocat
 }
 
 template<>
-inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& a)
+inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -776,7 +776,7 @@ inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_comp
 }
 
 template<>
-inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& a)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         this->gsl_vec = a.gsl_vec;
@@ -789,7 +789,7 @@ inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, s
 }
 
 template<>
-inline Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator=(Vector_t<double, gsl_vector>&& a)
+inline Vector_t<double, gsl_vector>& GSL::Vector_t<double, gsl_vector>::operator=(Vector_t<double, gsl_vector>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -802,7 +802,7 @@ inline Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator=(Vec
 }
 
 template<>
-inline Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_vector_long_double>::operator=(Vector_t<long double, gsl_vector_long_double>&& a)
+inline Vector_t<long double, gsl_vector_long_double>& GSL::Vector_t<long double, gsl_vector_long_double>::operator=(Vector_t<long double, gsl_vector_long_double>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -813,7 +813,7 @@ inline Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_
 }
 
 template<>
-inline Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::operator=(Vector_t<float, gsl_vector_float>&& a)
+inline Vector_t<float, gsl_vector_float>& GSL::Vector_t<float, gsl_vector_float>::operator=(Vector_t<float, gsl_vector_float>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -824,7 +824,7 @@ inline Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::ope
 }
 
 template<>
-inline Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator=(Vector_t<int, gsl_vector_int>&& a)
+inline Vector_t<int, gsl_vector_int>& GSL::Vector_t<int, gsl_vector_int>::operator=(Vector_t<int, gsl_vector_int>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -835,7 +835,7 @@ inline Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator=(V
 }
 
 template<>
-inline Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vector_uint>::operator=(Vector_t<unsigned int, gsl_vector_uint>&& a)
+inline Vector_t<unsigned int, gsl_vector_uint>& GSL::Vector_t<unsigned int, gsl_vector_uint>::operator=(Vector_t<unsigned int, gsl_vector_uint>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -846,7 +846,7 @@ inline Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vecto
 }
 
 template<>
-inline Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operator=(Vector_t<long, gsl_vector_long>&& a)
+inline Vector_t<long, gsl_vector_long>& GSL::Vector_t<long, gsl_vector_long>::operator=(Vector_t<long, gsl_vector_long>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -857,7 +857,7 @@ inline Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operato
 }
 
 template<>
-inline Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_vector_ulong>::operator=(Vector_t<unsigned long, gsl_vector_ulong>&& a)
+inline Vector_t<unsigned long, gsl_vector_ulong>& GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator=(Vector_t<unsigned long, gsl_vector_ulong>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -868,7 +868,7 @@ inline Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_ve
 }
 
 template<>
-inline Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::operator=(Vector_t<short, gsl_vector_short>&& a)
+inline Vector_t<short, gsl_vector_short>& GSL::Vector_t<short, gsl_vector_short>::operator=(Vector_t<short, gsl_vector_short>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -879,7 +879,7 @@ inline Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::ope
 }
 
 template<>
-inline Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl_vector_ushort>::operator=(Vector_t<unsigned short, gsl_vector_ushort>&& a)
+inline Vector_t<unsigned short, gsl_vector_ushort>& GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator=(Vector_t<unsigned short, gsl_vector_ushort>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -890,7 +890,7 @@ inline Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl
 }
 
 template<>
-inline Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operator=(Vector_t<char, gsl_vector_char>&& a)
+inline Vector_t<char, gsl_vector_char>& GSL::Vector_t<char, gsl_vector_char>::operator=(Vector_t<char, gsl_vector_char>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -901,7 +901,7 @@ inline Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operato
 }
 
 template<>
-inline Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_vector_uchar>::operator=(Vector_t<unsigned char, gsl_vector_uchar>&& a)
+inline Vector_t<unsigned char, gsl_vector_uchar>& GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator=(Vector_t<unsigned char, gsl_vector_uchar>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -912,7 +912,7 @@ inline Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_ve
 }
 
 template<>
-inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator=(Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>&& a)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator=(Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -923,7 +923,7 @@ inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocat
 }
 
 template<>
-inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator=(Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>&& a)
+inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator=(Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -934,7 +934,7 @@ inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_comp
 }
 
 template<>
-inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator=(Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>&& a)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator=(Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -945,7 +945,7 @@ inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, s
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::size_type Vector_t<T, G, A>::dim() const{
+typename Vector_t<T, G, A>::size_type GSL::Vector_t<T, G, A>::dim() const{
     if(gsl_vec.get() != nullptr){
         return gsl_vec->size;
     }else{
@@ -960,31 +960,31 @@ S Vector_t<T, G, A>::norm() const
 }
 
 template<> template<>
-inline double Vector_t<double, gsl_vector>::norm<double>() const
+inline double GSL::Vector_t<double, gsl_vector>::norm<double>() const
 {
     return gsl_blas_dnrm2(this->gsl_vec.get());
 }
 
 template<> template<>
-inline float Vector_t<float, gsl_vector_float>::norm<float>() const
+inline float GSL::Vector_t<float, gsl_vector_float>::norm<float>() const
 {
     return gsl_blas_snrm2(this->gsl_vec.get());
 }
 
 template<> template<>
-inline double Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::norm<double>() const
+inline double GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::norm<double>() const
 {
     return gsl_blas_dznrm2(this->gsl_vec.get());
 }
 
 template<> template<>
-inline float Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::norm<float>() const
+inline float GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::norm<float>() const
 {
     return gsl_blas_scnrm2(this->gsl_vec.get());
 }
 
 template <class T, class V, class A> template<class S>
-void Vector_t<T, V, A>::normalize()
+void GSL::Vector_t<T, V, A>::normalize()
 {
     *this /= this->norm<S>();
 }
@@ -992,7 +992,7 @@ void Vector_t<T, V, A>::normalize()
 template<>
 inline typename Vector_t<
     Complex_t<double, gsl_complex>,
-    gsl_vector_complex, std::allocator<gsl_complex>>::const_reference Vector_t<
+    gsl_vector_complex, std::allocator<gsl_complex>>::const_reference GSL::Vector_t<
     Complex_t<double, gsl_complex>,
     gsl_vector_complex, std::allocator<gsl_complex>>::operator[]
     (const typename Vector_t<
@@ -1006,7 +1006,7 @@ template<>
 inline typename Vector_t<
     Complex_t<long double, gsl_complex_long_double>,
     gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::const_reference
-Vector_t<
+GSL::Vector_t<
     Complex_t<long double, gsl_complex_long_double>,
     gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator[]
     (const typename Vector_t<
@@ -1020,7 +1020,7 @@ template<>
 inline typename Vector_t<
     Complex_t<float, gsl_complex_float>,
     gsl_vector_complex_float, std::allocator<gsl_complex_float>>::const_reference
-Vector_t<
+GSL::Vector_t<
     Complex_t<float, gsl_complex_float>,
     gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator[]
     (const typename Vector_t<
@@ -1044,7 +1044,7 @@ T Vector_t<T, V, A>::dot(const Vector_t<T, V, A>& b) const
 }
 
 template<>
-inline double Vector_t<double, gsl_vector>::dot(const Vector_t<double, gsl_vector>& b) const
+inline double GSL::Vector_t<double, gsl_vector>::dot(const Vector_t<double, gsl_vector>& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1060,7 +1060,7 @@ inline double Vector_t<double, gsl_vector>::dot(const Vector_t<double, gsl_vecto
 }
 
 template<>
-inline float Vector_t<float, gsl_vector_float>::dot(const Vector_t<float, gsl_vector_float>& b) const
+inline float GSL::Vector_t<float, gsl_vector_float>::dot(const Vector_t<float, gsl_vector_float>& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1076,7 +1076,7 @@ inline float Vector_t<float, gsl_vector_float>::dot(const Vector_t<float, gsl_ve
 }
 
 template<>
-inline GSL::Complex_t<double, gsl_complex> Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::dot(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b) const
+inline GSL::Complex_t<double, gsl_complex> GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::dot(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1092,7 +1092,7 @@ inline GSL::Complex_t<double, gsl_complex> Vector_t<Complex_t<double, gsl_comple
 }
 
 template<>
-inline GSL::Complex_t<long double, gsl_complex_long_double> Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::dot(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b) const
+inline GSL::Complex_t<long double, gsl_complex_long_double> GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::dot(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1106,7 +1106,7 @@ inline GSL::Complex_t<long double, gsl_complex_long_double> Vector_t<Complex_t<l
 }
 
 template<>
-inline GSL::Complex_t<float, gsl_complex_float> Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::dot(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b) const
+inline GSL::Complex_t<float, gsl_complex_float> GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::dot(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1122,7 +1122,7 @@ inline GSL::Complex_t<float, gsl_complex_float> Vector_t<Complex_t<float, gsl_co
 }
 
 template<class T, class GSL_VEC, class A>
-Vector_t<T, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::cross(const Vector_t<T, GSL_VEC, A>& b) const
+Vector_t<T, GSL_VEC, A> GSL::Vector_t<T, GSL_VEC, A>::cross(const Vector_t<T, GSL_VEC, A>& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in cross product!\nCross product "
@@ -1140,7 +1140,7 @@ Vector_t<T, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::cross(const Vector_t<T, GSL_VEC
 }
 
 template<>
-inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator+=(const Vector_t<double, gsl_vector>& b)
+inline Vector_t<double, gsl_vector>& GSL::Vector_t<double, gsl_vector>::operator+=(const Vector_t<double, gsl_vector>& b)
 {
     int stat = gsl_vector_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1152,7 +1152,7 @@ inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator
 }
 
 template<>
-inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_vector_long_double>::operator+=(const Vector_t<long double, gsl_vector_long_double>& b)
+inline Vector_t<long double, gsl_vector_long_double>& GSL::Vector_t<long double, gsl_vector_long_double>::operator+=(const Vector_t<long double, gsl_vector_long_double>& b)
 {
     int stat = gsl_vector_long_double_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1164,7 +1164,7 @@ inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double,
 }
 
 template<>
-inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::operator+=(const Vector_t<float, gsl_vector_float>& b)
+inline Vector_t<float, gsl_vector_float>& GSL::Vector_t<float, gsl_vector_float>::operator+=(const Vector_t<float, gsl_vector_float>& b)
 {
     int stat = gsl_vector_float_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1176,7 +1176,7 @@ inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>
 }
 
 template<>
-inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator+=(const Vector_t<int, gsl_vector_int>& b)
+inline Vector_t<int, gsl_vector_int>& GSL::Vector_t<int, gsl_vector_int>::operator+=(const Vector_t<int, gsl_vector_int>& b)
 {
     int stat = gsl_vector_int_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1188,7 +1188,7 @@ inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operat
 }
 
 template<>
-inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vector_uint>::operator+=(const Vector_t<unsigned int, gsl_vector_uint>& b)
+inline Vector_t<unsigned int, gsl_vector_uint>& GSL::Vector_t<unsigned int, gsl_vector_uint>::operator+=(const Vector_t<unsigned int, gsl_vector_uint>& b)
 {
     int stat = gsl_vector_uint_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1200,7 +1200,7 @@ inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_
 }
 
 template<>
-inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operator+=(const Vector_t<long, gsl_vector_long>& b)
+inline Vector_t<long, gsl_vector_long>& GSL::Vector_t<long, gsl_vector_long>::operator+=(const Vector_t<long, gsl_vector_long>& b)
 {
     int stat = gsl_vector_long_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1212,7 +1212,7 @@ inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_vector_ulong>::operator+=(const Vector_t<unsigned long, gsl_vector_ulong>& b)
+inline Vector_t<unsigned long, gsl_vector_ulong>& GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator+=(const Vector_t<unsigned long, gsl_vector_ulong>& b)
 {
     int stat = gsl_vector_ulong_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1224,7 +1224,7 @@ inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, g
 }
 
 template<>
-inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::operator+=(const Vector_t<short, gsl_vector_short>& b)
+inline Vector_t<short, gsl_vector_short>& GSL::Vector_t<short, gsl_vector_short>::operator+=(const Vector_t<short, gsl_vector_short>& b)
 {
     int stat = gsl_vector_short_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1236,7 +1236,7 @@ inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>
 }
 
 template<>
-inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl_vector_ushort>::operator+=(const Vector_t<unsigned short, gsl_vector_ushort>& b)
+inline Vector_t<unsigned short, gsl_vector_ushort>& GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator+=(const Vector_t<unsigned short, gsl_vector_ushort>& b)
 {
     int stat = gsl_vector_ushort_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1249,7 +1249,7 @@ inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short
 
 
 template<>
-inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operator+=(const Vector_t<char, gsl_vector_char>& b)
+inline Vector_t<char, gsl_vector_char>& GSL::Vector_t<char, gsl_vector_char>::operator+=(const Vector_t<char, gsl_vector_char>& b)
 {
     int stat = gsl_vector_char_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1261,7 +1261,7 @@ inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_vector_uchar>::operator+=(const Vector_t<unsigned char, gsl_vector_uchar>& b)
+inline Vector_t<unsigned char, gsl_vector_uchar>& GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator+=(const Vector_t<unsigned char, gsl_vector_uchar>& b)
 {
     int stat = gsl_vector_uchar_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1273,7 +1273,7 @@ inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, g
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator+=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator+=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b)
 {
     int stat = gsl_vector_complex_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1285,7 +1285,7 @@ inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::al
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator+=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
+inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator+=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
 {
     int stat = gsl_vector_complex_long_double_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1297,7 +1297,7 @@ inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator+=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator+=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
 {
     int stat = gsl_vector_complex_float_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1309,7 +1309,7 @@ inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_flo
 }
 
 template<>
-inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator-=(const Vector_t<double, gsl_vector>& b)
+inline Vector_t<double, gsl_vector>& GSL::Vector_t<double, gsl_vector>::operator-=(const Vector_t<double, gsl_vector>& b)
 {
     int stat = gsl_vector_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1321,7 +1321,7 @@ inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator
 }
 
 template<>
-inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_vector_long_double>::operator-=(const Vector_t<long double, gsl_vector_long_double>& b)
+inline Vector_t<long double, gsl_vector_long_double>& GSL::Vector_t<long double, gsl_vector_long_double>::operator-=(const Vector_t<long double, gsl_vector_long_double>& b)
 {
     int stat = gsl_vector_long_double_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1333,7 +1333,7 @@ inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double,
 }
 
 template<>
-inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::operator-=(const Vector_t<float, gsl_vector_float>& b)
+inline Vector_t<float, gsl_vector_float>& GSL::Vector_t<float, gsl_vector_float>::operator-=(const Vector_t<float, gsl_vector_float>& b)
 {
     int stat = gsl_vector_float_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1345,7 +1345,7 @@ inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>
 }
 
 template<>
-inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator-=(const Vector_t<int, gsl_vector_int>& b)
+inline Vector_t<int, gsl_vector_int>& GSL::Vector_t<int, gsl_vector_int>::operator-=(const Vector_t<int, gsl_vector_int>& b)
 {
     int stat = gsl_vector_int_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1357,7 +1357,7 @@ inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operat
 }
 
 template<>
-inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vector_uint>::operator-=(const Vector_t<unsigned int, gsl_vector_uint>& b)
+inline Vector_t<unsigned int, gsl_vector_uint>& GSL::Vector_t<unsigned int, gsl_vector_uint>::operator-=(const Vector_t<unsigned int, gsl_vector_uint>& b)
 {
     int stat = gsl_vector_uint_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1369,7 +1369,7 @@ inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_
 }
 
 template<>
-inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operator-=(const Vector_t<long, gsl_vector_long>& b)
+inline Vector_t<long, gsl_vector_long>& GSL::Vector_t<long, gsl_vector_long>::operator-=(const Vector_t<long, gsl_vector_long>& b)
 {
     int stat = gsl_vector_long_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1381,7 +1381,7 @@ inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_vector_ulong>::operator-=(const Vector_t<unsigned long, gsl_vector_ulong>& b)
+inline Vector_t<unsigned long, gsl_vector_ulong>& GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator-=(const Vector_t<unsigned long, gsl_vector_ulong>& b)
 {
     int stat = gsl_vector_ulong_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1393,7 +1393,7 @@ inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, g
 }
 
 template<>
-inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::operator-=(const Vector_t<short, gsl_vector_short>& b)
+inline Vector_t<short, gsl_vector_short>& GSL::Vector_t<short, gsl_vector_short>::operator-=(const Vector_t<short, gsl_vector_short>& b)
 {
     int stat = gsl_vector_short_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1405,7 +1405,7 @@ inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>
 }
 
 template<>
-inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl_vector_ushort>::operator-=(const Vector_t<unsigned short, gsl_vector_ushort>& b)
+inline Vector_t<unsigned short, gsl_vector_ushort>& GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator-=(const Vector_t<unsigned short, gsl_vector_ushort>& b)
 {
     int stat = gsl_vector_ushort_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1418,7 +1418,7 @@ inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short
 
 
 template<>
-inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operator-=(const Vector_t<char, gsl_vector_char>& b)
+inline Vector_t<char, gsl_vector_char>& GSL::Vector_t<char, gsl_vector_char>::operator-=(const Vector_t<char, gsl_vector_char>& b)
 {
     int stat = gsl_vector_char_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1430,7 +1430,7 @@ inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_vector_uchar>::operator-=(const Vector_t<unsigned char, gsl_vector_uchar>& b)
+inline Vector_t<unsigned char, gsl_vector_uchar>& GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator-=(const Vector_t<unsigned char, gsl_vector_uchar>& b)
 {
     int stat = gsl_vector_uchar_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1442,7 +1442,7 @@ inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, g
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator-=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator-=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b)
 {
     int stat = gsl_vector_complex_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1454,7 +1454,7 @@ inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::al
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator-=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
+inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator-=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
 {
     int stat = gsl_vector_complex_long_double_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1466,7 +1466,7 @@ inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator-=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator-=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
 {
     int stat = gsl_vector_complex_float_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1478,7 +1478,7 @@ inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_flo
 }
 
 template<>
-inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator*=(const Vector_t<double, gsl_vector>& b)
+inline Vector_t<double, gsl_vector>& GSL::Vector_t<double, gsl_vector>::operator*=(const Vector_t<double, gsl_vector>& b)
 {
     int stat = gsl_vector_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1490,7 +1490,7 @@ inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator
 }
 
 template<>
-inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_vector_long_double>::operator*=(const Vector_t<long double, gsl_vector_long_double>& b)
+inline Vector_t<long double, gsl_vector_long_double>& GSL::Vector_t<long double, gsl_vector_long_double>::operator*=(const Vector_t<long double, gsl_vector_long_double>& b)
 {
     int stat = gsl_vector_long_double_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1502,7 +1502,7 @@ inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double,
 }
 
 template<>
-inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::operator*=(const Vector_t<float, gsl_vector_float>& b)
+inline Vector_t<float, gsl_vector_float>& GSL::Vector_t<float, gsl_vector_float>::operator*=(const Vector_t<float, gsl_vector_float>& b)
 {
     int stat = gsl_vector_float_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1514,7 +1514,7 @@ inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>
 }
 
 template<>
-inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator*=(const Vector_t<int, gsl_vector_int>& b)
+inline Vector_t<int, gsl_vector_int>& GSL::Vector_t<int, gsl_vector_int>::operator*=(const Vector_t<int, gsl_vector_int>& b)
 {
     int stat = gsl_vector_int_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1526,7 +1526,7 @@ inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operat
 }
 
 template<>
-inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vector_uint>::operator*=(const Vector_t<unsigned int, gsl_vector_uint>& b)
+inline Vector_t<unsigned int, gsl_vector_uint>& GSL::Vector_t<unsigned int, gsl_vector_uint>::operator*=(const Vector_t<unsigned int, gsl_vector_uint>& b)
 {
     int stat = gsl_vector_uint_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1538,7 +1538,7 @@ inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_
 }
 
 template<>
-inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operator*=(const Vector_t<long, gsl_vector_long>& b)
+inline Vector_t<long, gsl_vector_long>& GSL::Vector_t<long, gsl_vector_long>::operator*=(const Vector_t<long, gsl_vector_long>& b)
 {
     int stat = gsl_vector_long_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1550,7 +1550,7 @@ inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_vector_ulong>::operator*=(const Vector_t<unsigned long, gsl_vector_ulong>& b)
+inline Vector_t<unsigned long, gsl_vector_ulong>& GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator*=(const Vector_t<unsigned long, gsl_vector_ulong>& b)
 {
     int stat = gsl_vector_ulong_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1562,7 +1562,7 @@ inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, g
 }
 
 template<>
-inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::operator*=(const Vector_t<short, gsl_vector_short>& b)
+inline Vector_t<short, gsl_vector_short>& GSL::Vector_t<short, gsl_vector_short>::operator*=(const Vector_t<short, gsl_vector_short>& b)
 {
     int stat = gsl_vector_short_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1574,7 +1574,7 @@ inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>
 }
 
 template<>
-inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl_vector_ushort>::operator*=(const Vector_t<unsigned short, gsl_vector_ushort>& b)
+inline Vector_t<unsigned short, gsl_vector_ushort>& GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator*=(const Vector_t<unsigned short, gsl_vector_ushort>& b)
 {
     int stat = gsl_vector_ushort_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1587,7 +1587,7 @@ inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short
 
 
 template<>
-inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operator*=(const Vector_t<char, gsl_vector_char>& b)
+inline Vector_t<char, gsl_vector_char>& GSL::Vector_t<char, gsl_vector_char>::operator*=(const Vector_t<char, gsl_vector_char>& b)
 {
     int stat = gsl_vector_char_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1599,7 +1599,7 @@ inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_vector_uchar>::operator*=(const Vector_t<unsigned char, gsl_vector_uchar>& b)
+inline Vector_t<unsigned char, gsl_vector_uchar>& GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator*=(const Vector_t<unsigned char, gsl_vector_uchar>& b)
 {
     int stat = gsl_vector_uchar_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1611,7 +1611,7 @@ inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, g
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator*=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator*=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b)
 {
     int stat = gsl_vector_complex_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1623,7 +1623,7 @@ inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::al
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator*=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
+inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator*=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
 {
     int stat = gsl_vector_complex_long_double_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1635,7 +1635,7 @@ inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
 {
     int stat = gsl_vector_complex_float_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1647,7 +1647,7 @@ inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_flo
 }
 
 template<>
-inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator/=(const Vector_t<double, gsl_vector>& b)
+inline Vector_t<double, gsl_vector>& GSL::Vector_t<double, gsl_vector>::operator/=(const Vector_t<double, gsl_vector>& b)
 {
     int stat = gsl_vector_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1659,7 +1659,7 @@ inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator
 }
 
 template<>
-inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_vector_long_double>::operator/=(const Vector_t<long double, gsl_vector_long_double>& b)
+inline Vector_t<long double, gsl_vector_long_double>& GSL::Vector_t<long double, gsl_vector_long_double>::operator/=(const Vector_t<long double, gsl_vector_long_double>& b)
 {
     int stat = gsl_vector_long_double_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1671,7 +1671,7 @@ inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double,
 }
 
 template<>
-inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::operator/=(const Vector_t<float, gsl_vector_float>& b)
+inline Vector_t<float, gsl_vector_float>& GSL::Vector_t<float, gsl_vector_float>::operator/=(const Vector_t<float, gsl_vector_float>& b)
 {
     int stat = gsl_vector_float_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1683,7 +1683,7 @@ inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>
 }
 
 template<>
-inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator/=(const Vector_t<int, gsl_vector_int>& b)
+inline Vector_t<int, gsl_vector_int>& GSL::Vector_t<int, gsl_vector_int>::operator/=(const Vector_t<int, gsl_vector_int>& b)
 {
     int stat = gsl_vector_int_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1695,7 +1695,7 @@ inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operat
 }
 
 template<>
-inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vector_uint>::operator/=(const Vector_t<unsigned int, gsl_vector_uint>& b)
+inline Vector_t<unsigned int, gsl_vector_uint>& GSL::Vector_t<unsigned int, gsl_vector_uint>::operator/=(const Vector_t<unsigned int, gsl_vector_uint>& b)
 {
     int stat = gsl_vector_uint_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1707,7 +1707,7 @@ inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_
 }
 
 template<>
-inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operator/=(const Vector_t<long, gsl_vector_long>& b)
+inline Vector_t<long, gsl_vector_long>& GSL::Vector_t<long, gsl_vector_long>::operator/=(const Vector_t<long, gsl_vector_long>& b)
 {
     int stat = gsl_vector_long_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1719,7 +1719,7 @@ inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_vector_ulong>::operator/=(const Vector_t<unsigned long, gsl_vector_ulong>& b)
+inline Vector_t<unsigned long, gsl_vector_ulong>& GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator/=(const Vector_t<unsigned long, gsl_vector_ulong>& b)
 {
     int stat = gsl_vector_ulong_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1731,7 +1731,7 @@ inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, g
 }
 
 template<>
-inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::operator/=(const Vector_t<short, gsl_vector_short>& b)
+inline Vector_t<short, gsl_vector_short>& GSL::Vector_t<short, gsl_vector_short>::operator/=(const Vector_t<short, gsl_vector_short>& b)
 {
     int stat = gsl_vector_short_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1743,7 +1743,7 @@ inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>
 }
 
 template<>
-inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl_vector_ushort>::operator/=(const Vector_t<unsigned short, gsl_vector_ushort>& b)
+inline Vector_t<unsigned short, gsl_vector_ushort>& GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator/=(const Vector_t<unsigned short, gsl_vector_ushort>& b)
 {
     int stat = gsl_vector_ushort_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1756,7 +1756,7 @@ inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short
 
 
 template<>
-inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operator/=(const Vector_t<char, gsl_vector_char>& b)
+inline Vector_t<char, gsl_vector_char>& GSL::Vector_t<char, gsl_vector_char>::operator/=(const Vector_t<char, gsl_vector_char>& b)
 {
     int stat = gsl_vector_char_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1768,7 +1768,7 @@ inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_vector_uchar>::operator/=(const Vector_t<unsigned char, gsl_vector_uchar>& b)
+inline Vector_t<unsigned char, gsl_vector_uchar>& GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator/=(const Vector_t<unsigned char, gsl_vector_uchar>& b)
 {
     int stat = gsl_vector_uchar_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1780,7 +1780,7 @@ inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, g
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator/=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator/=(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b)
 {
     int stat = gsl_vector_complex_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1792,7 +1792,7 @@ inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::al
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator/=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
+inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator/=(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
 {
     int stat = gsl_vector_complex_long_double_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1804,7 +1804,7 @@ inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator/=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator/=(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
 {
     int stat = gsl_vector_complex_float_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1816,7 +1816,7 @@ inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_flo
 }
 
 template<>
-inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator*=(const double& b)
+inline Vector_t<double, gsl_vector>& GSL::Vector_t<double, gsl_vector>::operator*=(const double& b)
 {
     int stat = gsl_vector_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1828,7 +1828,7 @@ inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator
 }
 
 template<>
-inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_vector_long_double>::operator*=(const long double& b)
+inline Vector_t<long double, gsl_vector_long_double>& GSL::Vector_t<long double, gsl_vector_long_double>::operator*=(const long double& b)
 {
     int stat = gsl_vector_long_double_scale(this->gsl_vec.get(), static_cast<double>(b));
     if(stat){
@@ -1840,7 +1840,7 @@ inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double,
 }
 
 template<>
-inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::operator*=(const float& b)
+inline Vector_t<float, gsl_vector_float>& GSL::Vector_t<float, gsl_vector_float>::operator*=(const float& b)
 {
     int stat = gsl_vector_float_scale(this->gsl_vec.get(), static_cast<double>(b));
     if(stat){
@@ -1852,7 +1852,7 @@ inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>
 }
 
 template<>
-inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator*=(const int& b)
+inline Vector_t<int, gsl_vector_int>& GSL::Vector_t<int, gsl_vector_int>::operator*=(const int& b)
 {
     int stat = gsl_vector_int_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1864,7 +1864,7 @@ inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operat
 }
 
 template<>
-inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vector_uint>::operator*=(const unsigned int& b)
+inline Vector_t<unsigned int, gsl_vector_uint>& GSL::Vector_t<unsigned int, gsl_vector_uint>::operator*=(const unsigned int& b)
 {
     int stat = gsl_vector_uint_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1876,7 +1876,7 @@ inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_
 }
 
 template<>
-inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operator*=(const long& b)
+inline Vector_t<long, gsl_vector_long>& GSL::Vector_t<long, gsl_vector_long>::operator*=(const long& b)
 {
     int stat = gsl_vector_long_scale(this->gsl_vec.get(), static_cast<double>(b));
     if(stat){
@@ -1888,7 +1888,7 @@ inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_vector_ulong>::operator*=(const unsigned long& b)
+inline Vector_t<unsigned long, gsl_vector_ulong>& GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator*=(const unsigned long& b)
 {
     int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), static_cast<double>(b));
     if(stat){
@@ -1900,7 +1900,7 @@ inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, g
 }
 
 template<>
-inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::operator*=(const short& b)
+inline Vector_t<short, gsl_vector_short>& GSL::Vector_t<short, gsl_vector_short>::operator*=(const short& b)
 {
     int stat = gsl_vector_short_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1912,7 +1912,7 @@ inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>
 }
 
 template<>
-inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl_vector_ushort>::operator*=(const unsigned short& b)
+inline Vector_t<unsigned short, gsl_vector_ushort>& GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator*=(const unsigned short& b)
 {
     int stat = gsl_vector_ushort_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1925,7 +1925,7 @@ inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short
 
 
 template<>
-inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operator*=(const char& b)
+inline Vector_t<char, gsl_vector_char>& GSL::Vector_t<char, gsl_vector_char>::operator*=(const char& b)
 {
     int stat = gsl_vector_char_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1937,7 +1937,7 @@ inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_vector_uchar>::operator*=(const unsigned char& b)
+inline Vector_t<unsigned char, gsl_vector_uchar>& GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator*=(const unsigned char& b)
 {
     int stat = gsl_vector_uchar_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1949,7 +1949,7 @@ inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, g
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator*=(const Complex_t<double, gsl_complex>& b)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator*=(const Complex_t<double, gsl_complex>& b)
 {
     int stat = gsl_vector_complex_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
@@ -1961,7 +1961,7 @@ inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::al
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator*=(const Complex_t<long double, gsl_complex_long_double>& b)
+inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator*=(const Complex_t<long double, gsl_complex_long_double>& b)
 {
     int stat = gsl_vector_complex_long_double_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
@@ -1973,7 +1973,7 @@ inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*=(const Complex_t<float, gsl_complex_float>& b)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*=(const Complex_t<float, gsl_complex_float>& b)
 {
     int stat = gsl_vector_complex_float_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
@@ -1985,7 +1985,7 @@ inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_flo
 }
 
 template<>
-inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator/=(const double& b)
+inline Vector_t<double, gsl_vector>& GSL::Vector_t<double, gsl_vector>::operator/=(const double& b)
 {
     int stat = gsl_vector_scale(this->gsl_vec.get(), 1./b);
     if(stat){
@@ -1997,7 +1997,7 @@ inline GSL::Vector_t<double, gsl_vector>& Vector_t<double, gsl_vector>::operator
 }
 
 template<>
-inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double, gsl_vector_long_double>::operator/=(const long double& b)
+inline Vector_t<long double, gsl_vector_long_double>& GSL::Vector_t<long double, gsl_vector_long_double>::operator/=(const long double& b)
 {
     int stat = gsl_vector_long_double_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
     if(stat){
@@ -2009,7 +2009,7 @@ inline GSL::Vector_t<long double, gsl_vector_long_double>& Vector_t<long double,
 }
 
 template<>
-inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>::operator/=(const float& b)
+inline Vector_t<float, gsl_vector_float>& GSL::Vector_t<float, gsl_vector_float>::operator/=(const float& b)
 {
     int stat = gsl_vector_float_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
     if(stat){
@@ -2021,7 +2021,7 @@ inline GSL::Vector_t<float, gsl_vector_float>& Vector_t<float, gsl_vector_float>
 }
 
 template<>
-inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operator/=(const int& b)
+inline Vector_t<int, gsl_vector_int>& GSL::Vector_t<int, gsl_vector_int>::operator/=(const int& b)
 {
     int stat = gsl_vector_int_scale(this->gsl_vec.get(), 1./b);
     if(stat){
@@ -2033,7 +2033,7 @@ inline GSL::Vector_t<int, gsl_vector_int>& Vector_t<int, gsl_vector_int>::operat
 }
 
 template<>
-inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_vector_uint>::operator/=(const unsigned int& b)
+inline Vector_t<unsigned int, gsl_vector_uint>& GSL::Vector_t<unsigned int, gsl_vector_uint>::operator/=(const unsigned int& b)
 {
     int stat = gsl_vector_uint_scale(this->gsl_vec.get(), 1./b);
     if(stat){
@@ -2045,7 +2045,7 @@ inline GSL::Vector_t<unsigned int, gsl_vector_uint>& Vector_t<unsigned int, gsl_
 }
 
 template<>
-inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::operator/=(const long& b)
+inline Vector_t<long, gsl_vector_long>& GSL::Vector_t<long, gsl_vector_long>::operator/=(const long& b)
 {
     int stat = gsl_vector_long_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
     if(stat){
@@ -2057,7 +2057,7 @@ inline GSL::Vector_t<long, gsl_vector_long>& Vector_t<long, gsl_vector_long>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, gsl_vector_ulong>::operator/=(const unsigned long& b)
+inline Vector_t<unsigned long, gsl_vector_ulong>& GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator/=(const unsigned long& b)
 {
     int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
     if(stat){
@@ -2069,7 +2069,7 @@ inline GSL::Vector_t<unsigned long, gsl_vector_ulong>& Vector_t<unsigned long, g
 }
 
 template<>
-inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>::operator/=(const short& b)
+inline Vector_t<short, gsl_vector_short>& GSL::Vector_t<short, gsl_vector_short>::operator/=(const short& b)
 {
     int stat = gsl_vector_short_scale(this->gsl_vec.get(), 1./b);
     if(stat){
@@ -2081,7 +2081,7 @@ inline GSL::Vector_t<short, gsl_vector_short>& Vector_t<short, gsl_vector_short>
 }
 
 template<>
-inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short, gsl_vector_ushort>::operator/=(const unsigned short& b)
+inline Vector_t<unsigned short, gsl_vector_ushort>& GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator/=(const unsigned short& b)
 {
     int stat = gsl_vector_ushort_scale(this->gsl_vec.get(), 1./b);
     if(stat){
@@ -2094,7 +2094,7 @@ inline GSL::Vector_t<unsigned short, gsl_vector_ushort>& Vector_t<unsigned short
 
 
 template<>
-inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::operator/=(const char& b)
+inline Vector_t<char, gsl_vector_char>& GSL::Vector_t<char, gsl_vector_char>::operator/=(const char& b)
 {
     int stat = gsl_vector_char_scale(this->gsl_vec.get(), 1./b);
     if(stat){
@@ -2106,7 +2106,7 @@ inline GSL::Vector_t<char, gsl_vector_char>& Vector_t<char, gsl_vector_char>::op
 }
 
 template<>
-inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, gsl_vector_uchar>::operator/=(const unsigned char& b)
+inline Vector_t<unsigned char, gsl_vector_uchar>& GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator/=(const unsigned char& b)
 {
     int stat = gsl_vector_uchar_scale(this->gsl_vec.get(), 1./b);
     if(stat){
@@ -2118,7 +2118,7 @@ inline GSL::Vector_t<unsigned char, gsl_vector_uchar>& Vector_t<unsigned char, g
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator/=(const Complex_t<double, gsl_complex>& b)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator/=(const Complex_t<double, gsl_complex>& b)
 {
     int stat = gsl_vector_complex_scale(this->gsl_vec.get(), *(1./b).gsl_c);
     if(stat){
@@ -2130,7 +2130,7 @@ inline GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::al
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator/=(const Complex_t<long double, gsl_complex_long_double>& b)
+inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator/=(const Complex_t<long double, gsl_complex_long_double>& b)
 {
     int stat = gsl_vector_complex_long_double_scale(this->gsl_vec.get(), *(static_cast<long double>(1.)/b).gsl_c);
     if(stat){
@@ -2142,7 +2142,7 @@ inline GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector
 }
 
 template<>
-inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator/=(const Complex_t<float, gsl_complex_float>& b)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator/=(const Complex_t<float, gsl_complex_float>& b)
 {
     int stat = gsl_vector_complex_float_scale(this->gsl_vec.get(), *(1./b).gsl_c);
     if(stat){
@@ -2154,7 +2154,7 @@ inline GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_flo
 }
 
 template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator+(const Vector_t<T, G, A>& b) const
+Vector_t<T, G, A> GSL::Vector_t<T, G, A>::operator+(const Vector_t<T, G, A>& b) const
 {
     Vector_t<T, G, A>tmp(this->size());
     tmp.copy(*this);
@@ -2162,7 +2162,7 @@ Vector_t<T, G, A> Vector_t<T, G, A>::operator+(const Vector_t<T, G, A>& b) const
 }
 
 template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator-(const Vector_t<T, G, A>& b) const
+Vector_t<T, G, A> GSL::Vector_t<T, G, A>::operator-(const Vector_t<T, G, A>& b) const
 {
     Vector_t<T, G, A>tmp(this->size());
     tmp.copy(*this);
@@ -2170,7 +2170,7 @@ Vector_t<T, G, A> Vector_t<T, G, A>::operator-(const Vector_t<T, G, A>& b) const
 }
 
 template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator*(const Vector_t<T, G, A>& b) const
+Vector_t<T, G, A> GSL::Vector_t<T, G, A>::operator*(const Vector_t<T, G, A>& b) const
 {
     Vector_t<T, G, A>tmp(this->size());
     tmp.copy(*this);
@@ -2178,7 +2178,7 @@ Vector_t<T, G, A> Vector_t<T, G, A>::operator*(const Vector_t<T, G, A>& b) const
 }
 
 template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator/(const Vector_t<T, G, A>& b) const
+Vector_t<T, G, A> GSL::Vector_t<T, G, A>::operator/(const Vector_t<T, G, A>& b) const
 {
     Vector_t<T, G, A>tmp(this->size());
     tmp.copy(*this);
@@ -2186,7 +2186,7 @@ Vector_t<T, G, A> Vector_t<T, G, A>::operator/(const Vector_t<T, G, A>& b) const
 }
 
 template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator*(const T s) const
+Vector_t<T, G, A> GSL::Vector_t<T, G, A>::operator*(const T s) const
 {
     Vector_t<T, G, A>tmp(this->size());
     tmp.copy(*this);
@@ -2194,7 +2194,7 @@ Vector_t<T, G, A> Vector_t<T, G, A>::operator*(const T s) const
 }
 
 template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator/(const T s) const
+Vector_t<T, G, A> GSL::Vector_t<T, G, A>::operator/(const T s) const
 {
     Vector_t<T, G, A>tmp(this->size());
     tmp.copy(*this);
@@ -2202,7 +2202,7 @@ Vector_t<T, G, A> Vector_t<T, G, A>::operator/(const T s) const
 }
 
 template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator-() const
+Vector_t<T, G, A> GSL::Vector_t<T, G, A>::operator-() const
 {
     Vector_t<T, G, A> tmp(this->size());
     return tmp - *this;
@@ -2210,7 +2210,7 @@ Vector_t<T, G, A> Vector_t<T, G, A>::operator-() const
 
 
 template<> template<>
-inline Vector_t<double, gsl_vector> Vector_t<double, gsl_vector>::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m)
+inline Vector_t<double, gsl_vector> GSL::Vector_t<double, gsl_vector>::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m)
 {
     Vector_t<double, gsl_vector> res(m.size().first);
     int stat = gsl_blas_dgemv(CblasTrans, 1.0, m.gsl_mat.get(),
@@ -2225,7 +2225,7 @@ inline Vector_t<double, gsl_vector> Vector_t<double, gsl_vector>::operator*<gsl_
 }
 
 template<> template<>
-inline Vector_t<float, gsl_vector_float> Vector_t<float, gsl_vector_float>::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& m)
+inline Vector_t<float, gsl_vector_float> GSL::Vector_t<float, gsl_vector_float>::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& m)
 {
     Vector_t<float, gsl_vector_float> res(m.size().first);
     int stat = gsl_blas_sgemv(CblasTrans, 1.0, m.gsl_mat.get(),
@@ -2240,7 +2240,7 @@ inline Vector_t<float, gsl_vector_float> Vector_t<float, gsl_vector_float>::oper
 }
 
 template<> template<>
-inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>> Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator*<gsl_matrix_complex>(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& m)
+inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>> GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator*<gsl_matrix_complex>(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& m)
 {
     Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>> res(m.size().first);
     int stat = gsl_blas_zgemv(CblasTrans, Complex_t<double, gsl_complex>(1.0), m.gsl_mat.get(),
@@ -2255,7 +2255,7 @@ inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocat
 }
 
 template<> template<>
-inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>> Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*<gsl_matrix_complex_float>(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& m)
+inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>> GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*<gsl_matrix_complex_float>(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& m)
 {
     Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>> res(m.size().first);
     int stat = gsl_blas_cgemv(CblasTrans, Complex_t<float, gsl_complex_float>(1.0), m.gsl_mat.get(),
@@ -2271,7 +2271,7 @@ inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, s
 
 
 template<>
-inline bool Vector_t<double, gsl_vector>::operator==(const Vector_t<double, gsl_vector>& b) const
+inline bool GSL::Vector_t<double, gsl_vector>::operator==(const Vector_t<double, gsl_vector>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2282,7 +2282,7 @@ inline bool Vector_t<double, gsl_vector>::operator==(const Vector_t<double, gsl_
 }
 
 template<>
-inline bool Vector_t<long double, gsl_vector_long_double>::operator==(const Vector_t<long double, gsl_vector_long_double>& b) const
+inline bool GSL::Vector_t<long double, gsl_vector_long_double>::operator==(const Vector_t<long double, gsl_vector_long_double>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2293,7 +2293,7 @@ inline bool Vector_t<long double, gsl_vector_long_double>::operator==(const Vect
 }
 
 template<>
-inline bool Vector_t<float, gsl_vector_float>::operator==(const Vector_t<float, gsl_vector_float>& b) const
+inline bool GSL::Vector_t<float, gsl_vector_float>::operator==(const Vector_t<float, gsl_vector_float>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2304,7 +2304,7 @@ inline bool Vector_t<float, gsl_vector_float>::operator==(const Vector_t<float, 
 }
 
 template<>
-inline bool Vector_t<int, gsl_vector_int>::operator==(const Vector_t<int, gsl_vector_int>& b) const
+inline bool GSL::Vector_t<int, gsl_vector_int>::operator==(const Vector_t<int, gsl_vector_int>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2315,7 +2315,7 @@ inline bool Vector_t<int, gsl_vector_int>::operator==(const Vector_t<int, gsl_ve
 }
 
 template<>
-inline bool Vector_t<unsigned int, gsl_vector_uint>::operator==(const Vector_t<unsigned int, gsl_vector_uint>& b) const
+inline bool GSL::Vector_t<unsigned int, gsl_vector_uint>::operator==(const Vector_t<unsigned int, gsl_vector_uint>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2326,7 +2326,7 @@ inline bool Vector_t<unsigned int, gsl_vector_uint>::operator==(const Vector_t<u
 }
 
 template<>
-inline bool Vector_t<long, gsl_vector_long>::operator==(const Vector_t<long, gsl_vector_long>& b) const
+inline bool GSL::Vector_t<long, gsl_vector_long>::operator==(const Vector_t<long, gsl_vector_long>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2337,7 +2337,7 @@ inline bool Vector_t<long, gsl_vector_long>::operator==(const Vector_t<long, gsl
 }
 
 template<>
-inline bool Vector_t<unsigned long, gsl_vector_ulong>::operator==(const Vector_t<unsigned long, gsl_vector_ulong>& b) const
+inline bool GSL::Vector_t<unsigned long, gsl_vector_ulong>::operator==(const Vector_t<unsigned long, gsl_vector_ulong>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2348,7 +2348,7 @@ inline bool Vector_t<unsigned long, gsl_vector_ulong>::operator==(const Vector_t
 }
 
 template<>
-inline bool Vector_t<short, gsl_vector_short>::operator==(const Vector_t<short, gsl_vector_short>& b) const
+inline bool GSL::Vector_t<short, gsl_vector_short>::operator==(const Vector_t<short, gsl_vector_short>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2359,7 +2359,7 @@ inline bool Vector_t<short, gsl_vector_short>::operator==(const Vector_t<short, 
 }
 
 template<>
-inline bool Vector_t<unsigned short, gsl_vector_ushort>::operator==(const Vector_t<unsigned short, gsl_vector_ushort>& b) const
+inline bool GSL::Vector_t<unsigned short, gsl_vector_ushort>::operator==(const Vector_t<unsigned short, gsl_vector_ushort>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2370,7 +2370,7 @@ inline bool Vector_t<unsigned short, gsl_vector_ushort>::operator==(const Vector
 }
 
 template<>
-inline bool Vector_t<char, gsl_vector_char>::operator==(const Vector_t<char, gsl_vector_char>& b) const
+inline bool GSL::Vector_t<char, gsl_vector_char>::operator==(const Vector_t<char, gsl_vector_char>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2381,7 +2381,7 @@ inline bool Vector_t<char, gsl_vector_char>::operator==(const Vector_t<char, gsl
 }
 
 template<>
-inline bool Vector_t<unsigned char, gsl_vector_uchar>::operator==(const Vector_t<unsigned char, gsl_vector_uchar>& b) const
+inline bool GSL::Vector_t<unsigned char, gsl_vector_uchar>::operator==(const Vector_t<unsigned char, gsl_vector_uchar>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2392,7 +2392,7 @@ inline bool Vector_t<unsigned char, gsl_vector_uchar>::operator==(const Vector_t
 }
 
 template<>
-inline bool Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator==(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b) const
+inline bool GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::operator==(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2403,7 +2403,7 @@ inline bool Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::al
 }
 
 template<>
-inline bool Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator==(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b) const
+inline bool GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator==(const Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2414,7 +2414,7 @@ inline bool Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector
 }
 
 template<>
-inline bool Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator==(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b) const
+inline bool GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator==(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2425,57 +2425,57 @@ inline bool Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_flo
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::operator!=(const Vector_t<T, G, A>& b) const
+bool GSL::Vector_t<T, G, A>::operator!=(const Vector_t<T, G, A>& b) const
 {
     return !(*this == b);
 }
 
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator==(const Vector_t<T, G, A>::iterator& b) const
+bool GSL::Vector_t<T, G, A>::iterator::operator==(const Vector_t<T, G, A>::iterator& b) const
 {
     return (this->data_m == b.data_m) && (this->stride == b.stride);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator!=(const Vector_t<T, G, A>::iterator& b) const
+bool GSL::Vector_t<T, G, A>::iterator::operator!=(const Vector_t<T, G, A>::iterator& b) const
 {
     return !(*this == b);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator<(const Vector_t<T, G, A>::iterator& b) const
+bool GSL::Vector_t<T, G, A>::iterator::operator<(const Vector_t<T, G, A>::iterator& b) const
 {
     return (this->data_m < b.data_m);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator>(const Vector_t<T, G, A>::iterator& b) const
+bool GSL::Vector_t<T, G, A>::iterator::operator>(const Vector_t<T, G, A>::iterator& b) const
 {
     return (this->data_m > b.data_m);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator<=(const Vector_t<T, G, A>::iterator& b) const
+bool GSL::Vector_t<T, G, A>::iterator::operator<=(const Vector_t<T, G, A>::iterator& b) const
 {
     return !(this->data_m > b.data_m);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator>=(const Vector_t<T, G, A>::iterator& b) const
+bool GSL::Vector_t<T, G, A>::iterator::operator>=(const Vector_t<T, G, A>::iterator& b) const
 {
     return !(this->data_m < b.data_m);
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::operator++()
+typename Vector_t<T, G, A>::iterator& GSL::Vector_t<T, G, A>::iterator::operator++()
 {
     this->data_m += this->stride;
     return *this;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::operator++(int)
+typename Vector_t<T, G, A>::iterator GSL::Vector_t<T, G, A>::iterator::operator++(int)
 {
     Vector_t<T, G, A>::iterator tmp = *this;
     ++(*this);
@@ -2483,14 +2483,14 @@ typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::operator++(int
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::operator--()
+typename Vector_t<T, G, A>::iterator& GSL::Vector_t<T, G, A>::iterator::operator--()
 {
     this->data_m -= this->stride;
     return *this;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::operator--(int)
+typename Vector_t<T, G, A>::iterator GSL::Vector_t<T, G, A>::iterator::operator--(int)
 {
     Vector_t<T, G, A>::iterator tmp = *this;
     --(*this);
@@ -2498,7 +2498,7 @@ typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::operator--(int
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::
+typename Vector_t<T, G, A>::iterator& GSL::Vector_t<T, G, A>::iterator::
     operator+=(Vector_t<T, G, A>::size_type n)
 {
     this->data_m += n*this->stride;
@@ -2506,7 +2506,7 @@ typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::
+typename Vector_t<T, G, A>::iterator GSL::Vector_t<T, G, A>::iterator::
     operator+(Vector_t<T, G, A>::size_type n) const
 {
     Vector_t<T, G, A>::iterator tmp = *this;
@@ -2515,7 +2515,7 @@ typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::
+typename Vector_t<T, G, A>::iterator& GSL::Vector_t<T, G, A>::iterator::
     operator-=(Vector_t<T, G, A>::size_type n)
 {
     this->data_m -= n*this->stride;
@@ -2523,7 +2523,7 @@ typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::
+typename Vector_t<T, G, A>::iterator GSL::Vector_t<T, G, A>::iterator::
     operator-(Vector_t<T, G, A>::size_type n) const
 {
     Vector_t<T, G, A>::iterator tmp = *this;
@@ -2532,64 +2532,64 @@ typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator::difference_type Vector_t<T, G, A>::iterator::
+typename Vector_t<T, G, A>::iterator::difference_type GSL::Vector_t<T, G, A>::iterator::
     operator-(iterator b) const
 {
     return this->data_m - b.data_m;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator::reference Vector_t<T, G, A>::iterator::
+typename Vector_t<T, G, A>::iterator::reference GSL::Vector_t<T, G, A>::iterator::
     operator*() const
 {
     return *this->data_m;
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator==(const Vector_t<T, G, A>::const_iterator& b) const
+bool GSL::Vector_t<T, G, A>::const_iterator::operator==(const Vector_t<T, G, A>::const_iterator& b) const
 {
     return (this->data_m == b.data_m) && (this->stride == b.stride);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator!=(const Vector_t<T, G, A>::const_iterator& b) const
+bool GSL::Vector_t<T, G, A>::const_iterator::operator!=(const Vector_t<T, G, A>::const_iterator& b) const
 {
     return !(*this == b);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator<(const Vector_t<T, G, A>::const_iterator& b) const
+bool GSL::Vector_t<T, G, A>::const_iterator::operator<(const Vector_t<T, G, A>::const_iterator& b) const
 {
     return (this->data_m < b.data_m);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator>(const Vector_t<T, G, A>::const_iterator& b) const
+bool GSL::Vector_t<T, G, A>::const_iterator::operator>(const Vector_t<T, G, A>::const_iterator& b) const
 {
     return (this->data_m > b.data_m);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator<=(const Vector_t<T, G, A>::const_iterator& b) const
+bool GSL::Vector_t<T, G, A>::const_iterator::operator<=(const Vector_t<T, G, A>::const_iterator& b) const
 {
     return !(this->data_m > b.data_m);
 }
 
 template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator>=(const Vector_t<T, G, A>::const_iterator& b) const
+bool GSL::Vector_t<T, G, A>::const_iterator::operator>=(const Vector_t<T, G, A>::const_iterator& b) const
 {
     return !(this->data_m < b.data_m);
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::operator++()
+typename Vector_t<T, G, A>::const_iterator& GSL::Vector_t<T, G, A>::const_iterator::operator++()
 {
     this->data_m += this->stride;
     return *this;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::operator++(int)
+typename Vector_t<T, G, A>::const_iterator GSL::Vector_t<T, G, A>::const_iterator::operator++(int)
 {
     Vector_t<T, G, A>::const_iterator tmp = *this;
     ++(*this);
@@ -2597,14 +2597,14 @@ typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::op
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::operator--()
+typename Vector_t<T, G, A>::const_iterator& GSL::Vector_t<T, G, A>::const_iterator::operator--()
 {
     this->data_m -= this->stride;
     return *this;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::operator--(int)
+typename Vector_t<T, G, A>::const_iterator GSL::Vector_t<T, G, A>::const_iterator::operator--(int)
 {
     Vector_t<T, G, A>::const_iterator tmp = *this;
     --(*this);
@@ -2612,7 +2612,7 @@ typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::op
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::
+typename Vector_t<T, G, A>::const_iterator& GSL::Vector_t<T, G, A>::const_iterator::
     operator+=(Vector_t<T, G, A>::size_type n)
 {
     this->data_m += n*this->stride;
@@ -2620,7 +2620,7 @@ typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::
+typename Vector_t<T, G, A>::const_iterator GSL::Vector_t<T, G, A>::const_iterator::
     operator+(Vector_t<T, G, A>::size_type n) const
 {
     Vector_t<T, G, A>::const_iterator tmp = *this;
@@ -2629,7 +2629,7 @@ typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::
+typename Vector_t<T, G, A>::const_iterator& GSL::Vector_t<T, G, A>::const_iterator::
     operator-=(Vector_t<T, G, A>::size_type n)
 {
     this->data_m -= n*this->stride;
@@ -2637,7 +2637,7 @@ typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::
+typename Vector_t<T, G, A>::const_iterator GSL::Vector_t<T, G, A>::const_iterator::
     operator-(Vector_t<T, G, A>::size_type n) const
 {
     Vector_t<T, G, A>::const_iterator tmp = *this;
@@ -2646,21 +2646,21 @@ typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator::difference_type Vector_t<T, G, A>::const_iterator::
+typename Vector_t<T, G, A>::const_iterator::difference_type GSL::Vector_t<T, G, A>::const_iterator::
     operator-(const_iterator b) const
 {
     return this->data_m - b.data_m;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator::reference Vector_t<T, G, A>::const_iterator::
+typename Vector_t<T, G, A>::const_iterator::reference GSL::Vector_t<T, G, A>::const_iterator::
     operator*() const
 {
     return *this->data_m;
 }
 
 template<>
-inline typename Vector_t<double, gsl_vector>::iterator Vector_t<double, gsl_vector>::begin()
+inline typename Vector_t<double, gsl_vector>::iterator GSL::Vector_t<double, gsl_vector>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2669,7 +2669,7 @@ inline typename Vector_t<double, gsl_vector>::iterator Vector_t<double, gsl_vect
 }
 
 template<>
-inline typename Vector_t<long double, gsl_vector_long_double>::iterator Vector_t<long double, gsl_vector_long_double>::begin()
+inline typename Vector_t<long double, gsl_vector_long_double>::iterator GSL::Vector_t<long double, gsl_vector_long_double>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2678,7 +2678,7 @@ inline typename Vector_t<long double, gsl_vector_long_double>::iterator Vector_t
 }
 
 template<>
-inline typename Vector_t<float, gsl_vector_float>::iterator Vector_t<float, gsl_vector_float>::begin()
+inline typename Vector_t<float, gsl_vector_float>::iterator GSL::Vector_t<float, gsl_vector_float>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2687,7 +2687,7 @@ inline typename Vector_t<float, gsl_vector_float>::iterator Vector_t<float, gsl_
 }
 
 template<>
-inline typename Vector_t<int, gsl_vector_int>::iterator Vector_t<int, gsl_vector_int>::begin()
+inline typename Vector_t<int, gsl_vector_int>::iterator GSL::Vector_t<int, gsl_vector_int>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2696,7 +2696,7 @@ inline typename Vector_t<int, gsl_vector_int>::iterator Vector_t<int, gsl_vector
 }
 
 template<>
-inline typename Vector_t<unsigned int, gsl_vector_uint>::iterator Vector_t<unsigned int, gsl_vector_uint>::begin()
+inline typename Vector_t<unsigned int, gsl_vector_uint>::iterator GSL::Vector_t<unsigned int, gsl_vector_uint>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2705,7 +2705,7 @@ inline typename Vector_t<unsigned int, gsl_vector_uint>::iterator Vector_t<unsig
 }
 
 template<>
-inline typename Vector_t<long, gsl_vector_long>::iterator Vector_t<long, gsl_vector_long>::begin()
+inline typename Vector_t<long, gsl_vector_long>::iterator GSL::Vector_t<long, gsl_vector_long>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2714,7 +2714,7 @@ inline typename Vector_t<long, gsl_vector_long>::iterator Vector_t<long, gsl_vec
 }
 
 template<>
-inline typename Vector_t<unsigned long, gsl_vector_ulong>::iterator Vector_t<unsigned long, gsl_vector_ulong>::begin()
+inline typename Vector_t<unsigned long, gsl_vector_ulong>::iterator GSL::Vector_t<unsigned long, gsl_vector_ulong>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2723,7 +2723,7 @@ inline typename Vector_t<unsigned long, gsl_vector_ulong>::iterator Vector_t<uns
 }
 
 template<>
-inline typename Vector_t<short, gsl_vector_short>::iterator Vector_t<short, gsl_vector_short>::begin()
+inline typename Vector_t<short, gsl_vector_short>::iterator GSL::Vector_t<short, gsl_vector_short>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2732,7 +2732,7 @@ inline typename Vector_t<short, gsl_vector_short>::iterator Vector_t<short, gsl_
 }
 
 template<>
-inline typename Vector_t<unsigned short, gsl_vector_ushort>::iterator Vector_t<unsigned short, gsl_vector_ushort>::begin()
+inline typename Vector_t<unsigned short, gsl_vector_ushort>::iterator GSL::Vector_t<unsigned short, gsl_vector_ushort>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2741,7 +2741,7 @@ inline typename Vector_t<unsigned short, gsl_vector_ushort>::iterator Vector_t<u
 }
 
 template<>
-inline typename Vector_t<char, gsl_vector_char>::iterator Vector_t<char, gsl_vector_char>::begin()
+inline typename Vector_t<char, gsl_vector_char>::iterator GSL::Vector_t<char, gsl_vector_char>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2750,7 +2750,7 @@ inline typename Vector_t<char, gsl_vector_char>::iterator Vector_t<char, gsl_vec
 }
 
 template<>
-inline typename Vector_t<unsigned char, gsl_vector_uchar>::iterator Vector_t<unsigned char, gsl_vector_uchar>::begin()
+inline typename Vector_t<unsigned char, gsl_vector_uchar>::iterator GSL::Vector_t<unsigned char, gsl_vector_uchar>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2759,7 +2759,7 @@ inline typename Vector_t<unsigned char, gsl_vector_uchar>::iterator Vector_t<uns
 }
 
 template<>
-inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::iterator Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::begin()
+inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::iterator GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2768,7 +2768,7 @@ inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std
 }
 
 template<>
-inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::iterator Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::begin()
+inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::iterator GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2777,7 +2777,7 @@ inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_ve
 }
 
 template<>
-inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::iterator Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::begin()
+inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::iterator GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2786,7 +2786,7 @@ inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex
 }
 
 template<>
-inline typename Vector_t<double, gsl_vector>::const_iterator Vector_t<double, gsl_vector>::begin() const
+inline typename Vector_t<double, gsl_vector>::const_iterator GSL::Vector_t<double, gsl_vector>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2795,7 +2795,7 @@ inline typename Vector_t<double, gsl_vector>::const_iterator Vector_t<double, gs
 }
 
 template<>
-inline typename Vector_t<long double, gsl_vector_long_double>::const_iterator Vector_t<long double, gsl_vector_long_double>::begin() const
+inline typename Vector_t<long double, gsl_vector_long_double>::const_iterator GSL::Vector_t<long double, gsl_vector_long_double>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2804,7 +2804,7 @@ inline typename Vector_t<long double, gsl_vector_long_double>::const_iterator Ve
 }
 
 template<>
-inline typename Vector_t<float, gsl_vector_float>::const_iterator Vector_t<float, gsl_vector_float>::begin() const
+inline typename Vector_t<float, gsl_vector_float>::const_iterator GSL::Vector_t<float, gsl_vector_float>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2813,7 +2813,7 @@ inline typename Vector_t<float, gsl_vector_float>::const_iterator Vector_t<float
 }
 
 template<>
-inline typename Vector_t<int, gsl_vector_int>::const_iterator Vector_t<int, gsl_vector_int>::begin() const
+inline typename Vector_t<int, gsl_vector_int>::const_iterator GSL::Vector_t<int, gsl_vector_int>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2822,7 +2822,7 @@ inline typename Vector_t<int, gsl_vector_int>::const_iterator Vector_t<int, gsl_
 }
 
 template<>
-inline typename Vector_t<unsigned int, gsl_vector_uint>::const_iterator Vector_t<unsigned int, gsl_vector_uint>::begin() const
+inline typename Vector_t<unsigned int, gsl_vector_uint>::const_iterator GSL::Vector_t<unsigned int, gsl_vector_uint>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2831,7 +2831,7 @@ inline typename Vector_t<unsigned int, gsl_vector_uint>::const_iterator Vector_t
 }
 
 template<>
-inline typename Vector_t<long, gsl_vector_long>::const_iterator Vector_t<long, gsl_vector_long>::begin() const
+inline typename Vector_t<long, gsl_vector_long>::const_iterator GSL::Vector_t<long, gsl_vector_long>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2840,7 +2840,7 @@ inline typename Vector_t<long, gsl_vector_long>::const_iterator Vector_t<long, g
 }
 
 template<>
-inline typename Vector_t<unsigned long, gsl_vector_ulong>::const_iterator Vector_t<unsigned long, gsl_vector_ulong>::begin() const
+inline typename Vector_t<unsigned long, gsl_vector_ulong>::const_iterator GSL::Vector_t<unsigned long, gsl_vector_ulong>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2849,7 +2849,7 @@ inline typename Vector_t<unsigned long, gsl_vector_ulong>::const_iterator Vector
 }
 
 template<>
-inline typename Vector_t<short, gsl_vector_short>::const_iterator Vector_t<short, gsl_vector_short>::begin() const
+inline typename Vector_t<short, gsl_vector_short>::const_iterator GSL::Vector_t<short, gsl_vector_short>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2858,7 +2858,7 @@ inline typename Vector_t<short, gsl_vector_short>::const_iterator Vector_t<short
 }
 
 template<>
-inline typename Vector_t<unsigned short, gsl_vector_ushort>::const_iterator Vector_t<unsigned short, gsl_vector_ushort>::begin() const
+inline typename Vector_t<unsigned short, gsl_vector_ushort>::const_iterator GSL::Vector_t<unsigned short, gsl_vector_ushort>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2867,7 +2867,7 @@ inline typename Vector_t<unsigned short, gsl_vector_ushort>::const_iterator Vect
 }
 
 template<>
-inline typename Vector_t<char, gsl_vector_char>::const_iterator Vector_t<char, gsl_vector_char>::begin() const
+inline typename Vector_t<char, gsl_vector_char>::const_iterator GSL::Vector_t<char, gsl_vector_char>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2876,7 +2876,7 @@ inline typename Vector_t<char, gsl_vector_char>::const_iterator Vector_t<char, g
 }
 
 template<>
-inline typename Vector_t<unsigned char, gsl_vector_uchar>::const_iterator Vector_t<unsigned char, gsl_vector_uchar>::begin() const
+inline typename Vector_t<unsigned char, gsl_vector_uchar>::const_iterator GSL::Vector_t<unsigned char, gsl_vector_uchar>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2885,7 +2885,7 @@ inline typename Vector_t<unsigned char, gsl_vector_uchar>::const_iterator Vector
 }
 
 template<>
-inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::const_iterator Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::begin() const
+inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::const_iterator GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2894,7 +2894,7 @@ inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std
 }
 
 template<>
-inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::const_iterator Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::begin() const
+inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::const_iterator GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2903,7 +2903,7 @@ inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_ve
 }
 
 template<>
-inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::const_iterator Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::begin() const
+inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::const_iterator GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2914,7 +2914,7 @@ inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex
 
 
 template<>
-inline typename Vector_t<double, gsl_vector>::const_iterator Vector_t<double, gsl_vector>::cbegin() const
+inline typename Vector_t<double, gsl_vector>::const_iterator GSL::Vector_t<double, gsl_vector>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2923,7 +2923,7 @@ inline typename Vector_t<double, gsl_vector>::const_iterator Vector_t<double, gs
 }
 
 template<>
-inline typename Vector_t<long double, gsl_vector_long_double>::const_iterator Vector_t<long double, gsl_vector_long_double>::cbegin() const
+inline typename Vector_t<long double, gsl_vector_long_double>::const_iterator GSL::Vector_t<long double, gsl_vector_long_double>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2932,7 +2932,7 @@ inline typename Vector_t<long double, gsl_vector_long_double>::const_iterator Ve
 }
 
 template<>
-inline typename Vector_t<float, gsl_vector_float>::const_iterator Vector_t<float, gsl_vector_float>::cbegin() const
+inline typename Vector_t<float, gsl_vector_float>::const_iterator GSL::Vector_t<float, gsl_vector_float>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2941,7 +2941,7 @@ inline typename Vector_t<float, gsl_vector_float>::const_iterator Vector_t<float
 }
 
 template<>
-inline typename Vector_t<int, gsl_vector_int>::const_iterator Vector_t<int, gsl_vector_int>::cbegin() const
+inline typename Vector_t<int, gsl_vector_int>::const_iterator GSL::Vector_t<int, gsl_vector_int>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2950,7 +2950,7 @@ inline typename Vector_t<int, gsl_vector_int>::const_iterator Vector_t<int, gsl_
 }
 
 template<>
-inline typename Vector_t<unsigned int, gsl_vector_uint>::const_iterator Vector_t<unsigned int, gsl_vector_uint>::cbegin() const
+inline typename Vector_t<unsigned int, gsl_vector_uint>::const_iterator GSL::Vector_t<unsigned int, gsl_vector_uint>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2959,7 +2959,7 @@ inline typename Vector_t<unsigned int, gsl_vector_uint>::const_iterator Vector_t
 }
 
 template<>
-inline typename Vector_t<long, gsl_vector_long>::const_iterator Vector_t<long, gsl_vector_long>::cbegin() const
+inline typename Vector_t<long, gsl_vector_long>::const_iterator GSL::Vector_t<long, gsl_vector_long>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2968,7 +2968,7 @@ inline typename Vector_t<long, gsl_vector_long>::const_iterator Vector_t<long, g
 }
 
 template<>
-inline typename Vector_t<unsigned long, gsl_vector_ulong>::const_iterator Vector_t<unsigned long, gsl_vector_ulong>::cbegin() const
+inline typename Vector_t<unsigned long, gsl_vector_ulong>::const_iterator GSL::Vector_t<unsigned long, gsl_vector_ulong>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2977,7 +2977,7 @@ inline typename Vector_t<unsigned long, gsl_vector_ulong>::const_iterator Vector
 }
 
 template<>
-inline typename Vector_t<short, gsl_vector_short>::const_iterator Vector_t<short, gsl_vector_short>::cbegin() const
+inline typename Vector_t<short, gsl_vector_short>::const_iterator GSL::Vector_t<short, gsl_vector_short>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2986,7 +2986,7 @@ inline typename Vector_t<short, gsl_vector_short>::const_iterator Vector_t<short
 }
 
 template<>
-inline typename Vector_t<unsigned short, gsl_vector_ushort>::const_iterator Vector_t<unsigned short, gsl_vector_ushort>::cbegin() const
+inline typename Vector_t<unsigned short, gsl_vector_ushort>::const_iterator GSL::Vector_t<unsigned short, gsl_vector_ushort>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2995,7 +2995,7 @@ inline typename Vector_t<unsigned short, gsl_vector_ushort>::const_iterator Vect
 }
 
 template<>
-inline typename Vector_t<char, gsl_vector_char>::const_iterator Vector_t<char, gsl_vector_char>::cbegin() const
+inline typename Vector_t<char, gsl_vector_char>::const_iterator GSL::Vector_t<char, gsl_vector_char>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3004,7 +3004,7 @@ inline typename Vector_t<char, gsl_vector_char>::const_iterator Vector_t<char, g
 }
 
 template<>
-inline typename Vector_t<unsigned char, gsl_vector_uchar>::const_iterator Vector_t<unsigned char, gsl_vector_uchar>::cbegin() const
+inline typename Vector_t<unsigned char, gsl_vector_uchar>::const_iterator GSL::Vector_t<unsigned char, gsl_vector_uchar>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3013,7 +3013,7 @@ inline typename Vector_t<unsigned char, gsl_vector_uchar>::const_iterator Vector
 }
 
 template<>
-inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::const_iterator Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::cbegin() const
+inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::const_iterator GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3022,7 +3022,7 @@ inline typename Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std
 }
 
 template<>
-inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::const_iterator Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::cbegin() const
+inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::const_iterator GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3031,7 +3031,7 @@ inline typename Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_ve
 }
 
 template<>
-inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::const_iterator Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::cbegin() const
+inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::const_iterator GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3040,61 +3040,61 @@ inline typename Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::end()
+typename Vector_t<T, G, A>::iterator GSL::Vector_t<T, G, A>::end()
 {
     return this->begin() + this->gsl_vec->stride * this->gsl_vec->size;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::end() const
+typename Vector_t<T, G, A>::const_iterator GSL::Vector_t<T, G, A>::end() const
 {
     return this->begin() + this->gsl_vec->stride * this->gsl_vec->size;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::cend() const
+typename Vector_t<T, G, A>::const_iterator GSL::Vector_t<T, G, A>::cend() const
 {
     return this->cbegin() + this->gsl_vec->stride * this->gsl_vec->size;
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::reverse_iterator Vector_t<T, G, A>::rbegin()
+typename Vector_t<T, G, A>::reverse_iterator GSL::Vector_t<T, G, A>::rbegin()
 {
     return Vector_t<T, G, A>::reverse_iterator(--(this->end()));
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::rbegin() const
+typename Vector_t<T, G, A>::const_reverse_iterator GSL::Vector_t<T, G, A>::rbegin() const
 {
     return Vector_t<T, G, A>::const_reverse_iterator(--(this->end()));
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::crbegin() const
+typename Vector_t<T, G, A>::const_reverse_iterator GSL::Vector_t<T, G, A>::crbegin() const
 {
     return Vector_t<T, G, A>::const_reverse_iterator(--(this->end()));
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::reverse_iterator Vector_t<T, G, A>::rend()
+typename Vector_t<T, G, A>::reverse_iterator GSL::Vector_t<T, G, A>::rend()
 {
     return Vector_t<T, G, A>::reverse_iterator(--(this->begin()));
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::rend() const
+typename Vector_t<T, G, A>::const_reverse_iterator GSL::Vector_t<T, G, A>::rend() const
 {
     return Vector_t<T, G, A>::const_reverse_iterator(--(this->begin()));
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::crend() const
+typename Vector_t<T, G, A>::const_reverse_iterator GSL::Vector_t<T, G, A>::crend() const
 {
     return Vector_t<T, G, A>::const_reverse_iterator(--(this->cbegin()));
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
+typename Vector_t<T, G, A>::reference GSL::Vector_t<T, G, A>::
     operator[] (const typename Vector_t<T, G, A>::size_type index)
 {
     return *(this->begin() + index);
@@ -3104,7 +3104,7 @@ template<>
 inline typename Vector_t<
     Complex_t<double, gsl_complex>,
     gsl_vector_complex, std::allocator<gsl_complex>>::reference
-Vector_t<
+GSL::Vector_t<
     Complex_t<double, gsl_complex>,
     gsl_vector_complex, std::allocator<gsl_complex>>::operator[]
     (const typename Vector_t<
@@ -3118,7 +3118,7 @@ template<>
 inline typename Vector_t<
     Complex_t<long double, gsl_complex_long_double>,
     gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::reference
-Vector_t<
+GSL::Vector_t<
     Complex_t<long double, gsl_complex_long_double>,
     gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator[]
     (const typename Vector_t<
@@ -3132,7 +3132,7 @@ template<>
 inline typename Vector_t<
     Complex_t<float, gsl_complex_float>,
     gsl_vector_complex_float, std::allocator<gsl_complex_float>>::reference
-Vector_t<
+GSL::Vector_t<
     Complex_t<float, gsl_complex_float>,
     gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator[]
     (const typename Vector_t<
@@ -3143,49 +3143,49 @@ Vector_t<
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
+typename Vector_t<T, G, A>::const_reference GSL::Vector_t<T, G, A>::
     operator[] (const typename Vector_t<T, G, A>::size_type index) const
 {
     return *(this->gsl_vec->data + index);
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
+typename Vector_t<T, G, A>::reference GSL::Vector_t<T, G, A>::
     front()
 {
     return *this->begin();
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
+typename Vector_t<T, G, A>::const_reference GSL::Vector_t<T, G, A>::
     front() const
 {
     return *this->cbegin();
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
+typename Vector_t<T, G, A>::reference GSL::Vector_t<T, G, A>::
     back()
 {
     return *(--this->end());
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
+typename Vector_t<T, G, A>::const_reference GSL::Vector_t<T, G, A>::
     back() const
 {
     return *(--this->cend());
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
+typename Vector_t<T, G, A>::reference GSL::Vector_t<T, G, A>::
     at(const typename Vector_t<T, G, A>::size_type index)
 {
     return (*this)[index];
 }
 
 template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
+typename Vector_t<T, G, A>::const_reference GSL::Vector_t<T, G, A>::
     at(const typename Vector_t<T, G, A>::size_type index) const
 {
     return (*this)[index];
@@ -3209,13 +3209,13 @@ void Vector_t<T, G, A>::assign(iter start, iter end)
     }
 }
 template<class T, class G, class A>
-void Vector_t<T, G, A>::
+void GSL::Vector_t<T, G, A>::
 assign(std::initializer_list<Vector_t<T, G, A>::value_type> l)
 {
     this->assign(l.begin(), l.end());
 }
 template<class T, class G, class A>
-void Vector_t<T, G, A>::assign(Vector_t<T, G, A>::size_type n,
+void GSL::Vector_t<T, G, A>::assign(Vector_t<T, G, A>::size_type n,
 Vector_t<T ,G, A>::const_reference val)
 {
     for(auto it = this->begin(); it != this->begin() + n; it++){
@@ -3224,7 +3224,7 @@ Vector_t<T ,G, A>::const_reference val)
 }
 
 template<class T, class G, class A>
-std::string Vector_t<T, G, A>::to_string() const
+std::string GSL::Vector_t<T, G, A>::to_string() const
 {
     std::string res = "(";
     size_t i = 0;
@@ -3241,7 +3241,7 @@ std::string Vector_t<T, G, A>::to_string() const
 }
 
 template<>
-inline std::string Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::to_string() const
+inline std::string GSL::Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>::to_string() const
 {
     std::string res = "(";
     GSL::Complex_t<double, gsl_complex> tmp;
@@ -3258,7 +3258,7 @@ inline std::string Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, 
 }
 
 template<>
-inline std::string Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::to_string() const
+inline std::string GSL::Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::to_string() const
 {
     std::string res = "(";
     GSL::Complex_t<long double, gsl_complex_long_double> tmp;
@@ -3275,7 +3275,7 @@ inline std::string Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl
 }
 
 template<>
-inline std::string Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::to_string() const
+inline std::string GSL::Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::to_string() const
 {
     std::string res = "(";
     GSL::Complex_t<float, gsl_complex_float> tmp;
