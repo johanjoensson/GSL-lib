@@ -10,10 +10,10 @@
 ################################################################################
 
 # Compilers to use
-#CXX = clang++
-CXX ?= g++
-#CC  = clang
-CC  ?= gcc
+CXX = clang++
+#CXX ?= g++
+CC  = clang
+#CC  ?= gcc
 
 CXXCHECK = clang-tidy
 
@@ -102,7 +102,7 @@ tests: 	clean $(TEST_OBJS) | lib$(LIB)cov.so
 	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB)cov -lgcov --coverage -lgtest -lgsl -Wl,-rpath=$(LIB_DIR)/$(LIB)
 
 
-travis: CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0
+travis: CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0 -fpermissive
 travis: $(BUILD_DIR) $(LIB_DIR) $(INC_DIR) lib$(LIB).so
 
 $(BUILD_DIR) : 
