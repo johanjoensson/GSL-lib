@@ -252,17 +252,17 @@ namespace GSL{
             Polynomial<X, C> d = p;
 
 
-            size_t shift = r.order - p.order;
+            long int shift = r.order - p.order;
             while(shift >= 0){
                 d = p;
                 for(int i = 0; i < shift; i++){
                     d.coeffs.insert(d.coeffs.begin(), zero);
                 }
                 d.order = d.calc_order();
-                q.coeffs[shift] = r.coeffs[r.order]/d.coeffs[d.order];
+                q.coeffs[static_cast<size_t>(shift)] = r.coeffs[r.order]/d.coeffs[d.order];
                 q.order = q.calc_order();
                 for(size_t i = 0; i < d.coeffs.size(); i++){
-                    d.coeffs[i] *= q.coeffs[shift];
+                    d.coeffs[i] *= q.coeffs[static_cast<size_t>(shift)];
                 }
                 r -= d;
                 shift = r.order - p.order;

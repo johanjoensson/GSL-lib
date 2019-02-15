@@ -73,9 +73,6 @@ TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
 all: $(LIB_DIR) $(INC_DIR) lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.tpp
-	$(CXX) $(CXXFLAGS) -c $? -o $@
-
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $? -o $@
 
@@ -102,7 +99,7 @@ tests: 	clean $(TEST_OBJS) | lib$(LIB)cov.so
 	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB)cov -lgcov --coverage -lgtest -lgsl -Wl,-rpath=$(LIB_DIR)/$(LIB)
 
 
-travis: CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0 -fpermissive
+travis: CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0
 travis: $(BUILD_DIR) $(LIB_DIR) $(INC_DIR) lib$(LIB).so
 
 $(BUILD_DIR) : 
