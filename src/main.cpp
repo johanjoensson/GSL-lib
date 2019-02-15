@@ -1,13 +1,11 @@
 #include <iostream>
 #include <stdexcept>
+#include "complex.h"
 #include "vector.h"
 #include "matrix.h"
-#include "complex_matrix.h"
-#include "complex_vector.h"
-#include "complex.h"
+#include "divided_difference.h"
 #include "special_functions.h"
 #include "polynomial.h"
-#include "divided_difference.h"
 #include "linalg.h"
 
 #include <gsl/gsl_sf_result.h>
@@ -72,24 +70,41 @@ void test_vector()
 	a2[1] = 1.0;
 	a3[2] = 1.0;
 
+	std::cout << "(a1|a2) = " << a1.dot(a2) << "\n";
+	std::cout << "(a1|a1) = " << a1.dot(a1) << "\n";
+	std::cout << "a1 x a2 = " << a1.cross(a2) << "\n";
+	std::cout << "Setting up matrix m\n";
 	Matrix m(3,3);
+	Matrix t;
+	t = m;
+	std::cout << "m set up\n";
 	m[0][0] = a1[0];
+	std::cout << t << "\n";
+//	std::cout << "m = " << m << "\n";
+	std::cout << "Setting first row of m\n";
 	m[1] = a2;
+//	std::cout << "\n\nm = " << m << "\n";
 	m[2] = 1*a3 + 0.24*a1 + 0*a2;
+	std::cout << "First row of m set up\n";
+	std::cout << "\n\nm = " << m << "\n";
 
+	std::cout << "Setting up matrix n\n";
 	Matrix n = {{1.2 , 3}, {2,4}};
+	std::cout << "n = " << n << "\n";
+	std::cout << n[0] << "\n";
 
+	std::cout << "Setting up matrix A\n";
 	Matrix A(3,3);
 
 	A[1] = m[2];
-	A.set_row(1, m[1]);
+	A[1] = m[1];
 
 	GSL::Vector c = m[2] + 3*m[1] - 1.2*m[0];
-
 	std::cout << "v = " << v << std::endl;
 	std::cout << "u = " << u << std::endl;
 	std::cout << "n = " << n << std::endl;
 	std::cout << "m = " << m << std::endl;
+
 	std::cout << "m*v = " << m*v << std::endl;
 
 	std::cout << "m/2 = " << m/2 << std::endl;
@@ -102,16 +117,15 @@ void test_vector()
 	std::cout << "Changing diagoal of m" << std::endl;
 
 	std::cout << "m.diag() = m[2]." << std::endl;
-	m.diag() = m[2];
-	std::cout <<"m.diag() = " << m.diag() << std::endl;
+//	m.diag() = m[2];
+//	std::cout <<"m.diag() = " << m.diag() << std::endl;
 
 
 	std::cout << m[0] << " == " << a1 << " = " << (m[0] == a1) << std::endl;
 	std::cout << m[0] << " != " << a1 << " = " << (m[0] != a1) << std::endl;
 	test_equal();
 	test_addition();
-
-	std::cout << "m[0] x a2 = " << m[0] << " x " << a2 << " = " << cross(m[0], a2) << std::endl;
+	std::cout << "m[0] x a2 = " << m[0] << " x " << a2 << " = " << m[0].cross(a2) << std::endl;
 	std::cout << std::string(80, '*') << std::endl;
 
 	std::cout << "Iterating over v :\n";
@@ -119,32 +133,33 @@ void test_vector()
 		std::cout << val << " ";
 	}
 	std::cout << "\n";
+	GSL::Vector test;
 }
+
 
 void test_complex_vector()
 {
 	std::cout << "Testing complex vectors and matrices" << std::endl;
 	std::cout << std::string(80, '*') << std::endl;
-	Complex_Vector v(3), a1(3), a2(3), a3(3);
-	Complex_Vector u = {Complex(1.0,0), Complex(1.3,2.1)};
+	Vector_cx v(3), a1(3), a2(3), a3(3);
+	Vector_cx u = {Complex(1.0,0), Complex(1.3,2.1)};
 
 
-	v.set(0, Complex(1.2, 0.43));
+	v[0] = Complex(1.2, 0.43);
 	v[2] = Complex(0.24, 100.345);
 
-	a1.set(0, Complex(1.0, 0));
-	a2.set(1, Complex(1.0, 0.1));
-	a3.set(2, Complex(1.0, 0));
+	a1[0] = Complex(1.0, 0);
+	a2[1] = Complex(1.0, 0.1);
+	a3[2] = Complex(1.0, 0);
 
-	Complex_Matrix m(3,3);
+	Matrix_cx m(3,3);
 	m[0][0] = Complex(1.0, 0.);
-	m.set_row(1, a2);
+	m[1] = a2;
 	m[2] = a3+2*a1;
 
-	Complex_Matrix n = {{Complex(1, 2.4), Complex(1.0, 0)},
+	Matrix_cx n = {{Complex(1, 2.4), Complex(1.0, 0)},
 						{Complex(1.3, 2.1), Complex(0.0, 1.2)},
 						{Complex(1, 1), Complex(2.4, 4.65)}};
-
 	std::cout << "v = " << v << std::endl;
 	std::cout << "u = " << u << std::endl;
 	std::cout << "n = " << n << std::endl;
@@ -162,10 +177,10 @@ void test_complex_vector()
 
 void test_linalg()
 {
-	Complex_Matrix m(3,3);
-	m[0].set(0, Complex(1, 0));
-	m[1].set(1, Complex(1, 0));
-	m[2].set(2, Complex(1, 0));
+	Matrix_cx m(3,3);
+	m[0][0] = Complex(1, 0);
+	m[1][1] = Complex(1, 0);
+	m[2][2] = Complex(1, 0);
 	std::cout << m << std::endl;
 	std::cout << cholesky_decomp(m) << std::endl;
 }

@@ -1,94 +1,26 @@
-#ifndef MATRIX_H
-#define MATRIX_H
-#include "vector.h"
-#include <gsl/gsl_matrix.h>
-#include <vector>
-#include <memory>
+#ifndef GSL_MATRIX_IMPL_H
+#define GSL_MATRIX_IMPL_H
+#include "matrix_template.h"
+#include "complex_template.h"
+#include "vector_template.h"
+#include "matrix_template.tpp"
 
-namespace GSL{class Matrix;}
+template class GSL::Matrix_t<double, gsl_matrix, gsl_vector>;
+template class GSL::Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>;
+template class GSL::Matrix_t<float, gsl_matrix_float, gsl_vector_float>;
+template class GSL::Matrix_t<int, gsl_matrix_int, gsl_vector_int>;
+template class GSL::Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>;
+template class GSL::Matrix_t<long, gsl_matrix_long, gsl_vector_long>;
+template class GSL::Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>;
+template class GSL::Matrix_t<short, gsl_matrix_short, gsl_vector_short>;
+template class GSL::Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>;
+template class GSL::Matrix_t<char, gsl_matrix_char, gsl_vector_char>;
+template class GSL::Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>;
+template class GSL::Matrix_t<GSL::Complex, gsl_matrix_complex,
+    gsl_vector_complex, std::allocator<gsl_complex>>;
+template class GSL::Matrix_t<GSL::Complex_ld, gsl_matrix_complex_long_double,
+    gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>;
+template class GSL::Matrix_t<GSL::Complex_f, gsl_matrix_complex_float,
+    gsl_vector_complex_float, std::allocator<gsl_complex_float>>;
 
-namespace GSL{
-    class BaseMatrix{
-    protected:
-        BaseMatrix(){};
-        BaseMatrix(BaseMatrix &m) = default;
-        BaseMatrix(BaseMatrix &&m) = default;
-
-        BaseMatrix& operator=(const BaseMatrix &m) = default;
-        BaseMatrix& operator=(BaseMatrix &&m) = default;
-        virtual ~BaseMatrix(){};
-        virtual std::string to_string() const = 0;
-
-        friend std::ostream& operator<<(std::ostream &os, const BaseMatrix &m);
-
-        void set_row(const size_t &i, const BaseVector &v) = delete;
-        void set_col(const size_t &i, const BaseVector &v) = delete;
-        BaseVector& diag() = delete;
-
-    };
-    std::ostream& operator<<(std::ostream &os, const BaseMatrix &m);
-
-    class Matrix : public BaseMatrix{
-    private:
-        std::shared_ptr<gsl_matrix> gsl_mat;
-    public:
-        Matrix();
-        Matrix(const size_t n1, const size_t n2);
-        Matrix(gsl_matrix m);
-        Matrix(Matrix& m);
-        Matrix(const Matrix& m);
-        Matrix(Matrix&& m);
-        Matrix(std::initializer_list<std::initializer_list<double>>);
-        ~Matrix();
-
-        void copy(const Matrix& m);
-        Matrix& operator= (const Matrix& m);
-        Matrix& operator= (Matrix&& m);
-
-        Vector operator[](const size_t index);
-
-        Matrix& operator+= (const Matrix& b);
-        Matrix& operator-= (const Matrix& b);
-        Matrix& operator*= (const Matrix& b);
-        Matrix& operator/= (const Matrix& b);
-        Matrix& operator*= (const double s);
-        Matrix& operator/= (const double s);
-
-        // Basic arithmetic operations
-        Matrix operator+ (const Matrix& b) const;
-        Matrix operator- (const Matrix& b) const;
-        // Element wise multiplication and division
-        Matrix operator* (const Matrix& b) const;
-        Matrix operator/ (const Matrix& b) const;
-        // Scaling of matrices
-        Matrix operator* (const double& s) const;
-        friend Matrix operator*(const double& s, const Matrix& a);
-        Matrix operator/ (const double& s) const;
-
-        // Matrix - vector multiplication
-        Vector operator* (const Vector& v) const;
-        friend Vector operator* (const Vector& v, const Matrix& a);
-
-        Matrix transpose() const;
-        Matrix hermitian_conj() const;
-
-        void set_row(const size_t &i, const Vector &v);
-        void set_col(const size_t &i, const Vector &v);
-        Vector diag();
-
-        friend bool operator== (const Matrix& u, const Matrix& v);
-        friend bool operator!= (const Matrix& u, const Matrix& v);
-
-        std::string to_string() const;
-
-        friend Matrix cholesky_decomp(const Matrix& a);
-
-    };
-
-    Matrix operator*(const double& s, const Matrix& a);
-    Vector operator* (const Vector& v, const Matrix& a);
-    bool operator== (const Matrix& u, const Matrix& v);
-    bool operator!= (const Matrix& u, const Matrix& v);
-}
-
-#endif // MATRIX_H
+#endif // GSL_MATRIX_IMPL_H

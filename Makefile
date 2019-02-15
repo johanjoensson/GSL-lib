@@ -27,30 +27,25 @@ TEST_DIR = test
 BUILD_DIR = build
 
 # Library directory
-LIB_DIR = lib/GSLpp
+LIB_DIR = lib
 
 # include directory
-INC_DIR = include/GSLpp
+INC_DIR = include
 
 # Flags for the above defined compilers
 
-WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2 -Weffc++
-
-CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -O0 -g
+WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++
+# -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
+CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -o3 -g
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS =-lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so
+LDFLAGS = -L$(LIB_DIR)/$(LIB) -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so
 
 
 LIB_OBJ = divided_difference.o\
-	  complex.o\
-	  vector.o\
-	  matrix.o\
-	  complex_vector.o\
-	  complex_matrix.o\
 	  permutation.o\
 	  eigen.o\
 	  linalg.o\
@@ -72,40 +67,39 @@ OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
 
 # Targets to always execute, even if new files with the same names exists
-.PHONY: all clean cleanall bin $(LIB_DIR) $(INC_DIR)
+.PHONY: clean cleanall $(LIB_DIR) $(INC_DIR)
 
 # Build all executables
-all: bin $(LIB_DIR) $(INC_DIR) lib$(LIB).so $(TEST)
+all: $(LIB_DIR) $(INC_DIR) lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.tpp
+	$(CXX) $(CXXFLAGS) -c $? -o $@
+
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $? -o $@
 
 $(BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $? -o $@
-
-# Create object files from c sources
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -fPIC -c $? -o $@
+	$(CXX) $(CXXFLAGS) -fPIC -c $? -o $@
 
 # Link numerov_test
 lib$(LIB).so: $(OBJS)
-	$(CXX) $^ -o $(LIB_DIR)/$@ $(LDFLAGS)
+	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS)
 
 lib$(LIB)cov.so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$@ $(LDFLAGS)
 
-tester:   $(BUILD_DIR)/main.o | lib$(LIB).so
-	$(CXX) $< -o $@ -L$(LIB_DIR) -l$(LIB) -lgsl -Wl,-rpath=$(LIB_DIR)
+tester: $(BUILD_DIR)/main.o lib$(LIB).so
+	$(CXX) $< -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB) -lgsl -Wl,-rpath=$(LIB_DIR)/$(LIB)
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 
 tests: 	CXXFLAGS = -std=c++11 -I$(SRC_DIR) -I$(TEST_DIR) -O0 -fprofile-arcs -ftest-coverage
-tests:  LDFLAGS = -lgcov -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB)cov.so
+tests:  LDFLAGS = -lgcov --coverage -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB)cov.so
 tests: 	clean $(TEST_OBJS) | lib$(LIB)cov.so
-	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR) -l$(LIB)cov -lgcov -lgtest -Wl,-rpath=$(LIB_DIR)
+	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB)cov -lgcov --coverage -lgtest -lgsl -Wl,-rpath=$(LIB_DIR)
 
 
 travis: CXXFLAGS = -std=c++11 -I$(SRC_DIR) -O0
@@ -115,16 +109,17 @@ $(BUILD_DIR) :
 	mkdir -p $(BUILD_DIR)
 
 $(LIB_DIR) : 
-	mkdir -p $(LIB_DIR)
+	mkdir -p $(LIB_DIR)/$(LIB)
 
 $(INC_DIR) : 
-	mkdir -p $(INC_DIR)
-	cp $(SRC_DIR)/*.h $(INC_DIR)
+	mkdir -p $(INC_DIR)/$(LIB)
+	cp $(SRC_DIR)/*.h $(INC_DIR)/$(LIB)
+	cp $(SRC_DIR)/*.tpp $(INC_DIR)/$(LIB)
 
 # Remove object files
 clean:
-	rm -f $(BUILD_DIR)/*.o
+	rm -f $(BUILD_DIR)/*.o $(BUILD_DIR)/*.gcda $(BUILD_DIR)/*.gcno
 
 # Remove executables and object files
-cleanall:
-	rm -f $(LIB_DIR)/lib$(LIB).so* $(INC_DIR)/*.h tests tester $(BUILD_DIR)/*.o
+cleanall: clean
+	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(INC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)/*.tpp tests tester

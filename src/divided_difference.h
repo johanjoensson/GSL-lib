@@ -26,7 +26,7 @@ namespace GSL {
          * i.e. a function call operator taking a double and returning a double*/
         template<class F>
         Divided_Difference_Representation(F& f, double a, double b, size_t n)
-            : size(n), dd(new double[n]), x(new double[n])
+            : dd(new double[n]), x(new double[n]), size(n)
         {
             int stat = 0;
             std::unique_ptr<double[]> y(new double[n]);

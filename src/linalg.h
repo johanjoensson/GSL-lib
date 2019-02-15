@@ -2,16 +2,14 @@
 #define GSL_LINALG_H
 #include "vector.h"
 #include "matrix.h"
-#include "complex_vector.h"
-#include "complex_matrix.h"
 #include "permutation.h"
 
 
 namespace GSL{
 
-    Complex_Matrix cholesky_decomp(const Complex_Matrix& a);
-    Complex_Matrix lu_inverse(const Complex_Matrix& a);
-    std::pair<Complex_Matrix, Permutation&> lu_decomp(const Complex_Matrix& a);
+    Matrix_cx cholesky_decomp(const Matrix_cx& a);
+    Matrix_cx lu_inverse(const Matrix_cx& a);
+    std::pair<Matrix_cx, Permutation&> lu_decomp(const Matrix_cx& a);
     Matrix cholesky_decomp(const Matrix& a);
     Matrix triangular_inverse(const Matrix& a);
 
