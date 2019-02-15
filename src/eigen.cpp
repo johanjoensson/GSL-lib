@@ -24,7 +24,7 @@ std::pair<Matrix_cx, Vector> GSL::hermitian_eigen(const Matrix_cx& A)
     if(status){
         std::string error_str =   gsl_strerror(status);
         throw std::runtime_error("Error in solving Hermitian eigenproblem.\nGSL error: "
-        + error_str);
+        + error_str + "\n");
     }
 
     return std::pair<Matrix_cx, Vector>(eigvecs, eigvals);
@@ -49,7 +49,7 @@ std::pair<Matrix_cx, Vector> GSL::general_hermitian_eigen(
     if(status){
         std::string error_str =   gsl_strerror(status);
         throw std::runtime_error("Error in solving general Hermitian eigenproblem.\nGSL error: "
-        + error_str);
+        + error_str + "\n");
     }
 
     return std::pair<Matrix_cx, Vector>(eigvecs, eigvals);

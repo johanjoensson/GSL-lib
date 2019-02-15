@@ -53,9 +53,8 @@ private:
 public:
     Complex_t(const T& a = 0, const T& b = 0);
     Complex_t(const GSL_COMPLEX& z);
-    //Complex_t(GSL_COMPLEX* z);
-    Complex_t(const Complex_t& z) = default;
-    Complex_t(Complex_t&& z) = default;
+    Complex_t(const Complex_t& ) = default;
+    Complex_t(Complex_t&& ) = default;
     ~Complex_t() = default;
 
     Complex_t& operator=(const Complex_t& z);
