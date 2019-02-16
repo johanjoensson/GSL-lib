@@ -1,16 +1,15 @@
-#include "linalg.h"
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_permutation.h>
-
 #include <memory>
 #include <functional>
+#include "linalg.h"
 
 using namespace GSL;
 
-Complex_Matrix GSL::cholesky_decomp(const Complex_Matrix& a)
+GSL::Matrix_cx GSL::cholesky_decomp(const GSL::Matrix_cx& a)
 {
     size_t N = a.gsl_mat->size1;
-    Complex_Matrix tmp(N, N);
+    Matrix_cx tmp(N, N);
     tmp.copy(a);
     int status = gsl_linalg_complex_cholesky_decomp(tmp.gsl_mat.get());
     if(status){
@@ -21,19 +20,19 @@ Complex_Matrix GSL::cholesky_decomp(const Complex_Matrix& a)
 
     for(size_t i = 0; i < N; i++){
         for(size_t j = i+1; j < N; j++){
-            tmp[i].set(j, Complex(0., 0.));
+            tmp[i][j] = GSL::Complex(0., 0.);
         }
     }
 
     return tmp;
 }
 
-std::pair<Complex_Matrix, Permutation&> GSL::lu_decomp(const Complex_Matrix& a)
+std::pair<GSL::Matrix_cx, GSL::Permutation&> GSL::lu_decomp(const GSL::Matrix_cx& a)
 {
     size_t N = a.gsl_mat->size1;
-    Complex_Matrix tmp(N, N);
+    GSL::Matrix_cx tmp(N, N);
     tmp.copy(a);
-    Permutation p(N);
+    GSL::Permutation p(N);
     int i = 0;
     int status = gsl_linalg_complex_LU_decomp(tmp.gsl_mat.get(), p.p_m.get(), &i);
     if(status){
@@ -42,15 +41,15 @@ std::pair<Complex_Matrix, Permutation&> GSL::lu_decomp(const Complex_Matrix& a)
         + error_str);
     }
 
-    return std::pair<Complex_Matrix, Permutation&>(tmp, p);
+    return std::pair<GSL::Matrix_cx, GSL::Permutation&>(tmp, p);
 }
 
-Complex_Matrix GSL::lu_inverse(const Complex_Matrix& a)
+GSL::Matrix_cx GSL::lu_inverse(const GSL::Matrix_cx& a)
 {
     size_t N = a.gsl_mat->size1;
-    Complex_Matrix tmp(N, N), res(N, N);
+    GSL::Matrix_cx tmp(N, N), res(N, N);
     tmp.copy(a);
-    std::pair<Complex_Matrix, Permutation&> lu = GSL::lu_decomp(tmp);
+    std::pair<GSL::Matrix_cx, GSL::Permutation&> lu = GSL::lu_decomp(tmp);
     std::cout << lu.second.p_m.get() << std::endl;
     int status = gsl_linalg_complex_LU_invert(lu.first.gsl_mat.get(), lu.second.p_m.get(), res.gsl_mat.get());
     if(status){
@@ -61,10 +60,10 @@ Complex_Matrix GSL::lu_inverse(const Complex_Matrix& a)
     return res;
 }
 
-Matrix GSL::cholesky_decomp(const Matrix& a)
+GSL::Matrix GSL::cholesky_decomp(const GSL::Matrix& a)
 {
     size_t N = a.gsl_mat->size1;
-    Matrix tmp(N, N);
+    GSL::Matrix tmp(N, N);
     tmp.copy(a);
     int status = gsl_linalg_cholesky_decomp(tmp.gsl_mat.get());
     if(status){

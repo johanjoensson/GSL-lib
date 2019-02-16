@@ -3,9 +3,6 @@
 
 #include "vector.h"
 #include "matrix.h"
-#include "complex_vector.h"
-#include "complex_matrix.h"
-
 
 namespace GSL{
 
@@ -15,9 +12,9 @@ namespace GSL{
 
     };
 
-    std::pair<Complex_Matrix, Vector> hermitian_eigen(const Complex_Matrix& A);
-    std::pair<Complex_Matrix, Vector> general_hermitian_eigen(
-        const Complex_Matrix& A, const Complex_Matrix& B);
+    std::pair<Matrix_cx, Vector> hermitian_eigen(const Matrix_cx& A);
+    std::pair<Matrix_cx, Vector> general_hermitian_eigen(
+        const Matrix_cx& A, const Matrix_cx& B);
 }
 
 
