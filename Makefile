@@ -97,7 +97,7 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 tests:  CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0 --coverage
 tests:  lib$(LIB)cov.so
 tests: 	$(INC_DIR) $(TEST_OBJS)
-	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) --coverage -lgsl -l$(LIB)cov -lgtest
+	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) --coverage -lgsl -lgslcblas -l$(LIB)cov -lgtest
 
 
 travis: CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0
