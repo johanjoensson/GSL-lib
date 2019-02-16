@@ -5,6 +5,12 @@
 
 namespace GSL{
 
+template<class T, class GSL_COMPLEX>
+Complex_t<T, GSL_COMPLEX>::Complex_t(const Complex_t& c)
+ : gsl_c(new GSL_COMPLEX)
+{
+    *this->gsl_c = *c.gsl_c;
+}
 
 template<>
 inline Complex_t<double, gsl_complex>::Complex_t(const double& a, const double& b)
@@ -83,9 +89,9 @@ Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator= (Complex_t<T, GS
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator+(const Complex_t<T, G>& b) const
 {
-    Complex_t<T, G> res = *this;
-    res.re() += b.re();
-    res.im() += b.im();
+    Complex_t<T, G> res;
+    res.re() = this->re() + b.re();
+    res.im() = this->im() + b.im();
     return res;
 }
 
@@ -98,7 +104,7 @@ inline Complex Complex::operator+(const Complex& b) const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator+(const T& s) const
 {
-    Complex_t<T, G> res = *this;
+    Complex_t<T, G> res(*this);
     res.re() += s;
     return res;
 }
@@ -112,7 +118,7 @@ inline Complex Complex::operator+(const double& s) const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator-(const Complex_t<T, G>& b) const
 {
-    Complex_t<T, G> res = *this;
+    Complex_t<T, G> res(*this);
     res.re() -= b.re();
     res.im() -= b.im();
     return res;
@@ -127,7 +133,7 @@ inline Complex Complex::operator-(const Complex& b) const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator-(const T& s) const
 {
-    Complex_t<T, G> res = *this;
+    Complex_t<T, G> res(*this);
     res.re() -= s;
     return res;
 }
@@ -141,9 +147,9 @@ inline Complex Complex::operator-(const double& s) const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator-() const
 {
-    Complex_t<T, G> res = *this;
-    res.re() *= -1;
-    res.im() *= -1;
+    Complex_t<T, G> res;
+    res.re() = -this->re();
+    res.im() = -this->im();
     return res;
 }
 
@@ -156,9 +162,9 @@ inline Complex Complex::operator-() const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator*(const Complex_t<T, G>& b) const
 {
-    Complex_t<T, G> res = *this;
-    res.re() = res.re()*b.re() - res.im()*b.im();
-    res.im() = res.re()*b.im() + res.im()*b.re();
+    Complex_t<T, G> res;
+    res.re() = this->re()*b.re() - this->im()*b.im();
+    res.im() = this->re()*b.im() + this->im()*b.re();
     return res;
 }
 
@@ -171,9 +177,9 @@ inline Complex Complex::operator*(const Complex& b) const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator*(const T& s) const
 {
-    Complex_t<T, G> res = *this;
-    res.re() *= s;
-    res.im() *= s;
+    Complex_t<T, G> res;
+    res.re() = this->re()*s;
+    res.im() = this->im()*s;
     return res;
 }
 
@@ -186,8 +192,8 @@ inline Complex Complex::operator*(const double& s) const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator/(const Complex_t<T, G>& b) const
 {
-    Complex_t<T, G> res = *this;
-    res *= b.conjugate()/b.abs2();
+    Complex_t<T, G> res;
+    res = (*this)*b.conjugate()/b.abs2();
     return res;
 }
 
@@ -200,9 +206,9 @@ inline Complex Complex::operator/(const Complex& b) const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator/(const T& s) const
 {
-    Complex_t<T, G> res = *this;
-    res.re() /= s;
-    res.im() /= s;
+    Complex_t<T, G> res;
+    res.re() = this->re()/s;
+    res.im() = this->im()/s;
     return res;
 }
 
@@ -374,9 +380,9 @@ inline Complex sqrt(const double& s)
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::negate() const
 {
-    Complex_t<T, G> tmp = *this;
-    this->re() *= -1;
-    this->im() *= -1;
+    Complex_t<T, G> tmp;
+    tmp.re() = -this->re();
+    tmp.im() = -this->im();
     return tmp;
 }
 

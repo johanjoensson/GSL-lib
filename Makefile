@@ -62,7 +62,11 @@ LIB_OBJ = divided_difference.o\
 
 TEST_OBJ =  main_tests.o\
  	    complex_test.o\
-	    complex_base_math.o\
+	    complex_base_math_test.o\
+ 	    complex_ld_test.o\
+	    complex_ld_base_math_test.o\
+ 	    complex_f_test.o\
+	    complex_f_base_math_test.o\
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
