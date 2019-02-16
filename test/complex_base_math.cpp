@@ -1,7 +1,7 @@
 #include "GSLpp/complex.h"
 #include <gtest/gtest.h>
 
-TEST(ComplexBaseTest, TestIncrement)
+TEST(ComplexBaseMathTest, TestIncrement)
 {
     double re = 1, im = 2;
     GSL::Complex z(re, im);
