@@ -76,4 +76,4 @@ script:
     - make tests && ./tests
 
 after_success:
-    - coveralls --build-root build --exclude lib --exclude test --gcov-options '-l -p'
+    - coveralls --build-root build --exclude lib --exclude test
