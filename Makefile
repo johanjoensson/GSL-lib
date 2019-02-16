@@ -36,13 +36,13 @@ INC_DIR = include
 
 WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++
 # -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
-CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -O3
+CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -O3 -flto
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS =-lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so
+LDFLAGS =-lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so -O3 -flto
 
 
 LIB_OBJ = divided_difference.o\
