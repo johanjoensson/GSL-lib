@@ -2285,6 +2285,62 @@ Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::transpose() const
     return res;
 }
 
+template<class T, class M, class V, class A>
+Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::hermitian_transpose() const
+{
+    return this->transpose();
+}
+
+template<>
+inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>
+Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::
+hermitian_transpose() const
+{
+    Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>
+        res(this->size().second, this->size().first);
+    for(Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::size_type
+            i = 0; i < this->size().second; i++){
+        for(Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::size_type
+                j = 0; j < this->size().first; j++){
+                    res[i][j] = Complex_t<double, gsl_complex>((*this)[j][i]).conjugate();
+        }
+    }
+    return res;
+}
+
+template<>
+inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>
+Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::
+hermitian_transpose() const
+{
+    Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>
+        res(this->size().second, this->size().first);
+    for(Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type
+            i = 0; i < this->size().second; i++){
+        for(Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type
+                j = 0; j < this->size().first; j++){
+                    res[i][j] = Complex_t<long double, gsl_complex_long_double>((*this)[j][i]).conjugate();
+        }
+    }
+    return res;
+}
+
+template<>
+inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>
+Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::
+hermitian_transpose() const
+{
+    Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>
+        res(this->size().second, this->size().first);
+    for(Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::size_type
+            i = 0; i < this->size().second; i++){
+        for(Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::size_type
+                j = 0; j < this->size().first; j++){
+                    res[i][j] = Complex_t<float, gsl_complex_float>((*this)[j][i]).conjugate();
+        }
+    }
+    return res;
+}
 
 template<>
 inline Vector_t<double, gsl_vector>& Matrix_t<double, gsl_matrix, gsl_vector>::get_row(const Matrix_t<double, gsl_matrix, gsl_vector>::difference_type i)

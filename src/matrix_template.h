@@ -144,6 +144,7 @@ public:
     bool operator!=(const Matrix_t&) const;
 
     Matrix_t transpose() const;
+    Matrix_t hermitian_transpose() const;
 
     Vector_t<T, GSL_VEC, A>& get_row(const difference_type i);
     //GSL_VEC& get_row(const difference_type i);
