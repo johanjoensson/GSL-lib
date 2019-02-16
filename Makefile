@@ -85,7 +85,7 @@ lib$(LIB).so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS)
 
 lib$(LIB)cov.so: $(OBJS)
-	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS)
+	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -fprofile-arcs -ftest-coverage
 
 tester: $(BUILD_DIR)/main.o lib$(LIB).so
 	$(CXX) $< -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB) -lgsl -Wl,-rpath=$(LIB_DIR)/$(LIB)
@@ -94,10 +94,10 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 
-tests: 	CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0 -fprofile-arcs -ftest-coverage
+tests: 	CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0
 tests:  LDFLAGS = -lgcov --coverage -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB)cov.so
 tests: 	clean $(INC_DIR) $(TEST_OBJS) |lib$(LIB)cov.so
-	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -lgtest -l$(LIB)cov -lgcov --coverage -lgsl -lgslcblas -lopenblas -Wl,-rpath=$(LIB_DIR)/$(LIB)
+	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -lgtest -l$(LIB)cov -lgcov -lgsl -lgslcblas -lopenblas -Wl,-rpath=$(LIB_DIR)/$(LIB)
 
 
 travis: CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0

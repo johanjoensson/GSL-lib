@@ -76,4 +76,4 @@ script:
     - make tests && ./tests
 
 after_success:
-    - coveralls --build-root build --exclude lib --exclude test
+    - coveralls --exclude lib --exclude test
