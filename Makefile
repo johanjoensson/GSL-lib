@@ -62,6 +62,7 @@ LIB_OBJ = divided_difference.o\
 
 TEST_OBJ =  main_tests.o\
  	    complex_test.o\
+	    complex_base_math.o\
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
@@ -95,7 +96,7 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 
 tests: 	CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0 -fprofile-arcs -ftest-coverage
 tests:  LDFLAGS = -lgcov --coverage -lgsl -lopenblas -shared -Wl,-soname,lib$(LIB)cov.so
-tests: 	clean $(TEST_OBJS) | lib$(LIB)cov.so
+tests: 	clean $(INC_DIR) $(TEST_OBJS) |lib$(LIB)cov.so
 	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -lgtest -l$(LIB)cov -lgcov --coverage -lgsl -lgslcblas -lopenblas -Wl,-rpath=$(LIB_DIR)/$(LIB)
 
 
