@@ -60,7 +60,7 @@ public:
     Complex_t& operator=(const Complex_t& z);
     Complex_t& operator=(Complex_t&& z);
 
-    operator GSL_COMPLEX() const { return *this->gsl_c;};
+    operator GSL_COMPLEX() const;
 
     T& re() const;
     T& im() const;

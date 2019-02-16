@@ -45,6 +45,12 @@ Complex_t<T, GSL_COMPLEX>::Complex_t(const GSL_COMPLEX& z)
 }
 
 template<class T, class GSL_COMPLEX>
+Complex_t<T, GSL_COMPLEX>::operator GSL_COMPLEX() const
+{
+    return *this->gsl_c;
+}
+
+template<class T, class GSL_COMPLEX>
 T& Complex_t<T, GSL_COMPLEX>::re() const
 {
 	return this->gsl_c->dat[0];
@@ -349,8 +355,8 @@ inline Complex Complex::conjugate() const
 template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::recipr() const
 {
-    Complex_t<T, G> tmp = this->conjugate();
-    tmp /= tmp.abs2();
+    T a(this->abs2());
+    Complex_t<T, G> tmp(this->re()/a, -this->im()/a);
     return tmp;
 }
 
