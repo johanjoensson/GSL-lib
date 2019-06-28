@@ -1091,15 +1091,15 @@ inline Matrix_cxf& Matrix_cxf::operator-=(const Matrix_cxf& b)
 template<class T, class M, class V, class A>
 Matrix_t<T, M, V, A>& Matrix_t<T, M, V, A>::operator*=(const Matrix_t<T, M, V, A>& b)
 {
-    Matrix_t<T, M, V, A> tmp(this->size().first, this->size().second);
-    for(Matrix_t<T, M, V, A>::size_type i = 0; i < this->size().second; i++){
-        for(Matrix_t<T, M, V, A>::size_type j = 0; i < b.size().first; j++){
-            for(Matrix_t<T, M, V, A>::size_type k = 0; i < this->size().second; k++){
+    Matrix_t<T, M, V, A> tmp(this->size().first, b.size().second);
+    for(Matrix_t<T, M, V, A>::size_type i = 0; i < this->size().first; i++){
+        for(Matrix_t<T, M, V, A>::size_type j = 0; j < b.size().second; j++){
+            for(Matrix_t<T, M, V, A>::size_type k = 0; k < this->size().second; k++){
                 tmp[i][j] = static_cast<T>( tmp[i][j] + (*this)[i][k]*b[k][j] );
             }
         }
     }
-    this->copy(tmp);
+    *this = tmp;
     return *this;
 }
 
@@ -1167,17 +1167,24 @@ template<>
 inline Matrix_cxld& Matrix_cxld::operator*=(const Matrix_cxld& b)
 {
     Complex_ld c1(0), c2(0);
-    Matrix_cxld tmp(this->size().first, this->size().second);
-    for(Matrix_cxld::size_type i = 0; i < this->size().second; i++){
-        for(Matrix_cxld::size_type j = 0; i < b.size().first; j++){
-            for(Matrix_cxld::size_type k = 0; i < this->size().second; k++){
+    Matrix_cxld::size_type rows, columns, c;
+    rows = this->size().first;
+    columns = b.size().second;
+    c = this->size().second;
+    Matrix_cxld tmp(this->size().first, b.size().second);
+    for(Matrix_cxld::size_type i = 0; i < rows; i++){
+        for(Matrix_cxld::size_type j = 0; j < columns; j++){
+            std::cout << "i = " << i << ", j = " << j << "\n";
+            for(Matrix_cxld::size_type k = 0; k < c; k++){
+                std::cout << "k = " << k << "\n";
                 c1 = Complex_ld((*this)[i][k]);
-                c2 = Complex_ld((*this)[k][j]);
+                c2 = Complex_ld(b[k][j]);
+                std::cout << "c1 = " << c1 << ", c2 = " << c2 << "\n";
                 tmp[i][j] = Complex_ld(tmp[i][j]) + c1*c2;
             }
         }
     }
-    this->copy(tmp);
+    *this = tmp;
     return *this;
 }
 template<>

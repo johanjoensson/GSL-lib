@@ -62,7 +62,7 @@ class Matrix_t {
 
 public:
     typedef A allocator_type;
-    typedef typename A::value_type value_type;
+    typedef T value_type;
     typedef typename A::reference reference;
     typedef typename A::const_reference const_reference;
     typedef typename A::difference_type difference_type;

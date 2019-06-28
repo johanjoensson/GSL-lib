@@ -62,7 +62,7 @@ class Vector_t {
     friend class Matrix_t<T, gsl_matrix_complex_float, gsl_vector_complex_float, A>;
 public:
     typedef A allocator_type;
-    typedef typename A::value_type value_type;
+    typedef T value_type;
     typedef typename A::reference reference;
     typedef typename A::const_reference const_reference;
     typedef typename A::difference_type difference_type;

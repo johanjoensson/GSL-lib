@@ -285,7 +285,7 @@ TEST(MatrixTest, TestAt)
 TEST(MatrixTest, TestAt2)
 {
     GSL::Matrix m{{1, 2}, {3, 4}, {5, 6}};
-    double res{5};
+    GSL::Matrix::value_type res{5};
 
     EXPECT_EQ(m.at(2, 0), res);
 }
