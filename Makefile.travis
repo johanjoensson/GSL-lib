@@ -53,7 +53,7 @@ LIB_OBJ = divided_difference.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
 	  special_functions_laguerre.o\
-	  special_functions_hermite.o\
+#	  special_functions_hermite.o\
 	  special_functions_coupling.o\
 	  special_functions_exp.o\
 	  special_functions_log.o\
