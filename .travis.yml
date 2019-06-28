@@ -5,6 +5,7 @@ matrix:
   include:
     # works on Precise and Trusty
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -16,6 +17,7 @@ matrix:
 
     # works on Precise and Trusty
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -27,6 +29,7 @@ matrix:
 
     # works on Precise and Trusty
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -38,6 +41,7 @@ matrix:
 
     # works on Precise and Trusty
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -48,6 +52,7 @@ matrix:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
