@@ -3,6 +3,7 @@
 #include "vector.h"
 #include <gsl/gsl_blas.h>
 #include <iostream>
+#include <stdexcept>
 
 namespace GSL{
 
@@ -12,7 +13,7 @@ inline Matrix_t<T, GSL_MAT, GSL_VEC, A>::Matrix_t()
 {}
 
 template<>
-inline Matrix_t<double, gsl_matrix, gsl_vector>::Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
+inline Matrix::Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_calloc(n1, n2), gsl_matrix_free), v_m()
 {
     if(gsl_mat == nullptr){
@@ -22,7 +23,7 @@ inline Matrix_t<double, gsl_matrix, gsl_vector>::Matrix_t(const Matrix_t::size_t
 }
 
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::
+inline Matrix_ld::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_long_double_calloc(n1, n2), gsl_matrix_long_double_free), v_m()
 {
@@ -34,7 +35,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>::
+inline Matrix_f::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_float_calloc(n1, n2), gsl_matrix_float_free), v_m()
 {
@@ -45,7 +46,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>::
+inline Matrix_i::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_int_calloc(n1, n2), gsl_matrix_int_free), v_m()
 {
@@ -56,7 +57,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::
+inline Matrix_ui::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_uint_calloc(n1, n2), gsl_matrix_uint_free), v_m()
 {
@@ -67,7 +68,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>::
+inline Matrix_l::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_long_calloc(n1, n2), gsl_matrix_long_free), v_m()
 {
@@ -78,7 +79,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::
+inline Matrix_ul::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_ulong_calloc(n1, n2), gsl_matrix_ulong_free), v_m()
 {
@@ -89,7 +90,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>::
+inline Matrix_s::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_short_calloc(n1, n2), gsl_matrix_short_free), v_m()
 {
@@ -100,7 +101,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::
+inline Matrix_us::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_ushort_calloc(n1, n2), gsl_matrix_ushort_free), v_m()
 {
@@ -111,7 +112,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>::
+inline Matrix_c::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_char_calloc(n1, n2), gsl_matrix_char_free), v_m()
 {
@@ -122,7 +123,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::
+inline Matrix_uc::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_uchar_calloc(n1, n2), gsl_matrix_uchar_free), v_m()
 {
@@ -133,8 +134,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<Complex, gsl_matrix_complex,
-    gsl_vector_complex, std::allocator<gsl_complex>>::
+inline Matrix_cx::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_complex_calloc(n1, n2), gsl_matrix_complex_free), v_m()
 {
@@ -145,8 +145,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<Complex_ld, gsl_matrix_complex_long_double,
-    gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::
+inline Matrix_cxld::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_complex_long_double_calloc(n1, n2), gsl_matrix_complex_long_double_free), v_m()
 {
@@ -157,8 +156,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 }
 
 template<>
-inline Matrix_t<Complex_f, gsl_matrix_complex_float,
-    gsl_vector_complex_float, std::allocator<gsl_complex_float>>::Matrix_t
+inline Matrix_cxf::Matrix_t
 (const Matrix_t::size_type n1, const Matrix_t::size_type n2)
  : gsl_mat(gsl_matrix_complex_float_calloc(n1, n2), gsl_matrix_complex_float_free), v_m()
 {
@@ -169,7 +167,7 @@ inline Matrix_t<Complex_f, gsl_matrix_complex_float,
 }
 
 template<>
-inline Matrix_t<double, gsl_matrix, gsl_vector>::
+inline Matrix::
 Matrix_t(std::initializer_list<std::initializer_list<double>> l)
  : gsl_mat(gsl_matrix_alloc(l.size(), l.begin()->size()), gsl_matrix_free), v_m()
 {
@@ -189,7 +187,7 @@ Matrix_t(std::initializer_list<std::initializer_list<double>> l)
 }
 
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::
+inline Matrix_ld::
 Matrix_t(std::initializer_list<std::initializer_list<long double>> l)
  : gsl_mat(gsl_matrix_long_double_alloc(l.size(), l.begin()->size()), gsl_matrix_long_double_free), v_m()
 {
@@ -209,7 +207,7 @@ Matrix_t(std::initializer_list<std::initializer_list<long double>> l)
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>::
+inline Matrix_f::
 Matrix_t(std::initializer_list<std::initializer_list<float>> l)
  : gsl_mat(gsl_matrix_float_alloc(l.size(), l.begin()->size()), gsl_matrix_float_free), v_m()
 {
@@ -229,7 +227,7 @@ Matrix_t(std::initializer_list<std::initializer_list<float>> l)
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>::
+inline Matrix_i::
 Matrix_t(std::initializer_list<std::initializer_list<int>> l)
  : gsl_mat(gsl_matrix_int_alloc(l.size(), l.begin()->size()), gsl_matrix_int_free), v_m()
 {
@@ -269,7 +267,7 @@ Matrix_t(std::initializer_list<std::initializer_list<uint>> l)
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>::
+inline Matrix_l::
 Matrix_t(std::initializer_list<std::initializer_list<long>> l)
  : gsl_mat(gsl_matrix_long_alloc(l.size(), l.begin()->size()), gsl_matrix_long_free), v_m()
 {
@@ -289,7 +287,7 @@ Matrix_t(std::initializer_list<std::initializer_list<long>> l)
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::
+inline Matrix_ul::
 Matrix_t(std::initializer_list<std::initializer_list<unsigned long>> l)
  : gsl_mat(gsl_matrix_ulong_alloc(l.size(), l.begin()->size()), gsl_matrix_ulong_free), v_m()
 {
@@ -309,7 +307,7 @@ Matrix_t(std::initializer_list<std::initializer_list<unsigned long>> l)
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>::
+inline Matrix_s::
 Matrix_t(std::initializer_list<std::initializer_list<short>> l)
  : gsl_mat(gsl_matrix_short_alloc(l.size(), l.begin()->size()), gsl_matrix_short_free), v_m()
 {
@@ -330,7 +328,7 @@ Matrix_t(std::initializer_list<std::initializer_list<short>> l)
 
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::
+inline Matrix_us::
 Matrix_t(std::initializer_list<std::initializer_list<unsigned short>> l)
  : gsl_mat(gsl_matrix_ushort_alloc(l.size(), l.begin()->size()), gsl_matrix_ushort_free), v_m()
 {
@@ -350,7 +348,7 @@ Matrix_t(std::initializer_list<std::initializer_list<unsigned short>> l)
 }
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>::
+inline Matrix_c::
 Matrix_t(std::initializer_list<std::initializer_list<char>> l)
  : gsl_mat(gsl_matrix_char_alloc(l.size(), l.begin()->size()), gsl_matrix_char_free), v_m()
 {
@@ -370,7 +368,7 @@ Matrix_t(std::initializer_list<std::initializer_list<char>> l)
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::
+inline Matrix_uc::
 Matrix_t(std::initializer_list<std::initializer_list<unsigned char>> l)
  : gsl_mat(gsl_matrix_uchar_alloc(l.size(), l.begin()->size()), gsl_matrix_uchar_free), v_m()
 {
@@ -390,7 +388,7 @@ Matrix_t(std::initializer_list<std::initializer_list<unsigned char>> l)
 }
 
 template<>
-inline Matrix_t<Complex, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::
+inline Matrix_cx::
 Matrix_t(std::initializer_list<std::initializer_list<Complex>> l)
  : gsl_mat(gsl_matrix_complex_alloc(l.size(), l.begin()->size()), gsl_matrix_complex_free), v_m()
 {
@@ -410,8 +408,7 @@ Matrix_t(std::initializer_list<std::initializer_list<Complex>> l)
 }
 
 template<>
-inline Matrix_t<Complex_ld, gsl_matrix_complex_long_double,
-    gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::
+inline Matrix_cxld::
 Matrix_t(std::initializer_list<std::initializer_list<Complex_ld>> l)
  : gsl_mat(gsl_matrix_complex_long_double_alloc(l.size(), l.begin()->size()), gsl_matrix_complex_long_double_free), v_m()
 {
@@ -431,8 +428,7 @@ Matrix_t(std::initializer_list<std::initializer_list<Complex_ld>> l)
 }
 
 template<>
-inline Matrix_t<Complex_f, gsl_matrix_complex_float,
-    gsl_vector_complex_float, std::allocator<gsl_complex_float>>::
+inline Matrix_cxf::
 Matrix_t(std::initializer_list<std::initializer_list<Complex_f>> l)
  : gsl_mat(gsl_matrix_complex_float_alloc(l.size(), l.begin()->size()), gsl_matrix_complex_float_free), v_m()
 {
@@ -458,7 +454,7 @@ Matrix_t<T, GSL_MAT, GSL_VEC, A>::operator GSL_MAT() const
 }
 
 template<>
-inline void Matrix_t<double, gsl_matrix, gsl_vector>::copy(const Matrix_t<double, gsl_matrix, gsl_vector>& a)
+inline void Matrix::copy(const Matrix& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix>(gsl_matrix_alloc(a.size().first, a.size().second), gsl_matrix_free);
@@ -475,8 +471,8 @@ inline void Matrix_t<double, gsl_matrix, gsl_vector>::copy(const Matrix_t<double
 }
 
 template<>
-inline void Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::copy
-(const Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& a)
+inline void Matrix_ld::copy
+(const Matrix_ld& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_long_double>
@@ -494,8 +490,8 @@ inline void Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double
 }
 
 template<>
-inline void Matrix_t<float, gsl_matrix_float, gsl_vector_float>::copy
-(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& a)
+inline void Matrix_f::copy
+(const Matrix_f& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_float>
@@ -513,8 +509,8 @@ inline void Matrix_t<float, gsl_matrix_float, gsl_vector_float>::copy
 }
 
 template<>
-inline void Matrix_t<int, gsl_matrix_int, gsl_vector_int>::copy
-(const Matrix_t<int, gsl_matrix_int, gsl_vector_int>& a)
+inline void Matrix_i::copy
+(const Matrix_i& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_int>
@@ -532,8 +528,8 @@ inline void Matrix_t<int, gsl_matrix_int, gsl_vector_int>::copy
 }
 
 template<>
-inline void Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::copy
-(const Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& a)
+inline void Matrix_ui::copy
+(const Matrix_ui& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_uint>
@@ -570,8 +566,8 @@ inline void Matrix_t<long , gsl_matrix_long, gsl_vector_long>::copy
 }
 
 template<>
-inline void Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::copy
-(const Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& a)
+inline void Matrix_ul::copy
+(const Matrix_ul& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_ulong>
@@ -589,8 +585,8 @@ inline void Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::copy
 }
 
 template<>
-inline void Matrix_t<short, gsl_matrix_short, gsl_vector_short>::copy
-(const Matrix_t<short, gsl_matrix_short, gsl_vector_short>& a)
+inline void Matrix_s::copy
+(const Matrix_s& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_short>
@@ -608,8 +604,8 @@ inline void Matrix_t<short, gsl_matrix_short, gsl_vector_short>::copy
 }
 
 template<>
-inline void Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::copy
-(const Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& a)
+inline void Matrix_us::copy
+(const Matrix_us& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_ushort>
@@ -627,8 +623,8 @@ inline void Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::copy
 }
 
 template<>
-inline void Matrix_t<char, gsl_matrix_char, gsl_vector_char>::copy
-(const Matrix_t<char, gsl_matrix_char, gsl_vector_char>& a)
+inline void Matrix_c::copy
+(const Matrix_c& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_char>
@@ -646,8 +642,8 @@ inline void Matrix_t<char, gsl_matrix_char, gsl_vector_char>::copy
 }
 
 template<>
-inline void Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::copy
-(const Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& a)
+inline void Matrix_uc::copy
+(const Matrix_uc& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_uchar>
@@ -665,8 +661,8 @@ inline void Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::copy
 }
 
 template<>
-inline void Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::copy
-(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& a)
+inline void Matrix_cx::copy
+(const Matrix_cx& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_complex>
@@ -684,8 +680,8 @@ inline void Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vec
 }
 
 template<>
-inline void Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::copy
-(const Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& a)
+inline void Matrix_cxld::copy
+(const Matrix_cxld& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_complex_long_double>
@@ -703,8 +699,8 @@ inline void Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix
 }
 
 template<>
-inline void Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::copy
-(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& a)
+inline void Matrix_cxf::copy
+(const Matrix_cxf& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_complex_float>
@@ -731,7 +727,7 @@ inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(const Matrix_t<T, G
 
 /*
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::operator=(const Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& a)
+inline Matrix_ld& Matrix_ld::operator=(const Matrix_ld& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -744,7 +740,7 @@ inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Ma
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator=(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& a)
+inline Matrix_f& Matrix_f::operator=(const Matrix_f& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -757,7 +753,7 @@ inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator=(const Matrix_t<int, gsl_matrix_int, gsl_vector_int>& a)
+inline Matrix_i& Matrix_i::operator=(const Matrix_i& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -770,7 +766,7 @@ inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_i
 }
 
 template<>
-inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator=(const Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& a)
+inline Matrix_ui& Matrix_ui::operator=(const Matrix_ui& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -783,7 +779,7 @@ inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsign
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator=(const Matrix_t<long, gsl_matrix_long, gsl_vector_long>& a)
+inline Matrix_l& Matrix_l::operator=(const Matrix_l& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -796,7 +792,7 @@ inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operator=(const Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& a)
+inline Matrix_ul& Matrix_ul::operator=(const Matrix_ul& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -809,7 +805,7 @@ inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator=(const Matrix_t<short, gsl_matrix_short, gsl_vector_short>& a)
+inline Matrix_s& Matrix_s::operator=(const Matrix_s& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -822,7 +818,7 @@ inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_
 }
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::operator=(const Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& a)
+inline Matrix_us& Matrix_us::operator=(const Matrix_us& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -835,7 +831,7 @@ inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<
 }
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator=(const Matrix_t<char, gsl_matrix_char, gsl_vector_char>& a)
+inline Matrix_c& Matrix_c::operator=(const Matrix_c& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -848,7 +844,7 @@ inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operator=(const Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& a)
+inline Matrix_uc& Matrix_uc::operator=(const Matrix_uc& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -861,7 +857,7 @@ inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator=(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& a)
+inline Matrix_cx& Matrix_cx::operator=(const Matrix_cx& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -874,7 +870,7 @@ inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_c
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator=(const Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& a)
+inline Matrix_cxld& Matrix_cxld::operator=(const Matrix_cxld& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -887,7 +883,7 @@ inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_comp
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator=(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& a)
+inline Matrix_cx& Matrix_cx::operator=(const Matrix_cx& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         this->gsl_mat = a.gsl_mat;
@@ -910,7 +906,7 @@ inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(Matrix_t<T, G, V, A
 
 /*
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::operator=(Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>&& a)
+inline Matrix_ld& Matrix_ld::operator=(Matrix_ld&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -921,7 +917,7 @@ inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Ma
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator=(Matrix_t<float, gsl_matrix_float, gsl_vector_float>&& a)
+inline Matrix_f& Matrix_f::operator=(Matrix_f&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -932,7 +928,7 @@ inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator=(Matrix_t<int, gsl_matrix_int, gsl_vector_int>&& a)
+inline Matrix_i& Matrix_i::operator=(Matrix_i&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -943,7 +939,7 @@ inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_i
 }
 
 template<>
-inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator=(Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>&& a)
+inline Matrix_ui& Matrix_ui::operator=(Matrix_ui&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -954,7 +950,7 @@ inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsign
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator=(Matrix_t<long, gsl_matrix_long, gsl_vector_long>&& a)
+inline Matrix_l& Matrix_l::operator=(Matrix_l&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -965,7 +961,7 @@ inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operator=(Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>&& a)
+inline Matrix_ul& Matrix_ul::operator=(Matrix_ul&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -976,7 +972,7 @@ inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator=(Matrix_t<short, gsl_matrix_short, gsl_vector_short>&& a)
+inline Matrix_s& Matrix_s::operator=(Matrix_s&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -987,7 +983,7 @@ inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_
 }
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::operator=(Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>&& a)
+inline Matrix_us& Matrix_us::operator=(Matrix_us&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -998,7 +994,7 @@ inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<
 }
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator=(Matrix_t<char, gsl_matrix_char, gsl_vector_char>&& a)
+inline Matrix_c& Matrix_c::operator=(Matrix_c&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -1009,7 +1005,7 @@ inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operator=(Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>&& a)
+inline Matrix_uc& Matrix_uc::operator=(Matrix_uc&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -1020,7 +1016,7 @@ inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator=(Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>&& a)
+inline Matrix_cx& Matrix_cx::operator=(Matrix_cx&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -1031,7 +1027,7 @@ inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_c
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator=(Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>&& a)
+inline Matrix_cxld& Matrix_cxld::operator=(Matrix_cxld&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -1042,7 +1038,7 @@ inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_comp
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator=(Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>&& a)
+inline Matrix_cx& Matrix_cx::operator=(Matrix_cx&& a)
 {
     if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
         std::swap(this->gsl_mat, a.gsl_mat);
@@ -1070,7 +1066,7 @@ std::pair<typename Matrix_t<T, M, V, A>::size_type, typename Matrix_t<T, M, V, A
      return this->dim();
  }
 template<>
-inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gsl_vector>::operator+=(const Matrix_t<double, gsl_matrix, gsl_vector>& b)
+inline Matrix& Matrix::operator+=(const Matrix& b)
 {
     int stat = gsl_matrix_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1082,7 +1078,7 @@ inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gs
 }
 
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::operator+=(const Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& b)
+inline Matrix_ld& Matrix_ld::operator+=(const Matrix_ld& b)
 {
     int stat = gsl_matrix_long_double_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1094,7 +1090,7 @@ inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Ma
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator+=(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& b)
+inline Matrix_f& Matrix_f::operator+=(const Matrix_f& b)
 {
     int stat = gsl_matrix_float_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1106,7 +1102,7 @@ inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator+=(const Matrix_t<int, gsl_matrix_int, gsl_vector_int>& b)
+inline Matrix_i& Matrix_i::operator+=(const Matrix_i& b)
 {
     int stat = gsl_matrix_int_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1118,7 +1114,7 @@ inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_i
 }
 
 template<>
-inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator+=(const Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& b)
+inline Matrix_ui& Matrix_ui::operator+=(const Matrix_ui& b)
 {
     int stat = gsl_matrix_uint_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1130,7 +1126,7 @@ inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsign
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator+=(const Matrix_t<long, gsl_matrix_long, gsl_vector_long>& b)
+inline Matrix_l& Matrix_l::operator+=(const Matrix_l& b)
 {
     int stat = gsl_matrix_long_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1142,7 +1138,7 @@ inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operator+=(const Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& b)
+inline Matrix_ul& Matrix_ul::operator+=(const Matrix_ul& b)
 {
     int stat = gsl_matrix_ulong_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1154,7 +1150,7 @@ inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator+=(const Matrix_t<short, gsl_matrix_short, gsl_vector_short>& b)
+inline Matrix_s& Matrix_s::operator+=(const Matrix_s& b)
 {
     int stat = gsl_matrix_short_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1166,7 +1162,7 @@ inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_
 }
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::operator+=(const Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& b)
+inline Matrix_us& Matrix_us::operator+=(const Matrix_us& b)
 {
     int stat = gsl_matrix_ushort_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1179,7 +1175,7 @@ inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<
 
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator+=(const Matrix_t<char, gsl_matrix_char, gsl_vector_char>& b)
+inline Matrix_c& Matrix_c::operator+=(const Matrix_c& b)
 {
     int stat = gsl_matrix_char_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1191,7 +1187,7 @@ inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operator+=(const Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& b)
+inline Matrix_uc& Matrix_uc::operator+=(const Matrix_uc& b)
 {
     int stat = gsl_matrix_uchar_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1203,7 +1199,7 @@ inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator+=(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& b)
+inline Matrix_cx& Matrix_cx::operator+=(const Matrix_cx& b)
 {
     int stat = gsl_matrix_complex_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1215,7 +1211,7 @@ inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_c
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator+=(const Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
+inline Matrix_cxld& Matrix_cxld::operator+=(const Matrix_cxld& b)
 {
     int stat = gsl_matrix_complex_long_double_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1227,7 +1223,7 @@ inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_comp
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator+=(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
+inline Matrix_cxf& Matrix_cxf::operator+=(const Matrix_cxf& b)
 {
     int stat = gsl_matrix_complex_float_add(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1239,7 +1235,7 @@ inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, g
 }
 
 template<>
-inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gsl_vector>::operator-=(const Matrix_t<double, gsl_matrix, gsl_vector>& b)
+inline Matrix& Matrix::operator-=(const Matrix& b)
 {
     int stat = gsl_matrix_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1251,7 +1247,7 @@ inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gs
 }
 
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::operator-=(const Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& b)
+inline Matrix_ld& Matrix_ld::operator-=(const Matrix_ld& b)
 {
     int stat = gsl_matrix_long_double_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1263,7 +1259,7 @@ inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Ma
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator-=(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& b)
+inline Matrix_f& Matrix_f::operator-=(const Matrix_f& b)
 {
     int stat = gsl_matrix_float_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1275,7 +1271,7 @@ inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator-=(const Matrix_t<int, gsl_matrix_int, gsl_vector_int>& b)
+inline Matrix_i& Matrix_i::operator-=(const Matrix_i& b)
 {
     int stat = gsl_matrix_int_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1287,7 +1283,7 @@ inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_i
 }
 
 template<>
-inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator-=(const Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& b)
+inline Matrix_ui& Matrix_ui::operator-=(const Matrix_ui& b)
 {
     int stat = gsl_matrix_uint_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1299,7 +1295,7 @@ inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsign
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator-=(const Matrix_t<long, gsl_matrix_long, gsl_vector_long>& b)
+inline Matrix_l& Matrix_l::operator-=(const Matrix_l& b)
 {
     int stat = gsl_matrix_long_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1311,7 +1307,7 @@ inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operator-=(const Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& b)
+inline Matrix_ul& Matrix_ul::operator-=(const Matrix_ul& b)
 {
     int stat = gsl_matrix_ulong_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1323,7 +1319,7 @@ inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator-=(const Matrix_t<short, gsl_matrix_short, gsl_vector_short>& b)
+inline Matrix_s& Matrix_s::operator-=(const Matrix_s& b)
 {
     int stat = gsl_matrix_short_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1335,7 +1331,7 @@ inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_
 }
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::operator-=(const Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& b)
+inline Matrix_us& Matrix_us::operator-=(const Matrix_us& b)
 {
     int stat = gsl_matrix_ushort_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1348,7 +1344,7 @@ inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<
 
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator-=(const Matrix_t<char, gsl_matrix_char, gsl_vector_char>& b)
+inline Matrix_c& Matrix_c::operator-=(const Matrix_c& b)
 {
     int stat = gsl_matrix_char_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1360,7 +1356,7 @@ inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operator-=(const Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& b)
+inline Matrix_uc& Matrix_uc::operator-=(const Matrix_uc& b)
 {
     int stat = gsl_matrix_uchar_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1372,7 +1368,7 @@ inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator-=(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& b)
+inline Matrix_cx& Matrix_cx::operator-=(const Matrix_cx& b)
 {
     int stat = gsl_matrix_complex_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1384,7 +1380,7 @@ inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_c
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator-=(const Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
+inline Matrix_cxld& Matrix_cxld::operator-=(const Matrix_cxld& b)
 {
     int stat = gsl_matrix_complex_long_double_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1396,7 +1392,7 @@ inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_comp
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator-=(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
+inline Matrix_cxf& Matrix_cxf::operator-=(const Matrix_cxf& b)
 {
     int stat = gsl_matrix_complex_float_sub(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1423,7 +1419,7 @@ Matrix_t<T, M, V, A>& Matrix_t<T, M, V, A>::operator*=(const Matrix_t<T, M, V, A
 }
 
 template<>
-inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gsl_vector>::operator*=(const Matrix_t<double, gsl_matrix, gsl_vector>& b)
+inline Matrix& Matrix::operator*=(const Matrix& b)
 {
     int stat = gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, this->gsl_mat.get(),
         b.gsl_mat.get(), 0.0, this->gsl_mat.get());
@@ -1436,7 +1432,7 @@ inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gs
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator*=(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& b)
+inline Matrix_f& Matrix_f::operator*=(const Matrix_f& b)
 {
     int stat = gsl_blas_sgemm(CblasNoTrans, CblasNoTrans, 1.0, this->gsl_mat.get(),
         b.gsl_mat.get(), 0.0, this->gsl_mat.get());
@@ -1449,7 +1445,7 @@ inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator*=(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& b)
+inline Matrix_cx& Matrix_cx::operator*=(const Matrix_cx& b)
 {
     int stat = gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, Complex(1.0), this->gsl_mat.get(),
         b.gsl_mat.get(), Complex(0.0), this->gsl_mat.get());
@@ -1462,7 +1458,7 @@ inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_c
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*=(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
+inline Matrix_cxf& Matrix_cxf::operator*=(const Matrix_cxf& b)
 {
     int stat = gsl_blas_cgemm(CblasNoTrans, CblasNoTrans, Complex_f(1.0), this->gsl_mat.get(),
         b.gsl_mat.get(), Complex_f(0.0), this->gsl_mat.get());
@@ -1475,13 +1471,13 @@ inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, g
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator*=(const Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
+inline Matrix_cxld& Matrix_cxld::operator*=(const Matrix_cxld& b)
 {
     Complex_ld c1(0), c2(0);
-    Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>> tmp(this->size().first, this->size().second);
-    for(Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type i = 0; i < this->size().second; i++){
-        for(Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type j = 0; i < b.size().first; j++){
-            for(Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type k = 0; i < this->size().second; k++){
+    Matrix_cxld tmp(this->size().first, this->size().second);
+    for(Matrix_cxld::size_type i = 0; i < this->size().second; i++){
+        for(Matrix_cxld::size_type j = 0; i < b.size().first; j++){
+            for(Matrix_cxld::size_type k = 0; i < this->size().second; k++){
                 c1 = Complex_ld((*this)[i][k]);
                 c2 = Complex_ld((*this)[k][j]);
                 tmp[i][j] = Complex_ld(tmp[i][j]) + c1*c2;
@@ -1492,7 +1488,7 @@ inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_comp
     return *this;
 }
 template<>
-inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gsl_vector>::operator/=(const Matrix_t<double, gsl_matrix, gsl_vector>& b)
+inline Matrix& Matrix::operator/=(const Matrix& b)
 {
     int stat = gsl_matrix_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1504,7 +1500,7 @@ inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gs
 }
 
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::operator/=(const Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& b)
+inline Matrix_ld& Matrix_ld::operator/=(const Matrix_ld& b)
 {
     int stat = gsl_matrix_long_double_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1516,7 +1512,7 @@ inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Ma
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator/=(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& b)
+inline Matrix_f& Matrix_f::operator/=(const Matrix_f& b)
 {
     int stat = gsl_matrix_float_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1528,7 +1524,7 @@ inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator/=(const Matrix_t<int, gsl_matrix_int, gsl_vector_int>& b)
+inline Matrix_i& Matrix_i::operator/=(const Matrix_i& b)
 {
     int stat = gsl_matrix_int_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1540,7 +1536,7 @@ inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_i
 }
 
 template<>
-inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator/=(const Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& b)
+inline Matrix_ui& Matrix_ui::operator/=(const Matrix_ui& b)
 {
     int stat = gsl_matrix_uint_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1552,7 +1548,7 @@ inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsign
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator/=(const Matrix_t<long, gsl_matrix_long, gsl_vector_long>& b)
+inline Matrix_l& Matrix_l::operator/=(const Matrix_l& b)
 {
     int stat = gsl_matrix_long_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1564,7 +1560,7 @@ inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operator/=(const Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& b)
+inline Matrix_ul& Matrix_ul::operator/=(const Matrix_ul& b)
 {
     int stat = gsl_matrix_ulong_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1576,7 +1572,7 @@ inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator/=(const Matrix_t<short, gsl_matrix_short, gsl_vector_short>& b)
+inline Matrix_s& Matrix_s::operator/=(const Matrix_s& b)
 {
     int stat = gsl_matrix_short_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1588,7 +1584,7 @@ inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_
 }
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::operator/=(const Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& b)
+inline Matrix_us& Matrix_us::operator/=(const Matrix_us& b)
 {
     int stat = gsl_matrix_ushort_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1601,7 +1597,7 @@ inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<
 
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator/=(const Matrix_t<char, gsl_matrix_char, gsl_vector_char>& b)
+inline Matrix_c& Matrix_c::operator/=(const Matrix_c& b)
 {
     int stat = gsl_matrix_char_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1613,7 +1609,7 @@ inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operator/=(const Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& b)
+inline Matrix_uc& Matrix_uc::operator/=(const Matrix_uc& b)
 {
     int stat = gsl_matrix_uchar_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1625,7 +1621,7 @@ inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator/=(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& b)
+inline Matrix_cx& Matrix_cx::operator/=(const Matrix_cx& b)
 {
     int stat = gsl_matrix_complex_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1637,7 +1633,7 @@ inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_c
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator/=(const Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b)
+inline Matrix_cxld& Matrix_cxld::operator/=(const Matrix_cxld& b)
 {
     int stat = gsl_matrix_complex_long_double_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1649,7 +1645,7 @@ inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_comp
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator/=(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b)
+inline Matrix_cxf& Matrix_cxf::operator/=(const Matrix_cxf& b)
 {
     int stat = gsl_matrix_complex_float_div_elements(this->gsl_mat.get(), b.gsl_mat.get());
     if(stat){
@@ -1661,7 +1657,7 @@ inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, g
 }
 
 template<>
-inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gsl_vector>::operator*=(const double& b)
+inline Matrix& Matrix::operator*=(const double& b)
 {
     int stat = gsl_matrix_scale(this->gsl_mat.get(), b);
     if(stat){
@@ -1673,7 +1669,7 @@ inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gs
 }
 
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::operator*=(const long double& b)
+inline Matrix_ld& Matrix_ld::operator*=(const long double& b)
 {
     int stat = gsl_matrix_long_double_scale(this->gsl_mat.get(), static_cast<double>(b));
     if(stat){
@@ -1685,7 +1681,7 @@ inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Ma
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator*=(const float& b)
+inline Matrix_f& Matrix_f::operator*=(const float& b)
 {
     int stat = gsl_matrix_float_scale(this->gsl_mat.get(), static_cast<double>(b));
     if(stat){
@@ -1697,7 +1693,7 @@ inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator*=(const int& b)
+inline Matrix_i& Matrix_i::operator*=(const int& b)
 {
     int stat = gsl_matrix_int_scale(this->gsl_mat.get(), b);
     if(stat){
@@ -1709,7 +1705,7 @@ inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_i
 }
 
 template<>
-inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator*=(const unsigned int& b)
+inline Matrix_ui& Matrix_ui::operator*=(const unsigned int& b)
 {
     int stat = gsl_matrix_uint_scale(this->gsl_mat.get(), b);
     if(stat){
@@ -1721,7 +1717,7 @@ inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsign
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator*=(const long& b)
+inline Matrix_l& Matrix_l::operator*=(const long& b)
 {
     int stat = gsl_matrix_long_scale(this->gsl_mat.get(), static_cast<double>(b));
     if(stat){
@@ -1733,7 +1729,7 @@ inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operator*=(const unsigned long& b)
+inline Matrix_ul& Matrix_ul::operator*=(const unsigned long& b)
 {
     int stat = gsl_matrix_ulong_scale(this->gsl_mat.get(), static_cast<double>(b));
     if(stat){
@@ -1745,7 +1741,7 @@ inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator*=(const short& b)
+inline Matrix_s& Matrix_s::operator*=(const short& b)
 {
     int stat = gsl_matrix_short_scale(this->gsl_mat.get(), b);
     if(stat){
@@ -1757,7 +1753,7 @@ inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_
 }
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::operator*=(const unsigned short& b)
+inline Matrix_us& Matrix_us::operator*=(const unsigned short& b)
 {
     int stat = gsl_matrix_ushort_scale(this->gsl_mat.get(), b);
     if(stat){
@@ -1770,7 +1766,7 @@ inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<
 
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator*=(const char& b)
+inline Matrix_c& Matrix_c::operator*=(const char& b)
 {
     int stat = gsl_matrix_char_scale(this->gsl_mat.get(), b);
     if(stat){
@@ -1782,7 +1778,7 @@ inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operator*=(const unsigned char& b)
+inline Matrix_uc& Matrix_uc::operator*=(const unsigned char& b)
 {
     int stat = gsl_matrix_uchar_scale(this->gsl_mat.get(), b);
     if(stat){
@@ -1794,7 +1790,7 @@ inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator*=(const Complex& b)
+inline Matrix_cx& Matrix_cx::operator*=(const Complex& b)
 {
     int stat = gsl_matrix_complex_scale(this->gsl_mat.get(), *b.gsl_c.get());
     if(stat){
@@ -1806,7 +1802,7 @@ inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_c
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator*=(const Complex_ld& b)
+inline Matrix_cxld& Matrix_cxld::operator*=(const Complex_ld& b)
 {
     int stat = gsl_matrix_complex_long_double_scale(this->gsl_mat.get(), *b.gsl_c.get());
     if(stat){
@@ -1818,7 +1814,7 @@ inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_comp
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*=(const Complex_f& b)
+inline Matrix_cxf& Matrix_cxf::operator*=(const Complex_f& b)
 {
     int stat = gsl_matrix_complex_float_scale(this->gsl_mat.get(), *b.gsl_c.get());
     if(stat){
@@ -1830,7 +1826,7 @@ inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, g
 }
 
 template<>
-inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gsl_vector>::operator/=(const double& b)
+inline Matrix& Matrix::operator/=(const double& b)
 {
     int stat = gsl_matrix_scale(this->gsl_mat.get(), 1./b);
     if(stat){
@@ -1842,7 +1838,7 @@ inline Matrix_t<double, gsl_matrix, gsl_vector>& Matrix_t<double, gsl_matrix, gs
 }
 
 template<>
-inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::operator/=(const long double& b)
+inline Matrix_ld& Matrix_ld::operator/=(const long double& b)
 {
     int stat = gsl_matrix_long_double_scale(this->gsl_mat.get(), static_cast<double>(1/b));
     if(stat){
@@ -1854,7 +1850,7 @@ inline Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& Ma
 }
 
 template<>
-inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator/=(const float& b)
+inline Matrix_f& Matrix_f::operator/=(const float& b)
 {
     int stat = gsl_matrix_float_scale(this->gsl_mat.get(), 1./static_cast<double>(b));
     if(stat){
@@ -1866,7 +1862,7 @@ inline Matrix_t<float, gsl_matrix_float, gsl_vector_float>& Matrix_t<float, gsl_
 }
 
 template<>
-inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator/=(const int& b)
+inline Matrix_i& Matrix_i::operator/=(const int& b)
 {
     int stat = gsl_matrix_int_scale(this->gsl_mat.get(), 1./b);
     if(stat){
@@ -1878,7 +1874,7 @@ inline Matrix_t<int, gsl_matrix_int, gsl_vector_int>& Matrix_t<int, gsl_matrix_i
 }
 
 template<>
-inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator/=(const unsigned int& b)
+inline Matrix_ui& Matrix_ui::operator/=(const unsigned int& b)
 {
     int stat = gsl_matrix_uint_scale(this->gsl_mat.get(), 1./b);
     if(stat){
@@ -1890,7 +1886,7 @@ inline Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& Matrix_t<unsign
 }
 
 template<>
-inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator/=(const long& b)
+inline Matrix_l& Matrix_l::operator/=(const long& b)
 {
     int stat = gsl_matrix_long_scale(this->gsl_mat.get(), 1./static_cast<double>(b));
     if(stat){
@@ -1902,7 +1898,7 @@ inline Matrix_t<long, gsl_matrix_long, gsl_vector_long>& Matrix_t<long, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operator/=(const unsigned long& b)
+inline Matrix_ul& Matrix_ul::operator/=(const unsigned long& b)
 {
     int stat = gsl_matrix_ulong_scale(this->gsl_mat.get(), 1./static_cast<double>(b));
     if(stat){
@@ -1914,7 +1910,7 @@ inline Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator/=(const short& b)
+inline Matrix_s& Matrix_s::operator/=(const short& b)
 {
     int stat = gsl_matrix_short_scale(this->gsl_mat.get(), 1./b);
     if(stat){
@@ -1926,7 +1922,7 @@ inline Matrix_t<short, gsl_matrix_short, gsl_vector_short>& Matrix_t<short, gsl_
 }
 
 template<>
-inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::operator/=(const unsigned short& b)
+inline Matrix_us& Matrix_us::operator/=(const unsigned short& b)
 {
     int stat = gsl_matrix_ushort_scale(this->gsl_mat.get(), 1./b);
     if(stat){
@@ -1939,7 +1935,7 @@ inline Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& Matrix_t<
 
 
 template<>
-inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator/=(const char& b)
+inline Matrix_c& Matrix_c::operator/=(const char& b)
 {
     int stat = gsl_matrix_char_scale(this->gsl_mat.get(), 1./b);
     if(stat){
@@ -1951,7 +1947,7 @@ inline Matrix_t<char, gsl_matrix_char, gsl_vector_char>& Matrix_t<char, gsl_matr
 }
 
 template<>
-inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operator/=(const unsigned char& b)
+inline Matrix_uc& Matrix_uc::operator/=(const unsigned char& b)
 {
     int stat = gsl_matrix_uchar_scale(this->gsl_mat.get(), 1./b);
     if(stat){
@@ -1963,7 +1959,7 @@ inline Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& Matrix_t<uns
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator/=(const Complex& b)
+inline Matrix_cx& Matrix_cx::operator/=(const Complex& b)
 {
     int stat = gsl_matrix_complex_scale(this->gsl_mat.get(), *(1./b).gsl_c);
     if(stat){
@@ -1975,7 +1971,7 @@ inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_c
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator/=(const Complex_ld& b)
+inline Matrix_cxld& Matrix_cxld::operator/=(const Complex_ld& b)
 {
     int stat = gsl_matrix_complex_long_double_scale(this->gsl_mat.get(), *(1/b).gsl_c);
     if(stat){
@@ -1987,7 +1983,7 @@ inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_comp
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator/=(const Complex_f& b)
+inline Matrix_cxf& Matrix_cxf::operator/=(const Complex_f& b)
 {
     int stat = gsl_matrix_complex_float_scale(this->gsl_mat.get(), *(1./b).gsl_c);
     if(stat){
@@ -2023,9 +2019,9 @@ Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator*(const Matrix_t<T, M, V, A>&
 }
 
 template<>
-inline Vector_t<double, gsl_vector> Matrix_t<double, gsl_matrix, gsl_vector>::operator*(const Vector_t<double, gsl_vector>& v)
+inline Vector Matrix::operator*(const Vector& v)
 {
-    Vector_t<double, gsl_vector> res(this->size().second);
+    Vector res(this->size().second);
     int stat = gsl_blas_dgemv(CblasNoTrans, 1.0, this->gsl_mat.get(),
         v.gsl_vec.get(), 0.0, res.gsl_vec.get());
     if(stat){
@@ -2038,9 +2034,9 @@ inline Vector_t<double, gsl_vector> Matrix_t<double, gsl_matrix, gsl_vector>::op
 }
 
 template<>
-inline Vector_t<float, gsl_vector_float> Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator*(const Vector_t<float, gsl_vector_float>& v)
+inline Vector_f Matrix_f::operator*(const Vector_f& v)
 {
-    Vector_t<float, gsl_vector_float> res(this->size().second);
+    Vector_f res(this->size().second);
     int stat = gsl_blas_sgemv(CblasNoTrans, 1.0, this->gsl_mat.get(),
         v.gsl_vec.get(), 0.0, res.gsl_vec.get());
     if(stat){
@@ -2053,9 +2049,9 @@ inline Vector_t<float, gsl_vector_float> Matrix_t<float, gsl_matrix_float, gsl_v
 }
 
 template<>
-inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>> Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator*(const Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& v)
+inline Vector_cx Matrix_cx::operator*(const Vector_cx& v)
 {
-    Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>> res(this->size().second);
+    Vector_cx res(this->size().second);
     int stat = gsl_blas_zgemv(CblasNoTrans, Complex(1.0), this->gsl_mat.get(),
         v.gsl_vec.get(), Complex(0.0), res.gsl_vec.get());
     if(stat){
@@ -2068,11 +2064,11 @@ inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocat
 }
 
 template<>
-inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>> Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator*(const Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& v)
+inline Vector_cxf Matrix_cxf::operator*(const Vector_cxf& v)
 {
-    Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>> res(this->size().second);
-    int stat = gsl_blas_cgemv(CblasNoTrans, Complex_t<float, gsl_complex_float>(1.0), this->gsl_mat.get(),
-        v.gsl_vec.get(), Complex_t<float, gsl_complex_float>(0.0), res.gsl_vec.get());
+    Vector_cxf res(this->size().second);
+    int stat = gsl_blas_cgemv(CblasNoTrans, Complex_f(1.0), this->gsl_mat.get(),
+        v.gsl_vec.get(), Complex_f(0.0), res.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in matrix-vector multiplication.\nGSL error: "
@@ -2114,7 +2110,7 @@ Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator-() const
 }
 
 template<>
-inline bool Matrix_t<double, gsl_matrix, gsl_vector>::operator==(const Matrix_t<double, gsl_matrix, gsl_vector>& b) const
+inline bool Matrix::operator==(const Matrix& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2125,7 +2121,7 @@ inline bool Matrix_t<double, gsl_matrix, gsl_vector>::operator==(const Matrix_t<
 }
 
 template<>
-inline bool Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::operator==(const Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>& b) const
+inline bool Matrix_ld::operator==(const Matrix_ld& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2136,7 +2132,7 @@ inline bool Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double
 }
 
 template<>
-inline bool Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator==(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& b) const
+inline bool Matrix_f::operator==(const Matrix_f& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2147,7 +2143,7 @@ inline bool Matrix_t<float, gsl_matrix_float, gsl_vector_float>::operator==(cons
 }
 
 template<>
-inline bool Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator==(const Matrix_t<int, gsl_matrix_int, gsl_vector_int>& b) const
+inline bool Matrix_i::operator==(const Matrix_i& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2158,7 +2154,7 @@ inline bool Matrix_t<int, gsl_matrix_int, gsl_vector_int>::operator==(const Matr
 }
 
 template<>
-inline bool Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator==(const Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>& b) const
+inline bool Matrix_ui::operator==(const Matrix_ui& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2169,7 +2165,7 @@ inline bool Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::operator==
 }
 
 template<>
-inline bool Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator==(const Matrix_t<long, gsl_matrix_long, gsl_vector_long>& b) const
+inline bool Matrix_l::operator==(const Matrix_l& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2180,7 +2176,7 @@ inline bool Matrix_t<long, gsl_matrix_long, gsl_vector_long>::operator==(const M
 }
 
 template<>
-inline bool Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operator==(const Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>& b) const
+inline bool Matrix_ul::operator==(const Matrix_ul& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2191,7 +2187,7 @@ inline bool Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::operato
 }
 
 template<>
-inline bool Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator==(const Matrix_t<short, gsl_matrix_short, gsl_vector_short>& b) const
+inline bool Matrix_s::operator==(const Matrix_s& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2202,7 +2198,7 @@ inline bool Matrix_t<short, gsl_matrix_short, gsl_vector_short>::operator==(cons
 }
 
 template<>
-inline bool Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::operator==(const Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>& b) const
+inline bool Matrix_us::operator==(const Matrix_us& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2213,7 +2209,7 @@ inline bool Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::oper
 }
 
 template<>
-inline bool Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator==(const Matrix_t<char, gsl_matrix_char, gsl_vector_char>& b) const
+inline bool Matrix_c::operator==(const Matrix_c& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2224,7 +2220,7 @@ inline bool Matrix_t<char, gsl_matrix_char, gsl_vector_char>::operator==(const M
 }
 
 template<>
-inline bool Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operator==(const Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>& b) const
+inline bool Matrix_uc::operator==(const Matrix_uc& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2235,7 +2231,7 @@ inline bool Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::operato
 }
 
 template<>
-inline bool Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::operator==(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& b) const
+inline bool Matrix_cx::operator==(const Matrix_cx& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2246,7 +2242,7 @@ inline bool Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vec
 }
 
 template<>
-inline bool Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::operator==(const Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& b) const
+inline bool Matrix_cxld::operator==(const Matrix_cxld& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2257,7 +2253,7 @@ inline bool Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix
 }
 
 template<>
-inline bool Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::operator==(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& b) const
+inline bool Matrix_cxf::operator==(const Matrix_cxf& b) const
 {
     if(this->gsl_mat.get() == nullptr && b.gsl_mat.get() == nullptr){
         return true;
@@ -2292,233 +2288,233 @@ Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::hermitian_transpose() const
 }
 
 template<>
-inline Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>
-Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::
+inline Matrix_cx
+Matrix_cx::
 hermitian_transpose() const
 {
-    Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>
+    Matrix_cx
         res(this->size().second, this->size().first);
-    for(Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::size_type
+    for(Matrix_cx::size_type
             i = 0; i < this->size().second; i++){
-        for(Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::size_type
+        for(Matrix_cx::size_type
                 j = 0; j < this->size().first; j++){
-                    res[i][j] = Complex_t<double, gsl_complex>((*this)[j][i]).conjugate();
+                    res[i][j] = Complex((*this)[j][i]).conjugate();
         }
     }
     return res;
 }
 
 template<>
-inline Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>
-Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::
+inline Matrix_cxld
+Matrix_cxld::
 hermitian_transpose() const
 {
-    Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>
+    Matrix_cxld
         res(this->size().second, this->size().first);
-    for(Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type
+    for(Matrix_cxld::size_type
             i = 0; i < this->size().second; i++){
-        for(Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type
+        for(Matrix_cxld::size_type
                 j = 0; j < this->size().first; j++){
-                    res[i][j] = Complex_t<long double, gsl_complex_long_double>((*this)[j][i]).conjugate();
+                    res[i][j] = Complex_ld((*this)[j][i]).conjugate();
         }
     }
     return res;
 }
 
 template<>
-inline Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>
-Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::
+inline Matrix_cxf
+Matrix_cxf::
 hermitian_transpose() const
 {
-    Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>
+    Matrix_cxf
         res(this->size().second, this->size().first);
-    for(Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::size_type
+    for(Matrix_cx::size_type
             i = 0; i < this->size().second; i++){
-        for(Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::size_type
+        for(Matrix_cx::size_type
                 j = 0; j < this->size().first; j++){
-                    res[i][j] = Complex_t<float, gsl_complex_float>((*this)[j][i]).conjugate();
+                    res[i][j] = Complex_f((*this)[j][i]).conjugate();
         }
     }
     return res;
 }
 
 template<>
-inline Vector_t<double, gsl_vector>& Matrix_t<double, gsl_matrix, gsl_vector>::get_row(const Matrix_t<double, gsl_matrix, gsl_vector>::difference_type i)
+inline Vector& Matrix::get_row(const Matrix::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<double, gsl_matrix, gsl_vector>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector tmp = gsl_matrix_row(this->gsl_mat.get(), static_cast<Matrix_t<double, gsl_matrix, gsl_vector>::size_type>(i)).vector;
+    gsl_vector tmp = gsl_matrix_row(this->gsl_mat.get(), static_cast<Matrix::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector>(new gsl_vector);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<long double, gsl_vector_long_double>& Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::get_row(const Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::difference_type i)
+inline Vector_ld& Matrix_ld::get_row(const Matrix_ld::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_ld::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_long_double tmp = gsl_matrix_long_double_row(this->gsl_mat.get(), static_cast<Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>::size_type>(i)).vector;
+    gsl_vector_long_double tmp = gsl_matrix_long_double_row(this->gsl_mat.get(), static_cast<Matrix_ld::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_long_double>(new gsl_vector_long_double);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<float, gsl_vector_float>& Matrix_t<float, gsl_matrix_float, gsl_vector_float>::get_row(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>::difference_type i)
+inline Vector_f& Matrix_f::get_row(const Matrix_f::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<float, gsl_matrix_float, gsl_vector_float>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_f::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_float tmp = gsl_matrix_float_row(this->gsl_mat.get(), static_cast<Matrix_t<float, gsl_matrix_float, gsl_vector_float>::size_type>(i)).vector;
+    gsl_vector_float tmp = gsl_matrix_float_row(this->gsl_mat.get(), static_cast<Matrix_f::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_float>(new gsl_vector_float);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<int, gsl_vector_int>& Matrix_t<int, gsl_matrix_int, gsl_vector_int>::get_row(const Matrix_t<int, gsl_matrix_int, gsl_vector_int>::difference_type i)
+inline Vector_i& Matrix_i::get_row(const Matrix_i::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<int, gsl_matrix_int, gsl_vector_int>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_i::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_int tmp = gsl_matrix_int_row(this->gsl_mat.get(), static_cast<Matrix_t<int, gsl_matrix_int, gsl_vector_int>::size_type>(i)).vector;
+    gsl_vector_int tmp = gsl_matrix_int_row(this->gsl_mat.get(), static_cast<Matrix_i::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_int>(new gsl_vector_int);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<unsigned int, gsl_vector_uint>& Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::get_row(const Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::difference_type i)
+inline Vector_ui& Matrix_ui::get_row(const Matrix_ui::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_ui::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_uint tmp = gsl_matrix_uint_row(this->gsl_mat.get(), static_cast<Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint>::size_type>(i)).vector;
+    gsl_vector_uint tmp = gsl_matrix_uint_row(this->gsl_mat.get(), static_cast<Matrix_ui::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_uint>(new gsl_vector_uint);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<long, gsl_vector_long>& Matrix_t<long, gsl_matrix_long, gsl_vector_long>::get_row(const Matrix_t<long, gsl_matrix_long, gsl_vector_long>::difference_type i)
+inline Vector_l& Matrix_l::get_row(const Matrix_l::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<long, gsl_matrix_long, gsl_vector_long>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_l::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_long tmp = gsl_matrix_long_row(this->gsl_mat.get(), static_cast<Matrix_t<long, gsl_matrix_long, gsl_vector_long>::size_type>(i)).vector;
+    gsl_vector_long tmp = gsl_matrix_long_row(this->gsl_mat.get(), static_cast<Matrix_l::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_long>(new gsl_vector_long);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<unsigned long, gsl_vector_ulong>& Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::get_row(const Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::difference_type i)
+inline Vector_ul& Matrix_ul::get_row(const Matrix_ul::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_ul::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_ulong tmp = gsl_matrix_ulong_row(this->gsl_mat.get(), static_cast<Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong>::size_type>(i)).vector;
+    gsl_vector_ulong tmp = gsl_matrix_ulong_row(this->gsl_mat.get(), static_cast<Matrix_ul::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_ulong>(new gsl_vector_ulong);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<short, gsl_vector_short>& Matrix_t<short, gsl_matrix_short, gsl_vector_short>::get_row(const Matrix_t<short, gsl_matrix_short, gsl_vector_short>::difference_type i)
+inline Vector_s& Matrix_s::get_row(const Matrix_s::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<short, gsl_matrix_short, gsl_vector_short>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_s::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_short tmp = gsl_matrix_short_row(this->gsl_mat.get(), static_cast<Matrix_t<short, gsl_matrix_short, gsl_vector_short>::size_type>(i)).vector;
+    gsl_vector_short tmp = gsl_matrix_short_row(this->gsl_mat.get(), static_cast<Matrix_s::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_short>(new gsl_vector_short);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<unsigned short, gsl_vector_ushort>& Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::get_row(const Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::difference_type i)
+inline Vector_us& Matrix_us::get_row(const Matrix_us::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<unsigned short, gsl_matrix_ushort, gsl_vector_ushort>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_us::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_ushort tmp = gsl_matrix_ushort_row(this->gsl_mat.get(), static_cast<Matrix_t<ushort, gsl_matrix_ushort, gsl_vector_ushort>::size_type>(i)).vector;
+    gsl_vector_ushort tmp = gsl_matrix_ushort_row(this->gsl_mat.get(), static_cast<Matrix_us::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_ushort>(new gsl_vector_ushort);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<char, gsl_vector_char>& Matrix_t<char, gsl_matrix_char, gsl_vector_char>::get_row(const Matrix_t<char, gsl_matrix_char, gsl_vector_char>::difference_type i)
+inline Vector_c& Matrix_c::get_row(const Matrix_c::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<char, gsl_matrix_char, gsl_vector_char>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_c::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_char tmp = gsl_matrix_char_row(this->gsl_mat.get(), static_cast<Matrix_t<char, gsl_matrix_char, gsl_vector_char>::size_type>(i)).vector;
+    gsl_vector_char tmp = gsl_matrix_char_row(this->gsl_mat.get(), static_cast<Matrix_c::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_char>(new gsl_vector_char);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<unsigned char, gsl_vector_uchar>& Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::get_row(const Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::difference_type i)
+inline Vector_uc& Matrix_uc::get_row(const Matrix_uc::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_uc::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_uchar tmp = gsl_matrix_uchar_row(this->gsl_mat.get(), static_cast<Matrix_t<unsigned char, gsl_matrix_uchar, gsl_vector_uchar>::size_type>(i)).vector;
+    gsl_vector_uchar tmp = gsl_matrix_uchar_row(this->gsl_mat.get(), static_cast<Matrix_uc::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_uchar>(new gsl_vector_uchar);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>& Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::get_row(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::difference_type i)
+inline Vector_cx& Matrix_cx::get_row(const Matrix_cx::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_cx::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex tmp = gsl_matrix_complex_row(this->gsl_mat.get(), static_cast<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::size_type>(i)).vector;
+    gsl_vector_complex tmp = gsl_matrix_complex_row(this->gsl_mat.get(), static_cast<Matrix_cx::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>& Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::get_row(const Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::difference_type i)
+inline Vector_cxld& Matrix_cxld::get_row(const Matrix_cxld::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_cxld::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex_long_double tmp = gsl_matrix_complex_long_double_row(this->gsl_mat.get(), static_cast<Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::size_type>(i)).vector;
+    gsl_vector_complex_long_double tmp = gsl_matrix_complex_long_double_row(this->gsl_mat.get(), static_cast<Matrix_cxld::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_complex_long_double>(new gsl_vector_complex_long_double);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
 }
 
 template<>
-inline Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::get_row(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::difference_type i)
+inline Vector_cxf& Matrix_cxf::get_row(const Matrix_cxf::difference_type i)
 {
-    if(i < 0 || static_cast<Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::size_type>(i) >= this->size().first){
+    if(i < 0 || static_cast<Matrix_cxf::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex_float tmp = gsl_matrix_complex_float_row(this->gsl_mat.get(), static_cast<Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::size_type>(i)).vector;
+    gsl_vector_complex_float tmp = gsl_matrix_complex_float_row(this->gsl_mat.get(), static_cast<Matrix_cxf::size_type>(i)).vector;
     v_m.gsl_vec = std::shared_ptr<gsl_vector_complex_float>(new gsl_vector_complex_float);
     *v_m.gsl_vec.get() = tmp;
     return v_m;
@@ -2865,21 +2861,17 @@ typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::cren
 
 template<class T, class M, class V, class A>
 Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
-//V& Matrix_t<T, M, V, A>::
     operator[] (const typename Matrix_t<T, M, V, A>::size_type index)
 {
     return *(this->begin() + static_cast<Matrix_t<T, M, V, A>::difference_type>(index));
-    //return this->get_row(static_cast<Matrix_t<T, M, V, A>::difference_type>(index));
 }
 
 template<class T, class M, class V, class A>
 const Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
-//const V& Matrix_t<T, M, V, A>::
     operator[] (const typename Matrix_t<T, M, V, A>::size_type index) const
 {
     return *(this->cbegin() +
         static_cast<Matrix_t<T, M, V, A>::difference_type>(index));
-    //return this->get_row(static_cast<Matrix_t<T, M, V, A>::difference_type>(index));
 }
 
 
@@ -2916,6 +2908,9 @@ template<class T, class M, class V, class A>
 Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
     at(const typename Matrix_t<T, M, V, A>::size_type index)
 {
+    if(index >= this->gsl_mat->size1){
+        throw std::out_of_range("Row index " + std::to_string(index) + " out of range.");
+    }
     return (*this)[index];
 }
 
@@ -2923,7 +2918,84 @@ template<class T, class M, class V, class A>
 const Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
     at(const typename Matrix_t<T, M, V, A>::size_type index) const
 {
+    if(index >= this->gsl_mat->size1){
+        throw std::out_of_range("Row index " + std::to_string(index) + " out of range.");
+    }
     return (*this)[index];
+}
+
+template<class T, class M, class V, class A>
+typename Matrix_t<T, M, V, A>::reference Matrix_t<T, M, V, A>::
+    at(const typename Matrix_t<T, M, V, A>::size_type i, const typename Matrix_t<T, M, V, A>::size_type j)
+{
+    if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
+        throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
+    }
+    return this->gsl_mat->data[i*this->gsl_mat->tda + j];
+}
+
+template<class T, class M, class V, class A>
+typename Matrix_t<T, M, V, A>::const_reference Matrix_t<T, M, V, A>::
+    at(const typename Matrix_t<T, M, V, A>::size_type i, const typename Matrix_t<T, M, V, A>::size_type j) const
+{
+    if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
+        throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
+    }
+    return this->gsl_mat->data[i*this->gsl_mat->tda + j];
+}
+
+template<>
+inline typename Matrix_cx::reference Matrix_cx::at(const Matrix_cx::size_type i, const Matrix_cx::size_type j)
+{
+    if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
+        throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
+    }
+    return *gsl_matrix_complex_ptr(this->gsl_mat.get(), i, j);
+}
+
+template<>
+inline typename Matrix_cx::const_reference Matrix_cx::at(const Matrix_cx::size_type i, const Matrix_cx::size_type j) const
+{
+    if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
+        throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
+    }
+    return *gsl_matrix_complex_ptr(this->gsl_mat.get(), i, j);
+}
+
+template<>
+inline typename Matrix_cxf::reference Matrix_cxf::at(const Matrix_cxf::size_type i, const Matrix_cxf::size_type j)
+{
+    if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
+        throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
+    }
+    return *gsl_matrix_complex_float_ptr(this->gsl_mat.get(), i, j);
+}
+
+template<>
+inline typename Matrix_cxf::const_reference Matrix_cxf::at(const Matrix_cxf::size_type i, const Matrix_cxf::size_type j) const
+{
+    if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
+        throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
+    }
+    return *gsl_matrix_complex_float_ptr(this->gsl_mat.get(), i, j);
+}
+
+template<>
+inline typename Matrix_cxld::reference Matrix_cxld::at(const Matrix_cxld::size_type i, const Matrix_cxld::size_type j)
+{
+    if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
+        throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
+    }
+    return *gsl_matrix_complex_long_double_ptr(this->gsl_mat.get(), i, j);
+}
+
+template<>
+inline typename Matrix_cxld::const_reference Matrix_cxld::at(const Matrix_cxld::size_type i, const Matrix_cxld::size_type j) const
+{
+    if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
+        throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
+    }
+    return *gsl_matrix_complex_long_double_ptr(this->gsl_mat.get(), i, j);
 }
 
 template<class T, class M, class V, class A>
@@ -2953,7 +3025,7 @@ std::string Matrix_t<T, M, V, A>::to_string() const
 }
 
 template<>
-inline std::string Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>::to_string() const
+inline std::string Matrix_cx::to_string() const
 {
     std::string res = "[";
     size_t i = 0, j = 0;
@@ -2980,7 +3052,7 @@ inline std::string Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, 
 }
 
 template<>
-inline std::string Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>::to_string() const
+inline std::string Matrix_cxld::to_string() const
 {
     std::string res = "[";
     size_t i = 0, j = 0;
@@ -3007,7 +3079,7 @@ inline std::string Matrix_t<Complex_t<long double, gsl_complex_long_double>, gsl
 }
 
 template<>
-inline std::string Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>::to_string() const
+inline std::string Matrix_cxf::to_string() const
 {
     std::string res = "[";
     size_t i = 0, j = 0;
@@ -3018,7 +3090,7 @@ inline std::string Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_comp
         res += "( ";
         j = 0;
         for(auto& el : row){
-            res += Complex_t<float, gsl_complex_float>(el).to_string();
+            res += Complex_f(el).to_string();
             if(j < this->size().second - 1){
                 res += ",";
             }

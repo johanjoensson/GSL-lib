@@ -136,16 +136,11 @@ public:
     bool operator!=(const Vector_t&) const;
 
 
-    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Vector_t<double, gsl_vector>>
-        hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex,
-            gsl_vector_complex, std::allocator<gsl_complex>>&);
-    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Vector_t<double, gsl_vector>>
-        general_hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex,
-            gsl_vector_complex, std::allocator<gsl_complex>>&,
-            const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>&);
+    friend std::pair<Matrix_cx, Vector>
+        hermitian_eigen(const Matrix_cx&);
+    friend std::pair<Matrix_cx, Vector>
+        general_hermitian_eigen(const Matrix_cx&,
+            const Matrix_cx&);
 
 
     class const_iterator;
@@ -275,5 +270,4 @@ public:
 };
 
 }
-//#include "vector_template.tpp"
 #endif //VECTOR_TEMPLATE_GSL_LIB_H

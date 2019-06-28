@@ -203,7 +203,12 @@ public:
     Complex arccsch(const Complex& a);
     Complex arccoth(const Complex& a);
 
-
+    bool operator==( const gsl_complex&, const gsl_complex&);
+    bool operator!=( const gsl_complex&, const gsl_complex&);
+    bool operator==( const gsl_complex_float&, const gsl_complex_float&);
+    bool operator!=( const gsl_complex_float&, const gsl_complex_float&);
+    bool operator==( const gsl_complex_long_double&, const gsl_complex_long_double&);
+    bool operator!=( const gsl_complex_long_double&, const gsl_complex_long_double&);
 }
 
 #endif //COMPLEX_GSL_LIB_H

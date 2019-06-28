@@ -26,7 +26,7 @@ namespace GSL{
     using Matrix = Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>;
     using Matrix_ld = Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double, std::allocator<long double>>;
     using Matrix_f = Matrix_t<float, gsl_matrix_float, gsl_vector_float, std::allocator<float>>;
-    using Matrix_i = Matrix_t<int, gsl_matrix_int, gsl_vector_int, std::allocator<float>>;
+    using Matrix_i = Matrix_t<int, gsl_matrix_int, gsl_vector_int, std::allocator<int>>;
     using Matrix_ui = Matrix_t<unsigned int, gsl_matrix_uint, gsl_vector_uint, std::allocator<unsigned int>>;
     using Matrix_l = Matrix_t<long, gsl_matrix_long, gsl_vector_long, std::allocator<long>>;
     using Matrix_ul = Matrix_t<unsigned long, gsl_matrix_ulong, gsl_vector_ulong, std::allocator<unsigned long>>;
@@ -270,6 +270,8 @@ public:
     const Vector_t<T, GSL_VEC, A>& back() const;
     Vector_t<T, GSL_VEC, A>& at(size_type);
     const Vector_t<T, GSL_VEC, A>& at(size_type) const;
+    reference at(size_type, size_type);
+    const_reference at(size_type, size_type) const;
 
     friend Matrix_t<double, gsl_matrix, gsl_vector>
         cholesky_decomp(const Matrix_t<double, gsl_matrix, gsl_vector>&);

@@ -10,10 +10,10 @@
 ################################################################################
 
 # Compilers to use
-#CXX = clang++
-CXX ?= g++
-#CC  = clang
-CC  ?= gcc
+CXX = clang++
+# CXX ?= g++
+CC  = clang
+# CC  ?= gcc
 
 CXXCHECK = clang-tidy
 
@@ -52,11 +52,14 @@ LIB_OBJ = divided_difference.o\
 	  basic_math.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
+	  special_functions_laguerre.o\
+	  special_functions_hermite.o\
 	  special_functions_coupling.o\
 	  special_functions_exp.o\
 	  special_functions_log.o\
 	  special_functions_trig.o\
 	  special_functions_erf.o\
+	  special_functions_gamma_beta.o\
 	  special_functions_results.o\
 	  error.o
 
@@ -67,6 +70,20 @@ TEST_OBJ =  main_tests.o\
 	    complex_ld_base_math_test.o\
  	    complex_f_test.o\
 	    complex_f_base_math_test.o\
+	    vector_test.o\
+	    vector_c_test.o\
+	    vector_uc_test.o\
+	    vector_f_test.o\
+	    vector_ld_test.o\
+	    vector_i_test.o\
+	    vector_ui_test.o\
+	    vector_l_test.o\
+	    vector_ul_test.o\
+	    vector_s_test.o\
+	    vector_us_test.o\
+	    vector_cx_test.o\
+	    vector_cxf_test.o\
+	    vector_cxld_test.o\
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
@@ -84,14 +101,13 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 $(BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $? -o $@
 
-# Link numerov_test
 lib$(LIB).so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS)
 
 lib$(LIB)cov.so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ -std=c++11 -lgcov --coverage -lgsl -lgslcblas -lopenblas -shared -Wl,-soname,lib$(LIB)cov.so
 
-tester: $(BUILD_DIR)/main.o lib$(LIB).so
+tester: $(BUILD_DIR)/main.o lib$(LIB).so $(INC_DIR)
 	$(CXX) $< -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB) -lgsl -Wl,-rpath=$(LIB_DIR)/$(LIB)
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
