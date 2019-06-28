@@ -84,6 +84,18 @@ TEST_OBJ =  main_tests.o\
 	    vector_cx_test.o\
 	    vector_cxf_test.o\
 	    vector_cxld_test.o\
+	    matrix_test.o\
+	    matrix_f_test.o\
+	    matrix_ld_test.o\
+	    matrix_c_test.o\
+	    matrix_uc_test.o\
+	    matrix_s_test.o\
+	    matrix_us_test.o\
+	    matrix_i_test.o\
+	    matrix_ui_test.o\
+	    matrix_cx_test.o\
+	    matrix_cxf_test.o\
+	    matrix_cxld_test.o\
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
