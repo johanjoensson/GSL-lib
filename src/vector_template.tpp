@@ -875,7 +875,7 @@ inline Vector_ul& Vector_ul::operator=(Vector_ul&& a)
 }
 
 template<>
-inline Vector_s& Vector_s::operator=(Vector_s&& a)
+inline Vector_s & Vector_s::operator=(Vector_s&& a)
 {
     if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
         std::swap(this->gsl_vec, a.gsl_vec);
@@ -3162,8 +3162,9 @@ void Vector_t<T, G, A>::assign(iter start_it, iter end_it)
     if(end_it - start_it < 0){
         throw(std::runtime_error("Error in assign! End point comes before starting point\n"));
     }
-    if(end_it - start_it != this->gsl_vec->size){
-        *this = GSL::Vector_t<T, G, A>(end_it - start_it);
+    size_t diff = static_cast<size_t>(end_it - start_it);
+    if(diff != this->gsl_vec->size){
+        *this = GSL::Vector_t<T, G, A>(diff);
     }
     auto current = this->begin();
     iter counter = start_it;

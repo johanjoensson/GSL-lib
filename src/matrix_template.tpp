@@ -547,8 +547,8 @@ inline void Matrix_ui::copy
 }
 
 template<>
-inline void Matrix_t<long , gsl_matrix_long, gsl_vector_long>::copy
-(const Matrix_t<long , gsl_matrix_long, gsl_vector_long>& a)
+inline void Matrix_l::copy
+(const Matrix_l& a)
 {
     if(this->gsl_mat.get() == nullptr){
         this->gsl_mat = std::shared_ptr<gsl_matrix_long>
