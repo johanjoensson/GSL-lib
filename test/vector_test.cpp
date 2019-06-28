@@ -1,6 +1,5 @@
 #include "GSLpp/vector.h"
 #include <gtest/gtest.h>
-#include <iostream>
 
 TEST(VectorTest, TestConstruction)
 {

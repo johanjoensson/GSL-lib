@@ -725,177 +725,6 @@ inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(const Matrix_t<T, G
     return *this;
 }
 
-/*
-template<>
-inline Matrix_ld& Matrix_ld::operator=(const Matrix_ld& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_long_double_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_f& Matrix_f::operator=(const Matrix_f& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_float_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_i& Matrix_i::operator=(const Matrix_i& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_int_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_ui& Matrix_ui::operator=(const Matrix_ui& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_uint_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_l& Matrix_l::operator=(const Matrix_l& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_long_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_ul& Matrix_ul::operator=(const Matrix_ul& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_ulong_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_s& Matrix_s::operator=(const Matrix_s& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_short_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_us& Matrix_us::operator=(const Matrix_us& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_ushort_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_c& Matrix_c::operator=(const Matrix_c& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_char_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_uc& Matrix_uc::operator=(const Matrix_uc& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_uchar_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_cx& Matrix_cx::operator=(const Matrix_cx& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_complex_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_cxld& Matrix_cxld::operator=(const Matrix_cxld& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_complex_long_double_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_cx& Matrix_cx::operator=(const Matrix_cx& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        this->gsl_mat = a.gsl_mat;
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_complex_float_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_mat->owner));
-    }
-    return *this;
-}
-*/
-
 template<class T, class G, class V, class A>
 inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(Matrix_t<T, G, V, A>&& a)
 {
@@ -904,150 +733,6 @@ inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(Matrix_t<T, G, V, A
     return *this;
 }
 
-/*
-template<>
-inline Matrix_ld& Matrix_ld::operator=(Matrix_ld&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_long_double_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_f& Matrix_f::operator=(Matrix_f&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_float_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_i& Matrix_i::operator=(Matrix_i&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_int_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_ui& Matrix_ui::operator=(Matrix_ui&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_uint_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_l& Matrix_l::operator=(Matrix_l&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_long_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_ul& Matrix_ul::operator=(Matrix_ul&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_ulong_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_s& Matrix_s::operator=(Matrix_s&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_short_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_us& Matrix_us::operator=(Matrix_us&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_ushort_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_c& Matrix_c::operator=(Matrix_c&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_char_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_uc& Matrix_uc::operator=(Matrix_uc&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_uchar_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_cx& Matrix_cx::operator=(Matrix_cx&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_complex_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_cxld& Matrix_cxld::operator=(Matrix_cxld&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_complex_long_double_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-
-template<>
-inline Matrix_cx& Matrix_cx::operator=(Matrix_cx&& a)
-{
-    if(this->gsl_mat == nullptr || this->gsl_mat->owner == 1){
-        std::swap(this->gsl_mat, a.gsl_mat);
-    }else if(this->gsl_mat->owner == 0){
-        gsl_matrix_complex_float_memcpy(this->gsl_mat.get(), a.gsl_mat.get());
-    }
-    return *this;
-}
-*/
 template<class T, class M, class V, class A>
 std::pair<typename Matrix_t<T, M, V, A>::size_type, typename Matrix_t<T, M, V, A>::size_type>
  Matrix_t<T, M, V, A>::dim() const
@@ -1421,52 +1106,60 @@ Matrix_t<T, M, V, A>& Matrix_t<T, M, V, A>::operator*=(const Matrix_t<T, M, V, A
 template<>
 inline Matrix& Matrix::operator*=(const Matrix& b)
 {
+    Matrix tmp(this->gsl_mat->size1, b.gsl_mat->size2);
     int stat = gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, this->gsl_mat.get(),
-        b.gsl_mat.get(), 0.0, this->gsl_mat.get());
+        b.gsl_mat.get(), 0.0, tmp.gsl_mat.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in matrix multiplication.\nGSL error: "
         + error_str);
 	}
+    *this = tmp;
     return *this;
 }
 
 template<>
 inline Matrix_f& Matrix_f::operator*=(const Matrix_f& b)
 {
+    Matrix_f tmp(this->gsl_mat->size1, b.gsl_mat->size2);
     int stat = gsl_blas_sgemm(CblasNoTrans, CblasNoTrans, 1.0, this->gsl_mat.get(),
-        b.gsl_mat.get(), 0.0, this->gsl_mat.get());
+        b.gsl_mat.get(), 0.0, tmp.gsl_mat.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in matrix addition.\nGSL error: "
         + error_str);
 	}
+    *this = tmp;
     return *this;
 }
 
 template<>
 inline Matrix_cx& Matrix_cx::operator*=(const Matrix_cx& b)
 {
+    Matrix_cx tmp(this->gsl_mat->size1, b.gsl_mat->size2);
     int stat = gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, Complex(1.0), this->gsl_mat.get(),
-        b.gsl_mat.get(), Complex(0.0), this->gsl_mat.get());
+        b.gsl_mat.get(), Complex(0.0), tmp.gsl_mat.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in matrix addition.\nGSL error: "
         + error_str);
 	}
+    *this = tmp;
     return *this;
 }
 
 template<>
 inline Matrix_cxf& Matrix_cxf::operator*=(const Matrix_cxf& b)
 {
+    Matrix_cxf tmp(this->gsl_mat->size1, b.gsl_mat->size2);
     int stat = gsl_blas_cgemm(CblasNoTrans, CblasNoTrans, Complex_f(1.0), this->gsl_mat.get(),
-        b.gsl_mat.get(), Complex_f(0.0), this->gsl_mat.get());
+        b.gsl_mat.get(), Complex_f(0.0), tmp.gsl_mat.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in matrix addition.\nGSL error: "
         + error_str);
 	}
+    *this = tmp;
     return *this;
 }
 
@@ -2520,12 +2213,193 @@ inline Vector_cxf& Matrix_cxf::get_row(const Matrix_cxf::difference_type i)
     return v_m;
 }
 
+template<>
+inline Vector& Matrix::get_col(const Matrix::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector tmp = gsl_matrix_column(this->gsl_mat.get(), static_cast<Matrix::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector>(new gsl_vector);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_ld& Matrix_ld::get_col(const Matrix_ld::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_ld::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_long_double tmp = gsl_matrix_long_double_column(this->gsl_mat.get(), static_cast<Matrix_ld::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_long_double>(new gsl_vector_long_double);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_f& Matrix_f::get_col(const Matrix_f::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_f::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_float tmp = gsl_matrix_float_column(this->gsl_mat.get(), static_cast<Matrix_f::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_float>(new gsl_vector_float);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_i& Matrix_i::get_col(const Matrix_i::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_i::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_int tmp = gsl_matrix_int_column(this->gsl_mat.get(), static_cast<Matrix_i::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_int>(new gsl_vector_int);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_ui& Matrix_ui::get_col(const Matrix_ui::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_ui::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_uint tmp = gsl_matrix_uint_column(this->gsl_mat.get(), static_cast<Matrix_ui::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_uint>(new gsl_vector_uint);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_l& Matrix_l::get_col(const Matrix_l::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_l::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_long tmp = gsl_matrix_long_column(this->gsl_mat.get(), static_cast<Matrix_l::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_long>(new gsl_vector_long);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_ul& Matrix_ul::get_col(const Matrix_ul::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_ul::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_ulong tmp = gsl_matrix_ulong_column(this->gsl_mat.get(), static_cast<Matrix_ul::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_ulong>(new gsl_vector_ulong);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_s& Matrix_s::get_col(const Matrix_s::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_s::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_short tmp = gsl_matrix_short_column(this->gsl_mat.get(), static_cast<Matrix_s::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_short>(new gsl_vector_short);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_us& Matrix_us::get_col(const Matrix_us::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_us::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_ushort tmp = gsl_matrix_ushort_column(this->gsl_mat.get(), static_cast<Matrix_us::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_ushort>(new gsl_vector_ushort);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_c& Matrix_c::get_col(const Matrix_c::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_c::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_char tmp = gsl_matrix_char_column(this->gsl_mat.get(), static_cast<Matrix_c::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_char>(new gsl_vector_char);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_uc& Matrix_uc::get_col(const Matrix_uc::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_uc::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_uchar tmp = gsl_matrix_uchar_column(this->gsl_mat.get(), static_cast<Matrix_uc::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_uchar>(new gsl_vector_uchar);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_cx& Matrix_cx::get_col(const Matrix_cx::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_cx::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_complex tmp = gsl_matrix_complex_column(this->gsl_mat.get(), static_cast<Matrix_cx::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_cxld& Matrix_cxld::get_col(const Matrix_cxld::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_cxld::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_complex_long_double tmp = gsl_matrix_complex_long_double_column(this->gsl_mat.get(), static_cast<Matrix_cxld::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex_long_double>(new gsl_vector_complex_long_double);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
+template<>
+inline Vector_cxf& Matrix_cxf::get_col(const Matrix_cxf::difference_type i)
+{
+    if(i < 0 || static_cast<Matrix_cxf::size_type>(i) >= this->size().second){
+        throw(std::runtime_error("Error, dereferencing an iterator that is"
+        "out of bounds!\n"));
+    }
+    gsl_vector_complex_float tmp = gsl_matrix_complex_float_column(this->gsl_mat.get(), static_cast<Matrix_cxf::size_type>(i)).vector;
+    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex_float>(new gsl_vector_complex_float);
+    *v_m.gsl_vec.get() = tmp;
+    return v_m;
+}
+
 
 template<class T, class M, class V, class A>
 Matrix_t<T, M, V, A>::iterator::iterator(Matrix_t<T, M, V, A>& mat, Matrix_t<T, M, V, A>::difference_type n)
  : mat_m(mat), row_m(n)
-{
-}
+{}
 
 template<class T, class M, class V, class A>
 bool Matrix_t<T, M, V, A>::iterator::operator==(const Matrix_t<T, M, V, A>::iterator& b) const
@@ -2826,37 +2700,37 @@ typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T, M, V, A>::cend() const
 template<class T, class M, class V, class A>
 typename Matrix_t<T, M, V, A>::reverse_iterator Matrix_t<T, M, V, A>::rbegin()
 {
-    return Matrix_t<T, M, V, A>::reverse_iterator(--(this->end()));
+    return Matrix_t<T, M, V, A>::reverse_iterator(this->end());
 }
 
 template<class T, class M, class V, class A>
 typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::rbegin() const
 {
-    return Matrix_t<T, M, V, A>::const_reverse_iterator(--(this->end()));
+    return Matrix_t<T, M, V, A>::const_reverse_iterator(this->end());
 }
 
 template<class T, class M, class V, class A>
 typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::crbegin() const
 {
-    return Matrix_t<T, M, V, A>::const_reverse_iterator(--(this->end()));
+    return Matrix_t<T, M, V, A>::const_reverse_iterator(this->end());
 }
 
 template<class T, class M, class V, class A>
 typename Matrix_t<T, M, V, A>::reverse_iterator Matrix_t<T, M, V, A>::rend()
 {
-    return Matrix_t<T, M, V, A>::reverse_iterator(--(this->begin()));
+    return Matrix_t<T, M, V, A>::reverse_iterator(this->begin());
 }
 
 template<class T, class M, class V, class A>
 typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::rend() const
 {
-    return Matrix_t<T, M, V, A>::const_reverse_iterator(--(this->begin()));
+    return Matrix_t<T, M, V, A>::const_reverse_iterator(this->begin());
 }
 
 template<class T, class M, class V, class A>
 typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::crend() const
 {
-    return Matrix_t<T, M, V, A>::const_reverse_iterator(--(this->cbegin()));
+    return Matrix_t<T, M, V, A>::const_reverse_iterator(this->cbegin());
 }
 
 template<class T, class M, class V, class A>

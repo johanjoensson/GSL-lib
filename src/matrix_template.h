@@ -40,34 +40,16 @@ namespace GSL{
     using Matrix_cxf = Matrix_t<GSL::Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float,
         gsl_vector_complex_float, std::allocator<gsl_complex_float>>;
 
-    Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>
-    cholesky_decomp(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>&);
+    Matrix cholesky_decomp(const Matrix&);
+    Matrix_cx cholesky_decomp(const Matrix_cx&);
 
-    Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>
-        cholesky_decomp(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>&);
+    Matrix_cx lu_inverse(const Matrix_cx& a);
+    std::pair<Matrix_cx, Permutation&> lu_decomp(const Matrix_cx& a);
 
-    Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>
-        lu_inverse(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>& a);
-    std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Permutation&>
-        lu_decomp(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>& a);
+    std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> hermitian_eigen(const Matrix_cx&);
 
-    std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Vector_t<double, gsl_vector, std::allocator<double>>>
-        hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex,
-            gsl_vector_complex, std::allocator<gsl_complex>>&);
-
-    std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Vector_t<double, gsl_vector, std::allocator<double>>>
-        general_hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex,
-            gsl_vector_complex, std::allocator<gsl_complex>>&,
-            const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>&);
+    std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> general_hermitian_eigen(const Matrix_cx&,
+            const Matrix_cx&);
 
 template<class T, class GSL_MAT, class GSL_VEC, class A = std::allocator<T>>
 class Matrix_t {
@@ -147,7 +129,6 @@ public:
     Matrix_t hermitian_transpose() const;
 
     Vector_t<T, GSL_VEC, A>& get_row(const difference_type i);
-    //GSL_VEC& get_row(const difference_type i);
     Vector_t<T, GSL_VEC, A>& get_col(const difference_type i);
 
     class iterator {
@@ -273,37 +254,19 @@ public:
     reference at(size_type, size_type);
     const_reference at(size_type, size_type) const;
 
-    friend Matrix_t<double, gsl_matrix, gsl_vector>
-        cholesky_decomp(const Matrix_t<double, gsl_matrix, gsl_vector>&);
+    friend Matrix cholesky_decomp(const Matrix&);
 
-    friend Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>
-        GSL::cholesky_decomp(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>&);
+    friend Matrix_cx GSL::cholesky_decomp(const Matrix_cx&);
 
-    friend Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>
-        GSL::lu_inverse(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>& a);
-    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Permutation&>
-        GSL::lu_decomp(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>& a);
+    friend Matrix_cx GSL::lu_inverse(const Matrix_cx& a);
+    friend std::pair<Matrix_cx, Permutation&> GSL::lu_decomp(const Matrix_cx& a);
 
-    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Vector_t<double, gsl_vector, std::allocator<double>>>
-        hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex,
-            gsl_vector_complex, std::allocator<gsl_complex>>&);
+    friend std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> hermitian_eigen(const Matrix_cx&);
 
-    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Vector_t<double, gsl_vector, std::allocator<double>>>
-        general_hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex,
-            gsl_vector_complex, std::allocator<gsl_complex>>&,
-            const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>&);
+    friend std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>>general_hermitian_eigen(const Matrix_cx&,
+            const Matrix_cx&);
 };
 
 
 }
-//#include "matrix_template.tpp"
 #endif //MATRIX_TEMPLATE_GSL_LIB_H

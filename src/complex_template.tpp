@@ -35,15 +35,6 @@ inline Complex_f::Complex_t(const float& a, const float& b)
     this->gsl_c->dat[1] = b;
 }
 
-template<class T>
-void no_op(T*){};
-// template<>
-// inline void no_op<gsl_complex>(gsl_complex*){}
-// template<>
-// inline void no_op<gsl_complex_long_double>(gsl_complex_long_double*){}
-// template<>
-// inline void no_op<gsl_complex_float>(gsl_complex_float*){}
-
 template<class T, class GSL_COMPLEX>
 Complex_t<T, GSL_COMPLEX>::Complex_t(const GSL_COMPLEX& z)
  : gsl_c(new GSL_COMPLEX)
