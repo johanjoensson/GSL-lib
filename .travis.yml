@@ -5,6 +5,7 @@ matrix:
   include:
     # works on Precise and Trusty
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -16,6 +17,7 @@ matrix:
 
     # works on Precise and Trusty
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -27,6 +29,7 @@ matrix:
 
     # works on Precise and Trusty
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -38,6 +41,7 @@ matrix:
 
     # works on Precise and Trusty
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -48,6 +52,7 @@ matrix:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
     - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -61,7 +66,7 @@ before_install:
     - eval "${MATRIX_EVAL}"
     - $CXX --version
     - pip install --user cpp-coveralls
-    - sudo apt-get install -y libgsl0-dev libopenblas-dev libgtest-dev cmake
+    - sudo apt-get install -y libgsl-dev libopenblas-dev libgtest-dev cmake
     - wget https://github.com/google/googletest/archive/master.zip
     - unzip master.zip
     - cd googletest-master
@@ -72,8 +77,8 @@ before_install:
     - cd "${TRAVIS_BUILD_DIR}"
 
 script:
-    - make travis
-    - make tests && ./tests
+    - make -f Makefile.travis travis
+    - make -f Makefile.travis tests && ./tests
 
 after_success:
     - coveralls --exclude lib

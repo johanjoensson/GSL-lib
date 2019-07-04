@@ -62,7 +62,7 @@ class Vector_t {
     friend class Matrix_t<T, gsl_matrix_complex_float, gsl_vector_complex_float, A>;
 public:
     typedef A allocator_type;
-    typedef typename A::value_type value_type;
+    typedef T value_type;
     typedef typename A::reference reference;
     typedef typename A::const_reference const_reference;
     typedef typename A::difference_type difference_type;
@@ -136,16 +136,11 @@ public:
     bool operator!=(const Vector_t&) const;
 
 
-    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Vector_t<double, gsl_vector>>
-        hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex,
-            gsl_vector_complex, std::allocator<gsl_complex>>&);
-    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>, Vector_t<double, gsl_vector>>
-        general_hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex,
-            gsl_vector_complex, std::allocator<gsl_complex>>&,
-            const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex,
-            std::allocator<gsl_complex>>&);
+    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>, Vector>
+        hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>&);
+    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>, Vector>
+        general_hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>&,
+            const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>&);
 
 
     class const_iterator;
@@ -275,5 +270,4 @@ public:
 };
 
 }
-//#include "vector_template.tpp"
 #endif //VECTOR_TEMPLATE_GSL_LIB_H

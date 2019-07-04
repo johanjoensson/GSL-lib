@@ -13,14 +13,14 @@ Complex_t<T, GSL_COMPLEX>::Complex_t(const Complex_t& c)
 }
 
 template<>
-inline Complex_t<double, gsl_complex>::Complex_t(const double& a, const double& b)
+inline Complex::Complex_t(const double& a, const double& b)
  : gsl_c(new gsl_complex)
 {
     *this->gsl_c = gsl_complex_rect(a,b);
 }
 
 template<>
-inline Complex_t<long double, gsl_complex_long_double>::Complex_t(const long double& a, const long double& b)
+inline Complex_ld::Complex_t(const long double& a, const long double& b)
  : gsl_c(new gsl_complex_long_double)
 {
     this->gsl_c->dat[0] = a;
@@ -28,21 +28,13 @@ inline Complex_t<long double, gsl_complex_long_double>::Complex_t(const long dou
 }
 
 template<>
-inline Complex_t<float, gsl_complex_float>::Complex_t(const float& a, const float& b)
+inline Complex_f::Complex_t(const float& a, const float& b)
  : gsl_c(new gsl_complex_float)
 {
     this->gsl_c->dat[0] = a;
     this->gsl_c->dat[1] = b;
 }
 
-template<class T>
-void no_op(T*);
-template<>
-inline void no_op<gsl_complex>(gsl_complex*){}
-template<>
-inline void no_op<gsl_complex_long_double>(gsl_complex_long_double*){}
-template<>
-inline void no_op<gsl_complex_float>(gsl_complex_float*){}
 template<class T, class GSL_COMPLEX>
 Complex_t<T, GSL_COMPLEX>::Complex_t(const GSL_COMPLEX& z)
  : gsl_c(new GSL_COMPLEX)
@@ -284,6 +276,36 @@ template<class T, class GSL_COMPLEX>
 bool Complex_t<T, GSL_COMPLEX>::operator!=(const Complex_t<T, GSL_COMPLEX>& b) const
 {
     return !(*this == b);
+}
+
+inline bool operator==(const gsl_complex& a, const gsl_complex& b)
+{
+    return a.dat[0] == b.dat[0] && a.dat[1] == b.dat[1];
+}
+
+inline bool operator!=(const gsl_complex& a, const gsl_complex& b)
+{
+    return !(a == b);
+}
+
+inline bool operator==(const gsl_complex_float& a, const gsl_complex_float& b)
+{
+    return a.dat[0] == b.dat[0] && a.dat[1] == b.dat[1];
+}
+
+inline bool operator!=(const gsl_complex_float& a, const gsl_complex_float& b)
+{
+    return !(a == b);
+}
+
+inline bool operator==(const gsl_complex_long_double& a, const gsl_complex_long_double& b)
+{
+    return a.dat[0] == b.dat[0] && a.dat[1] == b.dat[1];
+}
+
+inline bool operator!=(const gsl_complex_long_double& a, const gsl_complex_long_double& b)
+{
+    return !(a == b);
 }
 
 template<class T, class G>

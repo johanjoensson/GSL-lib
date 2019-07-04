@@ -241,7 +241,7 @@ Result GSL::cos(const Result& x)
 
 std::ostream& GSL::operator<<(std::ostream& os, const Result& R)
 {
-    os << R.val << " +- " << R.err;
+    os << R.val << " \u00b1 " << R.err;
     return os;
 }
 
