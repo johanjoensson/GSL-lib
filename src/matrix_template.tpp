@@ -166,6 +166,18 @@ inline Matrix_cxf::Matrix_t
     }
 }
 
+template<class T, class GSL_MATRIX, class GSL_VECTOR, class A>
+inline Matrix_t<T, GSL_MATRIX, GSL_VECTOR, A>::
+Matrix_t(std::initializer_list<GSL::Vector_t<T, GSL_VECTOR, A>> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+    auto row_it = l.begin();
+    for(auto& row : *this){
+	row = *row_it;
+	row_it++;
+    }
+}
+
 template<>
 inline Matrix::
 Matrix_t(std::initializer_list<std::initializer_list<double>> l)
@@ -721,7 +733,6 @@ template<class T, class G, class V, class A>
 inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(const Matrix_t<T, G, V, A>& a)
 {
     this->gsl_mat = a.gsl_mat;
-    // this->v_m = a.v_m;
     return *this;
 }
 
@@ -729,7 +740,6 @@ template<class T, class G, class V, class A>
 inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(Matrix_t<T, G, V, A>&& a)
 {
     std::swap(this->gsl_mat, a.gsl_mat);
-    // std::swap(this->v_m, a.v_m);
     return *this;
 }
 
@@ -1174,12 +1184,9 @@ inline Matrix_cxld& Matrix_cxld::operator*=(const Matrix_cxld& b)
     Matrix_cxld tmp(this->size().first, b.size().second);
     for(Matrix_cxld::size_type i = 0; i < rows; i++){
         for(Matrix_cxld::size_type j = 0; j < columns; j++){
-            std::cout << "i = " << i << ", j = " << j << "\n";
             for(Matrix_cxld::size_type k = 0; k < c; k++){
-                std::cout << "k = " << k << "\n";
                 c1 = Complex_ld((*this)[i][k]);
                 c2 = Complex_ld(b[k][j]);
-                std::cout << "c1 = " << c1 << ", c2 = " << c2 << "\n";
                 tmp[i][j] = Complex_ld(tmp[i][j]) + c1*c2;
             }
         }
@@ -2039,6 +2046,18 @@ hermitian_transpose() const
 }
 
 template<>
+inline Matrix Matrix::inverse() const
+{
+    return GSL::lu_inverse(*this);
+}
+
+template<>
+inline Matrix_cx Matrix_cx::inverse() const
+{
+    return GSL::lu_inverse(*this);
+}
+
+template<>
 inline Vector& Matrix::get_row(const Matrix::difference_type i)
 {
     if(i < 0 || static_cast<Matrix::size_type>(i) >= this->size().first){
@@ -2519,11 +2538,6 @@ template<class T, class M, class V, class A>
 typename Matrix_t<T, M, V, A>::iterator::reference Matrix_t<T, M, V, A>::iterator::
     operator*()
 {
-    if(static_cast<Matrix_t<T, M, V, A>::size_type>(this->row_m) >= this->mat_m.size().first
-        || this->row_m < 0){
-        throw(std::runtime_error("Error, dereferencing an iterator that is"
-        "out of bounds!\n"));
-    }
     return this->mat_m.get_row(this->row_m);
 }
 
@@ -2645,11 +2659,6 @@ template<class T, class M, class V, class A>
 typename Matrix_t<T, M, V, A>::const_iterator::reference Matrix_t<T, M, V, A>::const_iterator::
     operator*() const
 {
-    if(static_cast<Matrix_t<T, M, V, A>::size_type>(this->row_m) >= this->mat_m.size().first
-        || this->row_m < 0){
-        throw(std::runtime_error("Error, dereferencing an iterator that is"
-        "out of bounds!\n"));
-    }
     return mat_m[static_cast<Matrix_t<T, M, V, A>::size_type>(this->row_m)];
 }
 

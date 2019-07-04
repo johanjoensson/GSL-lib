@@ -43,8 +43,10 @@ namespace GSL{
     Matrix cholesky_decomp(const Matrix&);
     Matrix_cx cholesky_decomp(const Matrix_cx&);
 
+    Matrix lu_inverse(const Matrix& a);
     Matrix_cx lu_inverse(const Matrix_cx& a);
-    std::pair<Matrix_cx, Permutation&> lu_decomp(const Matrix_cx& a);
+    std::pair<Matrix, Permutation> lu_decomp(const Matrix& a);
+    std::pair<Matrix_cx, Permutation> lu_decomp(const Matrix_cx& a);
 
     std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> hermitian_eigen(const Matrix_cx&);
 
@@ -77,6 +79,7 @@ public:
     Matrix_t(const Matrix_t& v) = default;
     Matrix_t(Matrix_t&& v) = default;
     Matrix_t(std::initializer_list<std::initializer_list<T>>);
+    Matrix_t(std::initializer_list<GSL::Vector_t<T, GSL_VEC, A>>);
     ~Matrix_t() = default;
 
     // operator GSL_MAT() const {return *this->gsl_mat;};
@@ -127,6 +130,8 @@ public:
 
     Matrix_t transpose() const;
     Matrix_t hermitian_transpose() const;
+
+    Matrix_t inverse() const;
 
     Vector_t<T, GSL_VEC, A>& get_row(const difference_type i);
     Vector_t<T, GSL_VEC, A>& get_col(const difference_type i);
@@ -258,8 +263,10 @@ public:
 
     friend Matrix_cx GSL::cholesky_decomp(const Matrix_cx&);
 
+    friend Matrix GSL::lu_inverse(const Matrix& a);
     friend Matrix_cx GSL::lu_inverse(const Matrix_cx& a);
-    friend std::pair<Matrix_cx, Permutation&> GSL::lu_decomp(const Matrix_cx& a);
+    friend std::pair<Matrix, Permutation> GSL::lu_decomp(const Matrix& a);
+    friend std::pair<Matrix_cx, Permutation> GSL::lu_decomp(const Matrix_cx& a);
 
     friend std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> hermitian_eigen(const Matrix_cx&);
 
