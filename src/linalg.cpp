@@ -27,7 +27,24 @@ GSL::Matrix_cx GSL::cholesky_decomp(const GSL::Matrix_cx& a)
     return tmp;
 }
 
-std::pair<GSL::Matrix_cx, GSL::Permutation&> GSL::lu_decomp(const GSL::Matrix_cx& a)
+std::pair<GSL::Matrix, GSL::Permutation> GSL::lu_decomp(const GSL::Matrix& a)
+{
+    size_t N = a.gsl_mat->size1;
+    GSL::Matrix tmp(N, N);
+    tmp.copy(a);
+    GSL::Permutation p(N);
+    int i = 0;
+    int status = gsl_linalg_LU_decomp(tmp.gsl_mat.get(), p.p_m.get(), &i);
+    if(status){
+        std::string error_str =   gsl_strerror(status);
+        throw std::runtime_error("Error in real LU decomposition.\nGSL error: "
+        + error_str);
+    }
+
+    return std::pair<GSL::Matrix, GSL::Permutation>(tmp, p);
+}
+
+std::pair<GSL::Matrix_cx, GSL::Permutation> GSL::lu_decomp(const GSL::Matrix_cx& a)
 {
     size_t N = a.gsl_mat->size1;
     GSL::Matrix_cx tmp(N, N);
@@ -41,7 +58,22 @@ std::pair<GSL::Matrix_cx, GSL::Permutation&> GSL::lu_decomp(const GSL::Matrix_cx
         + error_str);
     }
 
-    return std::pair<GSL::Matrix_cx, GSL::Permutation&>(tmp, p);
+    return std::pair<GSL::Matrix_cx, GSL::Permutation>(tmp, p);
+}
+
+GSL::Matrix GSL::lu_inverse(const GSL::Matrix& a)
+{
+    size_t N = a.gsl_mat->size1;
+    GSL::Matrix tmp(N, N), res(N, N);
+    tmp.copy(a);
+    std::pair<GSL::Matrix, GSL::Permutation> lu = GSL::lu_decomp(tmp);
+    int status = gsl_linalg_LU_invert(lu.first.gsl_mat.get(), lu.second.p_m.get(), res.gsl_mat.get());
+    if(status){
+        std::string error_str =   gsl_strerror(status);
+        throw std::runtime_error("Error in LU inversion.\nGSL error: "
+        + error_str);
+    }
+    return res;
 }
 
 GSL::Matrix_cx GSL::lu_inverse(const GSL::Matrix_cx& a)
@@ -49,8 +81,7 @@ GSL::Matrix_cx GSL::lu_inverse(const GSL::Matrix_cx& a)
     size_t N = a.gsl_mat->size1;
     GSL::Matrix_cx tmp(N, N), res(N, N);
     tmp.copy(a);
-    std::pair<GSL::Matrix_cx, GSL::Permutation&> lu = GSL::lu_decomp(tmp);
-    std::cout << lu.second.p_m.get() << std::endl;
+    std::pair<GSL::Matrix_cx, GSL::Permutation> lu = GSL::lu_decomp(tmp);
     int status = gsl_linalg_complex_LU_invert(lu.first.gsl_mat.get(), lu.second.p_m.get(), res.gsl_mat.get());
     if(status){
         std::string error_str =   gsl_strerror(status);

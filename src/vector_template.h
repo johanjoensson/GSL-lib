@@ -15,8 +15,6 @@
 *******************************************************************************/
 namespace GSL{
 
-    class Permutation;
-
     template<class T, class GSL_MAT, class GSL_VEC, class A> class Matrix_t;
     template<class T, class GSL_VEC, class A> class Vector_t;
     template<class T, class GSL_COMPLEX> class Complex_t;
