@@ -267,5 +267,32 @@ public:
     void assign(size_type, const_reference);
 };
 
+template<class T, class GSL_VEC, class A>
+struct Vector_hasher_t{
+	size_t operator()(const GSL::Vector_t<T, GSL_VEC, A> &v) const
+	{
+		size_t res = v.size();
+		for(size_t i = 0; i < v.size(); i++){
+			res += std::hash<T>()(v[i]) ^ std::hash<size_t>()(i);
+		}
+		return res;
+	}
+};
+
+using Vector_hasher = Vector_hasher_t<double, gsl_vector, std::allocator<double>>;
+using Vector_f_hasher = Vector_hasher_t<float, gsl_vector_float, std::allocator<float>>;
+using Vector_ld_hasher = Vector_hasher_t<long double, gsl_vector_long_double, std::allocator<long double>>;
+using Vector_s_hasher = Vector_hasher_t<short, gsl_vector_short, std::allocator<short>>;
+using Vector_us_hasher = Vector_hasher_t<unsigned short, gsl_vector_ushort, std::allocator<unsigned short>>;
+using Vector_c_hasher = Vector_hasher_t<char, gsl_vector_char, std::allocator<char>>;
+using Vector_uc_hasher = Vector_hasher_t<unsigned char, gsl_vector_uchar, std::allocator<unsigned char>>;
+using Vector_i_hasher = Vector_hasher_t<int, gsl_vector_int, std::allocator<int>>;
+using Vector_ui_hasher = Vector_hasher_t<unsigned int, gsl_vector_uint, std::allocator<unsigned int>>;
+using Vector_l_hasher = Vector_hasher_t<long, gsl_vector_long, std::allocator<long>>;
+using Vector_ul_hasher = Vector_hasher_t<unsigned long, gsl_vector_ulong, std::allocator<unsigned long>>;
+using Vector_cx_hasher = Vector_hasher_t<GSL::Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>;
+using Vector_cxf_hasher = Vector_hasher_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>;
+using Vector_cxld_hasher = Vector_hasher_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_vector_long_double, std::allocator<gsl_complex_long_double>>;
+
 }
 #endif //VECTOR_TEMPLATE_GSL_LIB_H
