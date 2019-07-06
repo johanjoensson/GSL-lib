@@ -124,7 +124,7 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 
 
 tests:  CXXFLAGS += --coverage
-tests:  LDFLAGS += --coverage -lgcov -lgtest 
+tests:  LDFLAGS += --coverage -lgtest 
 tests:  lib$(LIB)cov.so
 tests: 	$(INC_DIR) $(TEST_OBJS)
 	$(CXX) $(TEST_OBJS) -o $@ -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS) 
