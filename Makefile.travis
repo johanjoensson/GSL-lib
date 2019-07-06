@@ -122,6 +122,7 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 
+tests:  CXXFLAGS = -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
 tests:  CXXFLAGS += --coverage
 tests:  LDFLAGS += --coverage -lgcov -lgtest 
 tests:  lib$(LIB)cov.so
