@@ -11,9 +11,9 @@
 
 # Compilers to use
 # CXX = clang++
-CXX ?= g++
-# CC  = clang
-CC  ?= gcc
+CXX = g++
+#CC  = clang
+CC  = gcc
 
 CXXCHECK = clang-tidy
 
@@ -35,14 +35,14 @@ INC_DIR = include
 # Flags for the above defined compilers
 
 WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++
-# -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
-CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -O3 -flto
+#-Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
+CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS =-lgsl -lopenblas -shared -Wl,-soname,lib$(LIB).so -O3 -flto
+LDFLAGS = -lgsl -lopenblas -Ofast -flto -fPIC
 
 
 LIB_OBJ = divided_difference.o\
@@ -53,7 +53,6 @@ LIB_OBJ = divided_difference.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
 	  special_functions_laguerre.o\
-#	  special_functions_hermite.o\
 	  special_functions_coupling.o\
 	  special_functions_exp.o\
 	  special_functions_log.o\
@@ -108,29 +107,26 @@ all: $(LIB_DIR) $(INC_DIR) lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -fPIC -c $? -o $@
+	$(CXX) $(CXXFLAGS) -c $? -o $@
 
 $(BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -fPIC -c $? -o $@
+	$(CXX) $(CXXFLAGS) -c $? -o $@
 
 lib$(LIB).so: $(OBJS)
-	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS)
+	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -shared -Wl,-soname,$@
 
 lib$(LIB)cov.so: $(OBJS)
-	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ -std=c++11 -lgcov --coverage -lgsl -lgslcblas -lopenblas -shared -Wl,-soname,lib$(LIB)cov.so
-
-tester: $(BUILD_DIR)/main.o lib$(LIB).so $(INC_DIR)
-	$(CXX) $< -o $@ -L$(LIB_DIR)/$(LIB) -l$(LIB) -lgsl -Wl,-rpath=$(LIB_DIR)/$(LIB)
+	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -shared -Wl,-soname,$@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 
-tests:  CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0 --coverage
+tests:  CXXFLAGS += --coverage
+tests:  LDFLAGS += --coverage -lgcov -lgtest 
 tests:  lib$(LIB)cov.so
 tests: 	$(INC_DIR) $(TEST_OBJS)
-	$(CXX) $(TEST_OBJS) -o $@ -L$(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) --coverage -lgsl -lgslcblas -l$(LIB)cov -lgtest
-
+	$(CXX) $(TEST_OBJS) -o $@ -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS) 
 
 travis : CXXFLAGS = -std=c++11 -I$(INC_DIR) -O0
 travis: $(BUILD_DIR) $(LIB_DIR) $(INC_DIR) lib$(LIB).so
