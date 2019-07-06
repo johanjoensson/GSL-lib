@@ -81,4 +81,4 @@ script:
     - make -f Makefile.travis tests && ./tests
 
 after_success:
-    - coveralls --root . -b . -e googletest-master -e test --gcov-options '\-r'
+    - coveralls --root . -b . -e googletest-master -e test  -i src -i include --gcov-options '\-r'
