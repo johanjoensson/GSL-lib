@@ -81,4 +81,4 @@ script:
     - make -f Makefile.travis tests && ./tests
 
 after_success:
-    - coveralls
+    - coveralls --root . -e include -e test -e googletest-master -i src
