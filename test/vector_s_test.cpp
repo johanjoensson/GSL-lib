@@ -127,7 +127,7 @@ TEST(Vector_sTest, TestNormalize)
 {
     short a = 1, b = 2, c = 3.;
     GSL::Vector_s v{a, b, c};
-    v.normalize<short>();
+    v.normalize<double>();
 
     EXPECT_EQ(v.norm<double>(), 1.);
 }

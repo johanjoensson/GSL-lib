@@ -20,7 +20,7 @@ TEST(Matrix_cxfTest, TestConstructionInitializerList)
     size_t rows = 2, columns = 2;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_EQ(m[i][j], GSL::Matrix_cxf::value_type{columns*i+j+1});
+            EXPECT_EQ(m[i][j], GSL::Complex_f(static_cast<float>(columns*i+j+1)));
         }
     }
 }
@@ -42,7 +42,7 @@ TEST(Matrix_cxfTest, TestConstructionMove)
     GSL::Matrix_cxf m1{{1, 2}, {3, 4}}, m2(std::move(m1));
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_EQ(m2[i][j], GSL::Matrix_cxf::value_type{columns*i+j+1});
+            EXPECT_EQ(m2[i][j], GSL::Complex_f(static_cast<float>(columns*i+j+1)));
         }
     }
 }

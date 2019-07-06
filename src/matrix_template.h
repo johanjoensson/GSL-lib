@@ -73,12 +73,11 @@ public:
     // Create an empty matrix (no data at all)
     explicit Matrix_t();
     // Create a matrix of size n
-    Matrix_t(const size_type n1, const size_type n2);
+    explicit Matrix_t(const size_type n1, const size_type n2);
     // Create a new reference to the gsl_matrix inside v
     // Do not allocate anything, only reference stuff!
     Matrix_t(const Matrix_t& v) = default;
     Matrix_t(Matrix_t&& v) = default;
-    Matrix_t(std::initializer_list<std::initializer_list<T>>);
     Matrix_t(std::initializer_list<GSL::Vector_t<T, GSL_VEC, A>>);
     ~Matrix_t() = default;
 

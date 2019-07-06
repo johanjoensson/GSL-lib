@@ -9,7 +9,7 @@ TEST(Matrix_ldTest, TestConstruction)
 
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_DOUBLE_EQ(m[i][j], 0);
+            EXPECT_EQ(m[i][j], 0);
         }
     }
 }
@@ -20,7 +20,7 @@ TEST(Matrix_ldTest, TestConstructionInitializerList)
     size_t rows = 2, columns = 2;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_DOUBLE_EQ(m[i][j], columns*i+j+1);
+            EXPECT_EQ(m[i][j], static_cast<long double>(columns*i+j)+1);
         }
     }
 }
@@ -31,7 +31,7 @@ TEST(Matrix_ldTest, TestConstructionCopy)
     GSL::Matrix_ld m1{{1, 2}, {3, 4}}, m2(m1);
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_DOUBLE_EQ(m1[i][j], m2[i][j]);
+            EXPECT_EQ(m1[i][j], m2[i][j]);
         }
     }
 }
@@ -42,7 +42,7 @@ TEST(Matrix_ldTest, TestConstructionMove)
     GSL::Matrix_ld m1{{1, 2}, {3, 4}}, m2(std::move(m1));
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_DOUBLE_EQ(m2[i][j], columns*i+j+1);
+            EXPECT_EQ(m2[i][j], static_cast<long double>(columns*i+j)+1);
         }
     }
 }
@@ -84,7 +84,7 @@ TEST(Matrix_ldTest, TestDecayToGSLMatrix_ld)
 {
     GSL::Matrix_ld m{{1, 2}, {3, 4}};
     gsl_matrix_long_double gm = m;
-    EXPECT_DOUBLE_EQ(gsl_matrix_long_double_get(&gm, 0, 1), 2);
+    EXPECT_EQ(gsl_matrix_long_double_get(&gm, 0, 1), 2);
 }
 
 TEST(Matrix_ldTest, TestDim)
@@ -145,7 +145,7 @@ TEST(Matrix_ldTest, TestDivScaleAssign)
 {
     GSL::Matrix_ld m{{1, 2}, {3, 4}, {5, 6}};
     m /= 2;
-    GSL::Matrix_ld res{{0.5, 1}, {1.5, 2}, {2.5, 3}};
+    GSL::Matrix_ld res{{0.5l, 1}, {1.5l, 2}, {2.5l, 3}};
     EXPECT_EQ(m, res);
 }
 
@@ -194,7 +194,7 @@ TEST(Matrix_ldTest, TestMultScale2)
 TEST(Matrix_ldTest, TestDivScale)
 {
     GSL::Matrix_ld m{{1, 2}, {3, 4}, {5, 6}};
-    GSL::Matrix_ld res{{0.5, 1}, {1.5, 2}, {2.5, 3}};
+    GSL::Matrix_ld res{{0.5l, 1}, {1.5l, 2}, {2.5l, 3}};
     EXPECT_EQ(m/2, res);
 }
 

@@ -20,7 +20,7 @@ TEST(Matrix_cxTest, TestConstructionInitializerList)
     size_t rows = 2, columns = 2;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_EQ(m[i][j], GSL::Matrix_cx::value_type{columns*i+j+1});
+            EXPECT_EQ(m[i][j], GSL::Complex(static_cast<double>(columns*i+j+1)));
         }
     }
 }
@@ -31,7 +31,7 @@ TEST(Matrix_cxTest, TestConstructionCopy)
     GSL::Matrix_cx m1{{1, 2}, {3, 4}}, m2(m1);
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_EQ(m1[i][j], GSL::Matrix_cx::value_type{m2[i][j]});
+            EXPECT_EQ(m1[i][j], static_cast<GSL::Matrix_cx::value_type>(m2[i][j]));
         }
     }
 }
@@ -42,7 +42,7 @@ TEST(Matrix_cxTest, TestConstructionMove)
     GSL::Matrix_cx m1{{1, 2}, {3, 4}}, m2(std::move(m1));
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_EQ(m2[i][j], GSL::Matrix_cx::value_type{columns*i+j+1});
+            EXPECT_EQ(m2[i][j], GSL::Complex(static_cast<double>(columns*i+j+1)));
         }
     }
 }

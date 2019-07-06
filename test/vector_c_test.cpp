@@ -127,7 +127,7 @@ TEST(Vector_cTest, TestNormalize)
 {
     char a = 1, b = 2, c = 3;
     GSL::Vector_c v{a, b, c};
-    v.normalize<char>();
+    v.normalize<double>();
 
     EXPECT_DOUBLE_EQ(v.norm<double>(), 1);
 }

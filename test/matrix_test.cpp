@@ -20,7 +20,7 @@ TEST(MatrixTest, TestConstructionInitializerList)
     size_t rows = 2, columns = 2;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_DOUBLE_EQ(m[i][j], columns*i+j+1);
+            EXPECT_DOUBLE_EQ(m[i][j], static_cast<double>(columns*i+j)+1);
         }
     }
 }
@@ -42,7 +42,7 @@ TEST(MatrixTest, TestConstructionMove)
     GSL::Matrix m1{{1, 2}, {3, 4}}, m2(std::move(m1));
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_DOUBLE_EQ(m2[i][j], columns*i+j+1);
+            EXPECT_DOUBLE_EQ(m2[i][j], static_cast<double>(columns*i+j)+1);
         }
     }
 }
@@ -181,7 +181,7 @@ TEST(MatrixTest, TestMultScale)
 {
     GSL::Matrix m{{1, 2}, {3, 4}, {5, 6}};
     GSL::Matrix res{{2, 4}, {6, 8}, {10, 12}};
-    EXPECT_EQ(m*2, res);
+    EXPECT_EQ(m*double(2), res);
 }
 
 TEST(MatrixTest, TestMultScale2)

@@ -20,7 +20,7 @@ TEST(Matrix_cxldTest, TestConstructionInitializerList)
     size_t rows = 2, columns = 2;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_EQ(m[i][j], GSL::Matrix_cxld::value_type{columns*i+j+1});
+            EXPECT_EQ(m[i][j], GSL::Complex_ld(static_cast<long double>(columns*i+j+1)));
         }
     }
 }
@@ -42,7 +42,7 @@ TEST(Matrix_cxldTest, TestConstructionMove)
     GSL::Matrix_cxld m1{{1, 2}, {3, 4}}, m2(std::move(m1));
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_EQ(m2[i][j], GSL::Matrix_cxld::value_type{columns*i+j+1});
+            EXPECT_EQ(m2[i][j], GSL::Complex_ld(static_cast<long double>(columns*i+j+1)));
         }
     }
 }
@@ -138,10 +138,12 @@ TEST(Matrix_cxldTest, TestDivAssign)
     GSL::Matrix_cxld m{{1, 2}, {3, 4}, {5, 6}}, n{{1, 2}, {3, 4}, {5, 6}};
     m /= n;
     GSL::Matrix_cxld res{{1, 1}, {1, 1}, {1, 1}};
+    long double diff;
     size_t rows = 3, columns = 2;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_DOUBLE_EQ(GSL::Matrix_cxld::value_type{m[i][j]}.abs(), GSL::Matrix_cxld::value_type{res[i][j]}.abs());
+	    diff = std::abs(GSL::Matrix_cxld::value_type{m[i][j]}.abs() - GSL::Matrix_cxld::value_type{res[i][j]}.abs());
+            EXPECT_TRUE(diff < 1e-10l);
         }
     }
 }
@@ -158,7 +160,7 @@ TEST(Matrix_cxldTest, TestDivScaleAssign)
 {
     GSL::Matrix_cxld m{{1, 2}, {3, 4}, {5, 6}};
     m /= 2;
-    GSL::Matrix_cxld res{{0.5, 1}, {1.5, 2}, {2.5, 3}};
+    GSL::Matrix_cxld res{{0.5l, 1}, {1.5l, 2}, {2.5l, 3}};
     EXPECT_EQ(m, res);
 }
 
@@ -183,7 +185,7 @@ TEST(Matrix_cxldTest, TestMult)
     size_t rows = 3, columns = 3;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_EQ((m*n)[i][j], GSL::Matrix_cxld::value_type{res[i][j]});
+            EXPECT_EQ(GSL::Matrix_cxld::value_type{(m*n)[i][j]}, GSL::Matrix_cxld::value_type{res[i][j]});
         }
     }
 }
@@ -192,10 +194,12 @@ TEST(Matrix_cxldTest, TestDiv)
 {
     GSL::Matrix_cxld m{{1, 2}, {3, 4}, {5, 6}}, n{{1, 2}, {3, 4}, {5, 6}};
     GSL::Matrix_cxld res{{1, 1}, {1, 1}, {1, 1}};
+    long double diff;
     size_t rows = 3, columns = 2;
     for(size_t i = 0; i < rows; i++){
         for(size_t j = 0; j < columns; j++){
-            EXPECT_DOUBLE_EQ(GSL::Matrix_cxld::value_type{(m/n)[i][j]}.abs(), GSL::Matrix_cxld::value_type{res[i][j]}.abs());
+	    diff = std::abs(GSL::Matrix_cxld::value_type{(m/n)[i][j]}.abs() - GSL::Matrix_cxld::value_type{res[i][j]}.abs());
+            EXPECT_TRUE(diff < 1e-10l);
         }
     }
 }
@@ -217,7 +221,7 @@ TEST(Matrix_cxldTest, TestMultScale2)
 TEST(Matrix_cxldTest, TestDivScale)
 {
     GSL::Matrix_cxld m{{1, 2}, {3, 4}, {5, 6}};
-    GSL::Matrix_cxld res{{0.5, 1}, {1.5, 2}, {2.5, 3}};
+    GSL::Matrix_cxld res{{0.5l, 1}, {1.5l, 2}, {2.5l, 3}};
     EXPECT_EQ(m/GSL::Matrix_cxld::value_type{2}, res);
 }
 

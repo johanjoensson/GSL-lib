@@ -3,179 +3,179 @@
 
 TEST(Complex_ldBaseMathTest, TestUm)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
     GSL::Complex_ld z2(z.negate());
-    EXPECT_DOUBLE_EQ(-z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(-z.im(), z2.im());
+    EXPECT_EQ(-z.re(), z2.re());
+    EXPECT_EQ(-z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestIncrementC)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    GSL::Complex_ld dz(re/10, im/5);
-    GSL::Complex_ld z2(1.1, 2.4);
+    GSL::Complex_ld dz(re/10l, im/5l);
+    GSL::Complex_ld z2(1.1l, 2.4l);
     z += dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_EQ(z.re(), z2.re());
+    EXPECT_EQ(z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestDecrementC)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    GSL::Complex_ld dz(re/10, im/5);
-    GSL::Complex_ld z2(0.9, 1.6);
+    GSL::Complex_ld dz(re/10l, im/5l);
+    GSL::Complex_ld z2(0.9l, 1.6l);
     z -= dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_EQ(z.re(), z2.re());
+    EXPECT_EQ(z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestScaleC)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    GSL::Complex_ld dz(re/10, im/5);
-    GSL::Complex_ld z2(-0.7, 0.6);
+    GSL::Complex_ld dz(re/10l, im/5l);
+    GSL::Complex_ld z2(-0.7l, 0.6l);
     z *= dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_EQ(z.re(), z2.re());
+    EXPECT_EQ(z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestDivC)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    GSL::Complex_ld dz(re/10, im/5);
+    GSL::Complex_ld dz(re/10l, im/5l);
     GSL::Complex_ld z2 = z;
     z /= dz;
     z2 *= dz.recipr();
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_EQ(z.re(), z2.re());
+    EXPECT_EQ(z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestIncrementR)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    double dz = 0.1;
-    GSL::Complex_ld z2(1.1, 2);
+    long double dz = 0.1l;
+    GSL::Complex_ld z2(1.1l, 2l);
     z += dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_EQ(z.re(), z2.re());
+    EXPECT_EQ(z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestDecrementR)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    double dz = 0.1;
-    GSL::Complex_ld z2(0.9, 2);
+    long double dz = 0.1l;
+    GSL::Complex_ld z2(0.9l, 2l);
     z -= dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_EQ(z.re(), z2.re());
+    EXPECT_EQ(z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestScaleR)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    double dz = 0.1;
-    GSL::Complex_ld z2(0.1, 0.2);
+    long double dz = 0.1l;
+    GSL::Complex_ld z2(0.1l, 0.2l);
     z *= dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_EQ(z.re(), z2.re());
+    EXPECT_EQ(z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestDivR)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    double dz = 0.1;
+    long double dz = 0.1l;
     GSL::Complex_ld z2 = z;
     z /= dz;
-    z2 *= 1/dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    z2 *= 1l/dz;
+    EXPECT_EQ(z.re(), z2.re());
+    EXPECT_EQ(z.im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestAddC)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    GSL::Complex_ld dz(re/10, im/5);
-    GSL::Complex_ld z2(1.1, 2.4);
-    EXPECT_DOUBLE_EQ((z + dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z + dz).im(), z2.im());
+    GSL::Complex_ld dz(re/10l, im/5l);
+    GSL::Complex_ld z2(1.1l, 2.4l);
+    EXPECT_EQ((z + dz).re(), z2.re());
+    EXPECT_EQ((z + dz).im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestSubC)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    GSL::Complex_ld dz(re/10, im/5);
-    GSL::Complex_ld z2(0.9, 1.6);
-    EXPECT_DOUBLE_EQ((z - dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z - dz).im(), z2.im());
+    GSL::Complex_ld dz(re/10l, im/5l);
+    GSL::Complex_ld z2(0.9l, 1.6l);
+    EXPECT_EQ((z - dz).re(), z2.re());
+    EXPECT_EQ((z - dz).im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestMultC)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    GSL::Complex_ld dz(re/10, im/5);
-    GSL::Complex_ld z2(-0.7, 0.6);
-    EXPECT_DOUBLE_EQ((z*dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z*dz).im(), z2.im());
+    GSL::Complex_ld dz(re/10l, im/5l);
+    GSL::Complex_ld z2(-0.7l, 0.6l);
+    EXPECT_EQ((z*dz).re(), z2.re());
+    EXPECT_EQ((z*dz).im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestDivideC)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    GSL::Complex_ld dz(re/10, im/5);
+    GSL::Complex_ld dz(re/10l, im/5l);
     GSL::Complex_ld z2 = z * dz.recipr();
-    EXPECT_DOUBLE_EQ((z/dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z/dz).im(), z2.im());
+    EXPECT_EQ((z/dz).re(), z2.re());
+    EXPECT_EQ((z/dz).im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestAddR)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    double dz = 0.1;
-    GSL::Complex_ld z2(1.1, 2);
-    EXPECT_DOUBLE_EQ((z + dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z + dz).im(), z2.im());
+    long double dz = 0.1l;
+    GSL::Complex_ld z2(1.1l, 2l);
+    EXPECT_EQ((z + dz).re(), z2.re());
+    EXPECT_EQ((z + dz).im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestSubR)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    double dz = 0.1;
-    GSL::Complex_ld z2(0.9, 2);
-    EXPECT_DOUBLE_EQ((z - dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z - dz).im(), z2.im());
+    long double dz = 0.1l;
+    GSL::Complex_ld z2(0.9l, 2l);
+    EXPECT_EQ((z - dz).re(), z2.re());
+    EXPECT_EQ((z - dz).im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestMulR)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    double dz = 0.1;
-    GSL::Complex_ld z2(0.1, 0.2);
-    EXPECT_DOUBLE_EQ((z*dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z*dz).im(), z2.im());
+    long double dz = 0.1l;
+    GSL::Complex_ld z2(0.1l, 0.2l);
+    EXPECT_EQ((z*dz).re(), z2.re());
+    EXPECT_EQ((z*dz).im(), z2.im());
 }
 
 TEST(Complex_ldBaseMathTest, TestDivideR)
 {
-    double re = 1, im = 2;
+    long double re = 1l, im = 2l;
     GSL::Complex_ld z(re, im);
-    double dz = 0.1;
-    GSL::Complex_ld z2 = z*(1/dz);
-    EXPECT_DOUBLE_EQ((z/dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z/dz).im(), z2.im());
+    long double dz = 0.1l;
+    GSL::Complex_ld z2 = z*(1l/dz);
+    EXPECT_EQ((z/dz).re(), z2.re());
+    EXPECT_EQ((z/dz).im(), z2.im());
 }

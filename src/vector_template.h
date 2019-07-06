@@ -67,9 +67,9 @@ public:
     typedef typename A::size_type size_type;
 
     // Create an empty vector (no data at all)
-    Vector_t() : gsl_vec(nullptr){};
+    explicit Vector_t() : gsl_vec(nullptr){};
     // Create a vector of size n
-    Vector_t(const size_type n);
+    explicit Vector_t(const size_type n);
     // Create a new reference to the gsl_vector inside v
     // Do not allocate anything, only reference stuff!
     Vector_t(const Vector_t&) = default;
