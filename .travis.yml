@@ -81,4 +81,4 @@ script:
     - make -f Makefile.travis tests && ./tests
 
 after_success:
-    - coveralls -e /usr -e include -e lib -e test
+    - coveralls

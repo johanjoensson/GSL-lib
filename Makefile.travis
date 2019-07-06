@@ -122,13 +122,14 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
 
 
-tests:  CXXFLAGS = -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC --coverage
+tests:  CXXFLAGS = -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC --coverage -fno-inline -fno-inline-small-functions -fno-default-inline
 tests:  LDFLAGS += --coverage -lgcov 
 tests:  lib$(LIB)cov.so
 tests: 	$(INC_DIR) $(TEST_OBJS)
 	$(CXX) $(TEST_OBJS) -o $@ -lgtest -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS) 
 
-travis : CXXFLAGS = -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
+travis : CXXFLAGS = -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC -fno-inline -fno-inline-small-functions -fno-default-inline
+travis : LDFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline
 travis: $(BUILD_DIR) $(LIB_DIR) $(INC_DIR) lib$(LIB).so
 
 $(BUILD_DIR) : 
