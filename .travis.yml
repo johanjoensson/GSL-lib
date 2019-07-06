@@ -81,4 +81,4 @@ script:
     - make -f Makefile.travis tests && ./tests
 
 after_success:
-    - coveralls --exclude lib
+    - coveralls --exclude test --exlude lib --include src --root build
