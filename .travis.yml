@@ -1,6 +1,7 @@
 language: cpp
 
 matrix:
+  include:
     - os: linux
       dist: xenial
       addons:
@@ -67,7 +68,6 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
 
-  include:
     # works on Precise and Trusty
     - os: linux
       dist: xenial
