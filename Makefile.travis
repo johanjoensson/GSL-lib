@@ -109,8 +109,8 @@ lib$(LIB).so: $(OBJS)
 lib$(LIB)cov.so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -shared -Wl,-soname,$@
 
-tests:  CXXFLAGS += --coverage
-tests:  LDFLAGS += --coverage 
+tests:  CXXFLAGS += --coverage -fno-inline -fno-inline-small-functions -fno-default-inline
+tests:  LDFLAGS += --coverage -fno-inline -fno-inline-small-functions -fno-default-inline
 tests:  lib$(LIB)cov.so
 tests: 	$(INC_DIR) $(LIB_DIR) $(BUILD_DIR) $(TEST_OBJS)
 	$(CXX) $(TEST_OBJS) -o $@ -lgtest -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS) 
