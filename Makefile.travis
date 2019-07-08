@@ -9,8 +9,6 @@
 # Last updated: 2019-07-08                                                     #
 ################################################################################
 
-CXXCHECK = clang-tidy
-
 # List of all executables in this project
 LIB = GSLpp
 # Source files directory
@@ -27,9 +25,6 @@ LIB_DIR = lib
 INC_DIR = include
 
 # Flags for the above defined compilers
-
-WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++
-#-Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
 CXXFLAGS = -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -fPIC
 
 # Libraries to link against
