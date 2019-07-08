@@ -6,14 +6,8 @@
 # Author: Johan Jönsson                                                        #
 # Email: johanjoensson@gmail.com                                               #
 # Created: 2018-01-31                                                          #
-# Last updated: 2018-02-25                                                     #
+# Last updated: 2019-07-08                                                     #
 ################################################################################
-
-# Compilers to use
-# CXX = clang++
-#CXX = g++
-#CC  = clang
-#CC  = gcc
 
 CXXCHECK = clang-tidy
 

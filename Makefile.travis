@@ -6,14 +6,8 @@
 # Author: Johan Jönsson                                                        #
 # Email: johanjoensson@gmail.com                                               #
 # Created: 2018-01-31                                                          #
-# Last updated: 2018-02-25                                                     #
+# Last updated: 2019-07-08                                                     #
 ################################################################################
-
-# Compilers to use
-# CXX = clang++
-#CXX = g++
-#CC  = clang
-#CC  = gcc
 
 CXXCHECK = clang-tidy
 
@@ -36,10 +30,7 @@ INC_DIR = include
 
 WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++
 #-Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
-CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -fPIC
-
-CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
-CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
+CXXFLAGS = -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -fPIC
 
 # Libraries to link against
 LDFLAGS = -lgsl -lopenblas -Ofast -fPIC
@@ -117,10 +108,6 @@ lib$(LIB).so: $(OBJS)
 
 lib$(LIB)cov.so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -shared -Wl,-soname,$@
-
-checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
-	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
-
 
 tests:  CXXFLAGS += --coverage
 tests:  LDFLAGS += --coverage 
