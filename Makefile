@@ -11,9 +11,9 @@
 
 # Compilers to use
 # CXX = clang++
-CXX = g++
+#CXX = g++
 #CC  = clang
-CC  = gcc
+#CC  = gcc
 
 CXXCHECK = clang-tidy
 
@@ -42,7 +42,7 @@ CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugpr
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS = -lgsl -lopenblas -Ofast -flto -fPIC
+LDFLAGS = -lgsl -lopenblas -Ofast -fuse-ld=gold -flto -fPIC
 
 
 LIB_OBJ = divided_difference.o\

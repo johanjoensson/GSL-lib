@@ -1,5 +1,7 @@
 language: cpp
-compiler: gcc
+compiler: 
+  - gcc
+  - clang
 
 matrix:
   include:
@@ -61,6 +63,73 @@ matrix:
             - g++-8
       env:
         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-xenial-3.8
+          packages:
+            - clang-3.8 
+      env:
+        - MATRIX_EVAL="CC=clang-3.8 && CXX=clang++-3.8"
+
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-3.9
+          packages:
+            - clang-3.9 
+      env:
+        - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-4.0
+          packages:
+            - clang-4.0
+      env:
+        - MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
+
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-5.0
+          packages:
+            - clang-5.0
+      env:
+        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-6.0
+          packages:
+            - clang-5.0
+      env:
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-7.0
+          packages:
+            - clang-7.0
+      env:
+        - MATRIX_EVAL="CC=clang-7.0 && CXX=clang++-7.0"
 
 before_install:
     - eval "${MATRIX_EVAL}"
