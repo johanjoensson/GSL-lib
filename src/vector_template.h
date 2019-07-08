@@ -61,6 +61,7 @@ class Vector_t {
 public:
     typedef A allocator_type;
     typedef T value_type;
+    typedef typename A::pointer pointer;
     typedef typename A::reference reference;
     typedef typename A::const_reference const_reference;
     typedef typename A::difference_type difference_type;
@@ -265,6 +266,9 @@ public:
     void assign(iter, iter);
     void assign(std::initializer_list<value_type>);
     void assign(size_type, const_reference);
+
+    pointer data() { return reinterpret_cast<pointer>(gsl_vec->data);}
+    size_t stride() { return gsl_vec->stride;}
 };
 
 template<class T, class GSL_VEC, class A>

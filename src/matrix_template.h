@@ -66,6 +66,7 @@ public:
     typedef A allocator_type;
     typedef T value_type;
     typedef typename A::reference reference;
+    typedef typename A::pointer pointer;
     typedef typename A::const_reference const_reference;
     typedef typename A::difference_type difference_type;
     typedef typename A::size_type size_type;
@@ -257,6 +258,9 @@ public:
     const Vector_t<T, GSL_VEC, A>& at(size_type) const;
     reference at(size_type, size_type);
     const_reference at(size_type, size_type) const;
+
+    pointer data(){ return reinterpret_cast<pointer>(gsl_mat->data);}
+    size_t tda(){ return gsl_mat->tda;}
 
     friend Matrix cholesky_decomp(const Matrix&);
 
