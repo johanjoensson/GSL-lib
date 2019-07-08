@@ -142,6 +142,7 @@ before_install:
 
 script:
     - make -f Makefile.travis 
+    - make -f Makefile.travis clean
     - make -f Makefile.travis tests && ./tests
 
 after_success:
