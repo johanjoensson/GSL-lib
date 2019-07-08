@@ -94,7 +94,7 @@ TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
 .PHONY: clean cleanall $(LIB_DIR) $(INC_DIR)
 
 # Build all executables
-all: $(LIB_DIR) $(INC_DIR) lib$(LIB).so $(TEST)
+all: $(LIB_DIR) $(INC_DIR) $(BUILD_DIR) lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -112,7 +112,7 @@ lib$(LIB)cov.so: $(OBJS)
 tests:  CXXFLAGS += --coverage
 tests:  LDFLAGS += --coverage 
 tests:  lib$(LIB)cov.so
-tests: 	$(INC_DIR) $(TEST_OBJS)
+tests: 	$(INC_DIR) $(LIB_DIR) $(BUILD_DIR) $(TEST_OBJS)
 	$(CXX) $(TEST_OBJS) -o $@ -lgtest -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS) 
 
 $(BUILD_DIR) : 
