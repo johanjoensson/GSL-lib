@@ -141,7 +141,7 @@ before_install:
     - cd "${TRAVIS_BUILD_DIR}"
 
 script:
-    - make -f Makefile.travis travis
+    - make -f Makefile.travis 
     - make -f Makefile.travis tests && ./tests
 
 after_success:
