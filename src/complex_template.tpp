@@ -39,7 +39,7 @@ template<class T, class GSL_COMPLEX>
 Complex_t<T, GSL_COMPLEX>::Complex_t(const GSL_COMPLEX& z)
  : gsl_c(new GSL_COMPLEX)
 {
-    *gsl_c = z;
+   *gsl_c = z;
 }
 
 template<class T, class GSL_COMPLEX>
@@ -108,6 +108,12 @@ inline Complex Complex::operator+(const double& s) const
 }
 
 template<class T, class G>
+Complex_t<T, G> Complex_t<T, G>::operator+(const G& b) const
+{
+    return (*this) + Complex_t(b);
+}
+
+template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator-(const Complex_t<T, G>& b) const
 {
     Complex_t<T, G> res(*this);
@@ -134,6 +140,12 @@ template<>
 inline Complex Complex::operator-(const double& s) const
 {
     return Complex(gsl_complex_sub_real(*this->gsl_c.get(), s));
+}
+
+template<class T, class G>
+Complex_t<T, G> Complex_t<T, G>::operator-(const G& b) const
+{
+    return (*this) - Complex_t(b);
 }
 
 template<class T, class G>
@@ -182,6 +194,12 @@ inline Complex Complex::operator*(const double& s) const
 }
 
 template<class T, class G>
+Complex_t<T, G> Complex_t<T, G>::operator*(const G& b) const
+{
+    return (*this) * Complex_t(b);
+}
+
+template<class T, class G>
 Complex_t<T, G> Complex_t<T, G>::operator/(const Complex_t<T, G>& b) const
 {
     Complex_t<T, G> res;
@@ -208,6 +226,12 @@ template<>
 inline Complex Complex::operator/(const double& s) const
 {
     return Complex(gsl_complex_div_real(*this->gsl_c.get(), s));
+}
+
+template<class T, class G>
+Complex_t<T, G> Complex_t<T, G>::operator/(const G& b) const
+{
+    return (*this) / Complex_t(b);
 }
 
 template<class T, class GSL_COMPLEX>
@@ -263,6 +287,34 @@ template<class T, class GSL_COMPLEX>
 Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator/=(const T& s)
 {
     *this = (*this) / s;
+    return *this;
+}
+
+template<class T, class GSL_COMPLEX>
+Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator+=(const GSL_COMPLEX& b)
+{
+    *this = (*this) + b;
+    return *this;
+}
+
+template<class T, class GSL_COMPLEX>
+Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator-=(const GSL_COMPLEX& b)
+{
+    *this = (*this) - b;
+    return *this;
+}
+
+template<class T, class GSL_COMPLEX>
+Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator*=(const GSL_COMPLEX& b)
+{
+    *this = (*this) * b;
+    return *this;
+}
+
+template<class T, class GSL_COMPLEX>
+Complex_t<T, GSL_COMPLEX>& Complex_t<T, GSL_COMPLEX>::operator/=(const GSL_COMPLEX& b)
+{
+    *this = (*this) / b;
     return *this;
 }
 

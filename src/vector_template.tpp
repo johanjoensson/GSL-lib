@@ -3,6 +3,7 @@
 #include <gsl/gsl_blas.h>
 #include <iostream>
 #include <stdexcept>
+#include <functional>
 
 namespace GSL{
 
@@ -44,8 +45,7 @@ inline Vector_ld::Vector_t
 }
 
 template<>
-inline Vector_f::Vector_t
-(const Vector_t::size_type n)
+inline Vector_f::Vector_t(const Vector_t::size_type n)
  : gsl_vec(gsl_vector_float_calloc(n), gsl_vector_float_free)
 {
     if(gsl_vec == nullptr){
@@ -960,43 +960,6 @@ typename Vector_t<T, G, A>::size_type Vector_t<T, G, A>::dim() const{
     }
 }
 
-template<class T, class G, class A>
-inline typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
-    operator[] (const typename Vector_t<T, G, A>::size_type index)
-{
-    return *(this->begin() + index);
-}
-
-template<class T, class G, class A>
-inline typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
-    operator[] (const typename Vector_t<T, G, A>::size_type index) const
-{
-    return *(this->begin() + index);
-}
-
-template<>
-inline typename Vector_cx::const_reference Vector_cx::operator[]
-    (const typename Vector_cx::size_type index) const
-{
-    return *gsl_vector_complex_ptr(this->gsl_vec.get(), index);
-}
-
-template<>
-inline typename Vector_cxld::const_reference
-Vector_cxld::operator[]
-    (const typename Vector_cxld::size_type index) const
-{
-    return *gsl_vector_complex_long_double_ptr(this->gsl_vec.get(), index);
-}
-
-template<>
-inline typename Vector_cxf::const_reference
-Vector_cxf::operator[]
-    (const typename Vector_cxf::size_type index) const
-{
-    return *gsl_vector_complex_float_ptr(this->gsl_vec.get(), index);
-}
-
 template <class T, class V, class A>
 T Vector_t<T, V, A>::dot(const Vector_t<T, V, A>& b) const
 {
@@ -1058,19 +1021,21 @@ inline Complex Vector_cx::dot(const Vector_cx& b) const
     return res;
 }
 
+/*
 template<>
 inline Complex_ld Vector_cxld::dot(const Vector_cxld& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
     }
-    Complex_ld res(static_cast<long double>(0.));
+    Complex_ld res(static_cast<long double>(0));
     for(Vector_cxld::size_type i = 0; i < this->size(); i++){
-        res.re() += (*this)[i].dat[0]*b[i].dat[0] - (*this)[i].dat[1]*b[i].dat[1];
-        res.im() += (*this)[i].dat[1]*b[i].dat[0] + (*this)[i].dat[0]*b[i].dat[0];
+        res.re() += (*this)[i].re()*b[i].re() - (*this)[i].im()*b[i].im();
+        res.im() += (*this)[i].im()*b[i].re() + (*this)[i].re()*b[i].im();
     }
     return res;
 }
+*/
 
 template<>
 inline Complex_f Vector_cxf::dot(const Vector_cxf& b) const
@@ -1152,6 +1117,13 @@ Vector_t<T, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::cross(const Vector_t<T, GSL_VEC
     r3 = static_cast<T>(T((*this)[0])*T(b[1]) - T((*this)[1])*T(b[0]));
 
     return Vector_t({r1, r2, r3});
+}
+
+template<class T, class GSL_VEC, class A>
+Vector_t<T, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::mirror(const Vector_t<T, GSL_VEC, A>& b) const
+{
+
+    return *this - static_cast<T>(2*this->dot(b)/b.dot(b))*b;
 }
 
 template<>
@@ -1857,7 +1829,7 @@ inline Vector_ld& Vector_ld::operator*=(const long double& b)
 template<>
 inline Vector_f& Vector_f::operator*=(const float& b)
 {
-    int stat = gsl_vector_float_scale(this->gsl_vec.get(), static_cast<double>(b));
+    int stat = gsl_vector_float_scale(this->gsl_vec.get(), b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -1893,7 +1865,7 @@ inline Vector_ui& Vector_ui::operator*=(const unsigned int& b)
 template<>
 inline Vector_l& Vector_l::operator*=(const long& b)
 {
-    int stat = gsl_vector_long_scale(this->gsl_vec.get(), static_cast<double>(b));
+    int stat = gsl_vector_long_scale(this->gsl_vec.get(), b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -1905,7 +1877,7 @@ inline Vector_l& Vector_l::operator*=(const long& b)
 template<>
 inline Vector_ul& Vector_ul::operator*=(const unsigned long& b)
 {
-    int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), static_cast<double>(b));
+    int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2026,7 +1998,7 @@ inline Vector_ld& Vector_ld::operator/=(const long double& b)
 template<>
 inline Vector_f& Vector_f::operator/=(const float& b)
 {
-    int stat = gsl_vector_float_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
+    int stat = gsl_vector_float_scale(this->gsl_vec.get(), static_cast<float>(1.)/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2038,7 +2010,7 @@ inline Vector_f& Vector_f::operator/=(const float& b)
 template<>
 inline Vector_i& Vector_i::operator/=(const int& b)
 {
-    int stat = gsl_vector_int_scale(this->gsl_vec.get(), 1./b);
+    int stat = gsl_vector_int_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2050,7 +2022,7 @@ inline Vector_i& Vector_i::operator/=(const int& b)
 template<>
 inline Vector_ui& Vector_ui::operator/=(const unsigned int& b)
 {
-    int stat = gsl_vector_uint_scale(this->gsl_vec.get(), 1./b);
+    int stat = gsl_vector_uint_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2062,7 +2034,7 @@ inline Vector_ui& Vector_ui::operator/=(const unsigned int& b)
 template<>
 inline Vector_l& Vector_l::operator/=(const long& b)
 {
-    int stat = gsl_vector_long_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
+    int stat = gsl_vector_long_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2074,7 +2046,7 @@ inline Vector_l& Vector_l::operator/=(const long& b)
 template<>
 inline Vector_ul& Vector_ul::operator/=(const unsigned long& b)
 {
-    int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
+    int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2086,7 +2058,7 @@ inline Vector_ul& Vector_ul::operator/=(const unsigned long& b)
 template<>
 inline Vector_s& Vector_s::operator/=(const short& b)
 {
-    int stat = gsl_vector_short_scale(this->gsl_vec.get(), 1./b);
+    int stat = gsl_vector_short_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2098,7 +2070,7 @@ inline Vector_s& Vector_s::operator/=(const short& b)
 template<>
 inline Vector_us& Vector_us::operator/=(const unsigned short& b)
 {
-    int stat = gsl_vector_ushort_scale(this->gsl_vec.get(), 1./b);
+    int stat = gsl_vector_ushort_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2111,7 +2083,7 @@ inline Vector_us& Vector_us::operator/=(const unsigned short& b)
 template<>
 inline Vector_c& Vector_c::operator/=(const char& b)
 {
-    int stat = gsl_vector_char_scale(this->gsl_vec.get(), 1./b);
+    int stat = gsl_vector_char_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2123,7 +2095,7 @@ inline Vector_c& Vector_c::operator/=(const char& b)
 template<>
 inline Vector_uc& Vector_uc::operator/=(const unsigned char& b)
 {
-    int stat = gsl_vector_uchar_scale(this->gsl_vec.get(), 1./b);
+    int stat = gsl_vector_uchar_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2225,8 +2197,8 @@ Vector_t<T, G, A> Vector_t<T, G, A>::operator-() const
 
 
 template<> template<>
-inline Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m)
-{
+inline Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m) const
+{ const
     Vector res(m.size().first);
     int stat = gsl_blas_dgemv(CblasTrans, 1.0, m.gsl_mat.get(),
         this->gsl_vec.get(), 0.0, res.gsl_vec.get());
@@ -2240,7 +2212,7 @@ inline Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, g
 }
 
 template<> template<>
-inline Vector_f Vector_f::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& m)
+inline Vector_f Vector_f::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& m) const
 {
     Vector_f res(m.size().first);
     int stat = gsl_blas_sgemv(CblasTrans, 1.0, m.gsl_mat.get(),
@@ -2255,7 +2227,7 @@ inline Vector_f Vector_f::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_
 }
 
 template<> template<>
-inline Vector_cx Vector_cx::operator*<gsl_matrix_complex>(const Matrix_t<Complex, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& m)
+inline Vector_cx Vector_cx::operator*<gsl_matrix_complex>(const Matrix_t<Complex, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& m) const
 {
     Vector_cx res(m.size().first);
     int stat = gsl_blas_zgemv(CblasTrans, Complex(1.0), m.gsl_mat.get(),
@@ -2270,7 +2242,7 @@ inline Vector_cx Vector_cx::operator*<gsl_matrix_complex>(const Matrix_t<Complex
 }
 
 template<> template<>
-inline Vector_cxf Vector_cxf::operator*<gsl_matrix_complex_float>(const Matrix_t<Complex_f, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& m)
+inline Vector_cxf Vector_cxf::operator*<gsl_matrix_complex_float>(const Matrix_t<Complex_f, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& m) const
 {
     Vector_cxf res(m.size().first);
     int stat = gsl_blas_cgemv(CblasTrans, Complex_f(1.0), m.gsl_mat.get(),
@@ -2557,7 +2529,7 @@ template<class T, class G, class A>
 typename Vector_t<T, G, A>::iterator::reference Vector_t<T, G, A>::iterator::
     operator*() const
 {
-    return *this->data_m;
+    return *reinterpret_cast<pointer>(this->data_m);
 }
 
 template<class T, class G, class A>
@@ -2671,7 +2643,7 @@ template<class T, class G, class A>
 typename Vector_t<T, G, A>::const_iterator::reference Vector_t<T, G, A>::const_iterator::
     operator*() const
 {
-    return *this->data_m;
+    return *reinterpret_cast<const pointer>(this->data_m);
 }
 
 template<>
@@ -3108,6 +3080,46 @@ typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::crend() co
     return Vector_t<T, G, A>::const_reverse_iterator(this->cbegin());
 
 }
+
+template<class T, class G, class A>
+inline typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
+    operator[] (const typename Vector_t<T, G, A>::size_type index)
+{
+    return *(this->begin() + index);
+}
+
+template<class T, class G, class A>
+inline typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
+    operator[] (const typename Vector_t<T, G, A>::size_type index) const
+{
+    return *(this->begin() + index);
+}
+
+/*
+template<>
+inline typename Vector_cx::const_reference Vector_cx::operator[]
+    (const typename Vector_cx::size_type index) const
+{
+    return *(this->begin() +  index);
+}
+
+template<>
+inline typename Vector_cxld::const_reference
+Vector_cxld::operator[]
+    (const typename Vector_cxld::size_type index) const
+{
+    return *gsl_vector_complex_long_double_ptr(this->gsl_vec.get(), index);
+}
+
+template<>
+inline typename Vector_cxf::const_reference
+Vector_cxf::operator[]
+    (const typename Vector_cxf::size_type index) const
+{
+    return *gsl_vector_complex_float_ptr(this->gsl_vec.get(), index);
+}
+*/
+
 template<class T, class G, class A>
 typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
     front()
@@ -3211,6 +3223,7 @@ std::string Vector_t<T, G, A>::to_string() const
     return res;
 }
 
+/*
 template<>
 inline std::string Vector_cx::to_string() const
 {
@@ -3261,4 +3274,5 @@ inline std::string Vector_cxf::to_string() const
     res += ")";
     return res;
 }
+*/
 }

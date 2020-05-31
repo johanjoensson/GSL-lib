@@ -44,9 +44,11 @@ namespace GSL{
     Matrix_cx cholesky_decomp(const Matrix_cx&);
 
     Matrix lu_inverse(const Matrix& a);
+    double lu_det(const Matrix& a);
     Matrix_cx lu_inverse(const Matrix_cx& a);
-    std::pair<Matrix, Permutation> lu_decomp(const Matrix& a);
-    std::pair<Matrix_cx, Permutation> lu_decomp(const Matrix_cx& a);
+    GSL::Complex_t<double, gsl_complex> lu_det(const Matrix_cx& a);
+    std::tuple<Matrix, Permutation, int> lu_decomp(const Matrix& a);
+    std::tuple<Matrix_cx, Permutation, int> lu_decomp(const Matrix_cx& a);
 
     std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> hermitian_eigen(const Matrix_cx&);
 
@@ -132,6 +134,7 @@ public:
     Matrix_t hermitian_transpose() const;
 
     Matrix_t inverse() const;
+    T det() const;
 
     Vector_t<T, GSL_VEC, A>& get_row(const difference_type i);
     Vector_t<T, GSL_VEC, A>& get_col(const difference_type i);
@@ -268,8 +271,10 @@ public:
 
     friend Matrix GSL::lu_inverse(const Matrix& a);
     friend Matrix_cx GSL::lu_inverse(const Matrix_cx& a);
-    friend std::pair<Matrix, Permutation> GSL::lu_decomp(const Matrix& a);
-    friend std::pair<Matrix_cx, Permutation> GSL::lu_decomp(const Matrix_cx& a);
+    friend std::tuple<Matrix, Permutation, int> GSL::lu_decomp(const Matrix& a);
+    friend std::tuple<Matrix_cx, Permutation, int> GSL::lu_decomp(const Matrix_cx& a);
+    friend double GSL::lu_det(const Matrix& a);
+    friend GSL::Complex_t<double, gsl_complex> GSL::lu_det(const Matrix_cx& a);
 
     friend std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> hermitian_eigen(const Matrix_cx&);
 

@@ -904,9 +904,9 @@ inline Matrix_cxld& Matrix_cxld::operator*=(const Matrix_cxld& b)
     for(Matrix_cxld::size_type i = 0; i < rows; i++){
         for(Matrix_cxld::size_type j = 0; j < columns; j++){
             for(Matrix_cxld::size_type k = 0; k < c; k++){
-                c1 = Complex_ld((*this)[i][k]);
-                c2 = Complex_ld(b[k][j]);
-                tmp[i][j] = Complex_ld(tmp[i][j]) + c1*c2;
+                c1 = (*this)[i][k];
+                c2 = b[k][j];
+                tmp[i][j] = tmp[i][j] + c1*c2;
             }
         }
     }
@@ -1774,6 +1774,18 @@ template<>
 inline Matrix_cx Matrix_cx::inverse() const
 {
     return GSL::lu_inverse(*this);
+}
+
+template<>
+inline double Matrix::det() const
+{
+   return GSL::lu_det(*this);
+}
+
+template<>
+inline GSL::Complex Matrix_cx::det() const
+{
+   return GSL::lu_det(*this);
 }
 
 template<>

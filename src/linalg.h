@@ -10,10 +10,13 @@ namespace GSL{
     Matrix_cx cholesky_decomp(const Matrix_cx& a);
     Matrix lu_inverse(const Matrix& a);
     Matrix_cx lu_inverse(const Matrix_cx& a);
-    std::pair<Matrix, Permutation> lu_decomp(const Matrix& a);
-    std::pair<Matrix_cx, Permutation> lu_decomp(const Matrix_cx& a);
+    std::tuple<Matrix, Permutation, int> lu_decomp(const Matrix& a);
+    std::tuple<Matrix_cx, Permutation, int> lu_decomp(const Matrix_cx& a);
     Matrix cholesky_decomp(const Matrix& a);
     Matrix triangular_inverse(const Matrix& a);
+
+    GSL::Complex lu_det(const Matrix_cx&);
+    double lu_det(const Matrix&);
 
 }
 

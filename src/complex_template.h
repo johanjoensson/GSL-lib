@@ -72,15 +72,20 @@ public:
     Complex_t recipr() const;
     Complex_t negate() const;
 
-    Complex_t operator+(const Complex_t& b) const;
-    Complex_t operator-(const Complex_t& b) const;
+    Complex_t operator+(const Complex_t&) const;
+    Complex_t operator-(const Complex_t&) const;
     Complex_t operator*(const Complex_t&) const;
     Complex_t operator/(const Complex_t&) const;
 
-    Complex_t operator+(const T& s) const;
-    Complex_t operator-(const T& s) const;
-    Complex_t operator*(const T& s) const;
-    Complex_t operator/(const T& s) const;
+    Complex_t operator+(const T&) const;
+    Complex_t operator-(const T&) const;
+    Complex_t operator*(const T&) const;
+    Complex_t operator/(const T&) const;
+
+    Complex_t operator+(const GSL_COMPLEX&) const;
+    Complex_t operator-(const GSL_COMPLEX&) const;
+    Complex_t operator*(const GSL_COMPLEX&) const;
+    Complex_t operator/(const GSL_COMPLEX&) const;
 
     friend Complex_t (operator+)(const T& s, const Complex_t& a)
     {
@@ -100,17 +105,40 @@ public:
         return a.recipr()*s;
     };
 
+    friend Complex_t (operator+)(const GSL_COMPLEX& b, const Complex_t& a)
+    {
+        return a + b;
+    };
+    friend Complex_t operator-(const GSL_COMPLEX& b, const Complex_t& a)
+    {
+        return -(a-b);
+    };
+    friend Complex_t operator*(const GSL_COMPLEX& b, const Complex_t& a)
+    {
+        return a*b;
+    };
+
+    friend Complex_t operator/(const GSL_COMPLEX& b, const Complex_t& a)
+    {
+        return a.recipr()*b;
+    };
+
     Complex_t operator-() const;
 
-    Complex_t& operator+=(const Complex_t& b);
-    Complex_t& operator-=(const Complex_t& b);
-    Complex_t& operator*=(const Complex_t& b);
-    Complex_t& operator/=(const Complex_t& b);
+    Complex_t& operator+=(const Complex_t&);
+    Complex_t& operator-=(const Complex_t&);
+    Complex_t& operator*=(const Complex_t&);
+    Complex_t& operator/=(const Complex_t&);
 
-    Complex_t& operator+=(const T& s);
-    Complex_t& operator-=(const T& s);
-    Complex_t& operator*=(const T& s);
-    Complex_t& operator/=(const T& s);
+    Complex_t& operator+=(const T&);
+    Complex_t& operator-=(const T&);
+    Complex_t& operator*=(const T&);
+    Complex_t& operator/=(const T&);
+
+    Complex_t& operator+=(const GSL_COMPLEX&);
+    Complex_t& operator-=(const GSL_COMPLEX&);
+    Complex_t& operator*=(const GSL_COMPLEX&);
+    Complex_t& operator/=(const GSL_COMPLEX&);
 
     bool operator==(const Complex_t&) const;
     bool operator!=(const Complex_t&) const;
@@ -209,6 +237,12 @@ public:
     bool operator!=( const gsl_complex_float&, const gsl_complex_float&);
     bool operator==( const gsl_complex_long_double&, const gsl_complex_long_double&);
     bool operator!=( const gsl_complex_long_double&, const gsl_complex_long_double&);
+}
+
+namespace std{
+    inline string to_string(const GSL::Complex& c) {return c.to_string();}
+    inline string to_string(const GSL::Complex_ld& c) {return c.to_string();}
+    inline string to_string(const GSL::Complex_f& c) {return c.to_string();}
 }
 
 #endif //COMPLEX_GSL_LIB_H

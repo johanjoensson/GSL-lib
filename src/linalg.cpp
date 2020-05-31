@@ -27,7 +27,7 @@ GSL::Matrix_cx GSL::cholesky_decomp(const GSL::Matrix_cx& a)
     return tmp;
 }
 
-std::pair<GSL::Matrix, GSL::Permutation> GSL::lu_decomp(const GSL::Matrix& a)
+std::tuple<GSL::Matrix, GSL::Permutation, int> GSL::lu_decomp(const GSL::Matrix& a)
 {
     size_t N = a.gsl_mat->size1;
     GSL::Matrix tmp(N, N);
@@ -41,10 +41,10 @@ std::pair<GSL::Matrix, GSL::Permutation> GSL::lu_decomp(const GSL::Matrix& a)
         + error_str);
     }
 
-    return std::pair<GSL::Matrix, GSL::Permutation>(tmp, p);
+    return std::tuple<GSL::Matrix, GSL::Permutation, int>(tmp, p, i);
 }
 
-std::pair<GSL::Matrix_cx, GSL::Permutation> GSL::lu_decomp(const GSL::Matrix_cx& a)
+std::tuple<GSL::Matrix_cx, GSL::Permutation, int> GSL::lu_decomp(const GSL::Matrix_cx& a)
 {
     size_t N = a.gsl_mat->size1;
     GSL::Matrix_cx tmp(N, N);
@@ -58,7 +58,7 @@ std::pair<GSL::Matrix_cx, GSL::Permutation> GSL::lu_decomp(const GSL::Matrix_cx&
         + error_str);
     }
 
-    return std::pair<GSL::Matrix_cx, GSL::Permutation>(tmp, p);
+    return std::tuple<GSL::Matrix_cx, GSL::Permutation, int>(tmp, p, i);
 }
 
 GSL::Matrix GSL::lu_inverse(const GSL::Matrix& a)
@@ -66,8 +66,8 @@ GSL::Matrix GSL::lu_inverse(const GSL::Matrix& a)
     size_t N = a.gsl_mat->size1;
     GSL::Matrix tmp(N, N), res(N, N);
     tmp.copy(a);
-    std::pair<GSL::Matrix, GSL::Permutation> lu = GSL::lu_decomp(tmp);
-    int status = gsl_linalg_LU_invert(lu.first.gsl_mat.get(), lu.second.p_m.get(), res.gsl_mat.get());
+    std::tuple<GSL::Matrix, GSL::Permutation, int> lu = GSL::lu_decomp(tmp);
+    int status = gsl_linalg_LU_invert(std::get<0>(lu).gsl_mat.get(), std::get<1>(lu).p_m.get(), res.gsl_mat.get());
     if(status){
         std::string error_str =   gsl_strerror(status);
         throw std::runtime_error("Error in LU inversion.\nGSL error: "
@@ -76,19 +76,37 @@ GSL::Matrix GSL::lu_inverse(const GSL::Matrix& a)
     return res;
 }
 
+double GSL::lu_det(const GSL::Matrix& a)
+{
+    size_t N = a.gsl_mat->size1;
+    GSL::Matrix tmp(N, N), res(N, N);
+    tmp.copy(a);
+    std::tuple<GSL::Matrix, GSL::Permutation, int> lu = GSL::lu_decomp(tmp);
+    return gsl_linalg_LU_det(std::get<0>(lu).gsl_mat.get(), std::get<2>(lu));
+}
+
 GSL::Matrix_cx GSL::lu_inverse(const GSL::Matrix_cx& a)
 {
     size_t N = a.gsl_mat->size1;
     GSL::Matrix_cx tmp(N, N), res(N, N);
     tmp.copy(a);
-    std::pair<GSL::Matrix_cx, GSL::Permutation> lu = GSL::lu_decomp(tmp);
-    int status = gsl_linalg_complex_LU_invert(lu.first.gsl_mat.get(), lu.second.p_m.get(), res.gsl_mat.get());
+    std::tuple<GSL::Matrix_cx, GSL::Permutation, int> lu = GSL::lu_decomp(tmp);
+    int status = gsl_linalg_complex_LU_invert(std::get<0>(lu).gsl_mat.get(), std::get<1>(lu).p_m.get(), res.gsl_mat.get());
     if(status){
         std::string error_str =   gsl_strerror(status);
         throw std::runtime_error("Error in complex LU inversion.\nGSL error: "
         + error_str);
     }
     return res;
+}
+
+GSL::Complex GSL::lu_det(const GSL::Matrix_cx& a)
+{
+    size_t N = a.gsl_mat->size1;
+    GSL::Matrix_cx tmp(N, N), res(N, N);
+    tmp.copy(a);
+    std::tuple<GSL::Matrix_cx, GSL::Permutation, int> lu = GSL::lu_decomp(tmp);
+    return  gsl_linalg_complex_LU_det(std::get<0>(lu).gsl_mat.get(), std::get<2>(lu));
 }
 
 GSL::Matrix GSL::cholesky_decomp(const GSL::Matrix& a)

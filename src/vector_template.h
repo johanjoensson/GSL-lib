@@ -46,18 +46,18 @@ class Vector_t {
     // friend class Matrix_t<T, GSL_MAT, GSL_VEC, A>;
     friend class Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>;
     friend class Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double, std::allocator<long double>>;
-    friend class Matrix_t<T, gsl_matrix_float, gsl_vector_float, A>;
-    friend class Matrix_t<T, gsl_matrix_int, gsl_vector_int, A>;
-    friend class Matrix_t<T, gsl_matrix_uint, gsl_vector_uint, A>;
-    friend class Matrix_t<T, gsl_matrix_long, gsl_vector_long, A>;
-    friend class Matrix_t<T, gsl_matrix_ulong, gsl_vector_ulong, A>;
-    friend class Matrix_t<T, gsl_matrix_short, gsl_vector_short, A>;
-    friend class Matrix_t<T, gsl_matrix_ushort, gsl_vector_ushort, A>;
-    friend class Matrix_t<T, gsl_matrix_char, gsl_vector_char, A>;
-    friend class Matrix_t<T, gsl_matrix_uchar, gsl_vector_uchar, A>;
-    friend class Matrix_t<T, gsl_matrix_complex, gsl_vector_complex, A>;
-    friend class Matrix_t<T, gsl_matrix_complex_long_double, gsl_vector_complex_long_double, A>;
-    friend class Matrix_t<T, gsl_matrix_complex_float, gsl_vector_complex_float, A>;
+    friend class Matrix_t<T, gsl_matrix_float, gsl_vector_float, std::allocator<float>>;
+    friend class Matrix_t<T, gsl_matrix_int, gsl_vector_int, std::allocator<int>>;
+    friend class Matrix_t<T, gsl_matrix_uint, gsl_vector_uint, std::allocator<unsigned int>>;
+    friend class Matrix_t<T, gsl_matrix_long, gsl_vector_long, std::allocator<long>>;
+    friend class Matrix_t<T, gsl_matrix_ulong, gsl_vector_ulong, std::allocator<unsigned long>>;
+    friend class Matrix_t<T, gsl_matrix_short, gsl_vector_short, std::allocator<short>>;
+    friend class Matrix_t<T, gsl_matrix_ushort, gsl_vector_ushort, std::allocator<unsigned short>>;
+    friend class Matrix_t<T, gsl_matrix_char, gsl_vector_char, std::allocator<char>>;
+    friend class Matrix_t<T, gsl_matrix_uchar, gsl_vector_uchar, std::allocator<unsigned char>>;
+    friend class Matrix_t<T, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>;
+    friend class Matrix_t<T, gsl_matrix_complex_long_double, gsl_vector_complex_long_double,  std::allocator<gsl_complex_long_double>>;
+    friend class Matrix_t<T, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>;
 public:
     typedef A allocator_type;
     typedef T value_type;
@@ -99,6 +99,7 @@ public:
     // Define dot and cross products of vectors
     T dot(const Vector_t& b) const;
     Vector_t cross(const Vector_t& b) const;
+    Vector_t mirror(const Vector_t& b) const;
 
     Vector_t& operator+= (const Vector_t& b);
     Vector_t& operator-= (const Vector_t& b);
@@ -129,7 +130,7 @@ public:
     };
 
     template<class GSL_MAT>
-    Vector_t operator*(const Matrix_t<T, GSL_MAT, GSL_VEC, A>& m);
+    Vector_t operator*(const Matrix_t<T, GSL_MAT, GSL_VEC, A>& m) const;
 
     bool operator==(const Vector_t&) const;
     bool operator!=(const Vector_t&) const;

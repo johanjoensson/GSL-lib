@@ -28,8 +28,7 @@ INC_DIR = include
 
 # Flags for the above defined compilers
 
-WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++
-#-Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
+WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++ -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
 CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
@@ -55,6 +54,8 @@ LIB_OBJ = divided_difference.o\
 	  special_functions_erf.o\
 	  special_functions_gamma_beta.o\
 	  special_functions_results.o\
+	  interp.o\
+	  ode.o\
 	  error.o
 
 TEST_OBJ =  main_tests.o\
@@ -90,6 +91,7 @@ TEST_OBJ =  main_tests.o\
 	    matrix_cx_test.o\
 	    matrix_cxf_test.o\
 	    matrix_cxld_test.o\
+	    interp_test.o\
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))

@@ -114,7 +114,7 @@ TEST(Complex_ldTest, TestLogAbs)
 {
 	long double re = 3.l, im = 4.l;
 	GSL::Complex_ld z(re, im);
-	long double diff = std::abs(z.logabs() - static_cast<long double>(std::log(5.l))) ;
+	long double diff = std::abs(z.logabs() - std::log(5.l)) ;
 	EXPECT_TRUE(diff < 1e-10l) << "Absolute value not correct! z = " << z.re()
 	 << " + " << z.im() <<"i ln |z| != " << z.logabs();
 }
