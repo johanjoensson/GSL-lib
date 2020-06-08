@@ -55,18 +55,18 @@ namespace GSL{
     std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> general_hermitian_eigen(const Matrix_cx&,
             const Matrix_cx&);
 
-template<class T, class GSL_MAT, class GSL_VEC, class A = std::allocator<T>>
+template<class D, class GSL_MAT, class GSL_VEC, class A = std::allocator<D>>
 class Matrix_t {
     // Store a reference to the gsl_matrix
-    friend class Vector_t<T, GSL_VEC, A>;
+    friend class Vector_t<D, GSL_VEC, A>;
     std::shared_ptr<GSL_MAT> gsl_mat;
     Matrix_t(const GSL_MAT& v);
-    Vector_t<T, GSL_VEC, A> v_m;
+    Vector_t<D, GSL_VEC, A> v_m;
 
 
 public:
     typedef A allocator_type;
-    typedef T value_type;
+    typedef D value_type;
     typedef typename A::reference reference;
     typedef typename A::pointer pointer;
     typedef typename A::const_reference const_reference;
@@ -81,7 +81,7 @@ public:
     // Do not allocate anything, only reference stuff!
     Matrix_t(const Matrix_t& v) = default;
     Matrix_t(Matrix_t&& v) = default;
-    Matrix_t(std::initializer_list<GSL::Vector_t<T, GSL_VEC, A>>);
+    Matrix_t(std::initializer_list<GSL::Vector_t<D, GSL_VEC, A>>);
     ~Matrix_t() = default;
 
     // operator GSL_MAT() const {return *this->gsl_mat;};
@@ -101,8 +101,8 @@ public:
     Matrix_t& operator-= (const Matrix_t& b);
     Matrix_t& operator*= (const Matrix_t& b);
     Matrix_t& operator/= (const Matrix_t& b);
-    Matrix_t& operator*= (const T& s);
-    Matrix_t& operator/= (const T& s);
+    Matrix_t& operator*= (const D& s);
+    Matrix_t& operator/= (const D& s);
 
 
     // Basic arithmetic operations
@@ -110,11 +110,11 @@ public:
     Matrix_t operator-(const Matrix_t& b) const;
     Matrix_t operator*(const Matrix_t& b) const;
     Matrix_t operator/(const Matrix_t& b) const;
-    Matrix_t operator*(const T s) const;
-    Matrix_t operator/(const T s) const;
+    Matrix_t operator*(const D s) const;
+    Matrix_t operator/(const D s) const;
     Matrix_t operator-() const;
 
-    friend Matrix_t operator*(const T& s, const Matrix_t& m)
+    friend Matrix_t operator*(const D& s, const Matrix_t& m)
     {
         return m*s;
     };
@@ -125,25 +125,28 @@ public:
         return os << z.to_string();
     };
 
-    Vector_t<T, GSL_VEC, A> operator*(const Vector_t<T, GSL_VEC, A>& v);
+    Vector_t<D, GSL_VEC, A> operator*(const Vector_t<D, GSL_VEC, A>& v);
 
     bool operator==(const Matrix_t&) const;
     bool operator!=(const Matrix_t&) const;
 
     Matrix_t transpose() const;
+    Matrix_t T() const { return this->transpose();}
     Matrix_t hermitian_transpose() const;
+    Matrix_t dagger() const { return this->hermitian_transpose();}
+    Matrix_t H() const { return this->hermitian_transpose();}
 
     Matrix_t inverse() const;
-    T det() const;
+    D det() const;
 
-    Vector_t<T, GSL_VEC, A>& get_row(const difference_type i);
-    Vector_t<T, GSL_VEC, A>& get_col(const difference_type i);
+    Vector_t<D, GSL_VEC, A>& get_row(const difference_type i);
+    Vector_t<D, GSL_VEC, A>& get_col(const difference_type i);
 
     class iterator {
     public:
         typedef typename A::difference_type difference_type;
-        typedef Vector_t<T, GSL_VEC, A> value_type;
-        typedef Vector_t<T, GSL_VEC, A>& reference;
+        typedef Vector_t<D, GSL_VEC, A> value_type;
+        typedef Vector_t<D, GSL_VEC, A>& reference;
         typedef typename A::pointer pointer;
         typedef std::random_access_iterator_tag iterator_category;
 
@@ -189,9 +192,9 @@ public:
     class const_iterator{
     public:
         typedef typename A::difference_type difference_type;
-        typedef const Vector_t<T, GSL_VEC, A> value_type;
-        typedef const Vector_t<T, GSL_VEC, A>& reference;
-        typedef const Vector_t<T, GSL_VEC, A>* pointer;
+        typedef const Vector_t<D, GSL_VEC, A> value_type;
+        typedef const Vector_t<D, GSL_VEC, A>& reference;
+        typedef const Vector_t<D, GSL_VEC, A>* pointer;
         typedef std::random_access_iterator_tag iterator_category;
 
 
@@ -250,15 +253,18 @@ public:
     const_reverse_iterator rend() const;
     const_reverse_iterator crend() const;
 
-    Vector_t<T, GSL_VEC, A>& operator[] (const size_type index);
-    const Vector_t<T, GSL_VEC, A>& operator[] (const size_type index) const;
+    Vector_t<D, GSL_VEC, A>& operator[] (const size_type index);
+    const Vector_t<D, GSL_VEC, A>& operator[] (const size_type index) const;
 
-    Vector_t<T, GSL_VEC, A>& front();
-    const Vector_t<T, GSL_VEC, A>& front() const;
-    Vector_t<T, GSL_VEC, A>& back();
-    const Vector_t<T, GSL_VEC, A>& back() const;
-    Vector_t<T, GSL_VEC, A>& at(size_type);
-    const Vector_t<T, GSL_VEC, A>& at(size_type) const;
+    reference operator() (const size_type row, const size_type column);
+    const_reference operator() (const size_type row, const size_type solumn) const;
+
+    Vector_t<D, GSL_VEC, A>& front();
+    const Vector_t<D, GSL_VEC, A>& front() const;
+    Vector_t<D, GSL_VEC, A>& back();
+    const Vector_t<D, GSL_VEC, A>& back() const;
+    Vector_t<D, GSL_VEC, A>& at(size_type);
+    const Vector_t<D, GSL_VEC, A>& at(size_type) const;
     reference at(size_type, size_type);
     const_reference at(size_type, size_type) const;
 

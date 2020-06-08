@@ -276,9 +276,10 @@ template<class T, class GSL_VEC, class A>
 struct Vector_hasher_t{
 	size_t operator()(const GSL::Vector_t<T, GSL_VEC, A> &v) const
 	{
-		size_t res = v.size();
-		for(size_t i = 0; i < v.size(); i++){
-			res += std::hash<T>()(v[i]) ^ std::hash<size_t>()(i);
+		size_t res = 0;
+		std::hash<T> h;
+		for(auto a : v){
+			res ^= h(a) + 0x9e3779b9 + (res<< 6) + (res>> 2);
 		}
 		return res;
 	}

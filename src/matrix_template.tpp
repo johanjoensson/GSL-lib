@@ -7,8 +7,8 @@
 
 namespace GSL{
 
-template<class T, class GSL_MAT, class GSL_VEC, class A>
-inline Matrix_t<T, GSL_MAT, GSL_VEC, A>::Matrix_t()
+template<class D, class GSL_MAT, class GSL_VEC, class A>
+inline Matrix_t<D, GSL_MAT, GSL_VEC, A>::Matrix_t()
  : gsl_mat(nullptr), v_m()
 {}
 
@@ -166,9 +166,9 @@ inline Matrix_cxf::Matrix_t
     }
 }
 
-template<class T, class GSL_MATRIX, class GSL_VECTOR, class A>
-inline Matrix_t<T, GSL_MATRIX, GSL_VECTOR, A>::
-Matrix_t(std::initializer_list<GSL::Vector_t<T, GSL_VECTOR, A>> l)
+template<class D, class GSL_MATRIX, class GSL_VECTOR, class A>
+inline Matrix_t<D, GSL_MATRIX, GSL_VECTOR, A>::
+Matrix_t(std::initializer_list<GSL::Vector_t<D, GSL_VECTOR, A>> l)
  : Matrix_t(l.size(), l.begin()->size())
 {
     auto row_it = l.begin();
@@ -178,8 +178,8 @@ Matrix_t(std::initializer_list<GSL::Vector_t<T, GSL_VECTOR, A>> l)
     }
 }
 
-template<class T, class GSL_MAT, class GSL_VEC, class A>
-Matrix_t<T, GSL_MAT, GSL_VEC, A>::operator GSL_MAT() const
+template<class D, class GSL_MAT, class GSL_VEC, class A>
+Matrix_t<D, GSL_MAT, GSL_VEC, A>::operator GSL_MAT() const
 {
     return *this->gsl_mat;
 }
@@ -448,34 +448,34 @@ inline void Matrix_cxf::copy
 	}
 }
 
-template<class T, class G, class V, class A>
-inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(const Matrix_t<T, G, V, A>& a)
+template<class D, class G, class V, class A>
+inline Matrix_t<D, G, V, A>& Matrix_t<D, G, V, A>::operator=(const Matrix_t<D, G, V, A>& a)
 {
     this->gsl_mat = a.gsl_mat;
     return *this;
 }
 
-template<class T, class G, class V, class A>
-inline Matrix_t<T, G, V, A>& Matrix_t<T, G, V, A>::operator=(Matrix_t<T, G, V, A>&& a)
+template<class D, class G, class V, class A>
+inline Matrix_t<D, G, V, A>& Matrix_t<D, G, V, A>::operator=(Matrix_t<D, G, V, A>&& a)
 {
     std::swap(this->gsl_mat, a.gsl_mat);
     return *this;
 }
 
-template<class T, class M, class V, class A>
-std::pair<typename Matrix_t<T, M, V, A>::size_type, typename Matrix_t<T, M, V, A>::size_type>
- Matrix_t<T, M, V, A>::dim() const
+template<class D, class M, class V, class A>
+std::pair<typename Matrix_t<D, M, V, A>::size_type, typename Matrix_t<D, M, V, A>::size_type>
+ Matrix_t<D, M, V, A>::dim() const
 {
     if(gsl_mat.get() != nullptr){
-        return std::pair<Matrix_t<T, M, V, A>::size_type, Matrix_t<T, M, V, A>::size_type>(gsl_mat->size1, gsl_mat->size2);
+        return std::pair<Matrix_t<D, M, V, A>::size_type, Matrix_t<D, M, V, A>::size_type>(gsl_mat->size1, gsl_mat->size2);
     }else{
         throw std::runtime_error("Taking size/dimension of uninitialized Matrix!\n");
     }
 }
 
-template<class T, class M, class V, class A>
-std::pair<typename Matrix_t<T, M, V, A>::size_type, typename Matrix_t<T, M, V, A>::size_type>
- Matrix_t<T, M, V, A>::size() const
+template<class D, class M, class V, class A>
+std::pair<typename Matrix_t<D, M, V, A>::size_type, typename Matrix_t<D, M, V, A>::size_type>
+ Matrix_t<D, M, V, A>::size() const
  {
      return this->dim();
  }
@@ -817,14 +817,14 @@ inline Matrix_cxf& Matrix_cxf::operator-=(const Matrix_cxf& b)
     return *this;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A>& Matrix_t<T, M, V, A>::operator*=(const Matrix_t<T, M, V, A>& b)
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A>& Matrix_t<D, M, V, A>::operator*=(const Matrix_t<D, M, V, A>& b)
 {
-    Matrix_t<T, M, V, A> tmp(this->size().first, b.size().second);
-    for(Matrix_t<T, M, V, A>::size_type i = 0; i < this->size().first; i++){
-        for(Matrix_t<T, M, V, A>::size_type j = 0; j < b.size().second; j++){
-            for(Matrix_t<T, M, V, A>::size_type k = 0; k < this->size().second; k++){
-                tmp[i][j] = static_cast<T>( tmp[i][j] + (*this)[i][k]*b[k][j] );
+    Matrix_t<D, M, V, A> tmp(this->size().first, b.size().second);
+    for(Matrix_t<D, M, V, A>::size_type i = 0; i < this->size().first; i++){
+        for(Matrix_t<D, M, V, A>::size_type j = 0; j < b.size().second; j++){
+            for(Matrix_t<D, M, V, A>::size_type k = 0; k < this->size().second; k++){
+                tmp[i][j] = static_cast<D>( tmp[i][j] + (*this)[i][k]*b[k][j] );
             }
         }
     }
@@ -1420,26 +1420,26 @@ inline Matrix_cxf& Matrix_cxf::operator/=(const Complex_f& b)
     return *this;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator+(const Matrix_t<T, M, V, A>& b) const
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::operator+(const Matrix_t<D, M, V, A>& b) const
 {
-    Matrix_t<T, M , V, A>tmp(this->size().first, this->size().second);
+    Matrix_t<D, M , V, A>tmp(this->size().first, this->size().second);
     tmp.copy(*this);
     return tmp += b;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator-(const Matrix_t<T, M, V, A>& b) const
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::operator-(const Matrix_t<D, M, V, A>& b) const
 {
-    Matrix_t<T, M , V, A>tmp(this->size().first, this->size().second);
+    Matrix_t<D, M , V, A>tmp(this->size().first, this->size().second);
     tmp.copy(*this);
     return tmp -= b;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator*(const Matrix_t<T, M, V, A>& b) const
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::operator*(const Matrix_t<D, M, V, A>& b) const
 {
-    Matrix_t<T, M , V, A>tmp(this->size().first, this->size().second);
+    Matrix_t<D, M , V, A>tmp(this->size().first, this->size().second);
     tmp.copy(*this);
     return tmp *= b;
 }
@@ -1504,34 +1504,34 @@ inline Vector_cxf Matrix_cxf::operator*(const Vector_cxf& v)
     return res;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator/(const Matrix_t<T, M, V, A>& b) const
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::operator/(const Matrix_t<D, M, V, A>& b) const
 {
-    Matrix_t<T, M , V, A>tmp(this->size().first, this->size().second);
+    Matrix_t<D, M , V, A>tmp(this->size().first, this->size().second);
     tmp.copy(*this);
     return tmp /= b;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator*(const T s) const
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::operator*(const D s) const
 {
-    Matrix_t<T, M , V, A>tmp(this->size().first, this->size().second);
+    Matrix_t<D, M , V, A>tmp(this->size().first, this->size().second);
     tmp.copy(*this);
     return tmp *= s;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator/(const T s) const
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::operator/(const D s) const
 {
-    Matrix_t<T, M , V, A>tmp(this->size().first, this->size().second);
+    Matrix_t<D, M , V, A>tmp(this->size().first, this->size().second);
     tmp.copy(*this);
     return tmp /= s;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::operator-() const
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::operator-() const
 {
-    Matrix_t<T, M , V, A>tmp(this->size().first, this->size().second);
+    Matrix_t<D, M , V, A>tmp(this->size().first, this->size().second);
     return tmp - *this;
 }
 
@@ -1689,26 +1689,138 @@ inline bool Matrix_cxf::operator==(const Matrix_cxf& b) const
     return gsl_matrix_complex_float_equal(this->gsl_mat.get(), b.gsl_mat.get());
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::operator!=(const Matrix_t<T, M, V, A>& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::operator!=(const Matrix_t<D, M, V, A>& b) const
 {
     return !(*this == b);
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::transpose() const
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::transpose() const
 {
-    Matrix_t<T, M, V, A> res(this->size().second, this->size().first);
-    for(Matrix_t<T, M, V, A>::size_type i = 0; i < this->size().second; i++){
-        for(Matrix_t<T, M, V, A>::size_type j = 0; j < this->size().first; j++){
+    Matrix_t<D, M, V, A> res(this->size().second, this->size().first);
+    for(Matrix_t<D, M, V, A>::size_type i = 0; i < this->size().second; i++){
+        for(Matrix_t<D, M, V, A>::size_type j = 0; j < this->size().first; j++){
             res[i][j] = (*this)[j][i];
         }
     }
     return res;
 }
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A> Matrix_t<T, M, V, A>::hermitian_transpose() const
+template<>
+inline Matrix Matrix::transpose() const
+{
+    Matrix res(this->size().second, this->size().first);
+    gsl_matrix_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_ld Matrix_ld::transpose() const
+{
+    Matrix_ld res(this->size().second, this->size().first);
+    gsl_matrix_long_double_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_f Matrix_f::transpose() const
+{
+    Matrix_f res(this->size().second, this->size().first);
+    gsl_matrix_float_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_i Matrix_i::transpose() const
+{
+    Matrix_i res(this->size().second, this->size().first);
+    gsl_matrix_int_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_ui Matrix_ui::transpose() const
+{
+    Matrix_ui res(this->size().second, this->size().first);
+    gsl_matrix_uint_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_l Matrix_l::transpose() const
+{
+    Matrix_l res(this->size().second, this->size().first);
+    gsl_matrix_long_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_ul Matrix_ul::transpose() const
+{
+    Matrix_ul res(this->size().second, this->size().first);
+    gsl_matrix_ulong_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_s Matrix_s::transpose() const
+{
+    Matrix_s res(this->size().second, this->size().first);
+    gsl_matrix_short_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_us Matrix_us::transpose() const
+{
+    Matrix_us res(this->size().second, this->size().first);
+    gsl_matrix_ushort_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_c Matrix_c::transpose() const
+{
+    Matrix_c res(this->size().second, this->size().first);
+    gsl_matrix_char_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_uc Matrix_uc::transpose() const
+{
+    Matrix_uc res(this->size().second, this->size().first);
+    gsl_matrix_uchar_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_cx Matrix_cx::transpose() const
+{
+    Matrix_cx res(this->size().second, this->size().first);
+    gsl_matrix_complex_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_cxld Matrix_cxld::transpose() const
+{
+    Matrix_cxld res(this->size().second, this->size().first);
+    gsl_matrix_complex_long_double_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<>
+inline Matrix_cxf Matrix_cxf::transpose() const
+{
+    Matrix_cxf res(this->size().second, this->size().first);
+    gsl_matrix_complex_float_transpose_memcpy(res.gsl_mat.get(), this->gsl_mat.get());
+    return res;
+}
+
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A> Matrix_t<D, M, V, A>::hermitian_transpose() const
 {
     return this->transpose();
 }
@@ -1718,13 +1830,12 @@ inline Matrix_cx
 Matrix_cx::
 hermitian_transpose() const
 {
-    Matrix_cx
-        res(this->size().second, this->size().first);
+    Matrix_cx res = this->transpose();
     for(Matrix_cx::size_type
-            i = 0; i < this->size().second; i++){
+            i = 0; i < this->size().first; i++){
         for(Matrix_cx::size_type
-                j = 0; j < this->size().first; j++){
-                    res[i][j] = Complex((*this)[j][i]).conjugate();
+                j = 0; j < this->size().second; j++){
+                    res[i][j] = gsl_complex_conjugate(res[i][j]);
         }
     }
     return res;
@@ -1735,13 +1846,12 @@ inline Matrix_cxld
 Matrix_cxld::
 hermitian_transpose() const
 {
-    Matrix_cxld
-        res(this->size().second, this->size().first);
+    Matrix_cxld res = this->transpose();
     for(Matrix_cxld::size_type
-            i = 0; i < this->size().second; i++){
+            i = 0; i < this->size().first; i++){
         for(Matrix_cxld::size_type
-                j = 0; j < this->size().first; j++){
-                    res[i][j] = Complex_ld((*this)[j][i]).conjugate();
+                j = 0; j < this->size().second; j++){
+                    res[i][j] = GSL::Complex_ld(res[i][j]).conjugate();
         }
     }
     return res;
@@ -1752,13 +1862,12 @@ inline Matrix_cxf
 Matrix_cxf::
 hermitian_transpose() const
 {
-    Matrix_cxf
-        res(this->size().second, this->size().first);
-    for(Matrix_cx::size_type
-            i = 0; i < this->size().second; i++){
-        for(Matrix_cx::size_type
-                j = 0; j < this->size().first; j++){
-                    res[i][j] = Complex_f((*this)[j][i]).conjugate();
+    Matrix_cxf res = this->transpose();
+    for(Matrix_cxf::size_type
+            i = 0; i < this->size().first; i++){
+        for(Matrix_cxf::size_type
+                j = 0; j < this->size().second; j++){
+                    res[i][j] = GSL::Complex_f(res[i][j]).conjugate();
         }
     }
     return res;
@@ -2153,381 +2262,590 @@ inline Vector_cxf& Matrix_cxf::get_col(const Matrix_cxf::difference_type i)
 }
 
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A>::iterator::iterator(Matrix_t<T, M, V, A>& mat, Matrix_t<T, M, V, A>::difference_type n)
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A>::iterator::iterator(Matrix_t<D, M, V, A>& mat, Matrix_t<D, M, V, A>::difference_type n)
  : mat_m(mat), row_m(n)
 {}
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::iterator::operator==(const Matrix_t<T, M, V, A>::iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::iterator::operator==(const Matrix_t<D, M, V, A>::iterator& b) const
 {
     return (this->mat_m == b.mat_m) && (this->row_m == b.row_m);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::iterator::operator!=(const Matrix_t<T, M, V, A>::iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::iterator::operator!=(const Matrix_t<D, M, V, A>::iterator& b) const
 {
     return !(*this == b);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::iterator::operator<(const Matrix_t<T, M, V, A>::iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::iterator::operator<(const Matrix_t<D, M, V, A>::iterator& b) const
 {
     return (this->row_m < b.row_m);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::iterator::operator>(const Matrix_t<T, M, V, A>::iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::iterator::operator>(const Matrix_t<D, M, V, A>::iterator& b) const
 {
     return (this->row_m > b.row_m);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::iterator::operator<=(const Matrix_t<T, M, V, A>::iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::iterator::operator<=(const Matrix_t<D, M, V, A>::iterator& b) const
 {
     return !(this->row_m > b.row_m);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::iterator::operator>=(const Matrix_t<T, M, V, A>::iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::iterator::operator>=(const Matrix_t<D, M, V, A>::iterator& b) const
 {
     return !(this->row_m < b.row_m);
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator& Matrix_t<T, M, V, A>::iterator::operator++()
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator& Matrix_t<D, M, V, A>::iterator::operator++()
 {
     this->row_m++;
     return *this;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator Matrix_t<T, M, V, A>::iterator::operator++(int)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator Matrix_t<D, M, V, A>::iterator::operator++(int)
 {
-    Matrix_t<T, M, V, A>::iterator tmp = *this;
+    Matrix_t<D, M, V, A>::iterator tmp = *this;
     ++(*this);
     return tmp;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator& Matrix_t<T, M, V, A>::iterator::operator--()
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator& Matrix_t<D, M, V, A>::iterator::operator--()
 {
     this->row_m--;
     return *this;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator Matrix_t<T, M, V, A>::iterator::operator--(int)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator Matrix_t<D, M, V, A>::iterator::operator--(int)
 {
-    Matrix_t<T, M, V, A>::iterator tmp = *this;
+    Matrix_t<D, M, V, A>::iterator tmp = *this;
     --(*this);
     return tmp;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator& Matrix_t<T, M, V, A>::iterator::
-    operator+=(Matrix_t<T, M, V, A>::difference_type n)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator& Matrix_t<D, M, V, A>::iterator::
+    operator+=(Matrix_t<D, M, V, A>::difference_type n)
 {
     this->row_m += n;
     return *this;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator Matrix_t<T, M, V, A>::iterator::
-    operator+(Matrix_t<T, M, V, A>::difference_type n) const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator Matrix_t<D, M, V, A>::iterator::
+    operator+(Matrix_t<D, M, V, A>::difference_type n) const
 {
-    Matrix_t<T, M, V, A>::iterator tmp = *this;
+    Matrix_t<D, M, V, A>::iterator tmp = *this;
     tmp += n;
     return tmp;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator& Matrix_t<T, M, V, A>::iterator::
-    operator-=(Matrix_t<T, M, V, A>::difference_type n)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator& Matrix_t<D, M, V, A>::iterator::
+    operator-=(Matrix_t<D, M, V, A>::difference_type n)
 {
     this->row_m -= n;
     return *this;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator Matrix_t<T, M, V, A>::iterator::
-    operator-(Matrix_t<T, M, V, A>::difference_type n) const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator Matrix_t<D, M, V, A>::iterator::
+    operator-(Matrix_t<D, M, V, A>::difference_type n) const
 {
-    Matrix_t<T, M, V, A>::iterator tmp = *this;
+    Matrix_t<D, M, V, A>::iterator tmp = *this;
     tmp -= n;
     return tmp;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator::difference_type Matrix_t<T, M, V, A>::iterator::
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator::difference_type Matrix_t<D, M, V, A>::iterator::
     operator-(iterator b) const
 {
     return this->row_m - b.row_m;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator::reference Matrix_t<T, M, V, A>::iterator::
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator::reference Matrix_t<D, M, V, A>::iterator::
     operator*()
 {
     return this->mat_m.get_row(this->row_m);
 }
 
 
-template<class T, class M, class V, class A>
-Matrix_t<T, M, V, A>::const_iterator::
-const_iterator(Matrix_t<T, M, V, A>& mat, const Matrix_t<T, M, V, A>::difference_type n)
+template<class D, class M, class V, class A>
+Matrix_t<D, M, V, A>::const_iterator::
+const_iterator(Matrix_t<D, M, V, A>& mat, const Matrix_t<D, M, V, A>::difference_type n)
  : mat_m(mat), row_m(n)
 {}
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::const_iterator::operator==(const Matrix_t<T, M, V, A>::const_iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::const_iterator::operator==(const Matrix_t<D, M, V, A>::const_iterator& b) const
 {
     return (this->mat_m == b.mat_m) && (this->row_m == b.row_m);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::const_iterator::operator!=(const Matrix_t<T, M, V, A>::const_iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::const_iterator::operator!=(const Matrix_t<D, M, V, A>::const_iterator& b) const
 {
     return !(*this == b);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::const_iterator::operator<(const Matrix_t<T, M, V, A>::const_iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::const_iterator::operator<(const Matrix_t<D, M, V, A>::const_iterator& b) const
 {
     return (this->row_m < b.row_m);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::const_iterator::operator>(const Matrix_t<T, M, V, A>::const_iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::const_iterator::operator>(const Matrix_t<D, M, V, A>::const_iterator& b) const
 {
     return (this->row_m > b.row_m);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::const_iterator::operator<=(const Matrix_t<T, M, V, A>::const_iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::const_iterator::operator<=(const Matrix_t<D, M, V, A>::const_iterator& b) const
 {
     return !(this->row_m > b.row_m);
 }
 
-template<class T, class M, class V, class A>
-bool Matrix_t<T, M, V, A>::const_iterator::operator>=(const Matrix_t<T, M, V, A>::const_iterator& b) const
+template<class D, class M, class V, class A>
+bool Matrix_t<D, M, V, A>::const_iterator::operator>=(const Matrix_t<D, M, V, A>::const_iterator& b) const
 {
     return !(this->row_m < b.row_m);
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator& Matrix_t<T, M, V, A>::const_iterator::operator++()
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator& Matrix_t<D, M, V, A>::const_iterator::operator++()
 {
     this->row_m++;
     return *this;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T, M, V, A>::const_iterator::operator++(int)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator Matrix_t<D, M, V, A>::const_iterator::operator++(int)
 {
-    Matrix_t<T, M, V, A>::const_iterator tmp = *this;
+    Matrix_t<D, M, V, A>::const_iterator tmp = *this;
     ++(*this);
     return tmp;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator& Matrix_t<T, M, V, A>::const_iterator::operator--()
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator& Matrix_t<D, M, V, A>::const_iterator::operator--()
 {
     this->row_m--;
     return *this;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T, M, V, A>::const_iterator::operator--(int)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator Matrix_t<D, M, V, A>::const_iterator::operator--(int)
 {
-    Matrix_t<T, M, V, A>::const_iterator tmp = *this;
+    Matrix_t<D, M, V, A>::const_iterator tmp = *this;
     --(*this);
     return tmp;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator& Matrix_t<T, M, V, A>::const_iterator::
-    operator+=(Matrix_t<T, M, V, A>::difference_type n)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator& Matrix_t<D, M, V, A>::const_iterator::
+    operator+=(Matrix_t<D, M, V, A>::difference_type n)
 {
     this->row_m += n;
     return *this;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T, M, V, A>::const_iterator::
-    operator+(Matrix_t<T, M, V, A>::difference_type n) const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator Matrix_t<D, M, V, A>::const_iterator::
+    operator+(Matrix_t<D, M, V, A>::difference_type n) const
 {
-    Matrix_t<T, M, V, A>::const_iterator tmp = *this;
+    Matrix_t<D, M, V, A>::const_iterator tmp = *this;
     tmp += n;
     return tmp;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator& Matrix_t<T, M, V, A>::const_iterator::
-    operator-=(Matrix_t<T, M, V, A>::difference_type n)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator& Matrix_t<D, M, V, A>::const_iterator::
+    operator-=(Matrix_t<D, M, V, A>::difference_type n)
 {
     this->row_m -= n;
     return *this;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T, M, V, A>::const_iterator::
-    operator-(Matrix_t<T, M, V, A>::difference_type n) const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator Matrix_t<D, M, V, A>::const_iterator::
+    operator-(Matrix_t<D, M, V, A>::difference_type n) const
 {
-    Matrix_t<T, M, V, A>::const_iterator tmp = *this;
+    Matrix_t<D, M, V, A>::const_iterator tmp = *this;
     tmp -= n;
     return tmp;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator::difference_type Matrix_t<T, M, V, A>::const_iterator::
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator::difference_type Matrix_t<D, M, V, A>::const_iterator::
     operator-(const_iterator b) const
 {
     return this->row_m - b.row_m;
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator::reference Matrix_t<T, M, V, A>::const_iterator::
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator::reference Matrix_t<D, M, V, A>::const_iterator::
     operator*() const
 {
-    return mat_m[static_cast<Matrix_t<T, M, V, A>::size_type>(this->row_m)];
+    return mat_m[static_cast<Matrix_t<D, M, V, A>::size_type>(this->row_m)];
 }
 
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator Matrix_t<T, M, V, A>::begin()
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator Matrix_t<D, M, V, A>::begin()
 {
     if(this->gsl_mat.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Matrix");
     }
-    return Matrix_t<T, M, V, A>::iterator(*this, 0);
+    return Matrix_t<D, M, V, A>::iterator(*this, 0);
 }
 
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T ,M, V, A>::begin() const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator Matrix_t<D ,M, V, A>::begin() const
 {
     if(this->gsl_mat.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Matrix");
     }
-    return Matrix_t<T, M, V, A>::const_iterator(const_cast<Matrix_t<T, M, V, A>&>(*this), 0);
+    return Matrix_t<D, M, V, A>::const_iterator(const_cast<Matrix_t<D, M, V, A>&>(*this), 0);
 }
 
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T, M, V, A>::cbegin() const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator Matrix_t<D, M, V, A>::cbegin() const
 {
     if(this->gsl_mat.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Matrix");
     }
-    return Matrix_t<T, M, V, A>::const_iterator(const_cast<Matrix_t<T, M, V, A>&>(*this), 0);
+    return Matrix_t<D, M, V, A>::const_iterator(const_cast<Matrix_t<D, M, V, A>&>(*this), 0);
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::iterator Matrix_t<T, M, V, A>::end()
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::iterator Matrix_t<D, M, V, A>::end()
 {
     return this->begin() +
-        static_cast<Matrix_t<T, M, V, A>::difference_type>(this->size().first);
+        static_cast<Matrix_t<D, M, V, A>::difference_type>(this->size().first);
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T, M, V, A>::end() const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator Matrix_t<D, M, V, A>::end() const
 {
     return this->begin() +
-        static_cast<Matrix_t<T, M, V, A>::difference_type>(this->size().first);
+        static_cast<Matrix_t<D, M, V, A>::difference_type>(this->size().first);
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_iterator Matrix_t<T, M, V, A>::cend() const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_iterator Matrix_t<D, M, V, A>::cend() const
 {
     return this->cbegin() +
-        static_cast<Matrix_t<T, M, V, A>::difference_type>(this->size().first);
+        static_cast<Matrix_t<D, M, V, A>::difference_type>(this->size().first);
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::reverse_iterator Matrix_t<T, M, V, A>::rbegin()
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::reverse_iterator Matrix_t<D, M, V, A>::rbegin()
 {
-    return Matrix_t<T, M, V, A>::reverse_iterator(this->end());
+    return Matrix_t<D, M, V, A>::reverse_iterator(this->end());
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::rbegin() const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_reverse_iterator Matrix_t<D, M, V, A>::rbegin() const
 {
-    return Matrix_t<T, M, V, A>::const_reverse_iterator(this->end());
+    return Matrix_t<D, M, V, A>::const_reverse_iterator(this->end());
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::crbegin() const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_reverse_iterator Matrix_t<D, M, V, A>::crbegin() const
 {
-    return Matrix_t<T, M, V, A>::const_reverse_iterator(this->end());
+    return Matrix_t<D, M, V, A>::const_reverse_iterator(this->end());
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::reverse_iterator Matrix_t<T, M, V, A>::rend()
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::reverse_iterator Matrix_t<D, M, V, A>::rend()
 {
-    return Matrix_t<T, M, V, A>::reverse_iterator(this->begin());
+    return Matrix_t<D, M, V, A>::reverse_iterator(this->begin());
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::rend() const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_reverse_iterator Matrix_t<D, M, V, A>::rend() const
 {
-    return Matrix_t<T, M, V, A>::const_reverse_iterator(this->begin());
+    return Matrix_t<D, M, V, A>::const_reverse_iterator(this->begin());
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_reverse_iterator Matrix_t<T, M, V, A>::crend() const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_reverse_iterator Matrix_t<D, M, V, A>::crend() const
 {
-    return Matrix_t<T, M, V, A>::const_reverse_iterator(this->cbegin());
+    return Matrix_t<D, M, V, A>::const_reverse_iterator(this->cbegin());
 }
 
-template<class T, class M, class V, class A>
-Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
-    operator[] (const typename Matrix_t<T, M, V, A>::size_type index)
+template<class D, class M, class V, class A>
+Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+    operator[] (const typename Matrix_t<D, M, V, A>::size_type index)
 {
-    return *(this->begin() + static_cast<Matrix_t<T, M, V, A>::difference_type>(index));
+    return *(this->begin() + static_cast<Matrix_t<D, M, V, A>::difference_type>(index));
 }
 
-template<class T, class M, class V, class A>
-const Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
-    operator[] (const typename Matrix_t<T, M, V, A>::size_type index) const
+template<class D, class M, class V, class A>
+const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+    operator[] (const typename Matrix_t<D, M, V, A>::size_type index) const
 {
     return *(this->cbegin() +
-        static_cast<Matrix_t<T, M, V, A>::difference_type>(index));
+        static_cast<Matrix_t<D, M, V, A>::difference_type>(index));
 }
 
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::reference Matrix_t<D, M, V, A>::
+    operator() (const typename Matrix_t<D, M, V, A>::size_type row, const typename Matrix_t<D, M, V, A>::size_type column)
+{
+	return (*this)[row][column];
+}
 
-template<class T, class M, class V, class A>
-Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
+template<>
+inline typename Matrix::reference Matrix::
+    operator() (const typename Matrix::size_type row, const typename Matrix::size_type column)
+{
+	return *gsl_matrix_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_ld::reference Matrix_ld::
+    operator() (const typename Matrix_ld::size_type row, const typename Matrix_ld::size_type column)
+{
+	return *gsl_matrix_long_double_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_f::reference Matrix_f::
+    operator() (const typename Matrix_f::size_type row, const typename Matrix_f::size_type column)
+{
+	return *gsl_matrix_float_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_i::reference Matrix_i::
+    operator() (const typename Matrix_i::size_type row, const typename Matrix_i::size_type column)
+{
+	return *gsl_matrix_int_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_ui::reference Matrix_ui::
+    operator() (const typename Matrix_ui::size_type row, const typename Matrix_ui::size_type column)
+{
+	return *gsl_matrix_uint_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_l::reference Matrix_l::
+    operator() (const typename Matrix_l::size_type row, const typename Matrix_l::size_type column)
+{
+	return *gsl_matrix_long_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_ul::reference Matrix_ul::
+    operator() (const typename Matrix_ul::size_type row, const typename Matrix_ul::size_type column)
+{
+	return *gsl_matrix_ulong_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_s::reference Matrix_s::
+    operator() (const typename Matrix_s::size_type row, const typename Matrix_s::size_type column)
+{
+	return *gsl_matrix_short_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_us::reference Matrix_us::
+    operator() (const typename Matrix_us::size_type row, const typename Matrix_us::size_type column)
+{
+	return *gsl_matrix_ushort_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_c::reference Matrix_c::
+    operator() (const typename Matrix_c::size_type row, const typename Matrix_c::size_type column)
+{
+	return *gsl_matrix_char_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_uc::reference Matrix_uc::
+    operator() (const typename Matrix_uc::size_type row, const typename Matrix_uc::size_type column)
+{
+	return *gsl_matrix_uchar_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_cx::reference Matrix_cx::
+    operator() (const typename Matrix_cx::size_type row, const typename Matrix_cx::size_type column)
+{
+	return *gsl_matrix_complex_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_cxld::reference Matrix_cxld::
+    operator() (const typename Matrix_cxld::size_type row, const typename Matrix_cxld::size_type column)
+{
+	return *gsl_matrix_complex_long_double_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_cxf::reference Matrix_cxf::
+    operator() (const typename Matrix_cxf::size_type row, const typename Matrix_cxf::size_type column)
+{
+	return *gsl_matrix_complex_float_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_reference Matrix_t<D, M, V, A>::
+    operator() (const typename Matrix_t<D, M, V, A>::size_type row, const typename Matrix_t<D, M, V, A>::size_type column) const
+{
+	return (*this)[row][column];
+}
+
+template<>
+inline typename Matrix::const_reference Matrix::
+    operator() (const typename Matrix::size_type row, const typename Matrix::size_type column) const
+{
+	return *gsl_matrix_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_ld::const_reference Matrix_ld::
+    operator() (const typename Matrix_ld::size_type row, const typename Matrix_ld::size_type column) const
+{
+	return *gsl_matrix_long_double_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_f::const_reference Matrix_f::
+    operator() (const typename Matrix_f::size_type row, const typename Matrix_f::size_type column) const
+{
+	return *gsl_matrix_float_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_i::const_reference Matrix_i::
+    operator() (const typename Matrix_i::size_type row, const typename Matrix_i::size_type column) const
+{
+	return *gsl_matrix_int_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_ui::const_reference Matrix_ui::
+    operator() (const typename Matrix_ui::size_type row, const typename Matrix_ui::size_type column) const
+{
+	return *gsl_matrix_uint_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_l::const_reference Matrix_l::
+    operator() (const typename Matrix_l::size_type row, const typename Matrix_l::size_type column) const
+{
+	return *gsl_matrix_long_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_ul::const_reference Matrix_ul::
+    operator() (const typename Matrix_ul::size_type row, const typename Matrix_ul::size_type column) const
+{
+	return *gsl_matrix_ulong_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_s::const_reference Matrix_s::
+    operator() (const typename Matrix_s::size_type row, const typename Matrix_s::size_type column) const
+{
+	return *gsl_matrix_short_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_us::const_reference Matrix_us::
+    operator() (const typename Matrix_us::size_type row, const typename Matrix_us::size_type column) const
+{
+	return *gsl_matrix_ushort_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_c::const_reference Matrix_c::
+    operator() (const typename Matrix_c::size_type row, const typename Matrix_c::size_type column) const
+{
+	return *gsl_matrix_char_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_uc::const_reference Matrix_uc::
+    operator() (const typename Matrix_uc::size_type row, const typename Matrix_uc::size_type column) const
+{
+	return *gsl_matrix_uchar_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_cx::const_reference Matrix_cx::
+    operator() (const typename Matrix_cx::size_type row, const typename Matrix_cx::size_type column) const
+{
+	return *gsl_matrix_complex_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_cxld::const_reference Matrix_cxld::
+    operator() (const typename Matrix_cxld::size_type row, const typename Matrix_cxld::size_type column) const
+{
+	return *gsl_matrix_complex_long_double_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<>
+inline typename Matrix_cxf::const_reference Matrix_cxf::
+    operator() (const typename Matrix_cxf::size_type row, const typename Matrix_cxf::size_type column) const
+{
+	return *gsl_matrix_complex_float_const_ptr(this->gsl_mat.get(), row, column);
+}
+
+template<class D, class M, class V, class A>
+Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
     front()
 {
     return *this->begin();
 }
 
-template<class T, class M, class V, class A>
-const Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
+template<class D, class M, class V, class A>
+const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
     front() const
 {
     return *this->cbegin();
 }
 
 
-template<class T, class M, class V, class A>
-Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
+template<class D, class M, class V, class A>
+Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
     back()
 {
     return *(--this->end());
 }
 
-template<class T, class M, class V, class A>
-const Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
+template<class D, class M, class V, class A>
+const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
     back() const
 {
     return *(--this->cend());
 }
 
-template<class T, class M, class V, class A>
-Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
-    at(const typename Matrix_t<T, M, V, A>::size_type index)
+template<class D, class M, class V, class A>
+Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+    at(const typename Matrix_t<D, M, V, A>::size_type index)
 {
     if(index >= this->gsl_mat->size1){
         throw std::out_of_range("Row index " + std::to_string(index) + " out of range.");
@@ -2535,9 +2853,9 @@ Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
     return (*this)[index];
 }
 
-template<class T, class M, class V, class A>
-const Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
-    at(const typename Matrix_t<T, M, V, A>::size_type index) const
+template<class D, class M, class V, class A>
+const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+    at(const typename Matrix_t<D, M, V, A>::size_type index) const
 {
     if(index >= this->gsl_mat->size1){
         throw std::out_of_range("Row index " + std::to_string(index) + " out of range.");
@@ -2545,9 +2863,9 @@ const Vector_t<T, V, A>& Matrix_t<T, M, V, A>::
     return (*this)[index];
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::reference Matrix_t<T, M, V, A>::
-    at(const typename Matrix_t<T, M, V, A>::size_type i, const typename Matrix_t<T, M, V, A>::size_type j)
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::reference Matrix_t<D, M, V, A>::
+    at(const typename Matrix_t<D, M, V, A>::size_type i, const typename Matrix_t<D, M, V, A>::size_type j)
 {
     if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
         throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
@@ -2555,9 +2873,9 @@ typename Matrix_t<T, M, V, A>::reference Matrix_t<T, M, V, A>::
     return this->gsl_mat->data[i*this->gsl_mat->tda + j];
 }
 
-template<class T, class M, class V, class A>
-typename Matrix_t<T, M, V, A>::const_reference Matrix_t<T, M, V, A>::
-    at(const typename Matrix_t<T, M, V, A>::size_type i, const typename Matrix_t<T, M, V, A>::size_type j) const
+template<class D, class M, class V, class A>
+typename Matrix_t<D, M, V, A>::const_reference Matrix_t<D, M, V, A>::
+    at(const typename Matrix_t<D, M, V, A>::size_type i, const typename Matrix_t<D, M, V, A>::size_type j) const
 {
     if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
         throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
@@ -2619,8 +2937,8 @@ inline typename Matrix_cxld::const_reference Matrix_cxld::at(const Matrix_cxld::
     return *gsl_matrix_complex_long_double_ptr(this->gsl_mat.get(), i, j);
 }
 
-template<class T, class M, class V, class A>
-std::string Matrix_t<T, M, V, A>::to_string() const
+template<class D, class M, class V, class A>
+std::string Matrix_t<D, M, V, A>::to_string() const
 {
     std::string res = "[";
     size_t i = 0, j = 0;
