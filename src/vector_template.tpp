@@ -1807,7 +1807,7 @@ inline Vector& Vector::operator*=(const double& b)
 {
     int stat = gsl_vector_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1831,7 +1831,7 @@ inline Vector_f& Vector_f::operator*=(const float& b)
 {
     int stat = gsl_vector_float_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1843,7 +1843,7 @@ inline Vector_i& Vector_i::operator*=(const int& b)
 {
     int stat = gsl_vector_int_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1855,7 +1855,7 @@ inline Vector_ui& Vector_ui::operator*=(const unsigned int& b)
 {
     int stat = gsl_vector_uint_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1867,7 +1867,7 @@ inline Vector_l& Vector_l::operator*=(const long& b)
 {
     int stat = gsl_vector_long_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1879,7 +1879,7 @@ inline Vector_ul& Vector_ul::operator*=(const unsigned long& b)
 {
     int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1891,7 +1891,7 @@ inline Vector_s& Vector_s::operator*=(const short& b)
 {
     int stat = gsl_vector_short_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1903,7 +1903,7 @@ inline Vector_us& Vector_us::operator*=(const unsigned short& b)
 {
     int stat = gsl_vector_ushort_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1916,7 +1916,7 @@ inline Vector_c& Vector_c::operator*=(const char& b)
 {
     int stat = gsl_vector_char_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1928,7 +1928,7 @@ inline Vector_uc& Vector_uc::operator*=(const unsigned char& b)
 {
     int stat = gsl_vector_uchar_scale(this->gsl_vec.get(), b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1940,7 +1940,7 @@ inline Vector_cx& Vector_cx::operator*=(const Complex& b)
 {
     int stat = gsl_vector_complex_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1952,7 +1952,7 @@ inline Vector_cxld& Vector_cxld::operator*=(const Complex_ld& b)
 {
     int stat = gsl_vector_complex_long_double_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1964,7 +1964,7 @@ inline Vector_cxf& Vector_cxf::operator*=(const Complex_f& b)
 {
     int stat = gsl_vector_complex_float_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -1976,7 +1976,7 @@ inline Vector& Vector::operator/=(const double& b)
 {
     int stat = gsl_vector_scale(this->gsl_vec.get(), 1./b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -2000,7 +2000,7 @@ inline Vector_f& Vector_f::operator/=(const float& b)
 {
     int stat = gsl_vector_float_scale(this->gsl_vec.get(), static_cast<float>(1.)/b);
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -2010,9 +2010,11 @@ inline Vector_f& Vector_f::operator/=(const float& b)
 template<>
 inline Vector_i& Vector_i::operator/=(const int& b)
 {
-    int stat = gsl_vector_int_scale(this->gsl_vec.get(), 1/b);
+    Vector_i tmp(this->size());
+    gsl_vector_int_set_all(tmp.gsl_vec.get(), b);
+    int stat = gsl_vector_int_div(this->gsl_vec.get(), tmp.gsl_vec.get());
     if(stat){
-		std::string error_str =   gsl_strerror(stat);
+		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
         + error_str);
 	}
@@ -2022,7 +2024,9 @@ inline Vector_i& Vector_i::operator/=(const int& b)
 template<>
 inline Vector_ui& Vector_ui::operator/=(const unsigned int& b)
 {
-    int stat = gsl_vector_uint_scale(this->gsl_vec.get(), 1/b);
+    Vector_ui tmp(this->size());
+    gsl_vector_uint_set_all(tmp.gsl_vec.get(), b);
+    int stat = gsl_vector_uint_div(this->gsl_vec.get(), tmp.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2034,7 +2038,9 @@ inline Vector_ui& Vector_ui::operator/=(const unsigned int& b)
 template<>
 inline Vector_l& Vector_l::operator/=(const long& b)
 {
-    int stat = gsl_vector_long_scale(this->gsl_vec.get(), 1/b);
+    Vector_l tmp(this->size());
+    gsl_vector_long_set_all(tmp.gsl_vec.get(), b);
+    int stat = gsl_vector_long_div(this->gsl_vec.get(), tmp.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2046,7 +2052,9 @@ inline Vector_l& Vector_l::operator/=(const long& b)
 template<>
 inline Vector_ul& Vector_ul::operator/=(const unsigned long& b)
 {
-    int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), 1/b);
+    Vector_ul tmp(this->size());
+    gsl_vector_ulong_set_all(tmp.gsl_vec.get(), b);
+    int stat = gsl_vector_ulong_div(this->gsl_vec.get(), tmp.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2058,7 +2066,9 @@ inline Vector_ul& Vector_ul::operator/=(const unsigned long& b)
 template<>
 inline Vector_s& Vector_s::operator/=(const short& b)
 {
-    int stat = gsl_vector_short_scale(this->gsl_vec.get(), 1/b);
+    Vector_s tmp(this->size());
+    gsl_vector_short_set_all(tmp.gsl_vec.get(), b);
+    int stat = gsl_vector_short_div(this->gsl_vec.get(), tmp.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2070,7 +2080,9 @@ inline Vector_s& Vector_s::operator/=(const short& b)
 template<>
 inline Vector_us& Vector_us::operator/=(const unsigned short& b)
 {
-    int stat = gsl_vector_ushort_scale(this->gsl_vec.get(), 1/b);
+    Vector_us tmp(this->size());
+    gsl_vector_ushort_set_all(tmp.gsl_vec.get(), b);
+    int stat = gsl_vector_ushort_div(this->gsl_vec.get(), tmp.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2083,7 +2095,9 @@ inline Vector_us& Vector_us::operator/=(const unsigned short& b)
 template<>
 inline Vector_c& Vector_c::operator/=(const char& b)
 {
-    int stat = gsl_vector_char_scale(this->gsl_vec.get(), 1/b);
+    Vector_c tmp(this->size());
+    gsl_vector_char_set_all(tmp.gsl_vec.get(), b);
+    int stat = gsl_vector_char_div(this->gsl_vec.get(), tmp.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2095,7 +2109,9 @@ inline Vector_c& Vector_c::operator/=(const char& b)
 template<>
 inline Vector_uc& Vector_uc::operator/=(const unsigned char& b)
 {
-    int stat = gsl_vector_uchar_scale(this->gsl_vec.get(), 1/b);
+    Vector_uc tmp(this->size());
+    gsl_vector_uchar_set_all(tmp.gsl_vec.get(), b);
+    int stat = gsl_vector_uchar_div(this->gsl_vec.get(), tmp.gsl_vec.get());
     if(stat){
 		std::string error_str =   gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "

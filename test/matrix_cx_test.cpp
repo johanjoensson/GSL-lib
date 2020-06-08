@@ -208,6 +208,8 @@ TEST(Matrix_cxTest, TestTranspose)
 TEST(Matrix_cxTest, TestHermitian)
 {
     GSL::Matrix_cx m{{{1, 6}, {2, 5}}, {{3, 4}, {4, 3}}, {{5, 2}, {6, 1}}};
+    std::cout << "m = " << m << "\n";
+    std::cout << "mH = " << m.hermitian_transpose() << "\n";
     GSL::Matrix_cx res{{{1, -6}, {3, -4}, {5, -2}},{{2, -5}, {4, -3}, {6, -1}}};
     EXPECT_EQ(m.hermitian_transpose(), res);
 }

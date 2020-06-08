@@ -1832,9 +1832,9 @@ hermitian_transpose() const
 {
     Matrix_cx res = this->transpose();
     for(Matrix_cx::size_type
-            i = 0; i < this->size().first; i++){
+            i = 0; i < this->size().second; i++){
         for(Matrix_cx::size_type
-                j = 0; j < this->size().second; j++){
+                j = 0; j < this->size().first; j++){
                     res[i][j] = gsl_complex_conjugate(res[i][j]);
         }
     }
@@ -1848,9 +1848,9 @@ hermitian_transpose() const
 {
     Matrix_cxld res = this->transpose();
     for(Matrix_cxld::size_type
-            i = 0; i < this->size().first; i++){
+            i = 0; i < this->size().second; i++){
         for(Matrix_cxld::size_type
-                j = 0; j < this->size().second; j++){
+                j = 0; j < this->size().first; j++){
                     res[i][j] = GSL::Complex_ld(res[i][j]).conjugate();
         }
     }
@@ -1864,9 +1864,9 @@ hermitian_transpose() const
 {
     Matrix_cxf res = this->transpose();
     for(Matrix_cxf::size_type
-            i = 0; i < this->size().first; i++){
+            i = 0; i < this->size().second; i++){
         for(Matrix_cxf::size_type
-                j = 0; j < this->size().second; j++){
+                j = 0; j < this->size().first; j++){
                     res[i][j] = GSL::Complex_f(res[i][j]).conjugate();
         }
     }
