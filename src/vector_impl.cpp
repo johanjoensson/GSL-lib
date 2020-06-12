@@ -1,4 +1,4 @@
-#include "vector_template.h"
+#include "vector.h"
 #include "complex.h"
 #include <gsl/gsl_blas.h>
 #include <iostream>

@@ -31,14 +31,16 @@ INC_DIR = include
 WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++ -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
 CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC -g -pg
 
-CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-* 
+CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-*
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
 
 # Libraries to link against
-LDFLAGS = -lgsl -lopenblas -Ofast -fuse-ld=gold -flto -fPIC
+LDFLAGS = -lgsl -lopenblas -fPIC #-Ofast -fuse-ld=gold -flto
 
 
-LIB_OBJ = divided_difference.o\
+LIB_OBJ = complex_impl.o\
+	  matrix_impl.o\
+	  divided_difference.o\
 	  permutation.o\
 	  eigen.o\
 	  linalg.o\
@@ -116,25 +118,25 @@ lib$(LIB)cov.so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -shared -Wl,-soname,$@
 
 checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
-	$(CXXCHECK) $^ $(CXXCHECKFLAGS) 
+	$(CXXCHECK) $^ $(CXXCHECKFLAGS)
 
 
 tests:  CXXFLAGS += --coverage
-tests:  LDFLAGS += --coverage -lgtest 
+tests:  LDFLAGS += --coverage -lgtest
 tests:  lib$(LIB)cov.so
 tests: 	$(INC_DIR) $(BUILD_DIR) $(LIB_DIR) $(TEST_OBJS)
-	$(CXX) $(TEST_OBJS) -o $@ -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS) 
+	$(CXX) $(TEST_OBJS) -o $@ -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS)
 
 travis : -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
 travis: $(BUILD_DIR) $(LIB_DIR) $(INC_DIR) lib$(LIB).so
 
-$(BUILD_DIR) : 
+$(BUILD_DIR) :
 	mkdir -p $(BUILD_DIR)
 
-$(LIB_DIR) : 
+$(LIB_DIR) :
 	mkdir -p $(LIB_DIR)/$(LIB)
 
-$(INC_DIR) : 
+$(INC_DIR) :
 	mkdir -p $(INC_DIR)/$(LIB)
 	cp $(SRC_DIR)/*.h $(INC_DIR)/$(LIB)
 	cp $(SRC_DIR)/*.tpp $(INC_DIR)/$(LIB)

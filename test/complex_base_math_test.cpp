@@ -86,9 +86,8 @@ TEST(ComplexBaseMathTest, TestScaleR)
 TEST(ComplexBaseMathTest, TestDivR)
 {
     double re = 1, im = 2;
-    GSL::Complex z(re, im);
+    GSL::Complex z(re, im), z2(re, im);
     double dz = 0.1;
-    GSL::Complex z2 = z;
     z /= dz;
     z2 *= 1/dz;
     EXPECT_DOUBLE_EQ(z.re(), z2.re());
@@ -117,7 +116,7 @@ TEST(ComplexBaseMathTest, TestMultC)
 {
     double re = 1, im = 2;
     GSL::Complex z(re, im);
-    GSL::Complex dz(re/10, im/5);
+    GSL::Complex dz(re/10, im/5); // re : 1/10 - 4/5 = -7/10, im : 2/5 + 2/10 = 6/10
     GSL::Complex z2(-0.7, 0.6);
     EXPECT_DOUBLE_EQ((z*dz).re(), z2.re());
     EXPECT_DOUBLE_EQ((z*dz).im(), z2.im());
