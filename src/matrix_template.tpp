@@ -9,12 +9,12 @@ namespace GSL{
 
 template<class D, class GSL_MAT, class GSL_VEC, class A>
 inline Matrix_t<D, GSL_MAT, GSL_VEC, A>::Matrix_t()
- : gsl_mat(nullptr), v_m()
+ : gsl_mat(nullptr)
 {}
 
 template<>
 inline Matrix::Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_calloc(n1, n2), gsl_matrix_free), v_m()
+ : gsl_mat(gsl_matrix_calloc(n1, n2), gsl_matrix_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_calloc)"
@@ -25,7 +25,7 @@ inline Matrix::Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type 
 template<>
 inline Matrix_ld::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_long_double_calloc(n1, n2), gsl_matrix_long_double_free), v_m()
+ : gsl_mat(gsl_matrix_long_double_calloc(n1, n2), gsl_matrix_long_double_free)
 {
 
     if(gsl_mat == nullptr){
@@ -37,7 +37,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_f::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_float_calloc(n1, n2), gsl_matrix_float_free), v_m()
+ : gsl_mat(gsl_matrix_float_calloc(n1, n2), gsl_matrix_float_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_float_calloc)"
@@ -48,7 +48,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_i::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_int_calloc(n1, n2), gsl_matrix_int_free), v_m()
+ : gsl_mat(gsl_matrix_int_calloc(n1, n2), gsl_matrix_int_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_int_calloc)"
@@ -59,7 +59,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_ui::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_uint_calloc(n1, n2), gsl_matrix_uint_free), v_m()
+ : gsl_mat(gsl_matrix_uint_calloc(n1, n2), gsl_matrix_uint_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_uint_calloc)"
@@ -70,7 +70,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_l::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_long_calloc(n1, n2), gsl_matrix_long_free), v_m()
+ : gsl_mat(gsl_matrix_long_calloc(n1, n2), gsl_matrix_long_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_long_calloc)"
@@ -81,7 +81,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_ul::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_ulong_calloc(n1, n2), gsl_matrix_ulong_free), v_m()
+ : gsl_mat(gsl_matrix_ulong_calloc(n1, n2), gsl_matrix_ulong_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_ulong_calloc)"
@@ -92,7 +92,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_s::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_short_calloc(n1, n2), gsl_matrix_short_free), v_m()
+ : gsl_mat(gsl_matrix_short_calloc(n1, n2), gsl_matrix_short_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_short_calloc)"
@@ -103,7 +103,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_us::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_ushort_calloc(n1, n2), gsl_matrix_ushort_free), v_m()
+ : gsl_mat(gsl_matrix_ushort_calloc(n1, n2), gsl_matrix_ushort_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_ushort_calloc)"
@@ -114,7 +114,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_c::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_char_calloc(n1, n2), gsl_matrix_char_free), v_m()
+ : gsl_mat(gsl_matrix_char_calloc(n1, n2), gsl_matrix_char_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_char_calloc)"
@@ -125,7 +125,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_uc::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_uchar_calloc(n1, n2), gsl_matrix_uchar_free), v_m()
+ : gsl_mat(gsl_matrix_uchar_calloc(n1, n2), gsl_matrix_uchar_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_uchar_calloc)"
@@ -136,7 +136,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_cx::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_complex_calloc(n1, n2), gsl_matrix_complex_free), v_m()
+ : gsl_mat(gsl_matrix_complex_calloc(n1, n2), gsl_matrix_complex_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_complex_calloc)"
@@ -147,7 +147,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_cxld::
 Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_complex_long_double_calloc(n1, n2), gsl_matrix_complex_long_double_free), v_m()
+ : gsl_mat(gsl_matrix_complex_long_double_calloc(n1, n2), gsl_matrix_complex_long_double_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_long_double_calloc)"
@@ -158,7 +158,7 @@ Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
 template<>
 inline Matrix_cxf::Matrix_t
 (const Matrix_t::size_type n1, const Matrix_t::size_type n2)
- : gsl_mat(gsl_matrix_complex_float_calloc(n1, n2), gsl_matrix_complex_float_free), v_m()
+ : gsl_mat(gsl_matrix_complex_float_calloc(n1, n2), gsl_matrix_complex_float_free)
 {
     if(gsl_mat == nullptr){
         throw std::runtime_error("Memory allocation (gsl_matrix_float_calloc)"
@@ -176,6 +176,160 @@ Matrix_t(std::initializer_list<GSL::Vector_t<D, GSL_VECTOR, A>> l)
 	row = *row_it;
 	row_it++;
     }
+}
+
+template<>
+inline Matrix::Matrix_t(std::initializer_list<GSL::Vector> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_ld::Matrix_t(std::initializer_list<GSL::Vector_ld> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_long_double_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_f::Matrix_t(std::initializer_list<GSL::Vector_f> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_float_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_i::Matrix_t(std::initializer_list<GSL::Vector_i> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_int_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_ui::Matrix_t(std::initializer_list<GSL::Vector_ui> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_uint_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_l::Matrix_t(std::initializer_list<GSL::Vector_l> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_long_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_ul::Matrix_t(std::initializer_list<GSL::Vector_ul> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_ulong_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_s::Matrix_t(std::initializer_list<GSL::Vector_s> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_short_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_us::Matrix_t(std::initializer_list<GSL::Vector_us> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_ushort_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_c::Matrix_t(std::initializer_list<GSL::Vector_c> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_char_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_uc::Matrix_t(std::initializer_list<GSL::Vector_uc> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_uchar_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_cx::Matrix_t(std::initializer_list<GSL::Vector_cx> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_complex_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_cxld::Matrix_t(std::initializer_list<GSL::Vector_cxld> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_complex_long_double_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
+}
+
+template<>
+inline Matrix_cxf::Matrix_t(std::initializer_list<GSL::Vector_cxf> l)
+ : Matrix_t(l.size(), l.begin()->size())
+{
+     auto row_it = l.begin();
+     for(size_t i = 0; i < l.size(); i++){
+         gsl_matrix_complex_float_set_row(this->gsl_mat.get(), i, row_it->gsl_vec.get());
+         row_it++;
+     }
 }
 
 template<class D, class GSL_MAT, class GSL_VEC, class A>
@@ -458,7 +612,7 @@ inline Matrix_t<D, G, V, A>& Matrix_t<D, G, V, A>::operator=(const Matrix_t<D, G
 template<class D, class G, class V, class A>
 inline Matrix_t<D, G, V, A>& Matrix_t<D, G, V, A>::operator=(Matrix_t<D, G, V, A>&& a)
 {
-    std::swap(this->gsl_mat, a.gsl_mat);
+    this->gsl_mat = std::move(a.gsl_mat);
     return *this;
 }
 
@@ -1898,367 +2052,284 @@ inline GSL::Complex Matrix_cx::det() const
 }
 
 template<>
-inline Vector& Matrix::get_row(const Matrix::difference_type i)
+inline Vector Matrix::get_row(const Matrix::difference_type i)
 {
     if(i < 0 || static_cast<Matrix::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector tmp = gsl_matrix_row(this->gsl_mat.get(), static_cast<Matrix::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector>(new gsl_vector);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_row(this->gsl_mat.get(), static_cast<Matrix::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_ld& Matrix_ld::get_row(const Matrix_ld::difference_type i)
+inline Vector_ld Matrix_ld::get_row(const Matrix_ld::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_ld::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_long_double tmp = gsl_matrix_long_double_row(this->gsl_mat.get(), static_cast<Matrix_ld::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_long_double>(new gsl_vector_long_double);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_long_double_row(this->gsl_mat.get(), static_cast<Matrix_ld::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_f& Matrix_f::get_row(const Matrix_f::difference_type i)
+inline Vector_f Matrix_f::get_row(const Matrix_f::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_f::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_float tmp = gsl_matrix_float_row(this->gsl_mat.get(), static_cast<Matrix_f::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_float>(new gsl_vector_float);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_float_row(this->gsl_mat.get(), static_cast<Matrix_f::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_i& Matrix_i::get_row(const Matrix_i::difference_type i)
+inline Vector_i Matrix_i::get_row(const Matrix_i::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_i::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_int tmp = gsl_matrix_int_row(this->gsl_mat.get(), static_cast<Matrix_i::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_int>(new gsl_vector_int);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_int_row(this->gsl_mat.get(), static_cast<Matrix_i::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_ui& Matrix_ui::get_row(const Matrix_ui::difference_type i)
+inline Vector_ui Matrix_ui::get_row(const Matrix_ui::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_ui::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_uint tmp = gsl_matrix_uint_row(this->gsl_mat.get(), static_cast<Matrix_ui::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_uint>(new gsl_vector_uint);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_uint_row(this->gsl_mat.get(), static_cast<Matrix_ui::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_l& Matrix_l::get_row(const Matrix_l::difference_type i)
+inline Vector_l Matrix_l::get_row(const Matrix_l::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_l::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_long tmp = gsl_matrix_long_row(this->gsl_mat.get(), static_cast<Matrix_l::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_long>(new gsl_vector_long);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_long_row(this->gsl_mat.get(), static_cast<Matrix_l::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_ul& Matrix_ul::get_row(const Matrix_ul::difference_type i)
+inline Vector_ul Matrix_ul::get_row(const Matrix_ul::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_ul::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_ulong tmp = gsl_matrix_ulong_row(this->gsl_mat.get(), static_cast<Matrix_ul::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_ulong>(new gsl_vector_ulong);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_ulong_row(this->gsl_mat.get(), static_cast<Matrix_ul::size_type>(i)).vector;
+
 }
 
 template<>
-inline Vector_s& Matrix_s::get_row(const Matrix_s::difference_type i)
+inline Vector_s Matrix_s::get_row(const Matrix_s::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_s::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_short tmp = gsl_matrix_short_row(this->gsl_mat.get(), static_cast<Matrix_s::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_short>(new gsl_vector_short);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_short_row(this->gsl_mat.get(), static_cast<Matrix_s::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_us& Matrix_us::get_row(const Matrix_us::difference_type i)
+inline Vector_us Matrix_us::get_row(const Matrix_us::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_us::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_ushort tmp = gsl_matrix_ushort_row(this->gsl_mat.get(), static_cast<Matrix_us::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_ushort>(new gsl_vector_ushort);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_ushort_row(this->gsl_mat.get(), static_cast<Matrix_us::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_c& Matrix_c::get_row(const Matrix_c::difference_type i)
+inline Vector_c Matrix_c::get_row(const Matrix_c::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_c::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_char tmp = gsl_matrix_char_row(this->gsl_mat.get(), static_cast<Matrix_c::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_char>(new gsl_vector_char);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_char_row(this->gsl_mat.get(), static_cast<Matrix_c::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_uc& Matrix_uc::get_row(const Matrix_uc::difference_type i)
+inline Vector_uc Matrix_uc::get_row(const Matrix_uc::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_uc::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_uchar tmp = gsl_matrix_uchar_row(this->gsl_mat.get(), static_cast<Matrix_uc::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_uchar>(new gsl_vector_uchar);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_uchar_row(this->gsl_mat.get(), static_cast<Matrix_uc::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_cx& Matrix_cx::get_row(const Matrix_cx::difference_type i)
+inline Vector_cx Matrix_cx::get_row(const Matrix_cx::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_cx::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex tmp = gsl_matrix_complex_row(this->gsl_mat.get(), static_cast<Matrix_cx::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_complex_row(this->gsl_mat.get(), static_cast<Matrix_cx::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_cxld& Matrix_cxld::get_row(const Matrix_cxld::difference_type i)
+inline Vector_cxld Matrix_cxld::get_row(const Matrix_cxld::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_cxld::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex_long_double tmp = gsl_matrix_complex_long_double_row(this->gsl_mat.get(), static_cast<Matrix_cxld::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex_long_double>(new gsl_vector_complex_long_double);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_complex_long_double_row(this->gsl_mat.get(), static_cast<Matrix_cxld::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_cxf& Matrix_cxf::get_row(const Matrix_cxf::difference_type i)
+inline Vector_cxf Matrix_cxf::get_row(const Matrix_cxf::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_cxf::size_type>(i) >= this->size().first){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex_float tmp = gsl_matrix_complex_float_row(this->gsl_mat.get(), static_cast<Matrix_cxf::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex_float>(new gsl_vector_complex_float);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_complex_float_row(this->gsl_mat.get(), static_cast<Matrix_cxf::size_type>(i)).vector;
 }
 
 template<>
-inline Vector& Matrix::get_col(const Matrix::difference_type i)
+inline Vector Matrix::get_col(const Matrix::difference_type i)
 {
     if(i < 0 || static_cast<Matrix::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector tmp = gsl_matrix_column(this->gsl_mat.get(), static_cast<Matrix::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector>(new gsl_vector);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_column(this->gsl_mat.get(), static_cast<Matrix::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_ld& Matrix_ld::get_col(const Matrix_ld::difference_type i)
+inline Vector_ld Matrix_ld::get_col(const Matrix_ld::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_ld::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_long_double tmp = gsl_matrix_long_double_column(this->gsl_mat.get(), static_cast<Matrix_ld::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_long_double>(new gsl_vector_long_double);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_long_double_column(this->gsl_mat.get(), static_cast<Matrix_ld::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_f& Matrix_f::get_col(const Matrix_f::difference_type i)
+inline Vector_f Matrix_f::get_col(const Matrix_f::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_f::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_float tmp = gsl_matrix_float_column(this->gsl_mat.get(), static_cast<Matrix_f::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_float>(new gsl_vector_float);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_float_column(this->gsl_mat.get(), static_cast<Matrix_f::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_i& Matrix_i::get_col(const Matrix_i::difference_type i)
+inline Vector_i Matrix_i::get_col(const Matrix_i::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_i::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_int tmp = gsl_matrix_int_column(this->gsl_mat.get(), static_cast<Matrix_i::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_int>(new gsl_vector_int);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_int_column(this->gsl_mat.get(), static_cast<Matrix_i::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_ui& Matrix_ui::get_col(const Matrix_ui::difference_type i)
+inline Vector_ui Matrix_ui::get_col(const Matrix_ui::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_ui::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_uint tmp = gsl_matrix_uint_column(this->gsl_mat.get(), static_cast<Matrix_ui::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_uint>(new gsl_vector_uint);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_uint_column(this->gsl_mat.get(), static_cast<Matrix_ui::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_l& Matrix_l::get_col(const Matrix_l::difference_type i)
+inline Vector_l Matrix_l::get_col(const Matrix_l::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_l::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_long tmp = gsl_matrix_long_column(this->gsl_mat.get(), static_cast<Matrix_l::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_long>(new gsl_vector_long);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_long_column(this->gsl_mat.get(), static_cast<Matrix_l::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_ul& Matrix_ul::get_col(const Matrix_ul::difference_type i)
+inline Vector_ul Matrix_ul::get_col(const Matrix_ul::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_ul::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_ulong tmp = gsl_matrix_ulong_column(this->gsl_mat.get(), static_cast<Matrix_ul::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_ulong>(new gsl_vector_ulong);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_ulong_column(this->gsl_mat.get(), static_cast<Matrix_ul::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_s& Matrix_s::get_col(const Matrix_s::difference_type i)
+inline Vector_s Matrix_s::get_col(const Matrix_s::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_s::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_short tmp = gsl_matrix_short_column(this->gsl_mat.get(), static_cast<Matrix_s::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_short>(new gsl_vector_short);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_short_column(this->gsl_mat.get(), static_cast<Matrix_s::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_us& Matrix_us::get_col(const Matrix_us::difference_type i)
+inline Vector_us Matrix_us::get_col(const Matrix_us::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_us::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_ushort tmp = gsl_matrix_ushort_column(this->gsl_mat.get(), static_cast<Matrix_us::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_ushort>(new gsl_vector_ushort);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_ushort_column(this->gsl_mat.get(), static_cast<Matrix_us::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_c& Matrix_c::get_col(const Matrix_c::difference_type i)
+inline Vector_c Matrix_c::get_col(const Matrix_c::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_c::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_char tmp = gsl_matrix_char_column(this->gsl_mat.get(), static_cast<Matrix_c::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_char>(new gsl_vector_char);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_char_column(this->gsl_mat.get(), static_cast<Matrix_c::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_uc& Matrix_uc::get_col(const Matrix_uc::difference_type i)
+inline Vector_uc Matrix_uc::get_col(const Matrix_uc::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_uc::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_uchar tmp = gsl_matrix_uchar_column(this->gsl_mat.get(), static_cast<Matrix_uc::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_uchar>(new gsl_vector_uchar);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_uchar_column(this->gsl_mat.get(), static_cast<Matrix_uc::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_cx& Matrix_cx::get_col(const Matrix_cx::difference_type i)
+inline Vector_cx Matrix_cx::get_col(const Matrix_cx::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_cx::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex tmp = gsl_matrix_complex_column(this->gsl_mat.get(), static_cast<Matrix_cx::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex>(new gsl_vector_complex);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_complex_column(this->gsl_mat.get(), static_cast<Matrix_cx::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_cxld& Matrix_cxld::get_col(const Matrix_cxld::difference_type i)
+inline Vector_cxld Matrix_cxld::get_col(const Matrix_cxld::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_cxld::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex_long_double tmp = gsl_matrix_complex_long_double_column(this->gsl_mat.get(), static_cast<Matrix_cxld::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex_long_double>(new gsl_vector_complex_long_double);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_complex_long_double_column(this->gsl_mat.get(), static_cast<Matrix_cxld::size_type>(i)).vector;
 }
 
 template<>
-inline Vector_cxf& Matrix_cxf::get_col(const Matrix_cxf::difference_type i)
+inline Vector_cxf Matrix_cxf::get_col(const Matrix_cxf::difference_type i)
 {
     if(i < 0 || static_cast<Matrix_cxf::size_type>(i) >= this->size().second){
         throw(std::runtime_error("Error, dereferencing an iterator that is"
         "out of bounds!\n"));
     }
-    gsl_vector_complex_float tmp = gsl_matrix_complex_float_column(this->gsl_mat.get(), static_cast<Matrix_cxf::size_type>(i)).vector;
-    v_m.gsl_vec = std::shared_ptr<gsl_vector_complex_float>(new gsl_vector_complex_float);
-    *v_m.gsl_vec.get() = tmp;
-    return v_m;
+    return gsl_matrix_complex_float_column(this->gsl_mat.get(), static_cast<Matrix_cxf::size_type>(i)).vector;
 }
 
 
@@ -2375,7 +2446,7 @@ typename Matrix_t<D, M, V, A>::iterator::difference_type Matrix_t<D, M, V, A>::i
 }
 
 template<class D, class M, class V, class A>
-typename Matrix_t<D, M, V, A>::iterator::reference Matrix_t<D, M, V, A>::iterator::
+typename Matrix_t<D, M, V, A>::iterator::value_type Matrix_t<D, M, V, A>::iterator::
     operator*()
 {
     return this->mat_m.get_row(this->row_m);
@@ -2496,7 +2567,7 @@ typename Matrix_t<D, M, V, A>::const_iterator::difference_type Matrix_t<D, M, V,
 }
 
 template<class D, class M, class V, class A>
-typename Matrix_t<D, M, V, A>::const_iterator::reference Matrix_t<D, M, V, A>::const_iterator::
+typename Matrix_t<D, M, V, A>::const_iterator::value_type Matrix_t<D, M, V, A>::const_iterator::
     operator*() const
 {
     return mat_m[static_cast<Matrix_t<D, M, V, A>::size_type>(this->row_m)];
@@ -2590,18 +2661,32 @@ typename Matrix_t<D, M, V, A>::const_reverse_iterator Matrix_t<D, M, V, A>::cren
 }
 
 template<class D, class M, class V, class A>
-Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+Vector_t<D, V, A> Matrix_t<D, M, V, A>::
     operator[] (const typename Matrix_t<D, M, V, A>::size_type index)
 {
     return *(this->begin() + static_cast<Matrix_t<D, M, V, A>::difference_type>(index));
 }
 
 template<class D, class M, class V, class A>
-const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+const Vector_t<D, V, A> Matrix_t<D, M, V, A>::
     operator[] (const typename Matrix_t<D, M, V, A>::size_type index) const
 {
     return *(this->cbegin() +
         static_cast<Matrix_t<D, M, V, A>::difference_type>(index));
+}
+
+template<class D, class M, class V, class A>
+Vector_t<D, V, A> Matrix_t<D, M, V, A>::
+    operator() (const typename Matrix_t<D, M, V, A>::size_type row)
+{
+	return (*this)[row];
+}
+
+template<class D, class M, class V, class A>
+const Vector_t<D, V, A> Matrix_t<D, M, V, A>::
+    operator() (const typename Matrix_t<D, M, V, A>::size_type row) const
+{
+	return (*this)[row];
 }
 
 template<class D, class M, class V, class A>
@@ -2815,14 +2900,14 @@ inline typename Matrix_cxf::const_reference Matrix_cxf::
 }
 
 template<class D, class M, class V, class A>
-Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+Vector_t<D, V, A> Matrix_t<D, M, V, A>::
     front()
 {
     return *this->begin();
 }
 
 template<class D, class M, class V, class A>
-const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+const Vector_t<D, V, A> Matrix_t<D, M, V, A>::
     front() const
 {
     return *this->cbegin();
@@ -2830,21 +2915,21 @@ const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
 
 
 template<class D, class M, class V, class A>
-Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+Vector_t<D, V, A> Matrix_t<D, M, V, A>::
     back()
 {
     return *(--this->end());
 }
 
 template<class D, class M, class V, class A>
-const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+const Vector_t<D, V, A> Matrix_t<D, M, V, A>::
     back() const
 {
     return *(--this->cend());
 }
 
 template<class D, class M, class V, class A>
-Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+Vector_t<D, V, A> Matrix_t<D, M, V, A>::
     at(const typename Matrix_t<D, M, V, A>::size_type index)
 {
     if(index >= this->gsl_mat->size1){
@@ -2854,13 +2939,13 @@ Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
 }
 
 template<class D, class M, class V, class A>
-const Vector_t<D, V, A>& Matrix_t<D, M, V, A>::
+const Vector_t<D, V, A> Matrix_t<D, M, V, A>::
     at(const typename Matrix_t<D, M, V, A>::size_type index) const
 {
     if(index >= this->gsl_mat->size1){
         throw std::out_of_range("Row index " + std::to_string(index) + " out of range.");
     }
-    return (*this)[index];
+    return (*this)(index);
 }
 
 template<class D, class M, class V, class A>
@@ -2870,7 +2955,8 @@ typename Matrix_t<D, M, V, A>::reference Matrix_t<D, M, V, A>::
     if(i >= this->gsl_mat->size1 || j >= this->gsl_mat->size2){
         throw std::out_of_range("Element at (" + std::to_string(i) + ", " + std::to_string(j) + ") out of range.");
     }
-    return this->gsl_mat->data[i*this->gsl_mat->tda + j];
+    // return this->gsl_mat->data[i*this->gsl_mat->tda + j];
+    return (*this)(i, j);
 }
 
 template<class D, class M, class V, class A>

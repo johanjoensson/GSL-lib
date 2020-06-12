@@ -7,6 +7,7 @@
 #include <gsl/gsl_complex.h>
 #include <iostream>
 #include <memory>
+#include <functional>
 
 /**************************************************************************//**
 * A class for using GSL-vectors with a simpler interface than
@@ -86,14 +87,15 @@ public:
     size_type size() const;
     size_type dim() const;
     // Actually copy data from the other vector, don't just reference it
-    void copy(const Vector_t& a);
+    Vector_t copy() const;
+    Vector_t& copy(const Vector_t& a);
 
-    Vector_t& operator= (Vector_t&& a);
-    Vector_t& operator= (const Vector_t& a);
+    Vector_t& operator= (Vector_t&& a) = default;
+    Vector_t& operator= (const Vector_t& a) = default;
 
-    template<class S> S norm() const;
-    template <class S>
-    void normalize();
+    template<class S=double> S norm() const;
+    template <class S=double>
+    Vector_t& normalize();
 
 
     // Define dot and cross products of vectors
@@ -300,5 +302,16 @@ using Vector_cx_hasher = Vector_hasher_t<GSL::Complex_t<double, gsl_complex>, gs
 using Vector_cxf_hasher = Vector_hasher_t<GSL::Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>;
 using Vector_cxld_hasher = Vector_hasher_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_vector_long_double, std::allocator<gsl_complex_long_double>>;
 
+}
+
+namespace std{
+    template<class T, class GSL_VEC, class A>
+    struct hash<GSL::Vector_t<T, GSL_VEC, A>>{
+        size_t operator()(const GSL::Vector_t<T, GSL_VEC, A> &v) const
+        {
+            GSL::Vector_hasher_t<T, GSL_VEC, A> h;
+            return h(v);
+        }
+    };
 }
 #endif //VECTOR_TEMPLATE_GSL_LIB_H

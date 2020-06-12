@@ -9,14 +9,14 @@ namespace GSL{
 
 template<class T, class GSL_VEC, class A>
 Vector_t<T, GSL_VEC, A>::Vector_t(const GSL_VEC& v)
-: gsl_vec(new GSL_VEC)
+: gsl_vec(std::make_shared<GSL_VEC>())
 {
     *gsl_vec = v;
 }
 
 template<class T, class GSL_VEC, class A>
 Vector_t<T, GSL_VEC, A>::Vector_t(const GSL_VEC* v)
-: gsl_vec(new GSL_VEC)
+: gsl_vec(std::make_shared<GSL_VEC>())
 {
     *gsl_vec = *v;
 }
@@ -338,8 +338,14 @@ Vector_t<T, GSL_VEC, A>::operator GSL_VEC() const
     return *this->gsl_vec;
 }
 
+template<class T, class GSL_VEC, class A>
+Vector_t<T, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::copy() const
+{
+    return *this;
+}
+
 template<>
-inline void Vector::copy(const Vector& a)
+inline Vector& Vector::copy(const Vector& a)
 {
     if(this->gsl_vec.get() == nullptr){
         this->gsl_vec = std::shared_ptr<gsl_vector>(gsl_vector_alloc(a.size()), gsl_vector_free);
@@ -353,10 +359,11 @@ inline void Vector::copy(const Vector& a)
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_ld::copy
+inline Vector_ld& Vector_ld::copy
 (const Vector_ld& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -372,16 +379,11 @@ inline void Vector_ld::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
-}
-
-template<class T, class GSL_VEC, class A>
-typename Vector_t<T, GSL_VEC, A>::size_type Vector_t<T, GSL_VEC, A>::size() const
-{
-    return this->gsl_vec->size;
+    return *this;
 }
 
 template<>
-inline void Vector_f::copy
+inline Vector_f& Vector_f::copy
 (const Vector_f& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -397,10 +399,11 @@ inline void Vector_f::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_i::copy
+inline Vector_i& Vector_i::copy
 (const Vector_i& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -416,10 +419,11 @@ inline void Vector_i::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_ui::copy
+inline Vector_ui& Vector_ui::copy
 (const Vector_ui& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -435,10 +439,11 @@ inline void Vector_ui::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_l::copy
+inline Vector_l& Vector_l::copy
 (const Vector_l& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -454,10 +459,11 @@ inline void Vector_l::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_ul::copy
+inline Vector_ul& Vector_ul::copy
 (const Vector_ul& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -473,10 +479,11 @@ inline void Vector_ul::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_s::copy
+inline Vector_s& Vector_s::copy
 (const Vector_s& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -492,10 +499,11 @@ inline void Vector_s::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_us::copy
+inline Vector_us& Vector_us::copy
 (const Vector_us& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -511,10 +519,11 @@ inline void Vector_us::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_c::copy
+inline Vector_c& Vector_c::copy
 (const Vector_c& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -530,10 +539,11 @@ inline void Vector_c::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_uc::copy
+inline Vector_uc& Vector_uc::copy
 (const Vector_uc& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -549,10 +559,11 @@ inline void Vector_uc::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_cx::copy
+inline Vector_cx& Vector_cx::copy
 (const Vector_cx& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -568,10 +579,11 @@ inline void Vector_cx::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_cxld::copy
+inline Vector_cxld& Vector_cxld::copy
 (const Vector_cxld& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -587,10 +599,11 @@ inline void Vector_cxld::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
 template<>
-inline void Vector_cxf::copy
+inline Vector_cxf& Vector_cxf::copy
 (const Vector_cxf& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -606,33 +619,30 @@ inline void Vector_cxf::copy
 		throw std::runtime_error("Error in memory copying.\nGSL error: "
         + error_str);
 	}
+    return *this;
 }
 
+template<class T, class GSL_VEC, class A>
+typename Vector_t<T, GSL_VEC, A>::size_type Vector_t<T, GSL_VEC, A>::size() const
+{
+    return this->gsl_vec->size;
+}
+
+/*
 template<>
 inline Vector& Vector::operator=(const Vector& a)
 {
-    if( gsl_vec == nullptr || this->gsl_vec->owner != 0){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        if(this->gsl_vec == nullptr){
-            this->gsl_vec = std::shared_ptr<gsl_vector>(gsl_vector_alloc(a.size()), gsl_vector_free);
-        }
-        if(a.gsl_vec != nullptr){
-            gsl_vector_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
-        }
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
+    this->gsl_vec = a.gsl_vec;
     return *this;
 }
 
 template<>
 inline Vector_ld& Vector_ld::operator=(const Vector_ld& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_long_double_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -642,10 +652,10 @@ inline Vector_ld& Vector_ld::operator=(const Vector_ld& a)
 template<>
 inline Vector_f& Vector_f::operator=(const Vector_f& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_float_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -655,10 +665,10 @@ inline Vector_f& Vector_f::operator=(const Vector_f& a)
 template<>
 inline Vector_i& Vector_i::operator=(const Vector_i& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_int_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -668,10 +678,10 @@ inline Vector_i& Vector_i::operator=(const Vector_i& a)
 template<>
 inline Vector_ui& Vector_ui::operator=(const Vector_ui& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_uint_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -681,10 +691,10 @@ inline Vector_ui& Vector_ui::operator=(const Vector_ui& a)
 template<>
 inline Vector_l& Vector_l::operator=(const Vector_l& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_long_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -694,10 +704,10 @@ inline Vector_l& Vector_l::operator=(const Vector_l& a)
 template<>
 inline Vector_ul& Vector_ul::operator=(const Vector_ul& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_ulong_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -707,10 +717,10 @@ inline Vector_ul& Vector_ul::operator=(const Vector_ul& a)
 template<>
 inline Vector_s& Vector_s::operator=(const Vector_s& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_short_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -720,10 +730,10 @@ inline Vector_s& Vector_s::operator=(const Vector_s& a)
 template<>
 inline Vector_us& Vector_us::operator=(const Vector_us& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_ushort_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -733,10 +743,10 @@ inline Vector_us& Vector_us::operator=(const Vector_us& a)
 template<>
 inline Vector_c& Vector_c::operator=(const Vector_c& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_char_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -746,10 +756,10 @@ inline Vector_c& Vector_c::operator=(const Vector_c& a)
 template<>
 inline Vector_uc& Vector_uc::operator=(const Vector_uc& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_uchar_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -759,10 +769,10 @@ inline Vector_uc& Vector_uc::operator=(const Vector_uc& a)
 template<>
 inline Vector_cx& Vector_cx::operator=(const Vector_cx& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_complex_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -772,10 +782,10 @@ inline Vector_cx& Vector_cx::operator=(const Vector_cx& a)
 template<>
 inline Vector_cxld& Vector_cxld::operator=(const Vector_cxld& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_complex_long_double_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -785,10 +795,25 @@ inline Vector_cxld& Vector_cxld::operator=(const Vector_cxld& a)
 template<>
 inline Vector_cxf& Vector_cxf::operator=(const Vector_cxf& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         this->gsl_vec = a.gsl_vec;
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_complex_float_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
+    }
+    return *this;
+}
+*/
+
+/*
+template<>
+inline Vector& Vector::operator=(Vector&& a)
+{
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
+        this->gsl_vec = std::move(a.gsl_vec);
+    }else if(this->gsl_vec->owner == 0){
+        this->copy(a);
     }else{
         throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
@@ -796,25 +821,14 @@ inline Vector_cxf& Vector_cxf::operator=(const Vector_cxf& a)
 }
 
 template<>
-inline Vector& Vector::operator=(Vector&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        if(a.gsl_vec != nullptr){
-            gsl_vector_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
-        }
-    }
-    return *this;
-}
-
-template<>
 inline Vector_ld& Vector_ld::operator=(Vector_ld&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_long_double_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -822,10 +836,12 @@ inline Vector_ld& Vector_ld::operator=(Vector_ld&& a)
 template<>
 inline Vector_f& Vector_f::operator=(Vector_f&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_float_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -833,10 +849,12 @@ inline Vector_f& Vector_f::operator=(Vector_f&& a)
 template<>
 inline Vector_i& Vector_i::operator=(Vector_i&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_int_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -844,10 +862,12 @@ inline Vector_i& Vector_i::operator=(Vector_i&& a)
 template<>
 inline Vector_ui& Vector_ui::operator=(Vector_ui&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_uint_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -855,10 +875,12 @@ inline Vector_ui& Vector_ui::operator=(Vector_ui&& a)
 template<>
 inline Vector_l& Vector_l::operator=(Vector_l&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_long_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -866,10 +888,12 @@ inline Vector_l& Vector_l::operator=(Vector_l&& a)
 template<>
 inline Vector_ul& Vector_ul::operator=(Vector_ul&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_ulong_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -877,10 +901,12 @@ inline Vector_ul& Vector_ul::operator=(Vector_ul&& a)
 template<>
 inline Vector_s & Vector_s::operator=(Vector_s&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_short_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -888,10 +914,12 @@ inline Vector_s & Vector_s::operator=(Vector_s&& a)
 template<>
 inline Vector_us& Vector_us::operator=(Vector_us&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_ushort_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -899,10 +927,12 @@ inline Vector_us& Vector_us::operator=(Vector_us&& a)
 template<>
 inline Vector_c& Vector_c::operator=(Vector_c&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_char_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -910,10 +940,12 @@ inline Vector_c& Vector_c::operator=(Vector_c&& a)
 template<>
 inline Vector_uc& Vector_uc::operator=(Vector_uc&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_uchar_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -921,10 +953,12 @@ inline Vector_uc& Vector_uc::operator=(Vector_uc&& a)
 template<>
 inline Vector_cx& Vector_cx::operator=(Vector_cx&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_complex_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -932,10 +966,12 @@ inline Vector_cx& Vector_cx::operator=(Vector_cx&& a)
 template<>
 inline Vector_cxld& Vector_cxld::operator=(Vector_cxld&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_complex_long_double_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
@@ -943,13 +979,16 @@ inline Vector_cxld& Vector_cxld::operator=(Vector_cxld&& a)
 template<>
 inline Vector_cxf& Vector_cxf::operator=(Vector_cxf&& a)
 {
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner != 0){
+    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
         std::swap(this->gsl_vec, a.gsl_vec);
     }else if(this->gsl_vec->owner == 0){
-        gsl_vector_complex_float_memcpy(this->gsl_vec.get(), a.gsl_vec.get());
+        this->copy(a);
+    }else{
+        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
     }
     return *this;
 }
+*/
 
 template<class T, class G, class A>
 typename Vector_t<T, G, A>::size_type Vector_t<T, G, A>::dim() const{
@@ -1096,9 +1135,9 @@ inline long double Vector_cxld::norm<long double>() const
 }
 
 template <class T, class V, class A> template<class S>
-void Vector_t<T, V, A>::normalize()
+Vector_t<T, V, A>& Vector_t<T, V, A>::normalize()
 {
-    *this /= static_cast<T>(this->norm<S>());
+    return (*this /= static_cast<T>(this->norm<S>()));
 }
 
 template<class T, class GSL_VEC, class A>
@@ -2159,62 +2198,49 @@ inline Vector_cxf& Vector_cxf::operator/=(const Complex_f& b)
 template<class T, class G, class A>
 Vector_t<T, G, A> Vector_t<T, G, A>::operator+(const Vector_t<T, G, A>& b) const
 {
-    Vector_t<T, G, A>tmp(this->size());
-    tmp.copy(*this);
-    return tmp += b;
+    return (Vector_t<T, G, A>().copy(*this)) += b;
 }
 
 template<class T, class G, class A>
 Vector_t<T, G, A> Vector_t<T, G, A>::operator-(const Vector_t<T, G, A>& b) const
 {
-    Vector_t<T, G, A>tmp(this->size());
-    tmp.copy(*this);
-    return tmp -= b;
+    return (Vector_t<T, G, A>().copy(*this)) -= b;
 }
 
 template<class T, class G, class A>
 Vector_t<T, G, A> Vector_t<T, G, A>::operator*(const Vector_t<T, G, A>& b) const
 {
-    Vector_t<T, G, A>tmp(this->size());
-    tmp.copy(*this);
-    return tmp *= b;
+    return (Vector_t<T, G, A>().copy(*this)) *= b;
 }
 
 template<class T, class G, class A>
 Vector_t<T, G, A> Vector_t<T, G, A>::operator/(const Vector_t<T, G, A>& b) const
 {
-    Vector_t<T, G, A>tmp(this->size());
-    tmp.copy(*this);
-    return tmp /= b;
+    return (Vector_t<T, G, A>().copy(*this)) /= b;
 }
 
 template<class T, class G, class A>
 Vector_t<T, G, A> Vector_t<T, G, A>::operator*(const T s) const
 {
-    Vector_t<T, G, A>tmp(this->size());
-    tmp.copy(*this);
-    return tmp *= s;
+    return (Vector_t<T, G, A>().copy(*this)) *= s;
 }
 
 template<class T, class G, class A>
 Vector_t<T, G, A> Vector_t<T, G, A>::operator/(const T s) const
 {
-    Vector_t<T, G, A>tmp(this->size());
-    tmp.copy(*this);
-    return tmp /= s;
+    return (Vector_t<T, G, A>().copy(*this)) /= s;
 }
 
 template<class T, class G, class A>
 Vector_t<T, G, A> Vector_t<T, G, A>::operator-() const
 {
-    Vector_t<T, G, A> tmp(this->size());
-    return tmp - *this;
+    return GSL::Vector_t<T, G, A>(this->size()) -= *this;
 }
 
 
 template<> template<>
 inline Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m) const
-{ const
+{
     Vector res(m.size().first);
     int stat = gsl_blas_dgemv(CblasTrans, 1.0, m.gsl_mat.get(),
         this->gsl_vec.get(), 0.0, res.gsl_vec.get());

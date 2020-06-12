@@ -15,7 +15,7 @@ void print_error_message(std::string function_name, int& gsl_err_code)
 
 using namespace GSL;
 
-Result GSL::legendre_P1(double& x)
+Result GSL::legendre_P1(const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_P1_e(x, &res);
@@ -25,7 +25,7 @@ Result GSL::legendre_P1(double& x)
     return Result(res);
 }
 
-Result GSL::legendre_P2(double& x)
+Result GSL::legendre_P2(const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_P2_e(x, &res);
@@ -35,7 +35,7 @@ Result GSL::legendre_P2(double& x)
     return Result(res);
 }
 
-Result GSL::legendre_P3(double& x)
+Result GSL::legendre_P3(const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_P3_e(x, &res);
@@ -45,7 +45,7 @@ Result GSL::legendre_P3(double& x)
     return Result(res);
 }
 
-Result GSL::legendre_Pl(int& l, double& x)
+Result GSL::legendre_Pl(const int& l, const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_Pl_e(l, x, &res);
@@ -56,7 +56,7 @@ Result GSL::legendre_Pl(int& l, double& x)
 }
 
 
-Result GSL::legendre_Q0(double& x)
+Result GSL::legendre_Q0(const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_Q0_e(x, &res);
@@ -66,7 +66,7 @@ Result GSL::legendre_Q0(double& x)
     return Result(res);
 }
 
-Result GSL::legendre_Q1(double& x)
+Result GSL::legendre_Q1(const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_Q1_e(x, &res);
@@ -76,7 +76,7 @@ Result GSL::legendre_Q1(double& x)
     return Result(res);
 }
 
-Result GSL::legendre_Ql(int& l, double& x)
+Result GSL::legendre_Ql(const int& l, const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_Ql_e(l, x, &res);
@@ -86,7 +86,7 @@ Result GSL::legendre_Ql(int& l, double& x)
     return Result(res);
 }
 
-Result GSL::legendre_Plm(int l, int m, double& x)
+Result GSL::legendre_Plm(const int l, const int m, const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_Plm_e(l, m, x, &res);
@@ -96,7 +96,7 @@ Result GSL::legendre_Plm(int l, int m, double& x)
     return Result(res);
 }
 
-Result GSL::legendre_sphPlm(int l, int m, double& x)
+Result GSL::legendre_sphPlm(const int l, const int m, const double& x)
 {
     gsl_sf_result res{0., 0.};
     int stat = gsl_sf_legendre_sphPlm_e(l, m, x, &res);

@@ -302,7 +302,7 @@ TEST(Matrix_cxTest, TestIterPostIncrement)
 {
     GSL::Matrix_cx m{{1, 2}, {3, 4}, {5, 6}};
     auto it = m.begin();
-    it++;
+    EXPECT_EQ(*it++, m.at(0));
     EXPECT_EQ(*it, m.at(1));
 }
 
@@ -315,8 +315,8 @@ TEST(Matrix_cxTest, TestIterPreDecrement)
 TEST(Matrix_cxTest, TestIterPostDecrement)
 {
     GSL::Matrix_cx m{{1, 2}, {3, 4}, {5, 6}};
-    auto it = m.begin();
-    (it++)--;
+    auto it = ++m.begin();
+    EXPECT_EQ(*it--, m.at(1));
     EXPECT_EQ(*it, m.at(0));
 }
 

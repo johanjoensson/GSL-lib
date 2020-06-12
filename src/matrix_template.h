@@ -61,7 +61,6 @@ class Matrix_t {
     friend class Vector_t<D, GSL_VEC, A>;
     std::shared_ptr<GSL_MAT> gsl_mat;
     Matrix_t(const GSL_MAT& v);
-    Vector_t<D, GSL_VEC, A> v_m;
 
 
 public:
@@ -139,14 +138,14 @@ public:
     Matrix_t inverse() const;
     D det() const;
 
-    Vector_t<D, GSL_VEC, A>& get_row(const difference_type i);
-    Vector_t<D, GSL_VEC, A>& get_col(const difference_type i);
+    Vector_t<D, GSL_VEC, A> get_row(const difference_type i);
+    Vector_t<D, GSL_VEC, A> get_col(const difference_type i);
 
     class iterator {
     public:
         typedef typename A::difference_type difference_type;
         typedef Vector_t<D, GSL_VEC, A> value_type;
-        typedef Vector_t<D, GSL_VEC, A>& reference;
+        typedef Vector_t<D, GSL_VEC, A> reference;
         typedef typename A::pointer pointer;
         typedef std::random_access_iterator_tag iterator_category;
 
@@ -182,7 +181,7 @@ public:
         difference_type operator-(iterator) const;
 
 
-        reference operator*();
+        value_type operator*();
         friend class const_iterator;
     private:
         Matrix_t& mat_m;
@@ -193,7 +192,7 @@ public:
     public:
         typedef typename A::difference_type difference_type;
         typedef const Vector_t<D, GSL_VEC, A> value_type;
-        typedef const Vector_t<D, GSL_VEC, A>& reference;
+        typedef const Vector_t<D, GSL_VEC, A> reference;
         typedef const Vector_t<D, GSL_VEC, A>* pointer;
         typedef std::random_access_iterator_tag iterator_category;
 
@@ -230,7 +229,7 @@ public:
         const_iterator operator-(difference_type) const;
         difference_type operator-(const_iterator) const;
 
-        reference operator*()const;
+        value_type operator*()const;
     private:
         Matrix_t& mat_m;
         difference_type row_m;
@@ -253,26 +252,28 @@ public:
     const_reverse_iterator rend() const;
     const_reverse_iterator crend() const;
 
-    Vector_t<D, GSL_VEC, A>& operator[] (const size_type index);
-    const Vector_t<D, GSL_VEC, A>& operator[] (const size_type index) const;
+    Vector_t<D, GSL_VEC, A> operator[] (const size_type index);
+    const Vector_t<D, GSL_VEC, A> operator[] (const size_type index) const;
 
+    Vector_t<D, GSL_VEC, A> operator() (const size_type row);
+    const Vector_t<D, GSL_VEC, A> operator() (const size_type row) const;
     reference operator() (const size_type row, const size_type column);
-    const_reference operator() (const size_type row, const size_type solumn) const;
+    const_reference operator() (const size_type row, const size_type column) const;
 
-    Vector_t<D, GSL_VEC, A>& front();
-    const Vector_t<D, GSL_VEC, A>& front() const;
-    Vector_t<D, GSL_VEC, A>& back();
-    const Vector_t<D, GSL_VEC, A>& back() const;
-    Vector_t<D, GSL_VEC, A>& at(size_type);
-    const Vector_t<D, GSL_VEC, A>& at(size_type) const;
+    Vector_t<D, GSL_VEC, A> front();
+    const Vector_t<D, GSL_VEC, A> front() const;
+    Vector_t<D, GSL_VEC, A> back();
+    const Vector_t<D, GSL_VEC, A> back() const;
+    Vector_t<D, GSL_VEC, A> at(size_type);
+    const Vector_t<D, GSL_VEC, A> at(size_type) const;
     reference at(size_type, size_type);
     const_reference at(size_type, size_type) const;
 
     pointer data(){ return reinterpret_cast<pointer>(gsl_mat->data);}
     size_t tda(){ return gsl_mat->tda;}
 
-    friend Matrix cholesky_decomp(const Matrix&);
 
+    friend Matrix cholesky_decomp(const Matrix&);
     friend Matrix_cx GSL::cholesky_decomp(const Matrix_cx&);
 
     friend Matrix GSL::lu_inverse(const Matrix& a);

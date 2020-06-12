@@ -243,6 +243,18 @@ namespace std{
     inline string to_string(const GSL::Complex& c) {return c.to_string();}
     inline string to_string(const GSL::Complex_ld& c) {return c.to_string();}
     inline string to_string(const GSL::Complex_f& c) {return c.to_string();}
+
+    template<class T, class GSL_COMPLEX>
+    struct hash<GSL::Complex_t<T, GSL_COMPLEX>>{
+	    size_t operator()(const GSL::Complex_t<T, GSL_COMPLEX>& c)
+	    {
+		    std::hash<T> h;
+		    size_t res = 0;
+		    res ^= h(c.re()) + 0x9e3779b9 + (res<< 6) + (res>> 2);
+		    res ^= h(c.im()) + 0x9e3779b9 + (res<< 6) + (res>> 2);
+		    return res;
+	    }
+    };
 }
 
 #endif //COMPLEX_GSL_LIB_H
