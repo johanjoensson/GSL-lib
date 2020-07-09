@@ -147,7 +147,7 @@ before_install:
 script:
     - make -f Makefile.travis 
     - make -f Makefile.travis clean
-    - make -f Makefile.travis tests && ./tests
+    - make -f Makefile.travis test && ./test
 
 after_success:
     - if [ $COVERAGE_FLAG = "TRUE" ];then coveralls --root . -b . -e googletest-master -i test  -i src -i include --gcov-options '\-r'; fi
