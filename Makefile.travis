@@ -13,7 +13,7 @@
 LIB = GSLpp
 # Source files directory
 SRC_DIR = src
-TEST_DIR = test
+TEST_DIR = tests
 
 # Build directory
 BUILD_DIR = build
@@ -31,7 +31,10 @@ CXXFLAGS = -std=c++11 -I $(INC_DIR) -fPIC
 LDFLAGS = -lgsl -lopenblas -fPIC
 
 
-LIB_OBJ = divided_difference.o\
+LIB_OBJ = complex_impl.o\
+	  matrix_impl.o\
+	  vector_impl.o\
+	  divided_difference.o\
 	  permutation.o\
 	  eigen.o\
 	  linalg.o\
@@ -39,6 +42,7 @@ LIB_OBJ = divided_difference.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
 	  special_functions_laguerre.o\
+	  special_functions_hermite.o\
 	  special_functions_coupling.o\
 	  special_functions_exp.o\
 	  special_functions_log.o\
@@ -46,6 +50,8 @@ LIB_OBJ = divided_difference.o\
 	  special_functions_erf.o\
 	  special_functions_gamma_beta.o\
 	  special_functions_results.o\
+	  interp.o\
+	  ode.o\
 	  error.o
 
 TEST_OBJ =  main_tests.o\
@@ -81,6 +87,7 @@ TEST_OBJ =  main_tests.o\
 	    matrix_cx_test.o\
 	    matrix_cxf_test.o\
 	    matrix_cxld_test.o\
+	    interp_test.o\
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(LIB_OBJ))
 TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
@@ -104,10 +111,10 @@ lib$(LIB).so: $(OBJS)
 lib$(LIB)cov.so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -shared -Wl,-soname,$@
 
-tests:  CXXFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline --coverage
-tests:  LDFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline --coverage
-tests:  lib$(LIB)cov.so
-tests: 	$(INC_DIR) $(LIB_DIR) $(BUILD_DIR) $(TEST_OBJS)
+test:  CXXFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline --coverage
+test:  LDFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline --coverage
+test:  lib$(LIB)cov.so
+test: 	$(INC_DIR) $(LIB_DIR) $(BUILD_DIR) $(TEST_OBJS)
 	$(CXX) $(TEST_OBJS) -o $@ -lgtest -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS) 
 
 $(BUILD_DIR) : 
