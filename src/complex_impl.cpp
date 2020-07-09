@@ -1,14 +1,14 @@
-#include "complex.h"
-#include "special_functions.h"
+#include "GSLpp/complex.h"
+#include "GSLpp/special_functions.h"
 #include <gsl/gsl_complex_math.h>
 #include <cmath>
 
 namespace GSL{
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>::Complex_t(const GSL_COMPLEX& z)
- : gsl_c(std::make_shared<GSL_COMPLEX>())
-{ *gsl_c = z;}
+Complex_t<T, GSL_COMPLEX>::Complex_t(const std::shared_ptr<GSL_COMPLEX>& z)
+ : gsl_c(z)
+{}
 
 template<>
 Complex_t<double, gsl_complex>::Complex_t(const double& a, const double& b)

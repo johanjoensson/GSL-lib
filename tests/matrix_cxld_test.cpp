@@ -1,5 +1,6 @@
 #include "GSLpp/matrix.h"
 #include "GSLpp/vector.h"
+#include "GSLpp/complex.h"
 #include <gtest/gtest.h>
 
 TEST(Matrix_cxldTest, TestConstruction)

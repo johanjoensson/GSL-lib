@@ -1,5 +1,6 @@
-#include "vector.h"
-#include "complex.h"
+#include "GSLpp/vector.h"
+#include "GSLpp/complex.h"
+#include "GSLpp/matrix.h"
 #include <gsl/gsl_blas.h>
 #include <iostream>
 #include <stdexcept>
@@ -7,22 +8,80 @@
 
 namespace GSL{
 
-template<class T, class GSL_VEC, class A>
-Vector_t<T, GSL_VEC, A>::Vector_t(const GSL_VEC& v)
-: gsl_vec(std::make_shared<GSL_VEC>())
-{
-    *gsl_vec = v;
-}
-
-template<class T, class GSL_VEC, class A>
-Vector_t<T, GSL_VEC, A>::Vector_t(const GSL_VEC* v)
-: gsl_vec(std::make_shared<GSL_VEC>())
-{
-    *gsl_vec = *v;
-}
+template<>
+Vector::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
 
 template<>
-inline Vector::Vector_t
+Vector_ld::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_f::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_i::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_ui::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_l::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_ul::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_s::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_us::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_c::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_uc::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_cx::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+template<>
+Vector_cxld::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+
+template<>
+Vector_cxf::Vector_t(const std::shared_ptr<GSL_Vec>& v)
+ : gsl_vec(v)
+{}
+
+
+template<>
+Vector::Vector_t
 (const Vector::size_type n)
  : gsl_vec(gsl_vector_calloc(n), gsl_vector_free)
 {
@@ -33,7 +92,7 @@ inline Vector::Vector_t
 }
 
 template<>
-inline Vector_ld::Vector_t
+Vector_ld::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_long_double_calloc(n), gsl_vector_long_double_free)
 {
@@ -45,7 +104,7 @@ inline Vector_ld::Vector_t
 }
 
 template<>
-inline Vector_f::Vector_t(const Vector_t::size_type n)
+Vector_f::Vector_t(const Vector_t::size_type n)
  : gsl_vec(gsl_vector_float_calloc(n), gsl_vector_float_free)
 {
     if(gsl_vec == nullptr){
@@ -55,7 +114,7 @@ inline Vector_f::Vector_t(const Vector_t::size_type n)
 }
 
 template<>
-inline Vector_i::Vector_t
+Vector_i::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_int_calloc(n), gsl_vector_int_free)
 {
@@ -66,7 +125,7 @@ inline Vector_i::Vector_t
 }
 
 template<>
-inline Vector_ui::Vector_t
+Vector_ui::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_uint_calloc(n), gsl_vector_uint_free)
 {
@@ -77,7 +136,7 @@ inline Vector_ui::Vector_t
 }
 
 template<>
-inline Vector_l::Vector_t
+Vector_l::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_long_calloc(n), gsl_vector_long_free)
 {
@@ -88,7 +147,7 @@ inline Vector_l::Vector_t
 }
 
 template<>
-inline Vector_ul::Vector_t
+Vector_ul::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_ulong_calloc(n), gsl_vector_ulong_free)
 {
@@ -99,7 +158,7 @@ inline Vector_ul::Vector_t
 }
 
 template<>
-inline Vector_s::Vector_t
+Vector_s::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_short_calloc(n), gsl_vector_short_free)
 {
@@ -110,7 +169,7 @@ inline Vector_s::Vector_t
 }
 
 template<>
-inline Vector_us::Vector_t
+Vector_us::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_ushort_calloc(n), gsl_vector_ushort_free)
 {
@@ -121,7 +180,7 @@ inline Vector_us::Vector_t
 }
 
 template<>
-inline Vector_c::Vector_t
+Vector_c::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_char_calloc(n), gsl_vector_char_free)
 {
@@ -132,7 +191,7 @@ inline Vector_c::Vector_t
 }
 
 template<>
-inline Vector_uc::Vector_t
+Vector_uc::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_uchar_calloc(n), gsl_vector_uchar_free)
 {
@@ -143,7 +202,7 @@ inline Vector_uc::Vector_t
 }
 
 template<>
-inline Vector_cx::Vector_t
+Vector_cx::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_complex_calloc(n), gsl_vector_complex_free)
 {
@@ -154,7 +213,7 @@ inline Vector_cx::Vector_t
 }
 
 template<>
-inline Vector_cxld::Vector_t
+Vector_cxld::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_complex_long_double_calloc(n), gsl_vector_complex_long_double_free)
 {
@@ -165,7 +224,7 @@ inline Vector_cxld::Vector_t
 }
 
 template<>
-inline Vector_cxf::Vector_t
+Vector_cxf::Vector_t
 (const Vector_t::size_type n)
  : gsl_vec(gsl_vector_complex_float_calloc(n), gsl_vector_complex_float_free)
 {
@@ -176,7 +235,176 @@ inline Vector_cxf::Vector_t
 }
 
 template<>
-inline Vector::Vector_t(std::initializer_list<double> l)
+Vector::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_alloc(n), gsl_vector_free)
+{
+
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_alloc)"
+        " failed!");
+    }
+    gsl_vector_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_ld::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_long_double_alloc(n), gsl_vector_long_double_free)
+{
+
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_long_double_alloc)"
+        " failed!");
+    }
+    gsl_vector_long_double_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_f::Vector_t(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_float_alloc(n), gsl_vector_float_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_float_alloc)"
+        " failed!");
+    }
+    gsl_vector_float_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_i::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_int_alloc(n), gsl_vector_int_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_int_alloc)"
+        " failed!");
+    }
+    gsl_vector_int_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_ui::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_uint_alloc(n), gsl_vector_uint_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_uint_alloc)"
+        " failed!");
+    }
+    gsl_vector_uint_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_l::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_long_alloc(n), gsl_vector_long_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_long_alloc)"
+        " failed!");
+    }
+    gsl_vector_long_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_ul::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_ulong_alloc(n), gsl_vector_ulong_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_ulong_alloc)"
+        " failed!");
+    }
+    gsl_vector_ulong_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_s::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_short_alloc(n), gsl_vector_short_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_short_alloc)"
+        " failed!");
+    }
+    gsl_vector_short_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_us::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_ushort_alloc(n), gsl_vector_ushort_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_ushort_alloc)"
+        " failed!");
+    }
+    gsl_vector_ushort_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_c::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_char_alloc(n), gsl_vector_char_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_char_alloc)"
+        " failed!");
+    }
+    gsl_vector_char_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_uc::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_uchar_alloc(n), gsl_vector_uchar_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_uchar_alloc)"
+        " failed!");
+    }
+    gsl_vector_uchar_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_cx::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_complex_alloc(n), gsl_vector_complex_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_complex_alloc)"
+        " failed!");
+    }
+    gsl_vector_complex_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_cxld::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_complex_long_double_alloc(n), gsl_vector_complex_long_double_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_complex_long_double_alloc)"
+        " failed!");
+    }
+    gsl_vector_complex_long_double_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector_cxf::Vector_t
+(const Vector_t::size_type n, const Vector_t::value_type v)
+ : gsl_vec(gsl_vector_complex_float_alloc(n), gsl_vector_complex_float_free)
+{
+    if(gsl_vec == nullptr){
+        throw std::runtime_error("Memory allocation (gsl_vector_complex_float_alloc)"
+        " failed!");
+    }
+    gsl_vector_complex_float_set_all(gsl_vec.get(), v);
+}
+
+template<>
+Vector::Vector_t(std::initializer_list<double> l)
  : gsl_vec(gsl_vector_alloc(l.size()), gsl_vector_free)
 {
     auto current = l.begin();
@@ -187,7 +415,7 @@ inline Vector::Vector_t(std::initializer_list<double> l)
 }
 
 template<>
-inline Vector_ld::Vector_t(std::initializer_list<long double> l)
+Vector_ld::Vector_t(std::initializer_list<long double> l)
  : gsl_vec(gsl_vector_long_double_alloc(l.size()), gsl_vector_long_double_free)
 {
     auto current = l.begin();
@@ -198,7 +426,7 @@ inline Vector_ld::Vector_t(std::initializer_list<long double> l)
 }
 
 template<>
-inline Vector_f::Vector_t(std::initializer_list<float> l)
+Vector_f::Vector_t(std::initializer_list<float> l)
  : gsl_vec(gsl_vector_float_alloc(l.size()), gsl_vector_float_free)
 {
     auto current = l.begin();
@@ -209,7 +437,7 @@ inline Vector_f::Vector_t(std::initializer_list<float> l)
 }
 
 template<>
-inline Vector_i::Vector_t(std::initializer_list<int> l)
+Vector_i::Vector_t(std::initializer_list<int> l)
  : gsl_vec(gsl_vector_int_alloc(l.size()), gsl_vector_int_free)
 {
     auto current = l.begin();
@@ -220,7 +448,7 @@ inline Vector_i::Vector_t(std::initializer_list<int> l)
 }
 
 template<>
-inline Vector_ui::Vector_t(std::initializer_list<unsigned int> l)
+Vector_ui::Vector_t(std::initializer_list<unsigned int> l)
  : gsl_vec(gsl_vector_uint_alloc(l.size()), gsl_vector_uint_free)
 {
     auto current = l.begin();
@@ -231,7 +459,7 @@ inline Vector_ui::Vector_t(std::initializer_list<unsigned int> l)
 }
 
 template<>
-inline Vector_l::Vector_t(std::initializer_list<long> l)
+Vector_l::Vector_t(std::initializer_list<long> l)
  : gsl_vec(gsl_vector_long_alloc(l.size()), gsl_vector_long_free)
 {
     auto current = l.begin();
@@ -242,7 +470,7 @@ inline Vector_l::Vector_t(std::initializer_list<long> l)
 }
 
 template<>
-inline Vector_ul::Vector_t(std::initializer_list<unsigned long> l)
+Vector_ul::Vector_t(std::initializer_list<unsigned long> l)
  : gsl_vec(gsl_vector_ulong_alloc(l.size()), gsl_vector_ulong_free)
 {
     auto current = l.begin();
@@ -253,7 +481,7 @@ inline Vector_ul::Vector_t(std::initializer_list<unsigned long> l)
 }
 
 template<>
-inline Vector_s::Vector_t(std::initializer_list<short> l)
+Vector_s::Vector_t(std::initializer_list<short> l)
  : gsl_vec(gsl_vector_short_alloc(l.size()), gsl_vector_short_free)
 {
     auto current = l.begin();
@@ -264,7 +492,7 @@ inline Vector_s::Vector_t(std::initializer_list<short> l)
 }
 
 template<>
-inline Vector_us::Vector_t(std::initializer_list<unsigned short> l)
+Vector_us::Vector_t(std::initializer_list<unsigned short> l)
  : gsl_vec(gsl_vector_ushort_alloc(l.size()), gsl_vector_ushort_free)
 {
     auto current = l.begin();
@@ -275,7 +503,7 @@ inline Vector_us::Vector_t(std::initializer_list<unsigned short> l)
 }
 
 template<>
-inline Vector_c::Vector_t(std::initializer_list<char> l)
+Vector_c::Vector_t(std::initializer_list<char> l)
  : gsl_vec(gsl_vector_char_alloc(l.size()), gsl_vector_char_free)
 {
     auto current = l.begin();
@@ -286,7 +514,7 @@ inline Vector_c::Vector_t(std::initializer_list<char> l)
 }
 
 template<>
-inline Vector_uc::Vector_t(std::initializer_list<unsigned char> l)
+Vector_uc::Vector_t(std::initializer_list<unsigned char> l)
  : gsl_vec(gsl_vector_uchar_alloc(l.size()), gsl_vector_uchar_free)
 {
     auto current = l.begin();
@@ -297,7 +525,7 @@ inline Vector_uc::Vector_t(std::initializer_list<unsigned char> l)
 }
 
 template<>
-inline Vector_cx::
+Vector_cx::
 Vector_t(std::initializer_list<Complex> l)
  : gsl_vec(gsl_vector_complex_alloc(l.size()), gsl_vector_complex_free)
 {
@@ -309,7 +537,7 @@ Vector_t(std::initializer_list<Complex> l)
 }
 
 template<>
-inline Vector_cxld::
+Vector_cxld::
 Vector_t(std::initializer_list<Complex_ld> l)
  : gsl_vec(gsl_vector_complex_long_double_alloc(l.size()), gsl_vector_complex_long_double_free)
 {
@@ -321,7 +549,7 @@ Vector_t(std::initializer_list<Complex_ld> l)
 }
 
 template<>
-inline Vector_cxf::
+Vector_cxf::
 Vector_t(std::initializer_list<Complex_f> l)
  : gsl_vec(gsl_vector_complex_float_alloc(l.size()), gsl_vector_complex_float_free)
 {
@@ -333,19 +561,13 @@ Vector_t(std::initializer_list<Complex_f> l)
 }
 
 template<class T, class GSL_VEC, class A>
-Vector_t<T, GSL_VEC, A>::operator GSL_VEC() const
-{
-    return *this->gsl_vec;
-}
-
-template<class T, class GSL_VEC, class A>
 Vector_t<T, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::copy() const
 {
     return *this;
 }
 
 template<>
-inline Vector& Vector::copy(const Vector& a)
+Vector& Vector::copy(const Vector& a)
 {
     if(this->gsl_vec.get() == nullptr){
         this->gsl_vec = std::shared_ptr<gsl_vector>(gsl_vector_alloc(a.size()), gsl_vector_free);
@@ -363,7 +585,7 @@ inline Vector& Vector::copy(const Vector& a)
 }
 
 template<>
-inline Vector_ld& Vector_ld::copy
+Vector_ld& Vector_ld::copy
 (const Vector_ld& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -383,7 +605,7 @@ inline Vector_ld& Vector_ld::copy
 }
 
 template<>
-inline Vector_f& Vector_f::copy
+Vector_f& Vector_f::copy
 (const Vector_f& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -403,7 +625,7 @@ inline Vector_f& Vector_f::copy
 }
 
 template<>
-inline Vector_i& Vector_i::copy
+Vector_i& Vector_i::copy
 (const Vector_i& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -423,7 +645,7 @@ inline Vector_i& Vector_i::copy
 }
 
 template<>
-inline Vector_ui& Vector_ui::copy
+Vector_ui& Vector_ui::copy
 (const Vector_ui& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -443,7 +665,7 @@ inline Vector_ui& Vector_ui::copy
 }
 
 template<>
-inline Vector_l& Vector_l::copy
+Vector_l& Vector_l::copy
 (const Vector_l& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -463,7 +685,7 @@ inline Vector_l& Vector_l::copy
 }
 
 template<>
-inline Vector_ul& Vector_ul::copy
+Vector_ul& Vector_ul::copy
 (const Vector_ul& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -483,7 +705,7 @@ inline Vector_ul& Vector_ul::copy
 }
 
 template<>
-inline Vector_s& Vector_s::copy
+Vector_s& Vector_s::copy
 (const Vector_s& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -503,7 +725,7 @@ inline Vector_s& Vector_s::copy
 }
 
 template<>
-inline Vector_us& Vector_us::copy
+Vector_us& Vector_us::copy
 (const Vector_us& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -523,7 +745,7 @@ inline Vector_us& Vector_us::copy
 }
 
 template<>
-inline Vector_c& Vector_c::copy
+Vector_c& Vector_c::copy
 (const Vector_c& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -543,7 +765,7 @@ inline Vector_c& Vector_c::copy
 }
 
 template<>
-inline Vector_uc& Vector_uc::copy
+Vector_uc& Vector_uc::copy
 (const Vector_uc& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -563,7 +785,7 @@ inline Vector_uc& Vector_uc::copy
 }
 
 template<>
-inline Vector_cx& Vector_cx::copy
+Vector_cx& Vector_cx::copy
 (const Vector_cx& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -583,7 +805,7 @@ inline Vector_cx& Vector_cx::copy
 }
 
 template<>
-inline Vector_cxld& Vector_cxld::copy
+Vector_cxld& Vector_cxld::copy
 (const Vector_cxld& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -603,7 +825,7 @@ inline Vector_cxld& Vector_cxld::copy
 }
 
 template<>
-inline Vector_cxf& Vector_cxf::copy
+Vector_cxf& Vector_cxf::copy
 (const Vector_cxf& a)
 {
     if(this->gsl_vec.get() == nullptr){
@@ -622,383 +844,6 @@ inline Vector_cxf& Vector_cxf::copy
     return *this;
 }
 
-template<class T, class GSL_VEC, class A>
-typename Vector_t<T, GSL_VEC, A>::size_type Vector_t<T, GSL_VEC, A>::size() const
-{
-    return this->gsl_vec->size;
-}
-
-/*
-template<>
-inline Vector& Vector::operator=(const Vector& a)
-{
-    this->gsl_vec = a.gsl_vec;
-    return *this;
-}
-
-template<>
-inline Vector_ld& Vector_ld::operator=(const Vector_ld& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_f& Vector_f::operator=(const Vector_f& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_i& Vector_i::operator=(const Vector_i& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_ui& Vector_ui::operator=(const Vector_ui& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_l& Vector_l::operator=(const Vector_l& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_ul& Vector_ul::operator=(const Vector_ul& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_s& Vector_s::operator=(const Vector_s& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_us& Vector_us::operator=(const Vector_us& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_c& Vector_c::operator=(const Vector_c& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_uc& Vector_uc::operator=(const Vector_uc& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_cx& Vector_cx::operator=(const Vector_cx& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_cxld& Vector_cxld::operator=(const Vector_cxld& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_cxf& Vector_cxf::operator=(const Vector_cxf& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = a.gsl_vec;
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-*/
-
-/*
-template<>
-inline Vector& Vector::operator=(Vector&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        this->gsl_vec = std::move(a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_ld& Vector_ld::operator=(Vector_ld&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_f& Vector_f::operator=(Vector_f&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_i& Vector_i::operator=(Vector_i&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_ui& Vector_ui::operator=(Vector_ui&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_l& Vector_l::operator=(Vector_l&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_ul& Vector_ul::operator=(Vector_ul&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_s & Vector_s::operator=(Vector_s&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_us& Vector_us::operator=(Vector_us&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_c& Vector_c::operator=(Vector_c&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_uc& Vector_uc::operator=(Vector_uc&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_cx& Vector_cx::operator=(Vector_cx&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_cxld& Vector_cxld::operator=(Vector_cxld&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-
-template<>
-inline Vector_cxf& Vector_cxf::operator=(Vector_cxf&& a)
-{
-    if(this->gsl_vec == nullptr || this->gsl_vec->owner == 1){
-        std::swap(this->gsl_vec, a.gsl_vec);
-    }else if(this->gsl_vec->owner == 0){
-        this->copy(a);
-    }else{
-        throw std::runtime_error("Unknown owner value " + std::to_string(gsl_vec->owner));
-    }
-    return *this;
-}
-*/
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::size_type Vector_t<T, G, A>::dim() const{
-    if(gsl_vec.get() != nullptr){
-        return gsl_vec->size;
-    }else{
-        throw std::runtime_error("Taking size/dimension of uninitialized Vector!\n");
-    }
-}
-
 template <class T, class V, class A>
 T Vector_t<T, V, A>::dot(const Vector_t<T, V, A>& b) const
 {
@@ -1013,7 +858,7 @@ T Vector_t<T, V, A>::dot(const Vector_t<T, V, A>& b) const
 }
 
 template<>
-inline double Vector::dot(const Vector& b) const
+double Vector::dot(const Vector& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1029,7 +874,7 @@ inline double Vector::dot(const Vector& b) const
 }
 
 template<>
-inline float Vector_f::dot(const Vector_f& b) const
+float Vector_f::dot(const Vector_f& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1045,7 +890,7 @@ inline float Vector_f::dot(const Vector_f& b) const
 }
 
 template<>
-inline Complex Vector_cx::dot(const Vector_cx& b) const
+Complex Vector_cx::dot(const Vector_cx& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1060,24 +905,8 @@ inline Complex Vector_cx::dot(const Vector_cx& b) const
     return res;
 }
 
-/*
 template<>
-inline Complex_ld Vector_cxld::dot(const Vector_cxld& b) const
-{
-    if(this->size() != b.size()){
-        throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
-    }
-    Complex_ld res(static_cast<long double>(0));
-    for(Vector_cxld::size_type i = 0; i < this->size(); i++){
-        res.re() += (*this)[i].re()*b[i].re() - (*this)[i].im()*b[i].im();
-        res.im() += (*this)[i].im()*b[i].re() + (*this)[i].re()*b[i].im();
-    }
-    return res;
-}
-*/
-
-template<>
-inline Complex_f Vector_cxf::dot(const Vector_cxf& b) const
+Complex_f Vector_cxf::dot(const Vector_cxf& b) const
 {
     if(this->size() != b.size()){
         throw std::runtime_error("Error in dot. Dimensions of vectors do not match!\n");
@@ -1095,35 +924,35 @@ inline Complex_f Vector_cxf::dot(const Vector_cxf& b) const
 template<class T, class G, class A> template<class S>
 S Vector_t<T, G, A>::norm() const
 {
-    return std::sqrt(this->dot(*this));
+    return std::sqrt(this->norm2<S>());
 }
 
 template<> template<>
-inline double Vector::norm<double>() const
+double Vector::norm<double>() const
 {
     return gsl_blas_dnrm2(this->gsl_vec.get());
 }
 
 template<> template<>
-inline float Vector_f::norm<float>() const
+float Vector_f::norm<float>() const
 {
     return gsl_blas_snrm2(this->gsl_vec.get());
 }
 
 template<> template<>
-inline double Vector_cx::norm<double>() const
+double Vector_cx::norm<double>() const
 {
     return gsl_blas_dznrm2(this->gsl_vec.get());
 }
 
 template<> template<>
-inline float Vector_cxf::norm<float>() const
+float Vector_cxf::norm<float>() const
 {
     return gsl_blas_scnrm2(this->gsl_vec.get());
 }
 
 template<> template<>
-inline long double Vector_cxld::norm<long double>() const
+long double Vector_cxld::norm<long double>() const
 {
     Complex_ld tmp;
     long double n{0};
@@ -1134,39 +963,8 @@ inline long double Vector_cxld::norm<long double>() const
     return std::sqrt(n);
 }
 
-template <class T, class V, class A> template<class S>
-Vector_t<T, V, A>& Vector_t<T, V, A>::normalize()
-{
-    return (*this /= static_cast<T>(this->norm<S>()));
-}
-
-template<class T, class GSL_VEC, class A>
-Vector_t<T, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::cross(const Vector_t<T, GSL_VEC, A>& b) const
-{
-    if(this->size() != b.size()){
-        throw std::runtime_error("Error in cross product!\nCross product "
-        "(vector product) only defined for vectors of equal length!");
-    } else if(this->size() != 3 || b.size() !=3){
-        throw std::runtime_error("Error in cross product!\nCross product "
-        "(vector product) only defined for vectors of length 3!");
-    }
-    T r1, r2, r3;
-    r1 = static_cast<T>(T((*this)[1])*T(b[2]) - T((*this)[2])*T(b[1]));
-    r2 = static_cast<T>(T((*this)[2])*T(b[0]) - T((*this)[0])*T(b[2]));
-    r3 = static_cast<T>(T((*this)[0])*T(b[1]) - T((*this)[1])*T(b[0]));
-
-    return Vector_t({r1, r2, r3});
-}
-
-template<class T, class GSL_VEC, class A>
-Vector_t<T, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::mirror(const Vector_t<T, GSL_VEC, A>& b) const
-{
-
-    return *this - static_cast<T>(2*this->dot(b)/b.dot(b))*b;
-}
-
 template<>
-inline Vector& Vector::operator+=(const Vector& b)
+Vector& Vector::operator+=(const Vector& b)
 {
     int stat = gsl_vector_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1178,7 +976,7 @@ inline Vector& Vector::operator+=(const Vector& b)
 }
 
 template<>
-inline Vector_ld& Vector_ld::operator+=(const Vector_ld& b)
+Vector_ld& Vector_ld::operator+=(const Vector_ld& b)
 {
     int stat = gsl_vector_long_double_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1190,7 +988,7 @@ inline Vector_ld& Vector_ld::operator+=(const Vector_ld& b)
 }
 
 template<>
-inline Vector_f& Vector_f::operator+=(const Vector_f& b)
+Vector_f& Vector_f::operator+=(const Vector_f& b)
 {
     int stat = gsl_vector_float_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1202,7 +1000,7 @@ inline Vector_f& Vector_f::operator+=(const Vector_f& b)
 }
 
 template<>
-inline Vector_i& Vector_i::operator+=(const Vector_i& b)
+Vector_i& Vector_i::operator+=(const Vector_i& b)
 {
     int stat = gsl_vector_int_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1214,7 +1012,7 @@ inline Vector_i& Vector_i::operator+=(const Vector_i& b)
 }
 
 template<>
-inline Vector_ui& Vector_ui::operator+=(const Vector_ui& b)
+Vector_ui& Vector_ui::operator+=(const Vector_ui& b)
 {
     int stat = gsl_vector_uint_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1226,7 +1024,7 @@ inline Vector_ui& Vector_ui::operator+=(const Vector_ui& b)
 }
 
 template<>
-inline Vector_l& Vector_l::operator+=(const Vector_l& b)
+Vector_l& Vector_l::operator+=(const Vector_l& b)
 {
     int stat = gsl_vector_long_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1238,7 +1036,7 @@ inline Vector_l& Vector_l::operator+=(const Vector_l& b)
 }
 
 template<>
-inline Vector_ul& Vector_ul::operator+=(const Vector_ul& b)
+Vector_ul& Vector_ul::operator+=(const Vector_ul& b)
 {
     int stat = gsl_vector_ulong_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1250,7 +1048,7 @@ inline Vector_ul& Vector_ul::operator+=(const Vector_ul& b)
 }
 
 template<>
-inline Vector_s& Vector_s::operator+=(const Vector_s& b)
+Vector_s& Vector_s::operator+=(const Vector_s& b)
 {
     int stat = gsl_vector_short_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1262,7 +1060,7 @@ inline Vector_s& Vector_s::operator+=(const Vector_s& b)
 }
 
 template<>
-inline Vector_us& Vector_us::operator+=(const Vector_us& b)
+Vector_us& Vector_us::operator+=(const Vector_us& b)
 {
     int stat = gsl_vector_ushort_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1275,7 +1073,7 @@ inline Vector_us& Vector_us::operator+=(const Vector_us& b)
 
 
 template<>
-inline Vector_c& Vector_c::operator+=(const Vector_c& b)
+Vector_c& Vector_c::operator+=(const Vector_c& b)
 {
     int stat = gsl_vector_char_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1287,7 +1085,7 @@ inline Vector_c& Vector_c::operator+=(const Vector_c& b)
 }
 
 template<>
-inline Vector_uc& Vector_uc::operator+=(const Vector_uc& b)
+Vector_uc& Vector_uc::operator+=(const Vector_uc& b)
 {
     int stat = gsl_vector_uchar_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1299,7 +1097,7 @@ inline Vector_uc& Vector_uc::operator+=(const Vector_uc& b)
 }
 
 template<>
-inline Vector_cx& Vector_cx::operator+=(const Vector_cx& b)
+Vector_cx& Vector_cx::operator+=(const Vector_cx& b)
 {
     int stat = gsl_vector_complex_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1311,7 +1109,7 @@ inline Vector_cx& Vector_cx::operator+=(const Vector_cx& b)
 }
 
 template<>
-inline Vector_cxld& Vector_cxld::operator+=(const Vector_cxld& b)
+Vector_cxld& Vector_cxld::operator+=(const Vector_cxld& b)
 {
     int stat = gsl_vector_complex_long_double_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1323,7 +1121,7 @@ inline Vector_cxld& Vector_cxld::operator+=(const Vector_cxld& b)
 }
 
 template<>
-inline Vector_cxf& Vector_cxf::operator+=(const Vector_cxf& b)
+Vector_cxf& Vector_cxf::operator+=(const Vector_cxf& b)
 {
     int stat = gsl_vector_complex_float_add(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1335,7 +1133,7 @@ inline Vector_cxf& Vector_cxf::operator+=(const Vector_cxf& b)
 }
 
 template<>
-inline Vector& Vector::operator-=(const Vector& b)
+Vector& Vector::operator-=(const Vector& b)
 {
     int stat = gsl_vector_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1347,7 +1145,7 @@ inline Vector& Vector::operator-=(const Vector& b)
 }
 
 template<>
-inline Vector_ld& Vector_ld::operator-=(const Vector_ld& b)
+Vector_ld& Vector_ld::operator-=(const Vector_ld& b)
 {
     int stat = gsl_vector_long_double_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1359,7 +1157,7 @@ inline Vector_ld& Vector_ld::operator-=(const Vector_ld& b)
 }
 
 template<>
-inline Vector_f& Vector_f::operator-=(const Vector_f& b)
+Vector_f& Vector_f::operator-=(const Vector_f& b)
 {
     int stat = gsl_vector_float_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1371,7 +1169,7 @@ inline Vector_f& Vector_f::operator-=(const Vector_f& b)
 }
 
 template<>
-inline Vector_i& Vector_i::operator-=(const Vector_i& b)
+Vector_i& Vector_i::operator-=(const Vector_i& b)
 {
     int stat = gsl_vector_int_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1383,7 +1181,7 @@ inline Vector_i& Vector_i::operator-=(const Vector_i& b)
 }
 
 template<>
-inline Vector_ui& Vector_ui::operator-=(const Vector_ui& b)
+Vector_ui& Vector_ui::operator-=(const Vector_ui& b)
 {
     int stat = gsl_vector_uint_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1395,7 +1193,7 @@ inline Vector_ui& Vector_ui::operator-=(const Vector_ui& b)
 }
 
 template<>
-inline Vector_l& Vector_l::operator-=(const Vector_l& b)
+Vector_l& Vector_l::operator-=(const Vector_l& b)
 {
     int stat = gsl_vector_long_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1407,7 +1205,7 @@ inline Vector_l& Vector_l::operator-=(const Vector_l& b)
 }
 
 template<>
-inline Vector_ul& Vector_ul::operator-=(const Vector_ul& b)
+Vector_ul& Vector_ul::operator-=(const Vector_ul& b)
 {
     int stat = gsl_vector_ulong_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1419,7 +1217,7 @@ inline Vector_ul& Vector_ul::operator-=(const Vector_ul& b)
 }
 
 template<>
-inline Vector_s& Vector_s::operator-=(const Vector_s& b)
+Vector_s& Vector_s::operator-=(const Vector_s& b)
 {
     int stat = gsl_vector_short_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1431,7 +1229,7 @@ inline Vector_s& Vector_s::operator-=(const Vector_s& b)
 }
 
 template<>
-inline Vector_us& Vector_us::operator-=(const Vector_us& b)
+Vector_us& Vector_us::operator-=(const Vector_us& b)
 {
     int stat = gsl_vector_ushort_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1444,7 +1242,7 @@ inline Vector_us& Vector_us::operator-=(const Vector_us& b)
 
 
 template<>
-inline Vector_c& Vector_c::operator-=(const Vector_c& b)
+Vector_c& Vector_c::operator-=(const Vector_c& b)
 {
     int stat = gsl_vector_char_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1456,7 +1254,7 @@ inline Vector_c& Vector_c::operator-=(const Vector_c& b)
 }
 
 template<>
-inline Vector_uc& Vector_uc::operator-=(const Vector_uc& b)
+Vector_uc& Vector_uc::operator-=(const Vector_uc& b)
 {
     int stat = gsl_vector_uchar_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1468,7 +1266,7 @@ inline Vector_uc& Vector_uc::operator-=(const Vector_uc& b)
 }
 
 template<>
-inline Vector_cx& Vector_cx::operator-=(const Vector_cx& b)
+Vector_cx& Vector_cx::operator-=(const Vector_cx& b)
 {
     int stat = gsl_vector_complex_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1480,7 +1278,7 @@ inline Vector_cx& Vector_cx::operator-=(const Vector_cx& b)
 }
 
 template<>
-inline Vector_cxld& Vector_cxld::operator-=(const Vector_cxld& b)
+Vector_cxld& Vector_cxld::operator-=(const Vector_cxld& b)
 {
     int stat = gsl_vector_complex_long_double_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1492,7 +1290,7 @@ inline Vector_cxld& Vector_cxld::operator-=(const Vector_cxld& b)
 }
 
 template<>
-inline Vector_cxf& Vector_cxf::operator-=(const Vector_cxf& b)
+Vector_cxf& Vector_cxf::operator-=(const Vector_cxf& b)
 {
     int stat = gsl_vector_complex_float_sub(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1504,7 +1302,7 @@ inline Vector_cxf& Vector_cxf::operator-=(const Vector_cxf& b)
 }
 
 template<>
-inline Vector& Vector::operator*=(const Vector& b)
+Vector& Vector::operator*=(const Vector& b)
 {
     int stat = gsl_vector_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1516,7 +1314,7 @@ inline Vector& Vector::operator*=(const Vector& b)
 }
 
 template<>
-inline Vector_ld& Vector_ld::operator*=(const Vector_ld& b)
+Vector_ld& Vector_ld::operator*=(const Vector_ld& b)
 {
     int stat = gsl_vector_long_double_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1528,7 +1326,7 @@ inline Vector_ld& Vector_ld::operator*=(const Vector_ld& b)
 }
 
 template<>
-inline Vector_f& Vector_f::operator*=(const Vector_f& b)
+Vector_f& Vector_f::operator*=(const Vector_f& b)
 {
     int stat = gsl_vector_float_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1540,7 +1338,7 @@ inline Vector_f& Vector_f::operator*=(const Vector_f& b)
 }
 
 template<>
-inline Vector_i& Vector_i::operator*=(const Vector_i& b)
+Vector_i& Vector_i::operator*=(const Vector_i& b)
 {
     int stat = gsl_vector_int_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1552,7 +1350,7 @@ inline Vector_i& Vector_i::operator*=(const Vector_i& b)
 }
 
 template<>
-inline Vector_ui& Vector_ui::operator*=(const Vector_ui& b)
+Vector_ui& Vector_ui::operator*=(const Vector_ui& b)
 {
     int stat = gsl_vector_uint_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1564,7 +1362,7 @@ inline Vector_ui& Vector_ui::operator*=(const Vector_ui& b)
 }
 
 template<>
-inline Vector_l& Vector_l::operator*=(const Vector_l& b)
+Vector_l& Vector_l::operator*=(const Vector_l& b)
 {
     int stat = gsl_vector_long_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1576,7 +1374,7 @@ inline Vector_l& Vector_l::operator*=(const Vector_l& b)
 }
 
 template<>
-inline Vector_ul& Vector_ul::operator*=(const Vector_ul& b)
+Vector_ul& Vector_ul::operator*=(const Vector_ul& b)
 {
     int stat = gsl_vector_ulong_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1588,7 +1386,7 @@ inline Vector_ul& Vector_ul::operator*=(const Vector_ul& b)
 }
 
 template<>
-inline Vector_s& Vector_s::operator*=(const Vector_s& b)
+Vector_s& Vector_s::operator*=(const Vector_s& b)
 {
     int stat = gsl_vector_short_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1600,7 +1398,7 @@ inline Vector_s& Vector_s::operator*=(const Vector_s& b)
 }
 
 template<>
-inline Vector_us& Vector_us::operator*=(const Vector_us& b)
+Vector_us& Vector_us::operator*=(const Vector_us& b)
 {
     int stat = gsl_vector_ushort_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1613,7 +1411,7 @@ inline Vector_us& Vector_us::operator*=(const Vector_us& b)
 
 
 template<>
-inline Vector_c& Vector_c::operator*=(const Vector_c& b)
+Vector_c& Vector_c::operator*=(const Vector_c& b)
 {
     int stat = gsl_vector_char_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1625,7 +1423,7 @@ inline Vector_c& Vector_c::operator*=(const Vector_c& b)
 }
 
 template<>
-inline Vector_uc& Vector_uc::operator*=(const Vector_uc& b)
+Vector_uc& Vector_uc::operator*=(const Vector_uc& b)
 {
     int stat = gsl_vector_uchar_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1637,7 +1435,7 @@ inline Vector_uc& Vector_uc::operator*=(const Vector_uc& b)
 }
 
 template<>
-inline Vector_cx& Vector_cx::operator*=(const Vector_cx& b)
+Vector_cx& Vector_cx::operator*=(const Vector_cx& b)
 {
     int stat = gsl_vector_complex_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1649,7 +1447,7 @@ inline Vector_cx& Vector_cx::operator*=(const Vector_cx& b)
 }
 
 template<>
-inline Vector_cxld& Vector_cxld::operator*=(const Vector_cxld& b)
+Vector_cxld& Vector_cxld::operator*=(const Vector_cxld& b)
 {
     int stat = gsl_vector_complex_long_double_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1661,7 +1459,7 @@ inline Vector_cxld& Vector_cxld::operator*=(const Vector_cxld& b)
 }
 
 template<>
-inline Vector_cxf& Vector_cxf::operator*=(const Vector_cxf& b)
+Vector_cxf& Vector_cxf::operator*=(const Vector_cxf& b)
 {
     int stat = gsl_vector_complex_float_mul(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1673,7 +1471,7 @@ inline Vector_cxf& Vector_cxf::operator*=(const Vector_cxf& b)
 }
 
 template<>
-inline Vector& Vector::operator/=(const Vector& b)
+Vector& Vector::operator/=(const Vector& b)
 {
     int stat = gsl_vector_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1685,7 +1483,7 @@ inline Vector& Vector::operator/=(const Vector& b)
 }
 
 template<>
-inline Vector_ld& Vector_ld::operator/=(const Vector_ld& b)
+Vector_ld& Vector_ld::operator/=(const Vector_ld& b)
 {
     int stat = gsl_vector_long_double_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1697,7 +1495,7 @@ inline Vector_ld& Vector_ld::operator/=(const Vector_ld& b)
 }
 
 template<>
-inline Vector_f& Vector_f::operator/=(const Vector_f& b)
+Vector_f& Vector_f::operator/=(const Vector_f& b)
 {
     int stat = gsl_vector_float_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1709,7 +1507,7 @@ inline Vector_f& Vector_f::operator/=(const Vector_f& b)
 }
 
 template<>
-inline Vector_i& Vector_i::operator/=(const Vector_i& b)
+Vector_i& Vector_i::operator/=(const Vector_i& b)
 {
     int stat = gsl_vector_int_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1721,7 +1519,7 @@ inline Vector_i& Vector_i::operator/=(const Vector_i& b)
 }
 
 template<>
-inline Vector_ui& Vector_ui::operator/=(const Vector_ui& b)
+Vector_ui& Vector_ui::operator/=(const Vector_ui& b)
 {
     int stat = gsl_vector_uint_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1733,7 +1531,7 @@ inline Vector_ui& Vector_ui::operator/=(const Vector_ui& b)
 }
 
 template<>
-inline Vector_l& Vector_l::operator/=(const Vector_l& b)
+Vector_l& Vector_l::operator/=(const Vector_l& b)
 {
     int stat = gsl_vector_long_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1745,7 +1543,7 @@ inline Vector_l& Vector_l::operator/=(const Vector_l& b)
 }
 
 template<>
-inline Vector_ul& Vector_ul::operator/=(const Vector_ul& b)
+Vector_ul& Vector_ul::operator/=(const Vector_ul& b)
 {
     int stat = gsl_vector_ulong_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1757,7 +1555,7 @@ inline Vector_ul& Vector_ul::operator/=(const Vector_ul& b)
 }
 
 template<>
-inline Vector_s& Vector_s::operator/=(const Vector_s& b)
+Vector_s& Vector_s::operator/=(const Vector_s& b)
 {
     int stat = gsl_vector_short_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1769,7 +1567,7 @@ inline Vector_s& Vector_s::operator/=(const Vector_s& b)
 }
 
 template<>
-inline Vector_us& Vector_us::operator/=(const Vector_us& b)
+Vector_us& Vector_us::operator/=(const Vector_us& b)
 {
     int stat = gsl_vector_ushort_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1782,7 +1580,7 @@ inline Vector_us& Vector_us::operator/=(const Vector_us& b)
 
 
 template<>
-inline Vector_c& Vector_c::operator/=(const Vector_c& b)
+Vector_c& Vector_c::operator/=(const Vector_c& b)
 {
     int stat = gsl_vector_char_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1794,7 +1592,7 @@ inline Vector_c& Vector_c::operator/=(const Vector_c& b)
 }
 
 template<>
-inline Vector_uc& Vector_uc::operator/=(const Vector_uc& b)
+Vector_uc& Vector_uc::operator/=(const Vector_uc& b)
 {
     int stat = gsl_vector_uchar_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1806,7 +1604,7 @@ inline Vector_uc& Vector_uc::operator/=(const Vector_uc& b)
 }
 
 template<>
-inline Vector_cx& Vector_cx::operator/=(const Vector_cx& b)
+Vector_cx& Vector_cx::operator/=(const Vector_cx& b)
 {
     int stat = gsl_vector_complex_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1818,7 +1616,7 @@ inline Vector_cx& Vector_cx::operator/=(const Vector_cx& b)
 }
 
 template<>
-inline Vector_cxld& Vector_cxld::operator/=(const Vector_cxld& b)
+Vector_cxld& Vector_cxld::operator/=(const Vector_cxld& b)
 {
     int stat = gsl_vector_complex_long_double_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1830,7 +1628,7 @@ inline Vector_cxld& Vector_cxld::operator/=(const Vector_cxld& b)
 }
 
 template<>
-inline Vector_cxf& Vector_cxf::operator/=(const Vector_cxf& b)
+Vector_cxf& Vector_cxf::operator/=(const Vector_cxf& b)
 {
     int stat = gsl_vector_complex_float_div(this->gsl_vec.get(), b.gsl_vec.get());
     if(stat){
@@ -1842,7 +1640,7 @@ inline Vector_cxf& Vector_cxf::operator/=(const Vector_cxf& b)
 }
 
 template<>
-inline Vector& Vector::operator*=(const double& b)
+Vector& Vector::operator*=(const double& b)
 {
     int stat = gsl_vector_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1854,7 +1652,7 @@ inline Vector& Vector::operator*=(const double& b)
 }
 
 template<>
-inline Vector_ld& Vector_ld::operator*=(const long double& b)
+Vector_ld& Vector_ld::operator*=(const long double& b)
 {
     int stat = gsl_vector_long_double_scale(this->gsl_vec.get(), static_cast<double>(b));
     if(stat){
@@ -1866,7 +1664,7 @@ inline Vector_ld& Vector_ld::operator*=(const long double& b)
 }
 
 template<>
-inline Vector_f& Vector_f::operator*=(const float& b)
+Vector_f& Vector_f::operator*=(const float& b)
 {
     int stat = gsl_vector_float_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1878,7 +1676,7 @@ inline Vector_f& Vector_f::operator*=(const float& b)
 }
 
 template<>
-inline Vector_i& Vector_i::operator*=(const int& b)
+Vector_i& Vector_i::operator*=(const int& b)
 {
     int stat = gsl_vector_int_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1890,7 +1688,7 @@ inline Vector_i& Vector_i::operator*=(const int& b)
 }
 
 template<>
-inline Vector_ui& Vector_ui::operator*=(const unsigned int& b)
+Vector_ui& Vector_ui::operator*=(const unsigned int& b)
 {
     int stat = gsl_vector_uint_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1902,7 +1700,7 @@ inline Vector_ui& Vector_ui::operator*=(const unsigned int& b)
 }
 
 template<>
-inline Vector_l& Vector_l::operator*=(const long& b)
+Vector_l& Vector_l::operator*=(const long& b)
 {
     int stat = gsl_vector_long_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1914,7 +1712,7 @@ inline Vector_l& Vector_l::operator*=(const long& b)
 }
 
 template<>
-inline Vector_ul& Vector_ul::operator*=(const unsigned long& b)
+Vector_ul& Vector_ul::operator*=(const unsigned long& b)
 {
     int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1926,7 +1724,7 @@ inline Vector_ul& Vector_ul::operator*=(const unsigned long& b)
 }
 
 template<>
-inline Vector_s& Vector_s::operator*=(const short& b)
+Vector_s& Vector_s::operator*=(const short& b)
 {
     int stat = gsl_vector_short_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1938,7 +1736,7 @@ inline Vector_s& Vector_s::operator*=(const short& b)
 }
 
 template<>
-inline Vector_us& Vector_us::operator*=(const unsigned short& b)
+Vector_us& Vector_us::operator*=(const unsigned short& b)
 {
     int stat = gsl_vector_ushort_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1951,7 +1749,7 @@ inline Vector_us& Vector_us::operator*=(const unsigned short& b)
 
 
 template<>
-inline Vector_c& Vector_c::operator*=(const char& b)
+Vector_c& Vector_c::operator*=(const char& b)
 {
     int stat = gsl_vector_char_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1963,7 +1761,7 @@ inline Vector_c& Vector_c::operator*=(const char& b)
 }
 
 template<>
-inline Vector_uc& Vector_uc::operator*=(const unsigned char& b)
+Vector_uc& Vector_uc::operator*=(const unsigned char& b)
 {
     int stat = gsl_vector_uchar_scale(this->gsl_vec.get(), b);
     if(stat){
@@ -1975,7 +1773,7 @@ inline Vector_uc& Vector_uc::operator*=(const unsigned char& b)
 }
 
 template<>
-inline Vector_cx& Vector_cx::operator*=(const Complex& b)
+Vector_cx& Vector_cx::operator*=(const Complex& b)
 {
     int stat = gsl_vector_complex_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
@@ -1987,7 +1785,7 @@ inline Vector_cx& Vector_cx::operator*=(const Complex& b)
 }
 
 template<>
-inline Vector_cxld& Vector_cxld::operator*=(const Complex_ld& b)
+Vector_cxld& Vector_cxld::operator*=(const Complex_ld& b)
 {
     int stat = gsl_vector_complex_long_double_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
@@ -1999,7 +1797,7 @@ inline Vector_cxld& Vector_cxld::operator*=(const Complex_ld& b)
 }
 
 template<>
-inline Vector_cxf& Vector_cxf::operator*=(const Complex_f& b)
+Vector_cxf& Vector_cxf::operator*=(const Complex_f& b)
 {
     int stat = gsl_vector_complex_float_scale(this->gsl_vec.get(), *b.gsl_c.get());
     if(stat){
@@ -2011,7 +1809,7 @@ inline Vector_cxf& Vector_cxf::operator*=(const Complex_f& b)
 }
 
 template<>
-inline Vector& Vector::operator/=(const double& b)
+Vector& Vector::operator/=(const double& b)
 {
     int stat = gsl_vector_scale(this->gsl_vec.get(), 1./b);
     if(stat){
@@ -2023,7 +1821,7 @@ inline Vector& Vector::operator/=(const double& b)
 }
 
 template<>
-inline Vector_ld& Vector_ld::operator/=(const long double& b)
+Vector_ld& Vector_ld::operator/=(const long double& b)
 {
     int stat = gsl_vector_long_double_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
     if(stat){
@@ -2035,7 +1833,7 @@ inline Vector_ld& Vector_ld::operator/=(const long double& b)
 }
 
 template<>
-inline Vector_f& Vector_f::operator/=(const float& b)
+Vector_f& Vector_f::operator/=(const float& b)
 {
     int stat = gsl_vector_float_scale(this->gsl_vec.get(), static_cast<float>(1.)/b);
     if(stat){
@@ -2047,7 +1845,7 @@ inline Vector_f& Vector_f::operator/=(const float& b)
 }
 
 template<>
-inline Vector_i& Vector_i::operator/=(const int& b)
+Vector_i& Vector_i::operator/=(const int& b)
 {
     Vector_i tmp(this->size());
     gsl_vector_int_set_all(tmp.gsl_vec.get(), b);
@@ -2061,7 +1859,7 @@ inline Vector_i& Vector_i::operator/=(const int& b)
 }
 
 template<>
-inline Vector_ui& Vector_ui::operator/=(const unsigned int& b)
+Vector_ui& Vector_ui::operator/=(const unsigned int& b)
 {
     Vector_ui tmp(this->size());
     gsl_vector_uint_set_all(tmp.gsl_vec.get(), b);
@@ -2075,7 +1873,7 @@ inline Vector_ui& Vector_ui::operator/=(const unsigned int& b)
 }
 
 template<>
-inline Vector_l& Vector_l::operator/=(const long& b)
+Vector_l& Vector_l::operator/=(const long& b)
 {
     Vector_l tmp(this->size());
     gsl_vector_long_set_all(tmp.gsl_vec.get(), b);
@@ -2089,7 +1887,7 @@ inline Vector_l& Vector_l::operator/=(const long& b)
 }
 
 template<>
-inline Vector_ul& Vector_ul::operator/=(const unsigned long& b)
+Vector_ul& Vector_ul::operator/=(const unsigned long& b)
 {
     Vector_ul tmp(this->size());
     gsl_vector_ulong_set_all(tmp.gsl_vec.get(), b);
@@ -2103,7 +1901,7 @@ inline Vector_ul& Vector_ul::operator/=(const unsigned long& b)
 }
 
 template<>
-inline Vector_s& Vector_s::operator/=(const short& b)
+Vector_s& Vector_s::operator/=(const short& b)
 {
     Vector_s tmp(this->size());
     gsl_vector_short_set_all(tmp.gsl_vec.get(), b);
@@ -2117,7 +1915,7 @@ inline Vector_s& Vector_s::operator/=(const short& b)
 }
 
 template<>
-inline Vector_us& Vector_us::operator/=(const unsigned short& b)
+Vector_us& Vector_us::operator/=(const unsigned short& b)
 {
     Vector_us tmp(this->size());
     gsl_vector_ushort_set_all(tmp.gsl_vec.get(), b);
@@ -2132,7 +1930,7 @@ inline Vector_us& Vector_us::operator/=(const unsigned short& b)
 
 
 template<>
-inline Vector_c& Vector_c::operator/=(const char& b)
+Vector_c& Vector_c::operator/=(const char& b)
 {
     Vector_c tmp(this->size());
     gsl_vector_char_set_all(tmp.gsl_vec.get(), b);
@@ -2146,7 +1944,7 @@ inline Vector_c& Vector_c::operator/=(const char& b)
 }
 
 template<>
-inline Vector_uc& Vector_uc::operator/=(const unsigned char& b)
+Vector_uc& Vector_uc::operator/=(const unsigned char& b)
 {
     Vector_uc tmp(this->size());
     gsl_vector_uchar_set_all(tmp.gsl_vec.get(), b);
@@ -2160,7 +1958,7 @@ inline Vector_uc& Vector_uc::operator/=(const unsigned char& b)
 }
 
 template<>
-inline Vector_cx& Vector_cx::operator/=(const Complex& b)
+Vector_cx& Vector_cx::operator/=(const Complex& b)
 {
     int stat = gsl_vector_complex_scale(this->gsl_vec.get(), *(1./b).gsl_c);
     if(stat){
@@ -2172,7 +1970,7 @@ inline Vector_cx& Vector_cx::operator/=(const Complex& b)
 }
 
 template<>
-inline Vector_cxld& Vector_cxld::operator/=(const Complex_ld& b)
+Vector_cxld& Vector_cxld::operator/=(const Complex_ld& b)
 {
     int stat = gsl_vector_complex_long_double_scale(this->gsl_vec.get(), *(static_cast<long double>(1.)/b).gsl_c);
     if(stat){
@@ -2184,7 +1982,7 @@ inline Vector_cxld& Vector_cxld::operator/=(const Complex_ld& b)
 }
 
 template<>
-inline Vector_cxf& Vector_cxf::operator/=(const Complex_f& b)
+Vector_cxf& Vector_cxf::operator/=(const Complex_f& b)
 {
     int stat = gsl_vector_complex_float_scale(this->gsl_vec.get(), *(1./b).gsl_c);
     if(stat){
@@ -2195,51 +1993,8 @@ inline Vector_cxf& Vector_cxf::operator/=(const Complex_f& b)
     return *this;
 }
 
-template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator+(const Vector_t<T, G, A>& b) const
-{
-    return (Vector_t<T, G, A>().copy(*this)) += b;
-}
-
-template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator-(const Vector_t<T, G, A>& b) const
-{
-    return (Vector_t<T, G, A>().copy(*this)) -= b;
-}
-
-template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator*(const Vector_t<T, G, A>& b) const
-{
-    return (Vector_t<T, G, A>().copy(*this)) *= b;
-}
-
-template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator/(const Vector_t<T, G, A>& b) const
-{
-    return (Vector_t<T, G, A>().copy(*this)) /= b;
-}
-
-template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator*(const T s) const
-{
-    return (Vector_t<T, G, A>().copy(*this)) *= s;
-}
-
-template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator/(const T s) const
-{
-    return (Vector_t<T, G, A>().copy(*this)) /= s;
-}
-
-template<class T, class G, class A>
-Vector_t<T, G, A> Vector_t<T, G, A>::operator-() const
-{
-    return GSL::Vector_t<T, G, A>(this->size()) -= *this;
-}
-
-
 template<> template<>
-inline Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m) const
+Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m) const
 {
     Vector res(m.size().first);
     int stat = gsl_blas_dgemv(CblasTrans, 1.0, m.gsl_mat.get(),
@@ -2254,7 +2009,7 @@ inline Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, g
 }
 
 template<> template<>
-inline Vector_f Vector_f::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& m) const
+Vector_f Vector_f::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_matrix_float, gsl_vector_float>& m) const
 {
     Vector_f res(m.size().first);
     int stat = gsl_blas_sgemv(CblasTrans, 1.0, m.gsl_mat.get(),
@@ -2269,7 +2024,7 @@ inline Vector_f Vector_f::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_
 }
 
 template<> template<>
-inline Vector_cx Vector_cx::operator*<gsl_matrix_complex>(const Matrix_t<Complex, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& m) const
+Vector_cx Vector_cx::operator*<gsl_matrix_complex>(const Matrix_t<Complex, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& m) const
 {
     Vector_cx res(m.size().first);
     int stat = gsl_blas_zgemv(CblasTrans, Complex(1.0), m.gsl_mat.get(),
@@ -2284,7 +2039,7 @@ inline Vector_cx Vector_cx::operator*<gsl_matrix_complex>(const Matrix_t<Complex
 }
 
 template<> template<>
-inline Vector_cxf Vector_cxf::operator*<gsl_matrix_complex_float>(const Matrix_t<Complex_f, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& m) const
+Vector_cxf Vector_cxf::operator*<gsl_matrix_complex_float>(const Matrix_t<Complex_f, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& m) const
 {
     Vector_cxf res(m.size().first);
     int stat = gsl_blas_cgemv(CblasTrans, Complex_f(1.0), m.gsl_mat.get(),
@@ -2300,7 +2055,7 @@ inline Vector_cxf Vector_cxf::operator*<gsl_matrix_complex_float>(const Matrix_t
 
 
 template<>
-inline bool Vector::operator==(const Vector& b) const
+bool Vector::operator==(const Vector& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2311,7 +2066,7 @@ inline bool Vector::operator==(const Vector& b) const
 }
 
 template<>
-inline bool Vector_ld::operator==(const Vector_ld& b) const
+bool Vector_ld::operator==(const Vector_ld& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2322,7 +2077,7 @@ inline bool Vector_ld::operator==(const Vector_ld& b) const
 }
 
 template<>
-inline bool Vector_f::operator==(const Vector_f& b) const
+bool Vector_f::operator==(const Vector_f& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2333,7 +2088,7 @@ inline bool Vector_f::operator==(const Vector_f& b) const
 }
 
 template<>
-inline bool Vector_i::operator==(const Vector_i& b) const
+bool Vector_i::operator==(const Vector_i& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2344,7 +2099,7 @@ inline bool Vector_i::operator==(const Vector_i& b) const
 }
 
 template<>
-inline bool Vector_ui::operator==(const Vector_ui& b) const
+bool Vector_ui::operator==(const Vector_ui& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2355,7 +2110,7 @@ inline bool Vector_ui::operator==(const Vector_ui& b) const
 }
 
 template<>
-inline bool Vector_l::operator==(const Vector_l& b) const
+bool Vector_l::operator==(const Vector_l& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2366,7 +2121,7 @@ inline bool Vector_l::operator==(const Vector_l& b) const
 }
 
 template<>
-inline bool Vector_ul::operator==(const Vector_ul& b) const
+bool Vector_ul::operator==(const Vector_ul& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2377,7 +2132,7 @@ inline bool Vector_ul::operator==(const Vector_ul& b) const
 }
 
 template<>
-inline bool Vector_s::operator==(const Vector_s& b) const
+bool Vector_s::operator==(const Vector_s& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2388,7 +2143,7 @@ inline bool Vector_s::operator==(const Vector_s& b) const
 }
 
 template<>
-inline bool Vector_us::operator==(const Vector_us& b) const
+bool Vector_us::operator==(const Vector_us& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2399,7 +2154,7 @@ inline bool Vector_us::operator==(const Vector_us& b) const
 }
 
 template<>
-inline bool Vector_c::operator==(const Vector_c& b) const
+bool Vector_c::operator==(const Vector_c& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2410,7 +2165,7 @@ inline bool Vector_c::operator==(const Vector_c& b) const
 }
 
 template<>
-inline bool Vector_uc::operator==(const Vector_uc& b) const
+bool Vector_uc::operator==(const Vector_uc& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2421,7 +2176,7 @@ inline bool Vector_uc::operator==(const Vector_uc& b) const
 }
 
 template<>
-inline bool Vector_cx::operator==(const Vector_cx& b) const
+bool Vector_cx::operator==(const Vector_cx& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2432,7 +2187,7 @@ inline bool Vector_cx::operator==(const Vector_cx& b) const
 }
 
 template<>
-inline bool Vector_cxld::operator==(const Vector_cxld& b) const
+bool Vector_cxld::operator==(const Vector_cxld& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2443,7 +2198,7 @@ inline bool Vector_cxld::operator==(const Vector_cxld& b) const
 }
 
 template<>
-inline bool Vector_cxf::operator==(const Vector_cxf& b) const
+bool Vector_cxf::operator==(const Vector_cxf& b) const
 {
     if(this->gsl_vec.get() == nullptr && b.gsl_vec.get() == nullptr){
         return true;
@@ -2453,243 +2208,8 @@ inline bool Vector_cxf::operator==(const Vector_cxf& b) const
     return gsl_vector_complex_float_equal(this->gsl_vec.get(), b.gsl_vec.get());
 }
 
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::operator!=(const Vector_t<T, G, A>& b) const
-{
-    return !(*this == b);
-}
-
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator==(const Vector_t<T, G, A>::iterator& b) const
-{
-    return (this->data_m == b.data_m) && (this->stride == b.stride);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator!=(const Vector_t<T, G, A>::iterator& b) const
-{
-    return !(*this == b);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator<(const Vector_t<T, G, A>::iterator& b) const
-{
-    return (this->data_m < b.data_m);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator>(const Vector_t<T, G, A>::iterator& b) const
-{
-    return (this->data_m > b.data_m);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator<=(const Vector_t<T, G, A>::iterator& b) const
-{
-    return !(this->data_m > b.data_m);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::iterator::operator>=(const Vector_t<T, G, A>::iterator& b) const
-{
-    return !(this->data_m < b.data_m);
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::operator++()
-{
-    this->data_m += this->stride;
-    return *this;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::operator++(int)
-{
-    Vector_t<T, G, A>::iterator tmp = *this;
-    ++(*this);
-    return tmp;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::operator--()
-{
-    this->data_m -= this->stride;
-    return *this;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::operator--(int)
-{
-    Vector_t<T, G, A>::iterator tmp = *this;
-    --(*this);
-    return tmp;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::
-    operator+=(Vector_t<T, G, A>::size_type n)
-{
-    this->data_m += n*this->stride;
-    return *this;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::
-    operator+(Vector_t<T, G, A>::size_type n) const
-{
-    Vector_t<T, G, A>::iterator tmp = *this;
-    tmp += n;
-    return tmp;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator& Vector_t<T, G, A>::iterator::
-    operator-=(Vector_t<T, G, A>::size_type n)
-{
-    this->data_m -= n*this->stride;
-    return *this;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::iterator::
-    operator-(Vector_t<T, G, A>::size_type n) const
-{
-    Vector_t<T, G, A>::iterator tmp = *this;
-    tmp -= n;
-    return tmp;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator::difference_type Vector_t<T, G, A>::iterator::
-    operator-(iterator b) const
-{
-    return this->data_m - b.data_m;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator::reference Vector_t<T, G, A>::iterator::
-    operator*() const
-{
-    return *reinterpret_cast<pointer>(this->data_m);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator==(const Vector_t<T, G, A>::const_iterator& b) const
-{
-    return (this->data_m == b.data_m) && (this->stride == b.stride);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator!=(const Vector_t<T, G, A>::const_iterator& b) const
-{
-    return !(*this == b);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator<(const Vector_t<T, G, A>::const_iterator& b) const
-{
-    return (this->data_m < b.data_m);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator>(const Vector_t<T, G, A>::const_iterator& b) const
-{
-    return (this->data_m > b.data_m);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator<=(const Vector_t<T, G, A>::const_iterator& b) const
-{
-    return !(this->data_m > b.data_m);
-}
-
-template<class T, class G, class A>
-bool Vector_t<T, G, A>::const_iterator::operator>=(const Vector_t<T, G, A>::const_iterator& b) const
-{
-    return !(this->data_m < b.data_m);
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::operator++()
-{
-    this->data_m += this->stride;
-    return *this;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::operator++(int)
-{
-    Vector_t<T, G, A>::const_iterator tmp = *this;
-    ++(*this);
-    return tmp;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::operator--()
-{
-    this->data_m -= this->stride;
-    return *this;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::operator--(int)
-{
-    Vector_t<T, G, A>::const_iterator tmp = *this;
-    --(*this);
-    return tmp;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::
-    operator+=(Vector_t<T, G, A>::size_type n)
-{
-    this->data_m += n*this->stride;
-    return *this;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::
-    operator+(Vector_t<T, G, A>::size_type n) const
-{
-    Vector_t<T, G, A>::const_iterator tmp = *this;
-    tmp += n;
-    return tmp;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator& Vector_t<T, G, A>::const_iterator::
-    operator-=(Vector_t<T, G, A>::size_type n)
-{
-    this->data_m -= n*this->stride;
-    return *this;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::const_iterator::
-    operator-(Vector_t<T, G, A>::size_type n) const
-{
-    Vector_t<T, G, A>::const_iterator tmp = *this;
-    tmp -= n;
-    return tmp;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator::difference_type Vector_t<T, G, A>::const_iterator::
-    operator-(const_iterator b) const
-{
-    return this->data_m - b.data_m;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator::reference Vector_t<T, G, A>::const_iterator::
-    operator*() const
-{
-    return *reinterpret_cast<const pointer>(this->data_m);
-}
-
 template<>
-inline typename Vector::iterator Vector::begin()
+typename Vector::iterator Vector::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2698,7 +2218,7 @@ inline typename Vector::iterator Vector::begin()
 }
 
 template<>
-inline typename Vector_ld::iterator Vector_ld::begin()
+typename Vector_ld::iterator Vector_ld::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2707,7 +2227,7 @@ inline typename Vector_ld::iterator Vector_ld::begin()
 }
 
 template<>
-inline typename Vector_f::iterator Vector_f::begin()
+typename Vector_f::iterator Vector_f::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2716,7 +2236,7 @@ inline typename Vector_f::iterator Vector_f::begin()
 }
 
 template<>
-inline typename Vector_i::iterator Vector_i::begin()
+typename Vector_i::iterator Vector_i::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2725,7 +2245,7 @@ inline typename Vector_i::iterator Vector_i::begin()
 }
 
 template<>
-inline typename Vector_ui::iterator Vector_ui::begin()
+typename Vector_ui::iterator Vector_ui::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2734,7 +2254,7 @@ inline typename Vector_ui::iterator Vector_ui::begin()
 }
 
 template<>
-inline typename Vector_l::iterator Vector_l::begin()
+typename Vector_l::iterator Vector_l::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2743,7 +2263,7 @@ inline typename Vector_l::iterator Vector_l::begin()
 }
 
 template<>
-inline typename Vector_ul::iterator Vector_ul::begin()
+typename Vector_ul::iterator Vector_ul::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2752,7 +2272,7 @@ inline typename Vector_ul::iterator Vector_ul::begin()
 }
 
 template<>
-inline typename Vector_s::iterator Vector_s::begin()
+typename Vector_s::iterator Vector_s::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2761,7 +2281,7 @@ inline typename Vector_s::iterator Vector_s::begin()
 }
 
 template<>
-inline typename Vector_us::iterator Vector_us::begin()
+typename Vector_us::iterator Vector_us::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2770,7 +2290,7 @@ inline typename Vector_us::iterator Vector_us::begin()
 }
 
 template<>
-inline typename Vector_c::iterator Vector_c::begin()
+typename Vector_c::iterator Vector_c::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2779,7 +2299,7 @@ inline typename Vector_c::iterator Vector_c::begin()
 }
 
 template<>
-inline typename Vector_uc::iterator Vector_uc::begin()
+typename Vector_uc::iterator Vector_uc::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2788,7 +2308,7 @@ inline typename Vector_uc::iterator Vector_uc::begin()
 }
 
 template<>
-inline typename Vector_cx::iterator Vector_cx::begin()
+typename Vector_cx::iterator Vector_cx::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2797,7 +2317,7 @@ inline typename Vector_cx::iterator Vector_cx::begin()
 }
 
 template<>
-inline typename Vector_cxld::iterator Vector_cxld::begin()
+typename Vector_cxld::iterator Vector_cxld::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2806,7 +2326,7 @@ inline typename Vector_cxld::iterator Vector_cxld::begin()
 }
 
 template<>
-inline typename Vector_cxf::iterator Vector_cxf::begin()
+typename Vector_cxf::iterator Vector_cxf::begin()
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2815,7 +2335,7 @@ inline typename Vector_cxf::iterator Vector_cxf::begin()
 }
 
 template<>
-inline typename Vector::const_iterator Vector::begin() const
+typename Vector::const_iterator Vector::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2824,7 +2344,7 @@ inline typename Vector::const_iterator Vector::begin() const
 }
 
 template<>
-inline typename Vector_ld::const_iterator Vector_ld::begin() const
+typename Vector_ld::const_iterator Vector_ld::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2833,7 +2353,7 @@ inline typename Vector_ld::const_iterator Vector_ld::begin() const
 }
 
 template<>
-inline typename Vector_f::const_iterator Vector_f::begin() const
+typename Vector_f::const_iterator Vector_f::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2842,7 +2362,7 @@ inline typename Vector_f::const_iterator Vector_f::begin() const
 }
 
 template<>
-inline typename Vector_i::const_iterator Vector_i::begin() const
+typename Vector_i::const_iterator Vector_i::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2851,7 +2371,7 @@ inline typename Vector_i::const_iterator Vector_i::begin() const
 }
 
 template<>
-inline typename Vector_ui::const_iterator Vector_ui::begin() const
+typename Vector_ui::const_iterator Vector_ui::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2860,7 +2380,7 @@ inline typename Vector_ui::const_iterator Vector_ui::begin() const
 }
 
 template<>
-inline typename Vector_l::const_iterator Vector_l::begin() const
+typename Vector_l::const_iterator Vector_l::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2869,7 +2389,7 @@ inline typename Vector_l::const_iterator Vector_l::begin() const
 }
 
 template<>
-inline typename Vector_ul::const_iterator Vector_ul::begin() const
+typename Vector_ul::const_iterator Vector_ul::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2878,7 +2398,7 @@ inline typename Vector_ul::const_iterator Vector_ul::begin() const
 }
 
 template<>
-inline typename Vector_s::const_iterator Vector_s::begin() const
+typename Vector_s::const_iterator Vector_s::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2887,7 +2407,7 @@ inline typename Vector_s::const_iterator Vector_s::begin() const
 }
 
 template<>
-inline typename Vector_us::const_iterator Vector_us::begin() const
+typename Vector_us::const_iterator Vector_us::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2896,7 +2416,7 @@ inline typename Vector_us::const_iterator Vector_us::begin() const
 }
 
 template<>
-inline typename Vector_c::const_iterator Vector_c::begin() const
+typename Vector_c::const_iterator Vector_c::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2905,7 +2425,7 @@ inline typename Vector_c::const_iterator Vector_c::begin() const
 }
 
 template<>
-inline typename Vector_uc::const_iterator Vector_uc::begin() const
+typename Vector_uc::const_iterator Vector_uc::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2914,7 +2434,7 @@ inline typename Vector_uc::const_iterator Vector_uc::begin() const
 }
 
 template<>
-inline typename Vector_cx::const_iterator Vector_cx::begin() const
+typename Vector_cx::const_iterator Vector_cx::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2923,7 +2443,7 @@ inline typename Vector_cx::const_iterator Vector_cx::begin() const
 }
 
 template<>
-inline typename Vector_cxld::const_iterator Vector_cxld::begin() const
+typename Vector_cxld::const_iterator Vector_cxld::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2932,7 +2452,7 @@ inline typename Vector_cxld::const_iterator Vector_cxld::begin() const
 }
 
 template<>
-inline typename Vector_cxf::const_iterator Vector_cxf::begin() const
+typename Vector_cxf::const_iterator Vector_cxf::begin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2943,7 +2463,7 @@ inline typename Vector_cxf::const_iterator Vector_cxf::begin() const
 
 
 template<>
-inline typename Vector::const_iterator Vector::cbegin() const
+typename Vector::const_iterator Vector::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2952,7 +2472,7 @@ inline typename Vector::const_iterator Vector::cbegin() const
 }
 
 template<>
-inline typename Vector_ld::const_iterator Vector_ld::cbegin() const
+typename Vector_ld::const_iterator Vector_ld::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2961,7 +2481,7 @@ inline typename Vector_ld::const_iterator Vector_ld::cbegin() const
 }
 
 template<>
-inline typename Vector_f::const_iterator Vector_f::cbegin() const
+typename Vector_f::const_iterator Vector_f::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2970,7 +2490,7 @@ inline typename Vector_f::const_iterator Vector_f::cbegin() const
 }
 
 template<>
-inline typename Vector_i::const_iterator Vector_i::cbegin() const
+typename Vector_i::const_iterator Vector_i::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2979,7 +2499,7 @@ inline typename Vector_i::const_iterator Vector_i::cbegin() const
 }
 
 template<>
-inline typename Vector_ui::const_iterator Vector_ui::cbegin() const
+typename Vector_ui::const_iterator Vector_ui::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2988,7 +2508,7 @@ inline typename Vector_ui::const_iterator Vector_ui::cbegin() const
 }
 
 template<>
-inline typename Vector_l::const_iterator Vector_l::cbegin() const
+typename Vector_l::const_iterator Vector_l::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -2997,7 +2517,7 @@ inline typename Vector_l::const_iterator Vector_l::cbegin() const
 }
 
 template<>
-inline typename Vector_ul::const_iterator Vector_ul::cbegin() const
+typename Vector_ul::const_iterator Vector_ul::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3006,7 +2526,7 @@ inline typename Vector_ul::const_iterator Vector_ul::cbegin() const
 }
 
 template<>
-inline typename Vector_s::const_iterator Vector_s::cbegin() const
+typename Vector_s::const_iterator Vector_s::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3015,7 +2535,7 @@ inline typename Vector_s::const_iterator Vector_s::cbegin() const
 }
 
 template<>
-inline typename Vector_us::const_iterator Vector_us::cbegin() const
+typename Vector_us::const_iterator Vector_us::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3024,7 +2544,7 @@ inline typename Vector_us::const_iterator Vector_us::cbegin() const
 }
 
 template<>
-inline typename Vector_c::const_iterator Vector_c::cbegin() const
+typename Vector_c::const_iterator Vector_c::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3033,7 +2553,7 @@ inline typename Vector_c::const_iterator Vector_c::cbegin() const
 }
 
 template<>
-inline typename Vector_uc::const_iterator Vector_uc::cbegin() const
+typename Vector_uc::const_iterator Vector_uc::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3042,7 +2562,7 @@ inline typename Vector_uc::const_iterator Vector_uc::cbegin() const
 }
 
 template<>
-inline typename Vector_cx::const_iterator Vector_cx::cbegin() const
+typename Vector_cx::const_iterator Vector_cx::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3051,7 +2571,7 @@ inline typename Vector_cx::const_iterator Vector_cx::cbegin() const
 }
 
 template<>
-inline typename Vector_cxld::const_iterator Vector_cxld::cbegin() const
+typename Vector_cxld::const_iterator Vector_cxld::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3060,7 +2580,7 @@ inline typename Vector_cxld::const_iterator Vector_cxld::cbegin() const
 }
 
 template<>
-inline typename Vector_cxf::const_iterator Vector_cxf::cbegin() const
+typename Vector_cxf::const_iterator Vector_cxf::cbegin() const
 {
     if(this->gsl_vec.get() == nullptr){
         throw std::runtime_error("Calling begin() on uninitialized Vector");
@@ -3068,206 +2588,9 @@ inline typename Vector_cxf::const_iterator Vector_cxf::cbegin() const
     return const_iterator(gsl_vector_complex_float_ptr(gsl_vec.get(), 0), this->gsl_vec->stride);
 }
 
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::iterator Vector_t<T, G, A>::end()
-{
-    return this->begin() + this->gsl_vec->size;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::end() const
-{
-    return this->begin() + this->gsl_vec->size;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_iterator Vector_t<T, G, A>::cend() const
-{
-    return this->cbegin() + this->gsl_vec->size;
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::reverse_iterator Vector_t<T, G, A>::rbegin()
-{
-    return Vector_t<T, G, A>::reverse_iterator(this->end());
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::rbegin() const
-{
-    return Vector_t<T, G, A>::const_reverse_iterator(this->end());
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::crbegin() const
-{
-    return Vector_t<T, G, A>::const_reverse_iterator(this->end());
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::reverse_iterator Vector_t<T, G, A>::rend()
-{
-    return Vector_t<T, G, A>::reverse_iterator(this->begin());
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::rend() const
-{
-    return Vector_t<T, G, A>::const_reverse_iterator(this->begin());
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reverse_iterator Vector_t<T, G, A>::crend() const
-{
-    return Vector_t<T, G, A>::const_reverse_iterator(this->cbegin());
-
-}
-
-template<class T, class G, class A>
-inline typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
-    operator[] (const typename Vector_t<T, G, A>::size_type index)
-{
-    return *(this->begin() + index);
-}
-
-template<class T, class G, class A>
-inline typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
-    operator[] (const typename Vector_t<T, G, A>::size_type index) const
-{
-    return *(this->begin() + index);
-}
-
 /*
 template<>
-inline typename Vector_cx::const_reference Vector_cx::operator[]
-    (const typename Vector_cx::size_type index) const
-{
-    return *(this->begin() +  index);
-}
-
-template<>
-inline typename Vector_cxld::const_reference
-Vector_cxld::operator[]
-    (const typename Vector_cxld::size_type index) const
-{
-    return *gsl_vector_complex_long_double_ptr(this->gsl_vec.get(), index);
-}
-
-template<>
-inline typename Vector_cxf::const_reference
-Vector_cxf::operator[]
-    (const typename Vector_cxf::size_type index) const
-{
-    return *gsl_vector_complex_float_ptr(this->gsl_vec.get(), index);
-}
-*/
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
-    front()
-{
-    return *this->begin();
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
-    front() const
-{
-    return *this->cbegin();
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
-    back()
-{
-    return *(--this->end());
-}
-
-template<class T, class G, class A>
-typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
-    back() const
-{
-    return *(--this->cend());
-}
-
-template<class T, class G, class A>
-inline typename Vector_t<T, G, A>::reference Vector_t<T, G, A>::
-    at(const typename Vector_t<T, G, A>::size_type index)
-{
-    if(index >= this->gsl_vec->size){
-        throw std::out_of_range("Vector index " + std::to_string(index) + " out of range.");
-    }
-    return (*this)[index];
-}
-
-template<class T, class G, class A>
-inline typename Vector_t<T, G, A>::const_reference Vector_t<T, G, A>::
-    at(const typename Vector_t<T, G, A>::size_type index) const
-{
-    if(index >= this->gsl_vec->size){
-        throw std::out_of_range("Vector index " + std::to_string(index) + " out of range.");
-    }
-    return (*this)[index];
-}
-
-template<class T, class G, class A> template<class iter>
-void Vector_t<T, G, A>::assign(iter start_it, iter end_it)
-{
-    if(end_it - start_it < 0){
-        throw(std::runtime_error("Error in assign! End point comes before starting point\n"));
-    }
-    size_t diff = static_cast<size_t>(end_it - start_it);
-    if(diff != this->gsl_vec->size){
-        *this = GSL::Vector_t<T, G, A>(diff);
-    }
-    auto current = this->begin();
-    iter counter = start_it;
-    while(counter != end_it){
-        *current = *counter;
-        current++;
-        counter++;
-    }
-}
-
-template<class T, class G, class A>
-void Vector_t<T, G, A>::
-assign(std::initializer_list<Vector_t<T, G, A>::value_type> l)
-{
-    this->assign(l.begin(), l.end());
-}
-
-template<class T, class G, class A>
-void Vector_t<T, G, A>::assign(Vector_t<T, G, A>::size_type n,
-Vector_t<T ,G, A>::const_reference val)
-{
-    if(this->gsl_vec->size != n){
-        *this = GSL::Vector_t<T, G, A>(n);
-    }
-    for(auto it = this->begin(); it != this->begin() + n; it++){
-        *it = val;
-    }
-}
-
-template<class T, class G, class A>
-std::string Vector_t<T, G, A>::to_string() const
-{
-    std::string res = "(";
-    size_t i = 0;
-    for(auto it : *this){
-        res += std::to_string(it);
-        if(i < this->size() - 1){
-            res += ",";
-        }
-        res += " ";
-        i++;
-    }
-    res += ")";
-    return res;
-}
-
-/*
-template<>
-inline std::string Vector_cx::to_string() const
+std::string Vector_cx::to_string() const
 {
     std::string res = "(";
     Complex tmp;
@@ -3284,7 +2607,7 @@ inline std::string Vector_cx::to_string() const
 }
 
 template<>
-inline std::string Vector_cxld::to_string() const
+std::string Vector_cxld::to_string() const
 {
     std::string res = "(";
     Complex_ld tmp;
@@ -3301,7 +2624,7 @@ inline std::string Vector_cxld::to_string() const
 }
 
 template<>
-inline std::string Vector_cxf::to_string() const
+std::string Vector_cxf::to_string() const
 {
     std::string res = "(";
     Complex_f tmp;
@@ -3317,4 +2640,291 @@ inline std::string Vector_cxf::to_string() const
     return res;
 }
 */
+
+
+template Vector::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_ld::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_f::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_i::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_ui::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_l::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_ul::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_s::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_us::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_c::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_uc::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_cx::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_cxf::Vector_t(const std::shared_ptr<GSL_Vec>&);
+template Vector_cxld::Vector_t(const std::shared_ptr<GSL_Vec>&);
+
+template Vector::Vector_t(const size_type n);
+template Vector_ld::Vector_t(const size_type n);
+template Vector_f::Vector_t(const size_type n);
+template Vector_i::Vector_t(const size_type n);
+template Vector_ui::Vector_t(const size_type n);
+template Vector_l::Vector_t(const size_type n);
+template Vector_ul::Vector_t(const size_type n);
+template Vector_s::Vector_t(const size_type n);
+template Vector_us::Vector_t(const size_type n);
+template Vector_c::Vector_t(const size_type n);
+template Vector_uc::Vector_t(const size_type n);
+template Vector_cx::Vector_t(const size_type n);
+template Vector_cxld::Vector_t(const size_type n);
+template Vector_cxf::Vector_t(const size_type n);
+
+template Vector::Vector_t(std::initializer_list<value_type>);
+template Vector_ld::Vector_t(std::initializer_list<value_type>);
+template Vector_f::Vector_t(std::initializer_list<value_type>);
+template Vector_i::Vector_t(std::initializer_list<value_type>);
+template Vector_ui::Vector_t(std::initializer_list<value_type>);
+template Vector_l::Vector_t(std::initializer_list<value_type>);
+template Vector_ul::Vector_t(std::initializer_list<value_type>);
+template Vector_s::Vector_t(std::initializer_list<value_type>);
+template Vector_us::Vector_t(std::initializer_list<value_type>);
+template Vector_c::Vector_t(std::initializer_list<value_type>);
+template Vector_uc::Vector_t(std::initializer_list<value_type>);
+template Vector_cx::Vector_t(std::initializer_list<value_type>);
+template Vector_cxld::Vector_t(std::initializer_list<value_type>);
+template Vector_cxf::Vector_t(std::initializer_list<value_type>);
+
+template Vector Vector::copy() const;
+template Vector_ld Vector_ld::copy() const;
+template Vector_f Vector_f::copy() const;
+template Vector_i Vector_i::copy() const;
+template Vector_ui Vector_ui::copy() const;
+template Vector_l Vector_l::copy() const;
+template Vector_ul Vector_ul::copy() const;
+template Vector_s Vector_s::copy() const;
+template Vector_us Vector_us::copy() const;
+template Vector_c Vector_c::copy() const;
+template Vector_uc Vector_uc::copy() const;
+template Vector_cx Vector_cx::copy() const;
+template Vector_cxld Vector_cxld::copy() const;
+template Vector_cxf Vector_cxf::copy() const;
+
+template Vector& Vector::copy(const Vector_t& a);
+template Vector_ld& Vector_ld::copy(const Vector_t& a);
+template Vector_f& Vector_f::copy(const Vector_t& a);
+template Vector_i& Vector_i::copy(const Vector_t& a);
+template Vector_ui& Vector_ui::copy(const Vector_t& a);
+template Vector_l& Vector_l::copy(const Vector_t& a);
+template Vector_ul& Vector_ul::copy(const Vector_t& a);
+template Vector_s& Vector_s::copy(const Vector_t& a);
+template Vector_us& Vector_us::copy(const Vector_t& a);
+template Vector_c& Vector_c::copy(const Vector_t& a);
+template Vector_uc& Vector_uc::copy(const Vector_t& a);
+template Vector_cx& Vector_cx::copy(const Vector_t& a);
+template Vector_cxld& Vector_cxld::copy(const Vector_t& a);
+template Vector_cxf& Vector_cxf::copy(const Vector_t& a);
+
+template double Vector::norm<double>() const;
+template float Vector_f::norm<float>() const;
+template double Vector_cx::norm<double>() const;
+template float Vector_cxf::norm<float>() const;
+template long double Vector_ld::norm<long double>() const;
+template double Vector_i::norm<double>() const;
+template float Vector_i::norm<float>() const;
+template double Vector_ui::norm<double>() const;
+template float Vector_ui::norm<float>() const;
+template double Vector_l::norm<double>() const;
+template long double Vector::norm<long double>() const;
+template double Vector_ul::norm<double>() const;
+template long double Vector_ul::norm<long double>() const;
+template double Vector_s::norm<double>() const;
+template float Vector_s::norm<float>() const;
+template double Vector_us::norm<double>() const;
+template float Vector_us::norm<float>() const;
+template double Vector_c::norm<double>() const;
+template float Vector_c::norm<float>() const;
+template double Vector_uc::norm<double>() const;
+template float Vector_uc::norm<float>() const;
+template long double Vector_cxld::norm<long double>() const;
+template float Vector_f::norm<float>() const;
+
+template Vector::value_type Vector::dot(const Vector_t& b) const;
+template Vector_ld::value_type Vector_ld::dot(const Vector_t& b) const;
+template Vector_f::value_type Vector_f::dot(const Vector_t& b) const;
+template Vector_i::value_type Vector_i::dot(const Vector_t& b) const;
+template Vector_ui::value_type Vector_ui::dot(const Vector_t& b) const;
+template Vector_l::value_type Vector_l::dot(const Vector_t& b) const;
+template Vector_ul::value_type Vector_ul::dot(const Vector_t& b) const;
+template Vector_s::value_type Vector_s::dot(const Vector_t& b) const;
+template Vector_us::value_type Vector_us::dot(const Vector_t& b) const;
+template Vector_c::value_type Vector_c::dot(const Vector_t& b) const;
+template Vector_uc::value_type Vector_uc::dot(const Vector_t& b) const;
+template Vector_cx::value_type Vector_cx::dot(const Vector_t& b) const;
+template Vector_cxld::value_type Vector_cxld::dot(const Vector_t& b) const;
+template Vector_cxf::value_type Vector_cxf::dot(const Vector_t& b) const;
+
+template Vector& Vector::operator+= (const Vector_t& b);
+template Vector_ld& Vector_ld::operator+= (const Vector_t& b);
+template Vector_f& Vector_f::operator+= (const Vector_t& b);
+template Vector_i& Vector_i::operator+= (const Vector_t& b);
+template Vector_ui& Vector_ui::operator+= (const Vector_t& b);
+template Vector_l& Vector_l::operator+= (const Vector_t& b);
+template Vector_ul& Vector_ul::operator+= (const Vector_t& b);
+template Vector_s& Vector_s::operator+= (const Vector_t& b);
+template Vector_us& Vector_us::operator+= (const Vector_t& b);
+template Vector_c& Vector_c::operator+= (const Vector_t& b);
+template Vector_uc& Vector_uc::operator+= (const Vector_t& b);
+template Vector_cx& Vector_cx::operator+= (const Vector_t& b);
+template Vector_cxld& Vector_cxld::operator+= (const Vector_t& b);
+template Vector_cxf& Vector_cxf::operator+= (const Vector_t& b);
+
+template Vector& Vector::operator-= (const Vector_t& b);
+template Vector_ld& Vector_ld::operator-= (const Vector_t& b);
+template Vector_f& Vector_f::operator-= (const Vector_t& b);
+template Vector_i& Vector_i::operator-= (const Vector_t& b);
+template Vector_ui& Vector_ui::operator-= (const Vector_t& b);
+template Vector_l& Vector_l::operator-= (const Vector_t& b);
+template Vector_ul& Vector_ul::operator-= (const Vector_t& b);
+template Vector_s& Vector_s::operator-= (const Vector_t& b);
+template Vector_us& Vector_us::operator-= (const Vector_t& b);
+template Vector_c& Vector_c::operator-= (const Vector_t& b);
+template Vector_uc& Vector_uc::operator-= (const Vector_t& b);
+template Vector_cx& Vector_cx::operator-= (const Vector_t& b);
+template Vector_cxld& Vector_cxld::operator-= (const Vector_t& b);
+template Vector_cxf& Vector_cxf::operator-= (const Vector_t& b);
+
+template Vector& Vector::operator*= (const Vector_t& b);
+template Vector_ld& Vector_ld::operator*= (const Vector_t& b);
+template Vector_f& Vector_f::operator*= (const Vector_t& b);
+template Vector_i& Vector_i::operator*= (const Vector_t& b);
+template Vector_ui& Vector_ui::operator*= (const Vector_t& b);
+template Vector_l& Vector_l::operator*= (const Vector_t& b);
+template Vector_ul& Vector_ul::operator*= (const Vector_t& b);
+template Vector_s& Vector_s::operator*= (const Vector_t& b);
+template Vector_us& Vector_us::operator*= (const Vector_t& b);
+template Vector_c& Vector_c::operator*= (const Vector_t& b);
+template Vector_uc& Vector_uc::operator*= (const Vector_t& b);
+template Vector_cx& Vector_cx::operator*= (const Vector_t& b);
+template Vector_cxld& Vector_cxld::operator*= (const Vector_t& b);
+template Vector_cxf& Vector_cxf::operator*= (const Vector_t& b);
+
+
+template Vector& Vector::operator/= (const Vector_t& b);
+template Vector_ld& Vector_ld::operator/= (const Vector_t& b);
+template Vector_f& Vector_f::operator/= (const Vector_t& b);
+template Vector_i& Vector_i::operator/= (const Vector_t& b);
+template Vector_ui& Vector_ui::operator/= (const Vector_t& b);
+template Vector_l& Vector_l::operator/= (const Vector_t& b);
+template Vector_ul& Vector_ul::operator/= (const Vector_t& b);
+template Vector_s& Vector_s::operator/= (const Vector_t& b);
+template Vector_us& Vector_us::operator/= (const Vector_t& b);
+template Vector_c& Vector_c::operator/= (const Vector_t& b);
+template Vector_uc& Vector_uc::operator/= (const Vector_t& b);
+template Vector_cx& Vector_cx::operator/= (const Vector_t& b);
+template Vector_cxld& Vector_cxld::operator/= (const Vector_t& b);
+template Vector_cxf& Vector_cxf::operator/= (const Vector_t& b);
+
+template Vector& Vector::operator*= (const Vector_t::value_type& s);
+template Vector_ld& Vector_ld::operator*= (const Vector_t::value_type& s);
+template Vector_f& Vector_f::operator*= (const Vector_t::value_type& s);
+template Vector_i& Vector_i::operator*= (const Vector_t::value_type& s);
+template Vector_ui& Vector_ui::operator*= (const Vector_t::value_type& s);
+template Vector_l& Vector_l::operator*= (const Vector_t::value_type& s);
+template Vector_ul& Vector_ul::operator*= (const Vector_t::value_type& s);
+template Vector_s& Vector_s::operator*= (const Vector_t::value_type& s);
+template Vector_us& Vector_us::operator*= (const Vector_t::value_type& s);
+template Vector_c& Vector_c::operator*= (const Vector_t::value_type& s);
+template Vector_uc& Vector_uc::operator*= (const Vector_t::value_type& s);
+template Vector_cx& Vector_cx::operator*= (const Vector_t::value_type& s);
+template Vector_cxld& Vector_cxld::operator*= (const Vector_t::value_type& s);
+template Vector_cxf& Vector_cxf::operator*= (const Vector_t::value_type& s);
+
+template Vector& Vector::operator/= (const Vector_t::value_type& s);
+template Vector_ld& Vector_ld::operator/= (const Vector_t::value_type& s);
+template Vector_f& Vector_f::operator/= (const Vector_t::value_type& s);
+template Vector_i& Vector_i::operator/= (const Vector_t::value_type& s);
+template Vector_ui& Vector_ui::operator/= (const Vector_t::value_type& s);
+template Vector_l& Vector_l::operator/= (const Vector_t::value_type& s);
+template Vector_ul& Vector_ul::operator/= (const Vector_t::value_type& s);
+template Vector_s& Vector_s::operator/= (const Vector_t::value_type& s);
+template Vector_us& Vector_us::operator/= (const Vector_t::value_type& s);
+template Vector_c& Vector_c::operator/= (const Vector_t::value_type& s);
+template Vector_uc& Vector_uc::operator/= (const Vector_t::value_type& s);
+template Vector_cx& Vector_cx::operator/= (const Vector_t::value_type& s);
+template Vector_cxld& Vector_cxld::operator/= (const Vector_t::value_type& s);
+template Vector_cxf& Vector_cxf::operator/= (const Vector_t::value_type& s);
+
+template Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m) const;
+template Vector_f Vector_f::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_matrix_float, gsl_vector_float, std::allocator<float>>& m) const;
+template Vector_cx Vector_cx::operator*<gsl_matrix_complex>(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& m) const;
+template Vector_cxf Vector_cxf::operator*<gsl_matrix_complex_float>(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& m) const;
+
+template bool Vector::operator==(const Vector_t&) const;
+template bool Vector_ld::operator==(const Vector_t&) const;
+template bool Vector_f::operator==(const Vector_t&) const;
+template bool Vector_i::operator==(const Vector_t&) const;
+template bool Vector_ui::operator==(const Vector_t&) const;
+template bool Vector_l::operator==(const Vector_t&) const;
+template bool Vector_ul::operator==(const Vector_t&) const;
+template bool Vector_s::operator==(const Vector_t&) const;
+template bool Vector_us::operator==(const Vector_t&) const;
+template bool Vector_c::operator==(const Vector_t&) const;
+template bool Vector_uc::operator==(const Vector_t&) const;
+template bool Vector_cx::operator==(const Vector_t&) const;
+template bool Vector_cxld::operator==(const Vector_t&) const;
+template bool Vector_cxf::operator==(const Vector_t&) const;
+
+template Vector::iterator Vector::begin();
+template Vector_ld::iterator Vector_ld::begin();
+template Vector_f::iterator Vector_f::begin();
+template Vector_i::iterator Vector_i::begin();
+template Vector_ui::iterator Vector_ui::begin();
+template Vector_l::iterator Vector_l::begin();
+template Vector_ul::iterator Vector_ul::begin();
+template Vector_s::iterator Vector_s::begin();
+template Vector_us::iterator Vector_us::begin();
+template Vector_c::iterator Vector_c::begin();
+template Vector_uc::iterator Vector_uc::begin();
+template Vector_cx::iterator Vector_cx::begin();
+template Vector_cxld::iterator Vector_cxld::begin();
+template Vector_cxf::iterator Vector_cxf::begin();
+
+template Vector::const_iterator Vector::begin() const;
+template Vector_ld::const_iterator Vector_ld::begin() const;
+template Vector_f::const_iterator Vector_f::begin() const;
+template Vector_i::const_iterator Vector_i::begin() const;
+template Vector_ui::const_iterator Vector_ui::begin() const;
+template Vector_l::const_iterator Vector_l::begin() const;
+template Vector_ul::const_iterator Vector_ul::begin() const;
+template Vector_s::const_iterator Vector_s::begin() const;
+template Vector_us::const_iterator Vector_us::begin() const;
+template Vector_c::const_iterator Vector_c::begin() const;
+template Vector_uc::const_iterator Vector_uc::begin() const;
+template Vector_cx::const_iterator Vector_cx::begin() const;
+template Vector_cxld::const_iterator Vector_cxld::begin() const;
+template Vector_cxf::const_iterator Vector_cxf::begin() const;
+
+template Vector::const_iterator Vector::cbegin() const;
+template Vector_ld::const_iterator Vector_ld::cbegin() const;
+template Vector_f::const_iterator Vector_f::cbegin() const;
+template Vector_i::const_iterator Vector_i::cbegin() const;
+template Vector_ui::const_iterator Vector_ui::cbegin() const;
+template Vector_l::const_iterator Vector_l::cbegin() const;
+template Vector_ul::const_iterator Vector_ul::cbegin() const;
+template Vector_s::const_iterator Vector_s::cbegin() const;
+template Vector_us::const_iterator Vector_us::cbegin() const;
+template Vector_c::const_iterator Vector_c::cbegin() const;
+template Vector_uc::const_iterator Vector_uc::cbegin() const;
+template Vector_cx::const_iterator Vector_cx::cbegin() const;
+template Vector_cxld::const_iterator Vector_cxld::cbegin() const;
+template Vector_cxf::const_iterator Vector_cxf::cbegin() const;
+
+template class Vector_t<double, gsl_vector, std::allocator<double>>;
+template class Vector_t<long double, gsl_vector_long_double, std::allocator<long double>>;
+template class Vector_t<float, gsl_vector_float, std::allocator<float>>;
+template class Vector_t<int, gsl_vector_int, std::allocator<int>>;
+template class Vector_t<unsigned int, gsl_vector_uint, std::allocator<unsigned int>>;
+template class Vector_t<long, gsl_vector_long, std::allocator<long>>;
+template class Vector_t<unsigned long, gsl_vector_ulong, std::allocator<unsigned long>>;
+template class Vector_t<short, gsl_vector_short, std::allocator<short>>;
+template class Vector_t<unsigned short, gsl_vector_ushort, std::allocator<unsigned short>>;
+template class Vector_t<char, gsl_vector_char, std::allocator<char>>;
+template class Vector_t<unsigned char, gsl_vector_uchar, std::allocator<unsigned char>>;
+template class Vector_t<Complex_t<double, gsl_complex>, gsl_vector_complex, std::allocator<gsl_complex>>;
+template class Vector_t<Complex_t<long double, gsl_complex_long_double>, gsl_vector_complex_long_double, std::allocator<gsl_complex_long_double>>;
+template class Vector_t<Complex_t<float, gsl_complex_float>, gsl_vector_complex_float, std::allocator<gsl_complex_float>>;
+
 }

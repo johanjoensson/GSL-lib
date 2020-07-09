@@ -1,4 +1,4 @@
-#include "special_functions_gamma_beta.h"
+#include "GSLpp/special_functions_gamma_beta.h"
 #include <gsl/gsl_sf_gamma.h>
 
 using namespace GSL;

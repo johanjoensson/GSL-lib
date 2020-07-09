@@ -1,4 +1,4 @@
-#include "special_functions_trig.h"
+#include "GSLpp/special_functions_trig.h"
 #include <gsl/gsl_sf_trig.h>
 #include <string>
 #include <stdexcept>

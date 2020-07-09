@@ -1,4 +1,4 @@
-#include "special_functions_hermite.h"
+#include "GSLpp/special_functions_hermite.h"
 #include <gsl/gsl_sf_hermite.h>
 
 using namespace GSL;

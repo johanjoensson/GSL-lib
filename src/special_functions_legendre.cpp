@@ -1,4 +1,4 @@
-#include "special_functions_legendre.h"
+#include "GSLpp/special_functions_legendre.h"
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_sf_legendre.h>
 #include <string>

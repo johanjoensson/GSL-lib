@@ -15,7 +15,7 @@ CXXCHECK = clang-tidy
 LIB = GSLpp
 # Source files directory
 SRC_DIR = src
-TEST_DIR = test
+TEST_DIR = tests
 
 # Build directory
 BUILD_DIR = build
@@ -29,7 +29,8 @@ INC_DIR = include
 # Flags for the above defined compilers
 
 WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++ -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
-CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC -g -pg
+#CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -fPIC -g -pg -O3 -flto
+CXXFLAGS = -std=c++11 $(WFLAGS) -I$(SRC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -fPIC -g -pg -O3 -flto
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-*
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
@@ -40,6 +41,7 @@ LDFLAGS = -lgsl -lopenblas -fPIC #-Ofast -fuse-ld=gold -flto
 
 LIB_OBJ = complex_impl.o\
 	  matrix_impl.o\
+	  vector_impl.o\
 	  divided_difference.o\
 	  permutation.o\
 	  eigen.o\
@@ -121,10 +123,10 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 	$(CXXCHECK) $^ $(CXXCHECKFLAGS)
 
 
-tests:  CXXFLAGS += --coverage
-tests:  LDFLAGS += --coverage -lgtest
-tests:  lib$(LIB)cov.so
-tests: 	$(INC_DIR) $(BUILD_DIR) $(LIB_DIR) $(TEST_OBJS)
+test:  CXXFLAGS += --coverage
+test:  LDFLAGS += --coverage -lgtest
+test:  lib$(LIB)cov.so
+test: 	$(INC_DIR) $(BUILD_DIR) $(LIB_DIR) $(TEST_OBJS)
 	$(CXX) $(TEST_OBJS) -o $@ -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS)
 
 travis : -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
@@ -138,8 +140,7 @@ $(LIB_DIR) :
 
 $(INC_DIR) :
 	mkdir -p $(INC_DIR)/$(LIB)
-	cp $(SRC_DIR)/*.h $(INC_DIR)/$(LIB)
-	cp $(SRC_DIR)/*.tpp $(INC_DIR)/$(LIB)
+#	cp $(SRC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)
 
 # Remove object files
 clean:

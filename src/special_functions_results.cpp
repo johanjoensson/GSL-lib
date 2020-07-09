@@ -1,5 +1,5 @@
-#include "special_functions_results.h"
-#include "special_functions.h"
+#include "GSLpp/special_functions_results.h"
+#include "GSLpp/special_functions.h"
 #include <gsl/gsl_sf_elementary.h>
 #include <gsl/gsl_sf_trig.h>
 #include <cmath>

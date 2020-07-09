@@ -1,4 +1,4 @@
-#include "special_functions_bessel.h"
+#include "GSLpp/special_functions_bessel.h"
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_sf_bessel.h>
 #include <string>

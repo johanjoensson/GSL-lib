@@ -238,7 +238,7 @@ TEST(MatrixTest, TestSetCol)
 {
     GSL::Matrix m{{1, 2}, {3, 4}, {5, 6}};
     GSL::Matrix res{{7, 2}, {8, 4}, {9, 6}};
-    m.get_col(0).copy(GSL::Vector{7, 8, 9});
+    m.get_col(0) = GSL::Vector{7, 8, 9};
     EXPECT_EQ(m, res);
 }
 

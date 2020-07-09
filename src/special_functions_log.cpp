@@ -1,4 +1,4 @@
-#include "special_functions_log.h"
+#include "GSLpp/special_functions_log.h"
 #include <gsl/gsl_sf.h>
 #include <gsl/gsl_sf_exp.h>
 #include <string>

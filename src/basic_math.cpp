@@ -1,4 +1,4 @@
-#include "basic_math.h"
+#include "GSLpp/basic_math.h"
 #include <gsl/gsl_math.h>
 
 using namespace GSL;

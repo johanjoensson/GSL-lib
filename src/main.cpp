@@ -1,12 +1,12 @@
 #include <iostream>
 #include <stdexcept>
-#include "complex.h"
-#include "vector.h"
-#include "matrix.h"
-#include "divided_difference.h"
-#include "special_functions.h"
-#include "polynomial.h"
-#include "linalg.h"
+#include "GSLpp/complex.h"
+#include "GSLpp/vector.h"
+#include "GSLpp/matrix.h"
+#include "GSLpp/divided_difference.h"
+#include "GSLpp/special_functions.h"
+#include "GSLpp/polynomial.h"
+#include "GSLpp/linalg.h"
 
 #include <gsl/gsl_sf_result.h>
 #include <gsl/gsl_matrix.h>

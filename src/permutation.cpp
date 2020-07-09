@@ -1,4 +1,4 @@
-#include "permutation.h"
+#include "GSLpp/permutation.h"
 
 using namespace GSL;
 

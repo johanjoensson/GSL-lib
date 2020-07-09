@@ -2,7 +2,7 @@
 #include <gsl/gsl_permutation.h>
 #include <memory>
 #include <functional>
-#include "linalg.h"
+#include "GSLpp/linalg.h"
 
 using namespace GSL;
 

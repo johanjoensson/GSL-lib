@@ -1,6 +1,7 @@
 #include "GSLpp/vector.h"
 #include <gtest/gtest.h>
 #include <iostream>
+#include <cmath>
 
 TEST(Vector_cTest, TestConstruction)
 {
@@ -292,13 +293,6 @@ TEST(Vector_cTest, TestIterStep)
     EXPECT_EQ(*(it + 2), 3);
 }
 
-TEST(Vector_cTest, TestIterStepForward)
-{
-    GSL::Vector_c v{1, 2, 3};
-    auto it = v.begin();
-    EXPECT_EQ(*(2 + it), 3);
-}
-
 TEST(Vector_cTest, TestIterStepDecrement)
 {
     GSL::Vector_c v{1, 2, 3};
@@ -391,13 +385,6 @@ TEST(Vector_cTest, TestcIterStep)
     GSL::Vector_c v{1, 2, 3};
     auto it = v.cbegin();
     EXPECT_EQ(*(it + 2), 3);
-}
-
-TEST(Vector_cTest, TestcIterStepForward)
-{
-    GSL::Vector_c v{1, 2, 3};
-    auto it = v.cbegin();
-    EXPECT_EQ(*(2 + it), 3);
 }
 
 TEST(Vector_cTest, TestcIterStepDecrement)

@@ -1,4 +1,4 @@
-#include "special_functions_laguerre.h"
+#include "GSLpp/special_functions_laguerre.h"
 #include <gsl/gsl_sf_laguerre.h>
 
 using namespace GSL;

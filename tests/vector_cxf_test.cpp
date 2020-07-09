@@ -2,6 +2,7 @@
 #include "GSLpp/vector.h"
 #include <gtest/gtest.h>
 #include <iostream>
+#include <cmath>
 
 TEST(Vector_cxfTest, TestConstruction)
 {
@@ -294,13 +295,6 @@ TEST(Vector_cxfTest, TestIterStep)
     EXPECT_EQ(*(it + 2), GSL::Complex_f{3.f});
 }
 
-TEST(Vector_cxfTest, TestIterStepForward)
-{
-    GSL::Vector_cxf v{1.f, 2.f, 3.f};
-    auto it = v.begin();
-    EXPECT_EQ(*(2 + it), GSL::Complex_f{3.f});
-}
-
 TEST(Vector_cxfTest, TestIterStepDecrement)
 {
     GSL::Vector_cxf v{1.f, 2.f, 3.f};
@@ -393,13 +387,6 @@ TEST(Vector_cxfTest, TestcIterStep)
     GSL::Vector_cxf v{1.f, 2.f, 3.f};
     auto it = v.cbegin();
     EXPECT_EQ(*(it + 2), GSL::Complex_f{3.f});
-}
-
-TEST(Vector_cxfTest, TestcIterStepForward)
-{
-    GSL::Vector_cxf v{1.f, 2.f, 3.f};
-    auto it = v.cbegin();
-    EXPECT_EQ(*(2 + it), GSL::Complex_f{3.f});
 }
 
 TEST(Vector_cxfTest, TestcIterStepDecrement)

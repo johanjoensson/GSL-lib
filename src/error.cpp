@@ -1,4 +1,4 @@
-#include "error.h"
+#include "GSLpp/error.h"
 
 using namespace GSL;
 

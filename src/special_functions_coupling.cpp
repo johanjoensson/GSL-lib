@@ -1,4 +1,4 @@
-#include "special_functions_coupling.h"
+#include "GSLpp/special_functions_coupling.h"
 #include <gsl/gsl_sf_coupling.h>
 #include <string>
 #include <stdexcept>

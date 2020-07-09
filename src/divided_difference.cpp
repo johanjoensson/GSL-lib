@@ -1,4 +1,4 @@
-#include "divided_difference.h"
+#include "GSLpp/divided_difference.h"
 #include <cstring>
 
 using namespace GSL;

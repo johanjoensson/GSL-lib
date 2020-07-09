@@ -1,4 +1,4 @@
-#include "special_functions_erf.h"
+#include "GSLpp/special_functions_erf.h"
 #include <gsl/gsl_sf_erf.h>
 #include <string>
 #include <stdexcept>

@@ -1,4 +1,4 @@
-#include "ode.h"
+#include "GSLpp/ode.h"
 #include <gsl/gsl_errno.h>
 #include <cmath>
 
