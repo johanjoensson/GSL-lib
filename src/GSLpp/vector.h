@@ -86,10 +86,10 @@ public:
     ~Vector_t() = default;
 
     // operator GSL_VEC() const {return *this->gsl_vec;};
-    operator GSL_VEC() const;
+    operator GSL_VEC() const {return *this->gsl_vec;}
 
-    size_type size() const;
-    size_type dim() const;
+    size_type size() const {return this->gsl_vec->size;}
+    size_type dim() const {return this->gsl_vec->size;}
     // Actually copy data from the other vector, don't just reference it
     Vector_t copy() const;
     Vector_t& copy(const Vector_t& a);
@@ -101,13 +101,27 @@ public:
     T norm2() const {return this->dot(*this);}
 
     template <class S=double>
-    Vector_t& normalize();
+    Vector_t& normalize() {return *this /= static_cast<value_type>(this->norm<S>());}
 
 
     // Define dot and cross products of vectors
     T dot(const Vector_t& b) const;
-    Vector_t cross(const Vector_t& b) const;
-    Vector_t mirror(const Vector_t& b) const;
+    Vector_t cross(const Vector_t& b) const
+    {
+        if(this->size() != 3 || b.size() != 3){
+            throw std::runtime_error("Vector is not 3D in cross product.");
+        }
+        return {static_cast<T>((*this)[1]*b[2] - (*this)[2]*b[1]),
+                static_cast<T>((*this)[2]*b[0] - (*this)[0]*b[2]),
+                static_cast<T>((*this)[0]*b[1] - (*this)[1]*b[0])};
+    }
+
+    template<class S = double>
+    Vector_t mirror(const Vector_t& b) const
+    {
+        auto n = b/b.norm<S>();
+        return *this - 2*this->dot(n)*n;
+    }
 
     Vector_t& operator+= (const Vector_t& b);
     Vector_t& operator-= (const Vector_t& b);
@@ -118,20 +132,28 @@ public:
 
 
     // Basic arithmetic operations
-    Vector_t operator+(const Vector_t& b) const;
-    Vector_t operator-(const Vector_t& b) const;
-    Vector_t operator*(const Vector_t& b) const;
-    Vector_t operator/(const Vector_t& b) const;
-    Vector_t operator*(const T s) const;
-    Vector_t operator/(const T s) const;
-    Vector_t operator-() const;
+    Vector_t operator+(const Vector_t& b) const {Vector_t tmp; tmp.copy(*this); return tmp += b;}
+    Vector_t operator-(const Vector_t& b) const {Vector_t tmp; tmp.copy(*this); return tmp -= b;}
+    Vector_t operator*(const Vector_t& b) const {Vector_t tmp; tmp.copy(*this); return tmp *= b;}
+    Vector_t operator/(const Vector_t& b) const {Vector_t tmp; tmp.copy(*this); return tmp /= b;}
+    Vector_t operator*(const T s) const {Vector_t tmp; tmp.copy(*this); return tmp *= s;}
+    Vector_t operator/(const T s) const {Vector_t tmp; tmp.copy(*this); return tmp /= s;}
+    Vector_t operator-() const {Vector_t tmp(this->size(), 0); return tmp -= *this;}
 
     friend Vector_t operator*(const T& s, const Vector_t& v)
     {
         return v*s;
     };
 
-    std::string to_string() const;
+    std::string to_string() const
+    {
+        std::string res("(");
+        for(auto elem : *this){
+            res += std::to_string(elem) + ", ";
+        }
+        res += ")";
+        return res;
+    }
     friend std::ostream& operator<<(std::ostream& os, const Vector_t& z)
     {
         return os << z.to_string();
@@ -141,7 +163,7 @@ public:
     Vector_t operator*(const Matrix_t<T, GSL_MAT, GSL_VEC, A>& m) const;
 
     bool operator==(const Vector_t&) const;
-    bool operator!=(const Vector_t&) const;
+    bool operator!=(const Vector_t& b) const {return !(*this == b);}
 
 
     friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>, Vector>
@@ -167,30 +189,25 @@ public:
 
         iterator& operator=(const iterator&) = default;
         iterator& operator=(iterator&&) = default;
-        bool operator==(const iterator&) const;
-        bool operator!=(const iterator&) const;
-        bool operator<(const iterator&) const;
-        bool operator>(const iterator&) const;
-        bool operator<=(const iterator&) const;
-        bool operator>=(const iterator&) const;
+        bool operator==(const iterator& b) const {return this->data_m == b.data_m;}
+        bool operator!=(const iterator& b) const {return !(this->data_m == b.data_m);}
+        bool operator<(const iterator& b) const {return this->data_m < b.data_m;}
+        bool operator>(const iterator& b) const {return this->data_m > b.data_m;}
+        bool operator<=(const iterator& b) const {return !(this->data_m > b.data_m);}
+        bool operator>=(const iterator& b) const {return !(this->data_m < b.data_m);}
 
-        iterator& operator++();
-        iterator operator++(int);
-        iterator& operator--();
-        iterator operator--(int);
-        iterator& operator+=(size_type);
-        iterator operator+(size_type) const;
-        friend iterator operator+(size_type n, const iterator& it)
-        {
-            iterator tmp = it;
-            tmp += n;
-            return tmp;
-        };
-        iterator& operator-=(size_type);
-        iterator operator-(size_type) const;
-        difference_type operator-(iterator) const;
+        iterator& operator++() {this->data_m += stride; return *this;}
+        iterator operator++(int) {auto tmp = *this; this->data_m += stride; return tmp;}
+        iterator& operator--() {this->data_m -= stride; return *this;}
+        iterator operator--(int) {auto tmp = *this; this->data_m -= stride; return tmp;}
+        iterator& operator+=(difference_type n) {this->data_m += n*static_cast<difference_type>(stride); return *this;}
+        iterator operator+(difference_type n) const {auto tmp = *this; return tmp += n;}
+        friend iterator operator+(difference_type n, const iterator& it) {return it + n;}
+        iterator& operator-=(difference_type n) {this->data_m -= n*static_cast<difference_type>(stride); return *this;}
+        iterator operator-(difference_type n) const {auto tmp = *this; return tmp -= n;}
+        difference_type operator-(iterator it) const {return (this->data_m - it.data_m)/static_cast<difference_type>(stride);}
 
-        reference operator*() const;
+        reference operator*() const {return *this->data_m;}
         friend class const_iterator;
     private:
         size_type stride;
@@ -215,30 +232,25 @@ public:
 
         const_iterator& operator=(const const_iterator&) = default;
         const_iterator& operator=(const_iterator&&) = default;
-        bool operator==(const const_iterator&) const;
-        bool operator!=(const const_iterator&) const;
-        bool operator<(const const_iterator&) const;
-        bool operator>(const const_iterator&) const;
-        bool operator<=(const const_iterator&) const;
-        bool operator>=(const const_iterator&) const;
+        bool operator==(const const_iterator& b) const {return this->data_m == b.data_m;}
+        bool operator!=(const const_iterator& b) const {return !(this->data_m == b.data_m);}
+        bool operator<(const const_iterator& b) const {return this->data_m < b.data_m;}
+        bool operator>(const const_iterator& b) const {return this->data_m > b.data_m;}
+        bool operator<=(const const_iterator& b) const {return !(this->data_m > b.data_m);}
+        bool operator>=(const const_iterator& b) const {return !(this->data_m < b.data_m);}
 
-        const_iterator& operator++();
-        const_iterator operator++(int);
-        const_iterator& operator--();
-        const_iterator operator--(int);
-        const_iterator& operator+=(size_type);
-        const_iterator operator+(size_type) const;
-        friend const_iterator operator+(size_type n, const const_iterator& it)
-        {
-            const_iterator tmp = it;
-            tmp += n;
-            return tmp;
-        };
-        const_iterator& operator-=(size_type);
-        const_iterator operator-(size_type) const;
-        difference_type operator-(const_iterator) const;
+        const_iterator& operator++() {this->data_m += stride; return *this;}
+        const_iterator operator++(int) {auto tmp = *this; this->data_m += stride; return tmp;}
+        const_iterator& operator--() {this->data_m -= stride; return *this;}
+        const_iterator operator--(int) {auto tmp = *this; this->data_m -= stride; return tmp;}
+        const_iterator& operator+=(difference_type n) {this->data_m += n*static_cast<difference_type>(stride); return *this;}
+        const_iterator operator+(difference_type n) const {auto tmp = *this; return tmp += n;}
+        friend const_iterator operator+(difference_type n, const const_iterator& it) {return it + n;}
+        const_iterator& operator-=(difference_type n) {this->data_m -= n*static_cast<difference_type>(stride); return *this;}
+        const_iterator operator-(difference_type n) const {auto tmp = *this; return tmp -= n;}
+        difference_type operator-(const_iterator it) const {return (this->data_m - it.data_m)/static_cast<difference_type>(stride);}
 
-        reference operator*() const;
+        reference operator*() const {return *this->data_m;}
     private:
         size_type stride;
         pointer data_m;
@@ -251,30 +263,74 @@ public:
     iterator begin();
     const_iterator begin() const;
     const_iterator cbegin() const;
-    iterator end();
-    const_iterator end() const;
-    const_iterator cend() const;
-    reverse_iterator rbegin();
-    const_reverse_iterator rbegin() const;
-    const_reverse_iterator crbegin() const;
-    reverse_iterator rend();
-    const_reverse_iterator rend() const;
-    const_reverse_iterator crend() const;
+    iterator end() {return this->begin() += static_cast<difference_type>(this->size());}
+    const_iterator end() const {return this->begin() += static_cast<difference_type>(this->size());}
+    const_iterator cend() const {return this->cbegin() += static_cast<difference_type>(this->size());}
+    reverse_iterator rbegin() {return reverse_iterator(this->end());}
+    const_reverse_iterator rbegin() const {return const_reverse_iterator(this->end());}
+    const_reverse_iterator crbegin() const {return const_reverse_iterator(this->cend());}
+    reverse_iterator rend() {return reverse_iterator(this->begin());}
+    const_reverse_iterator rend() const {return const_reverse_iterator(this->begin());}
+    const_reverse_iterator crend() const {return const_reverse_iterator(this->cbegin());}
 
-    reference operator[] (const size_type index);
-    const_reference operator[] (const size_type index) const;
+    reference operator[] (const size_type index) {return *(this->begin() + static_cast<difference_type>(index));}
+    const_reference operator[] (const size_type index) const {return *(this->begin() + static_cast<difference_type>(index));}
 
-    reference front();
-    const_reference front() const;
-    reference back();
-    const_reference back() const;
-    reference at(size_type);
-    const_reference at(size_type) const;
+    reference front() {return *this->begin();}
+    const_reference front() const {return *this->cbegin();}
+    reference back() {return *(--this->end());}
+    const_reference back() const {return *(--this->cend());}
+    reference at(const size_type index)
+    {
+        if(index >= this->size()){
+            throw std::runtime_error("index out of range.\n");
+        }
+        return (*this)[index];
+    }
+    const_reference at(const size_type index) const
+    {
+        if(index >= this->size()){
+            throw std::runtime_error("index out of range.\n");
+        }
+        return (*this)[index];
+    }
 
     template<class iter>
-    void assign(iter, iter);
-    void assign(std::initializer_list<value_type>);
-    void assign(size_type, const_reference);
+    void assign(iter start, iter end)
+    {
+        size_type n_elem = static_cast<size_type>(end - start);
+        if(n_elem != this->size()){
+            *this = Vector_t(n_elem);
+        }
+        auto current = this->begin();
+        for(iter elem = start; elem != end; elem++, current++){
+            *current = *elem;
+        }
+    }
+
+    void assign(std::initializer_list<value_type> l)
+    {
+        size_type n_elem = l.size();
+        if(n_elem != this->size()){
+            *this = Vector_t(n_elem);
+        }
+        auto current = this->begin();
+        for(auto elem = l.begin(); elem != l.end(); elem++, current++){
+            *current = *elem;
+        }
+    }
+
+    void assign(size_type n_elem, const_reference val)
+    {
+        if(n_elem != this->size()){
+            *this = Vector_t(n_elem);
+        }
+        auto current = this->begin();
+        for(size_type i = 0; i < n_elem; current++, i++){
+            *current = val;
+        }
+    }
+
 
     pointer data() { return reinterpret_cast<pointer>(gsl_vec->data);}
     size_t stride() { return gsl_vec->stride;}

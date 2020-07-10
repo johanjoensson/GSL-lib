@@ -127,10 +127,23 @@ public:
         return m*s;
     };
 
-    std::string to_string() const;
-    friend std::ostream& operator<<(std::ostream& os, const Matrix_t& z)
+    std::string to_string() const
     {
-        return os << z.to_string();
+        std::string res("[");
+        for(const auto& row : *this){
+            res += "(";
+            for(const auto elem : row){
+                res += std::to_string(elem) + ", ";
+            }
+            res += "), ";
+        }
+        res += "]";
+        return res;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Matrix_t& mat)
+    {
+        return os << mat.to_string();
     };
 
     Vector_t<D, GSL_VEC, A> operator*(const Vector_t<D, GSL_VEC, A>& v);
@@ -155,13 +168,13 @@ public:
     class iterator {
     public:
         typedef typename A::difference_type difference_type;
-        typedef Vector_t<D, GSL_VEC, A> value_type;
-        typedef Vector_t<D, GSL_VEC, A> reference;
+        typedef Row value_type;
+        typedef Row reference;
         typedef typename A::pointer pointer;
         typedef std::random_access_iterator_tag iterator_category;
 
         iterator() = default;
-        iterator(Matrix_t& mat, const difference_type n = 0)
+        iterator(const Matrix_t& mat, const difference_type n = 0)
          : mat_m(mat), row_m(n){}
         iterator(const iterator& it) = default;
         iterator(iterator&& it) = default;
@@ -169,45 +182,52 @@ public:
 
         iterator& operator=(const iterator&) = default;
         iterator& operator=(iterator&&) = default;
-        bool operator==(const iterator& b) const{return (this->mat_m == b.mat_m) && (this->row_m == b.row_m);}
-        bool operator!=(const iterator& b) const{return !(*this == b);}
-        bool operator<(const iterator& b) const{return (this->row_m < b.row_m);}
-        bool operator>(const iterator& b) const{return (this->row_m > b.row_m);}
-        bool operator<=(const iterator& b) const{return !(this->row_m > b.row_m);}
-        bool operator>=(const iterator& b) const{return !(this->row_m < b.row_m);}
+        bool operator==(const iterator& b) const {return (this->mat_m == b.mat_m) && (this->row_m == b.row_m);}
+        bool operator!=(const iterator& b) const {return !(*this == b);}
+        bool operator<(const iterator& b) const {return (this->row_m < b.row_m);}
+        bool operator>(const iterator& b) const {return (this->row_m > b.row_m);}
+        bool operator<=(const iterator& b) const {return !(this->row_m > b.row_m);}
+        bool operator>=(const iterator& b) const {return !(this->row_m < b.row_m);}
 
-        iterator& operator++(){++this->row_m;return *this;}
-        iterator operator++(int){auto tmp = *this; ++this->row_m; return tmp;}
+        iterator& operator++(){++this->row_m; return *this;}
+        iterator operator++(int){iterator tmp = *this; ++this->row_m; return tmp;}
 
         iterator& operator--(){--this->row_m; return *this;}
-        iterator operator--(int){auto tmp = *this; --this->row_m; return *this;}
+        iterator operator--(int){iterator tmp = *this; --this->row_m; return tmp;}
         iterator& operator+=(difference_type n){this->row_m += n; return *this;}
 
         iterator operator+(difference_type n) const{iterator tmp = *this; return tmp += n;}
         friend iterator operator+(difference_type n, const iterator& it){return it + n;}
         iterator& operator-=(difference_type n){this->row_m -= n;return *this;}
         iterator operator-(difference_type n) const { iterator tmp = *this; return tmp -= n;}
-        difference_type operator-(iterator b) const {return this->row_m - b.row_m;}
+        difference_type operator-(iterator b) const
+        {
+            if(this->mat_m != b.mat_m){
+                throw std::runtime_error("Iterators point to different matrices.");
+            }
+            return this->row_m - b.row_m;
+        }
 
 
         value_type operator*(){return this->mat_m.get_row(static_cast<size_type>(this->row_m));}
         friend class const_iterator;
     private:
-        Matrix_t& mat_m;
+        const Matrix_t& mat_m;
         difference_type row_m;
     };
 
     class const_iterator{
     public:
         typedef typename A::difference_type difference_type;
-        typedef const Vector_t<D, GSL_VEC, A> value_type;
-        typedef const Vector_t<D, GSL_VEC, A> reference;
-        typedef const Vector_t<D, GSL_VEC, A>* pointer;
+        typedef const Row value_type;
+        typedef const Row reference;
+        typedef const typename A::pointer pointer;
         typedef std::random_access_iterator_tag iterator_category;
 
 
         const_iterator() = default;
-        const_iterator(Matrix_t& mat, const size_type n = 0);
+        const_iterator(const Matrix_t& mat, const difference_type n = 0)
+         : mat_m(mat), row_m(n){}
         const_iterator(const const_iterator&) = default;
         const_iterator(const_iterator&&) = default;
         const_iterator(const iterator&);
@@ -215,32 +235,42 @@ public:
 
         const_iterator& operator=(const const_iterator&) = default;
         const_iterator& operator=(const_iterator&&) = default;
-        bool operator==(const const_iterator&) const;
-        bool operator!=(const const_iterator&) const;
-        bool operator<(const const_iterator&) const;
-        bool operator>(const const_iterator&) const;
-        bool operator<=(const const_iterator&) const;
-        bool operator>=(const const_iterator&) const;
+        bool operator==(const const_iterator& b) const {return (this->mat_m == b.mat_m) && (this->row_m == b.row_m);}
+        bool operator!=(const const_iterator& b) const {return !(*this == b);}
+        bool operator<(const const_iterator& b) const {return (this->row_m < b.row_m);}
+        bool operator>(const const_iterator& b) const {return (this->row_m > b.row_m);}
+        bool operator<=(const const_iterator& b) const {return !(this->row_m > b.row_m);}
+        bool operator>=(const const_iterator& b) const {return !(this->row_m < b.row_m);}
 
-        const_iterator& operator++();
-        const_iterator operator++(int);
-        const_iterator& operator--();
-        const_iterator operator--(int);
-        const_iterator& operator+=(difference_type);
-        const_iterator operator+(difference_type) const;
+        const_iterator& operator++() {++this->row_m;return *this;}
+        const_iterator operator++(int) {auto tmp = *this; ++this->row_m; return tmp;}
+        const_iterator& operator--() {--this->row_m; return *this;}
+        const_iterator operator--(int) {auto tmp = *this; --this->row_m; return *this;}
+        const_iterator& operator+=(difference_type n) {this->row_m += n; return *this;}
+        const_iterator operator+(difference_type n) const {const_iterator tmp = *this; return tmp += n;}
         friend const_iterator operator+(difference_type n, const const_iterator& it)
         {
             const_iterator tmp = it;
             tmp += n;
             return tmp;
         };
-        const_iterator& operator-=(difference_type);
-        const_iterator operator-(difference_type) const;
-        difference_type operator-(const_iterator) const;
+        const_iterator& operator-=(difference_type n) {this->row_m -= n;return *this;}
+        const_iterator operator-(difference_type n) const {const_iterator tmp = *this; return tmp -= n;}
+        difference_type operator-(const_iterator it) const
+        {
+            if(this->mat_m != it.mat_m){
+                throw std::runtime_error("Iterators point to different matrices.");
+            }
+            return this->row_m - it.row_m;
+        }
 
-        value_type operator*()const;
+        value_type operator*() const
+        {
+            return this->mat_m.get_row(static_cast<size_type>(this->row_m));
+        }
+
     private:
-        Matrix_t& mat_m;
+        const Matrix_t& mat_m;
         difference_type row_m;
     };
 
@@ -248,35 +278,66 @@ public:
     typedef std::reverse_iterator<iterator> reverse_iterator;
     typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
-    iterator begin();
-    const_iterator begin() const;
-    const_iterator cbegin() const;
-    iterator end();
-    const_iterator end() const;
-    const_iterator cend() const;
-    reverse_iterator rbegin();
-    const_reverse_iterator rbegin() const;
-    const_reverse_iterator crbegin() const;
-    reverse_iterator rend();
-    const_reverse_iterator rend() const;
-    const_reverse_iterator crend() const;
+    iterator begin() {return iterator{*this, 0};}
+    const_iterator begin() const {return const_iterator{*this, 0};}
+    const_iterator cbegin() const {return const_iterator{*this, 0};}
+    iterator end(){return iterator{*this, static_cast<difference_type>(this->size().first)};}
+    const_iterator end() const {return const_iterator{*this, static_cast<difference_type>(this->size().first)};}
+    const_iterator cend() const {return const_iterator{*this, static_cast<difference_type>(this->size().first)};}
+    reverse_iterator rbegin(){return reverse_iterator{this->end()};}
+    const_reverse_iterator rbegin() const{return const_reverse_iterator{this->end()};}
+    const_reverse_iterator crbegin() const {return const_reverse_iterator{this->cend()};}
+    reverse_iterator rend() {return reverse_iterator{this->begin()};}
+    const_reverse_iterator rend() const {return const_reverse_iterator{this->begin()};}
+    const_reverse_iterator crend() const {return const_reverse_iterator{this->cbegin()};}
 
-    Vector_t<D, GSL_VEC, A> operator[] (const size_type index);
-    const Vector_t<D, GSL_VEC, A> operator[] (const size_type index) const;
+    Row operator[] (const size_type index) {return get_row(index);}
+    const Row operator[] (const size_type index) const {return get_row(index);}
 
-    Vector_t<D, GSL_VEC, A> operator() (const size_type row);
-    const Vector_t<D, GSL_VEC, A> operator() (const size_type row) const;
+    Row operator() (const size_type row) {return (*this)[row];}
+    const Row operator() (const size_type row) const {return (*this)[row];}
     reference operator() (const size_type row, const size_type column);
     const_reference operator() (const size_type row, const size_type column) const;
 
-    Vector_t<D, GSL_VEC, A> front();
-    const Vector_t<D, GSL_VEC, A> front() const;
-    Vector_t<D, GSL_VEC, A> back();
-    const Vector_t<D, GSL_VEC, A> back() const;
-    Vector_t<D, GSL_VEC, A> at(size_type);
-    const Vector_t<D, GSL_VEC, A> at(size_type) const;
-    reference at(size_type, size_type);
-    const_reference at(size_type, size_type) const;
+    Row front(){return *this->begin();}
+    const Row front() const {return *this->cbegin();}
+    Row back() {return *(--this->end());}
+    const Row back() const {return *(--this->end());}
+
+    Row at(const size_type row)
+    {
+        if(row >= this->size().first){
+            throw std::runtime_error("Row index out of range.");
+        }
+        return (*this)[row];
+    }
+    const Row at(const size_type row) const
+    {
+        if(row >= this->size().first){
+            throw std::runtime_error("Row index out of range.");
+        }
+        return (*this)[row];
+    }
+    reference at(const size_type row, const size_type column)
+    {
+        if(row >= this->size().first){
+            throw std::runtime_error("Row index out of range.");
+        }
+        if(column >= this->size().second){
+            throw std::runtime_error("column index out of range.");
+        }
+        return (*this)[row][column];
+    }
+    const_reference at(const size_type row, const size_type column) const
+    {
+        if(row >= this->size().first){
+            throw std::runtime_error("Row index out of range.");
+        }
+        if(column >= this->size().second){
+            throw std::runtime_error("column index out of range.");
+        }
+        return (*this)[row][column];
+    }
 
     pointer data(){ return reinterpret_cast<pointer>(gsl_mat->data);}
     size_t tda(){ return gsl_mat->tda;}

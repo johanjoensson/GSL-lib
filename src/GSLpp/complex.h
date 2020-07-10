@@ -198,7 +198,61 @@ public:
     friend Complex_t<double, gsl_complex> arccoth(const Complex_t<double, gsl_complex>& a);
     friend Complex_t<double, gsl_complex> PolynomialInternal::evaluate_polynomial(const std::vector<double>& coeffs, const size_t order, const Complex_t<double, gsl_complex>& z);
     friend Complex_t<double, gsl_complex> PolynomialInternal::evaluate_polynomial(const std::vector<Complex_t<double, gsl_complex>>& coeffs, const size_t order, const Complex_t<double, gsl_complex>& z);
+
 };
+
+    inline gsl_complex operator*(const gsl_complex& a, const gsl_complex&b) {return gsl_complex_mul(a, b);}
+    inline gsl_complex operator+(const gsl_complex& a, const gsl_complex&b) {return gsl_complex_add(a, b);}
+    inline gsl_complex operator-(const gsl_complex& a, const gsl_complex&b) {return gsl_complex_sub(a, b);}
+
+    inline gsl_complex_long_double operator+(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
+    {
+        gsl_complex_long_double res;
+        res.dat[0] = a.dat[0] + b.dat[0];
+        res.dat[1] = a.dat[1] + b.dat[1];
+
+        return res;
+    }
+    inline gsl_complex_long_double operator-(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
+    {
+        gsl_complex_long_double res;
+        res.dat[0] = a.dat[0] - b.dat[0];
+        res.dat[1] = a.dat[1] - b.dat[1];
+
+        return res;
+    }
+    inline gsl_complex_long_double operator*(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
+    {
+        gsl_complex_long_double res;
+        res.dat[0] = a.dat[0]*b.dat[0] - a.dat[1]*b.dat[1];
+        res.dat[1] = a.dat[1]*b.dat[0] + a.dat[0]*b.dat[1];
+
+        return res;
+    }
+    inline gsl_complex_float operator+(const gsl_complex_float& a, const gsl_complex_float&b)
+    {
+        gsl_complex_float res;
+        res.dat[0] = a.dat[0] + b.dat[0];
+        res.dat[1] = a.dat[1] + b.dat[1];
+
+        return res;
+    }
+    inline gsl_complex_float operator-(const gsl_complex_float& a, const gsl_complex_float&b)
+    {
+        gsl_complex_float res;
+        res.dat[0] = a.dat[0] - b.dat[0];
+        res.dat[1] = a.dat[1] - b.dat[1];
+
+        return res;
+    }
+    inline gsl_complex_float operator*(const gsl_complex_float& a, const gsl_complex_float&b)
+    {
+        gsl_complex_float res;
+        res.dat[0] = a.dat[0]*b.dat[0] - a.dat[1]*b.dat[1];
+        res.dat[1] = a.dat[1]*b.dat[0] + a.dat[0]*b.dat[1];
+
+        return res;
+    }
 
     Complex_t<double, gsl_complex> sqrt(const double& a);
     Complex_t<double, gsl_complex> exp(const Complex_t<double, gsl_complex>& a);

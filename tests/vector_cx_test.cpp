@@ -490,7 +490,7 @@ TEST(Vector_cxTest, TestAt)
     EXPECT_EQ(v.at(1), GSL::Complex{2.});
 }
 
-TEST(Vector_cxTest, TestAssign1)
+TEST(Vector_cxTest, TestAssignBegin)
 {
     GSL::Vector_cx v1{1., 2., 3.};
     GSL::Vector_cx v2{3., 4., 5.};
@@ -498,7 +498,7 @@ TEST(Vector_cxTest, TestAssign1)
     EXPECT_EQ(v1, v2);
 }
 
-TEST(Vector_cxTest, TestAssign2)
+TEST(Vector_cxTest, TestAssignVal)
 {
     GSL::Vector_cx v1{1., 2., 3.};
     GSL::Vector_cx v2{3., 3., 3., 3.};
@@ -506,7 +506,7 @@ TEST(Vector_cxTest, TestAssign2)
     EXPECT_EQ(v1, v2);
 }
 
-TEST(Vector_cxTest, TestAssign3)
+TEST(Vector_cxTest, TestAssignList)
 {
     GSL::Vector_cx v1{1., 2., 3.};
     GSL::Vector_cx v2{3., 4.};
