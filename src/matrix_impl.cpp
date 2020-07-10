@@ -2037,339 +2037,339 @@ GSL::Complex Matrix_cx::det() const
 template<>
 Matrix::Row Matrix::get_row(const Matrix::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_row(this->gsl_mat.get(), i).vector;
 }
 
 
 template<>
 Matrix_ld::Row Matrix_ld::get_row(const Matrix_ld::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_long_double_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_long_double_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_f::Row Matrix_f::get_row(const Matrix_f::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_float_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_float_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_i::Row Matrix_i::get_row(const Matrix_i::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_int_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_int_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_ui::Row Matrix_ui::get_row(const Matrix_ui::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_uint_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_uint_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_l::Row Matrix_l::get_row(const Matrix_l::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_long_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_long_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_ul::Row Matrix_ul::get_row(const Matrix_ul::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_ulong_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_ulong_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_s::Row Matrix_s::get_row(const Matrix_s::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_short_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_short_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_us::Row Matrix_us::get_row(const Matrix_us::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_ushort_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_ushort_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_c::Row Matrix_c::get_row(const Matrix_c::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_char_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_char_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_uc::Row Matrix_uc::get_row(const Matrix_uc::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_uchar_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_uchar_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_cx::Row Matrix_cx::get_row(const Matrix_cx::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_cxld::Row Matrix_cxld::get_row(const Matrix_cxld::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_long_double_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_long_double_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_cxf::Row Matrix_cxf::get_row(const Matrix_cxf::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_float_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_float_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix::Row Matrix::get_row(const Matrix::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_const_row(this->gsl_mat.get(), i).vector;
 }
 
 
 template<>
 const Matrix_ld::Row Matrix_ld::get_row(const Matrix_ld::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_long_double_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_long_double_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_f::Row Matrix_f::get_row(const Matrix_f::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_float_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_float_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_i::Row Matrix_i::get_row(const Matrix_i::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_int_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_int_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_ui::Row Matrix_ui::get_row(const Matrix_ui::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_uint_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_uint_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_l::Row Matrix_l::get_row(const Matrix_l::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_long_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_long_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_ul::Row Matrix_ul::get_row(const Matrix_ul::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_ulong_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_ulong_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_s::Row Matrix_s::get_row(const Matrix_s::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_short_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_short_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_us::Row Matrix_us::get_row(const Matrix_us::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_ushort_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_ushort_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_c::Row Matrix_c::get_row(const Matrix_c::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_char_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_char_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_uc::Row Matrix_uc::get_row(const Matrix_uc::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_uchar_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_uchar_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_cx::Row Matrix_cx::get_row(const Matrix_cx::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_cxld::Row Matrix_cxld::get_row(const Matrix_cxld::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_long_double_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_long_double_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_cxf::Row Matrix_cxf::get_row(const Matrix_cxf::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_float_const_row(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_float_const_row(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix::Column Matrix::get_col(const Matrix::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_ld::Column Matrix_ld::get_col(const Matrix_ld::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_long_double_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_long_double_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_f::Column Matrix_f::get_col(const Matrix_f::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_float_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_float_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_i::Column Matrix_i::get_col(const Matrix_i::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_int_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_int_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_ui::Column Matrix_ui::get_col(const Matrix_ui::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_uint_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_uint_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_l::Column Matrix_l::get_col(const Matrix_l::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_long_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_long_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_ul::Column Matrix_ul::get_col(const Matrix_ul::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_ulong_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_ulong_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_s::Column Matrix_s::get_col(const Matrix_s::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_short_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_short_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_us::Column Matrix_us::get_col(const Matrix_us::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_ushort_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_ushort_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_c::Column Matrix_c::get_col(const Matrix_c::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_char_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_char_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_uc::Column Matrix_uc::get_col(const Matrix_uc::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_uchar_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_uchar_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_cx::Column Matrix_cx::get_col(const Matrix_cx::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_cxld::Column Matrix_cxld::get_col(const Matrix_cxld::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_long_double_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_long_double_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 Matrix_cxf::Column Matrix_cxf::get_col(const Matrix_t::size_type i)
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_float_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_float_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix::Column Matrix::get_col(const Matrix::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_ld::Column Matrix_ld::get_col(const Matrix_ld::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_long_double_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_long_double_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_f::Column Matrix_f::get_col(const Matrix_f::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_float_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_float_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_i::Column Matrix_i::get_col(const Matrix_i::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_int_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_int_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_ui::Column Matrix_ui::get_col(const Matrix_ui::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_uint_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_uint_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_l::Column Matrix_l::get_col(const Matrix_l::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_long_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_long_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_ul::Column Matrix_ul::get_col(const Matrix_ul::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_ulong_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_ulong_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_s::Column Matrix_s::get_col(const Matrix_s::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_short_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_short_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_us::Column Matrix_us::get_col(const Matrix_us::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_ushort_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_ushort_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_c::Column Matrix_c::get_col(const Matrix_c::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_char_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_char_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_uc::Column Matrix_uc::get_col(const Matrix_uc::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_uchar_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_uchar_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_cx::Column Matrix_cx::get_col(const Matrix_cx::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_cxld::Column Matrix_cxld::get_col(const Matrix_cxld::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_long_double_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_long_double_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>
 const Matrix_cxf::Column Matrix_cxf::get_col(const Matrix_t::size_type i) const
 {
-    return std::make_shared<GSL_Vec>(gsl_matrix_complex_float_const_column(this->gsl_mat.get(), i).vector);
+    return gsl_matrix_complex_float_const_column(this->gsl_mat.get(), i).vector;
 }
 
 template<>

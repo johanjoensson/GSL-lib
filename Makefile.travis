@@ -25,7 +25,7 @@ LIB_DIR = lib
 INC_DIR = include
 
 # Flags for the above defined compilers
-CXXFLAGS = -std=c++11 -I $(SRC_DIR) -fPIC
+CXXFLAGS = -std=c++11 -I$(SRC_DIR) -fPIC
 
 # Libraries to link against
 LDFLAGS = -lgsl -lopenblas -fPIC
@@ -125,7 +125,7 @@ $(LIB_DIR) :
 
 $(INC_DIR) : 
 	mkdir -p $(INC_DIR)/$(LIB)
-#	cp $(SRC_DIR)/*.h $(INC_DIR)/$(LIB)
+	cp $(SRC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)
 #	cp $(SRC_DIR)/*.tpp $(INC_DIR)/$(LIB)
 
 # Remove object files

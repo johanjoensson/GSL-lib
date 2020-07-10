@@ -924,7 +924,7 @@ Complex_f Vector_cxf::dot(const Vector_cxf& b) const
 template<class T, class G, class A> template<class S>
 S Vector_t<T, G, A>::norm() const
 {
-    return std::sqrt(this->norm2<S>());
+    return static_cast<S>(std::sqrt(this->norm2()));
 }
 
 template<> template<>

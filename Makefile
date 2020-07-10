@@ -129,7 +129,7 @@ test:  lib$(LIB)cov.so
 test: 	$(INC_DIR) $(BUILD_DIR) $(LIB_DIR) $(TEST_OBJS)
 	$(CXX) $(TEST_OBJS) -o $@ -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS)
 
-travis : -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
+travis : -std=c++11 -I $(SRC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
 travis: $(BUILD_DIR) $(LIB_DIR) $(INC_DIR) lib$(LIB).so
 
 $(BUILD_DIR) :
