@@ -42,7 +42,7 @@ LIB_OBJ = complex_impl.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
 	  special_functions_laguerre.o\
-	  special_functions_hermite.o\
+#	  special_functions_hermite.o\
 	  special_functions_coupling.o\
 	  special_functions_exp.o\
 	  special_functions_log.o\
@@ -115,15 +115,15 @@ test:  CXXFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline -
 test:  LDFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline --coverage
 test:  lib$(LIB)cov.so
 test: 	$(INC_DIR) $(LIB_DIR) $(BUILD_DIR) $(TEST_OBJS)
-	$(CXX) $(TEST_OBJS) -o $@ -lgtest -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS) 
+	$(CXX) $(TEST_OBJS) -o $@ -lgtest -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS)
 
-$(BUILD_DIR) : 
+$(BUILD_DIR) :
 	mkdir -p $(BUILD_DIR)
 
-$(LIB_DIR) : 
+$(LIB_DIR) :
 	mkdir -p $(LIB_DIR)/$(LIB)
 
-$(INC_DIR) : 
+$(INC_DIR) :
 	mkdir -p $(INC_DIR)/$(LIB)
 	cp $(SRC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)
 #	cp $(SRC_DIR)/*.tpp $(INC_DIR)/$(LIB)
