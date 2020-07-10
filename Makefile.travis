@@ -42,7 +42,6 @@ LIB_OBJ = complex_impl.o\
 	  special_functions_bessel.o\
 	  special_functions_legendre.o\
 	  special_functions_laguerre.o\
-#	  special_functions_hermite.o\
 	  special_functions_coupling.o\
 	  special_functions_exp.o\
 	  special_functions_log.o\
@@ -53,6 +52,7 @@ LIB_OBJ = complex_impl.o\
 	  interp.o\
 	  ode.o\
 	  error.o
+#	  special_functions_hermite.o\
 
 TEST_OBJ =  main_tests.o\
  	    complex_test.o\
