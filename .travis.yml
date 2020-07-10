@@ -69,7 +69,7 @@ matrix:
           sources:
             - llvm-toolchain-xenial-3.9
           packages:
-            - clang-3.9 
+            - clang-3.9
       env:
         - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
 
@@ -141,11 +141,11 @@ before_install:
     - cmake -DBUILD_SHARED_LIBS=ON .
     - make
     - sudo cp -a googletest/include/gtest /usr/include
-    - sudo cp -a lib/*.so /usr/lib
+    - sudo cp -a lib/* /usr/lib
     - cd "${TRAVIS_BUILD_DIR}"
 
 script:
-    - make -f Makefile.travis 
+    - make -f Makefile.travis
     - make -f Makefile.travis clean
     - make -f Makefile.travis test && ./test
 
