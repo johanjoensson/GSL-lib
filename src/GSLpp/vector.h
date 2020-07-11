@@ -1,10 +1,8 @@
 #ifndef VECTOR_GSLPP_LIB_H
 #define VECTOR_GSLPP_LIB_H
 #include <GSLpp/complex.h>
-#include <GSLpp/matrix.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
-#include <gsl/gsl_complex.h>
 #include <iostream>
 #include <memory>
 #include <functional>
@@ -111,9 +109,12 @@ public:
         if(this->size() != 3 || b.size() != 3){
             throw std::runtime_error("Vector is not 3D in cross product.");
         }
-        return {static_cast<T>((*this)[1]*b[2] - (*this)[2]*b[1]),
-                static_cast<T>((*this)[2]*b[0] - (*this)[0]*b[2]),
-                static_cast<T>((*this)[0]*b[1] - (*this)[1]*b[0])};
+        Vector_t res(3);
+        res[0] = static_cast<T>((*this)[1]*b[2] - (*this)[2]*b[1]);
+        res[1] = static_cast<T>((*this)[2]*b[0] - (*this)[0]*b[2]);
+        res[2] = static_cast<T>((*this)[0]*b[1] - (*this)[1]*b[0]);
+
+        return res;
     }
 
     template<class S = double>

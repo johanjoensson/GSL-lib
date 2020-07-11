@@ -1,5 +1,4 @@
 #include "GSLpp/vector.h"
-#include "GSLpp/complex.h"
 #include "GSLpp/matrix.h"
 #include <gsl/gsl_blas.h>
 #include <iostream>
@@ -1654,7 +1653,7 @@ Vector& Vector::operator*=(const double& b)
 template<>
 Vector_ld& Vector_ld::operator*=(const long double& b)
 {
-    int stat = gsl_vector_long_double_scale(this->gsl_vec.get(), static_cast<double>(b));
+    int stat = gsl_vector_long_double_scale(this->gsl_vec.get(), b);
     if(stat){
 		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -1823,7 +1822,7 @@ Vector& Vector::operator/=(const double& b)
 template<>
 Vector_ld& Vector_ld::operator/=(const long double& b)
 {
-    int stat = gsl_vector_long_double_scale(this->gsl_vec.get(), 1./static_cast<double>(b));
+    int stat = gsl_vector_long_double_scale(this->gsl_vec.get(), 1/b);
     if(stat){
 		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -2641,276 +2640,17 @@ std::string Vector_cxf::to_string() const
 }
 */
 
-
-template Vector::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_ld::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_f::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_i::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_ui::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_l::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_ul::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_s::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_us::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_c::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_uc::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_cx::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_cxf::Vector_t(const std::shared_ptr<GSL_Vec>&);
-template Vector_cxld::Vector_t(const std::shared_ptr<GSL_Vec>&);
-
-template Vector::Vector_t(const size_type n);
-template Vector_ld::Vector_t(const size_type n);
-template Vector_f::Vector_t(const size_type n);
-template Vector_i::Vector_t(const size_type n);
-template Vector_ui::Vector_t(const size_type n);
-template Vector_l::Vector_t(const size_type n);
-template Vector_ul::Vector_t(const size_type n);
-template Vector_s::Vector_t(const size_type n);
-template Vector_us::Vector_t(const size_type n);
-template Vector_c::Vector_t(const size_type n);
-template Vector_uc::Vector_t(const size_type n);
-template Vector_cx::Vector_t(const size_type n);
-template Vector_cxld::Vector_t(const size_type n);
-template Vector_cxf::Vector_t(const size_type n);
-
-template Vector::Vector_t(std::initializer_list<value_type>);
-template Vector_ld::Vector_t(std::initializer_list<value_type>);
-template Vector_f::Vector_t(std::initializer_list<value_type>);
-template Vector_i::Vector_t(std::initializer_list<value_type>);
-template Vector_ui::Vector_t(std::initializer_list<value_type>);
-template Vector_l::Vector_t(std::initializer_list<value_type>);
-template Vector_ul::Vector_t(std::initializer_list<value_type>);
-template Vector_s::Vector_t(std::initializer_list<value_type>);
-template Vector_us::Vector_t(std::initializer_list<value_type>);
-template Vector_c::Vector_t(std::initializer_list<value_type>);
-template Vector_uc::Vector_t(std::initializer_list<value_type>);
-template Vector_cx::Vector_t(std::initializer_list<value_type>);
-template Vector_cxld::Vector_t(std::initializer_list<value_type>);
-template Vector_cxf::Vector_t(std::initializer_list<value_type>);
-
-template Vector Vector::copy() const;
-template Vector_ld Vector_ld::copy() const;
-template Vector_f Vector_f::copy() const;
-template Vector_i Vector_i::copy() const;
-template Vector_ui Vector_ui::copy() const;
-template Vector_l Vector_l::copy() const;
-template Vector_ul Vector_ul::copy() const;
-template Vector_s Vector_s::copy() const;
-template Vector_us Vector_us::copy() const;
-template Vector_c Vector_c::copy() const;
-template Vector_uc Vector_uc::copy() const;
-template Vector_cx Vector_cx::copy() const;
-template Vector_cxld Vector_cxld::copy() const;
-template Vector_cxf Vector_cxf::copy() const;
-
-template Vector& Vector::copy(const Vector_t& a);
-template Vector_ld& Vector_ld::copy(const Vector_t& a);
-template Vector_f& Vector_f::copy(const Vector_t& a);
-template Vector_i& Vector_i::copy(const Vector_t& a);
-template Vector_ui& Vector_ui::copy(const Vector_t& a);
-template Vector_l& Vector_l::copy(const Vector_t& a);
-template Vector_ul& Vector_ul::copy(const Vector_t& a);
-template Vector_s& Vector_s::copy(const Vector_t& a);
-template Vector_us& Vector_us::copy(const Vector_t& a);
-template Vector_c& Vector_c::copy(const Vector_t& a);
-template Vector_uc& Vector_uc::copy(const Vector_t& a);
-template Vector_cx& Vector_cx::copy(const Vector_t& a);
-template Vector_cxld& Vector_cxld::copy(const Vector_t& a);
-template Vector_cxf& Vector_cxf::copy(const Vector_t& a);
-
-template double Vector::norm<double>() const;
-template float Vector_f::norm<float>() const;
-template double Vector_cx::norm<double>() const;
-template float Vector_cxf::norm<float>() const;
-template long double Vector_ld::norm<long double>() const;
-template double Vector_i::norm<double>() const;
-template float Vector_i::norm<float>() const;
-template double Vector_ui::norm<double>() const;
-template float Vector_ui::norm<float>() const;
-template double Vector_l::norm<double>() const;
-template long double Vector::norm<long double>() const;
-template double Vector_ul::norm<double>() const;
-template long double Vector_ul::norm<long double>() const;
-template double Vector_s::norm<double>() const;
-template float Vector_s::norm<float>() const;
-template double Vector_us::norm<double>() const;
-template float Vector_us::norm<float>() const;
-template double Vector_c::norm<double>() const;
-template float Vector_c::norm<float>() const;
-template double Vector_uc::norm<double>() const;
-template float Vector_uc::norm<float>() const;
-template long double Vector_cxld::norm<long double>() const;
-template float Vector_f::norm<float>() const;
-
-template Vector::value_type Vector::dot(const Vector_t& b) const;
-template Vector_ld::value_type Vector_ld::dot(const Vector_t& b) const;
-template Vector_f::value_type Vector_f::dot(const Vector_t& b) const;
-template Vector_i::value_type Vector_i::dot(const Vector_t& b) const;
-template Vector_ui::value_type Vector_ui::dot(const Vector_t& b) const;
-template Vector_l::value_type Vector_l::dot(const Vector_t& b) const;
-template Vector_ul::value_type Vector_ul::dot(const Vector_t& b) const;
-template Vector_s::value_type Vector_s::dot(const Vector_t& b) const;
-template Vector_us::value_type Vector_us::dot(const Vector_t& b) const;
-template Vector_c::value_type Vector_c::dot(const Vector_t& b) const;
-template Vector_uc::value_type Vector_uc::dot(const Vector_t& b) const;
-template Vector_cx::value_type Vector_cx::dot(const Vector_t& b) const;
-template Vector_cxld::value_type Vector_cxld::dot(const Vector_t& b) const;
-template Vector_cxf::value_type Vector_cxf::dot(const Vector_t& b) const;
-
-template Vector& Vector::operator+= (const Vector_t& b);
-template Vector_ld& Vector_ld::operator+= (const Vector_t& b);
-template Vector_f& Vector_f::operator+= (const Vector_t& b);
-template Vector_i& Vector_i::operator+= (const Vector_t& b);
-template Vector_ui& Vector_ui::operator+= (const Vector_t& b);
-template Vector_l& Vector_l::operator+= (const Vector_t& b);
-template Vector_ul& Vector_ul::operator+= (const Vector_t& b);
-template Vector_s& Vector_s::operator+= (const Vector_t& b);
-template Vector_us& Vector_us::operator+= (const Vector_t& b);
-template Vector_c& Vector_c::operator+= (const Vector_t& b);
-template Vector_uc& Vector_uc::operator+= (const Vector_t& b);
-template Vector_cx& Vector_cx::operator+= (const Vector_t& b);
-template Vector_cxld& Vector_cxld::operator+= (const Vector_t& b);
-template Vector_cxf& Vector_cxf::operator+= (const Vector_t& b);
-
-template Vector& Vector::operator-= (const Vector_t& b);
-template Vector_ld& Vector_ld::operator-= (const Vector_t& b);
-template Vector_f& Vector_f::operator-= (const Vector_t& b);
-template Vector_i& Vector_i::operator-= (const Vector_t& b);
-template Vector_ui& Vector_ui::operator-= (const Vector_t& b);
-template Vector_l& Vector_l::operator-= (const Vector_t& b);
-template Vector_ul& Vector_ul::operator-= (const Vector_t& b);
-template Vector_s& Vector_s::operator-= (const Vector_t& b);
-template Vector_us& Vector_us::operator-= (const Vector_t& b);
-template Vector_c& Vector_c::operator-= (const Vector_t& b);
-template Vector_uc& Vector_uc::operator-= (const Vector_t& b);
-template Vector_cx& Vector_cx::operator-= (const Vector_t& b);
-template Vector_cxld& Vector_cxld::operator-= (const Vector_t& b);
-template Vector_cxf& Vector_cxf::operator-= (const Vector_t& b);
-
-template Vector& Vector::operator*= (const Vector_t& b);
-template Vector_ld& Vector_ld::operator*= (const Vector_t& b);
-template Vector_f& Vector_f::operator*= (const Vector_t& b);
-template Vector_i& Vector_i::operator*= (const Vector_t& b);
-template Vector_ui& Vector_ui::operator*= (const Vector_t& b);
-template Vector_l& Vector_l::operator*= (const Vector_t& b);
-template Vector_ul& Vector_ul::operator*= (const Vector_t& b);
-template Vector_s& Vector_s::operator*= (const Vector_t& b);
-template Vector_us& Vector_us::operator*= (const Vector_t& b);
-template Vector_c& Vector_c::operator*= (const Vector_t& b);
-template Vector_uc& Vector_uc::operator*= (const Vector_t& b);
-template Vector_cx& Vector_cx::operator*= (const Vector_t& b);
-template Vector_cxld& Vector_cxld::operator*= (const Vector_t& b);
-template Vector_cxf& Vector_cxf::operator*= (const Vector_t& b);
-
-
-template Vector& Vector::operator/= (const Vector_t& b);
-template Vector_ld& Vector_ld::operator/= (const Vector_t& b);
-template Vector_f& Vector_f::operator/= (const Vector_t& b);
-template Vector_i& Vector_i::operator/= (const Vector_t& b);
-template Vector_ui& Vector_ui::operator/= (const Vector_t& b);
-template Vector_l& Vector_l::operator/= (const Vector_t& b);
-template Vector_ul& Vector_ul::operator/= (const Vector_t& b);
-template Vector_s& Vector_s::operator/= (const Vector_t& b);
-template Vector_us& Vector_us::operator/= (const Vector_t& b);
-template Vector_c& Vector_c::operator/= (const Vector_t& b);
-template Vector_uc& Vector_uc::operator/= (const Vector_t& b);
-template Vector_cx& Vector_cx::operator/= (const Vector_t& b);
-template Vector_cxld& Vector_cxld::operator/= (const Vector_t& b);
-template Vector_cxf& Vector_cxf::operator/= (const Vector_t& b);
-
-template Vector& Vector::operator*= (const Vector_t::value_type& s);
-template Vector_ld& Vector_ld::operator*= (const Vector_t::value_type& s);
-template Vector_f& Vector_f::operator*= (const Vector_t::value_type& s);
-template Vector_i& Vector_i::operator*= (const Vector_t::value_type& s);
-template Vector_ui& Vector_ui::operator*= (const Vector_t::value_type& s);
-template Vector_l& Vector_l::operator*= (const Vector_t::value_type& s);
-template Vector_ul& Vector_ul::operator*= (const Vector_t::value_type& s);
-template Vector_s& Vector_s::operator*= (const Vector_t::value_type& s);
-template Vector_us& Vector_us::operator*= (const Vector_t::value_type& s);
-template Vector_c& Vector_c::operator*= (const Vector_t::value_type& s);
-template Vector_uc& Vector_uc::operator*= (const Vector_t::value_type& s);
-template Vector_cx& Vector_cx::operator*= (const Vector_t::value_type& s);
-template Vector_cxld& Vector_cxld::operator*= (const Vector_t::value_type& s);
-template Vector_cxf& Vector_cxf::operator*= (const Vector_t::value_type& s);
-
-template Vector& Vector::operator/= (const Vector_t::value_type& s);
-template Vector_ld& Vector_ld::operator/= (const Vector_t::value_type& s);
-template Vector_f& Vector_f::operator/= (const Vector_t::value_type& s);
-template Vector_i& Vector_i::operator/= (const Vector_t::value_type& s);
-template Vector_ui& Vector_ui::operator/= (const Vector_t::value_type& s);
-template Vector_l& Vector_l::operator/= (const Vector_t::value_type& s);
-template Vector_ul& Vector_ul::operator/= (const Vector_t::value_type& s);
-template Vector_s& Vector_s::operator/= (const Vector_t::value_type& s);
-template Vector_us& Vector_us::operator/= (const Vector_t::value_type& s);
-template Vector_c& Vector_c::operator/= (const Vector_t::value_type& s);
-template Vector_uc& Vector_uc::operator/= (const Vector_t::value_type& s);
-template Vector_cx& Vector_cx::operator/= (const Vector_t::value_type& s);
-template Vector_cxld& Vector_cxld::operator/= (const Vector_t::value_type& s);
-template Vector_cxf& Vector_cxf::operator/= (const Vector_t::value_type& s);
-
-template Vector Vector::operator*<gsl_matrix>(const Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>& m) const;
-template Vector_f Vector_f::operator*<gsl_matrix_float>(const Matrix_t<float, gsl_matrix_float, gsl_vector_float, std::allocator<float>>& m) const;
-template Vector_cx Vector_cx::operator*<gsl_matrix_complex>(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& m) const;
-template Vector_cxf Vector_cxf::operator*<gsl_matrix_complex_float>(const Matrix_t<Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>& m) const;
-
-template bool Vector::operator==(const Vector_t&) const;
-template bool Vector_ld::operator==(const Vector_t&) const;
-template bool Vector_f::operator==(const Vector_t&) const;
-template bool Vector_i::operator==(const Vector_t&) const;
-template bool Vector_ui::operator==(const Vector_t&) const;
-template bool Vector_l::operator==(const Vector_t&) const;
-template bool Vector_ul::operator==(const Vector_t&) const;
-template bool Vector_s::operator==(const Vector_t&) const;
-template bool Vector_us::operator==(const Vector_t&) const;
-template bool Vector_c::operator==(const Vector_t&) const;
-template bool Vector_uc::operator==(const Vector_t&) const;
-template bool Vector_cx::operator==(const Vector_t&) const;
-template bool Vector_cxld::operator==(const Vector_t&) const;
-template bool Vector_cxf::operator==(const Vector_t&) const;
-
-template Vector::iterator Vector::begin();
-template Vector_ld::iterator Vector_ld::begin();
-template Vector_f::iterator Vector_f::begin();
-template Vector_i::iterator Vector_i::begin();
-template Vector_ui::iterator Vector_ui::begin();
-template Vector_l::iterator Vector_l::begin();
-template Vector_ul::iterator Vector_ul::begin();
-template Vector_s::iterator Vector_s::begin();
-template Vector_us::iterator Vector_us::begin();
-template Vector_c::iterator Vector_c::begin();
-template Vector_uc::iterator Vector_uc::begin();
-template Vector_cx::iterator Vector_cx::begin();
-template Vector_cxld::iterator Vector_cxld::begin();
-template Vector_cxf::iterator Vector_cxf::begin();
-
-template Vector::const_iterator Vector::begin() const;
-template Vector_ld::const_iterator Vector_ld::begin() const;
-template Vector_f::const_iterator Vector_f::begin() const;
-template Vector_i::const_iterator Vector_i::begin() const;
-template Vector_ui::const_iterator Vector_ui::begin() const;
-template Vector_l::const_iterator Vector_l::begin() const;
-template Vector_ul::const_iterator Vector_ul::begin() const;
-template Vector_s::const_iterator Vector_s::begin() const;
-template Vector_us::const_iterator Vector_us::begin() const;
-template Vector_c::const_iterator Vector_c::begin() const;
-template Vector_uc::const_iterator Vector_uc::begin() const;
-template Vector_cx::const_iterator Vector_cx::begin() const;
-template Vector_cxld::const_iterator Vector_cxld::begin() const;
-template Vector_cxf::const_iterator Vector_cxf::begin() const;
-
-template Vector::const_iterator Vector::cbegin() const;
-template Vector_ld::const_iterator Vector_ld::cbegin() const;
-template Vector_f::const_iterator Vector_f::cbegin() const;
-template Vector_i::const_iterator Vector_i::cbegin() const;
-template Vector_ui::const_iterator Vector_ui::cbegin() const;
-template Vector_l::const_iterator Vector_l::cbegin() const;
-template Vector_ul::const_iterator Vector_ul::cbegin() const;
-template Vector_s::const_iterator Vector_s::cbegin() const;
-template Vector_us::const_iterator Vector_us::cbegin() const;
-template Vector_c::const_iterator Vector_c::cbegin() const;
-template Vector_uc::const_iterator Vector_uc::cbegin() const;
-template Vector_cx::const_iterator Vector_cx::cbegin() const;
-template Vector_cxld::const_iterator Vector_cxld::cbegin() const;
-template Vector_cxf::const_iterator Vector_cxf::cbegin() const;
+template double Vector_t<long double, gsl_vector_long_double, std::allocator<long double> >::norm<double>() const;
+template long double Vector_t<long double, gsl_vector_long_double, std::allocator<long double> >::norm<long double>() const;
+template double Vector_t<float, gsl_vector_float, std::allocator<float> >::norm<double>() const;
+template double Vector_t<int, gsl_vector_int, std::allocator<int> >::norm<double>() const;
+template double Vector_t<unsigned int, gsl_vector_uint, std::allocator<unsigned int> >::norm<double>() const;
+template double Vector_t<char, gsl_vector_char, std::allocator<char> >::norm<double>() const;
+template double Vector_t<unsigned char, gsl_vector_uchar, std::allocator<unsigned char> >::norm<double>() const;
+template double Vector_t<long, gsl_vector_long, std::allocator<long> >::norm<double>() const;
+template double Vector_t<unsigned long, gsl_vector_ulong, std::allocator<unsigned long> >::norm<double>() const;
+template double Vector_t<short, gsl_vector_short, std::allocator<short> >::norm<double>() const;
+template double Vector_t<unsigned short, gsl_vector_ushort, std::allocator<unsigned short> >::norm<double>() const;
 
 template class Vector_t<double, gsl_vector, std::allocator<double>>;
 template class Vector_t<long double, gsl_vector_long_double, std::allocator<long double>>;

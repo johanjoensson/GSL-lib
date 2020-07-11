@@ -1,20 +1,27 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.9)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(NOT ${CMAKE_BUILD_TYPE})
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+	message(STATUS "CMAKE_BUILD_TYPE not set by user, setting to Release")
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
+
+message(STATUS "CMAKE_BUILD_TYPE : ${CMAKE_BUILD_TYPE}")
 
 project(GSLpp CXX)
 find_package(GSL REQUIRED)
 include_directories(${GSL_INCLUDE_DIRS})
 
-set(WFLAGS " -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2 -Weffc++")
+set(WFLAGS " -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	set(WFLAGS "${WFLAGS} -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast")
+endif()
 
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -flto")
+set(CMAKE_CXX_FLAGS ${WFLAGS})
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
 
@@ -83,17 +90,22 @@ target_include_directories(GSLpp PUBLIC src)
 target_link_libraries(GSLpp ${GSL_LIBRARIES} openblas m)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-	set_property(TARGET GSLpp PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+	include(CheckIPOSupported)
+	check_ipo_supported(RESULT result)
+	if(result)
+		set_property(TARGET GSLpp PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+	endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	enable_testing()
+	find_package(GTest REQUIRED)
+	include_directories(${GTEST_INCLUDE_DIRS})
+	add_executable(GSLppUnitTest ${TEST_FILES})
+	target_link_libraries(GSLppUnitTest GSLpp ${GTEST_LIBRARIES})
+	GTEST_ADD_TESTS(GSLppUnitTest "" ${TEST_FILES})
+	message(STATUS "CXX flags : ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG}")
 endif()
 
 install(TARGETS GSLpp
 		LIBRARY DESTINATION lib/GSLpp)
 install(DIRECTORY src/GSLpp DESTINATION include)
 
-
-enable_testing()
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
-add_executable(GSLppTest ${TEST_FILES})
-target_link_libraries(GSLppTest GSLpp ${GTEST_LIBRARIES})
-GTEST_ADD_TESTS(GSLppTest "" ${TEST_FILES})

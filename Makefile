@@ -148,4 +148,4 @@ clean:
 
 # Remove executables and object files
 cleanall: clean
-	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(LIB_DIR)/$(LIB)/lib$(LIB)cov.so* $(INC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)/*.tpp tests tester
+	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(LIB_DIR)/$(LIB)/lib$(LIB)cov.so* $(INC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)/*.tpp test tester

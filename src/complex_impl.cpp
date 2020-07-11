@@ -18,26 +18,6 @@ Complex_t<double, gsl_complex>::Complex_t(const double& a, const double& b)
 }
 
 template<class T, class GSL_COMPLEX>
-Complex_t<T, GSL_COMPLEX>::operator GSL_COMPLEX() const
-{return *gsl_c;}
-
-template<class T, class GSL_COMPLEX>
-T Complex_t<T, GSL_COMPLEX>::re() const
-{return gsl_c->dat[0];}
-
-template<class T, class GSL_COMPLEX>
-T Complex_t<T, GSL_COMPLEX>::im() const
-{return gsl_c->dat[1];}
-
-template<class T, class GSL_COMPLEX>
-T& Complex_t<T, GSL_COMPLEX>::re()
-{return gsl_c->dat[0];}
-
-template<class T, class GSL_COMPLEX>
-T& Complex_t<T, GSL_COMPLEX>::im()
-{return gsl_c->dat[1];}
-
-template<class T, class GSL_COMPLEX>
 T Complex_t<T, GSL_COMPLEX>::abs() const
 {return std::sqrt(this->abs2());}
 
@@ -426,65 +406,115 @@ bool operator==( const gsl_complex_long_double&a, const gsl_complex_long_double&
     return a.dat[0] == b.dat[0] && a.dat[1] == b.dat[1];
 }
 
+gsl_complex operator*(const gsl_complex& a, const gsl_complex&b)
+{
+    return gsl_complex_mul(a, b);
+}
+gsl_complex operator+(const gsl_complex& a, const gsl_complex&b)
+{
+    return gsl_complex_add(a, b);
+}
+
+gsl_complex operator-(const gsl_complex& a, const gsl_complex&b)
+{
+    return gsl_complex_sub(a, b);
+}
+
+gsl_complex_long_double operator+(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
+{
+    gsl_complex_long_double res;
+    res.dat[0] = a.dat[0] + b.dat[0];
+    res.dat[1] = a.dat[1] + b.dat[1];
+    return res;
+}
+
+gsl_complex_long_double operator-(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
+{
+    gsl_complex_long_double res;
+    res.dat[0] = a.dat[0] - b.dat[0];
+    res.dat[1] = a.dat[1] - b.dat[1];
+    return res;
+}
+
+gsl_complex_long_double operator*(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
+{
+    gsl_complex_long_double res;
+    res.dat[0] = a.dat[0]*b.dat[0] - a.dat[1]*b.dat[1];
+    res.dat[1] = a.dat[1]*b.dat[0] + a.dat[0]*b.dat[1];
+    return res;
+}
+
+gsl_complex_float operator+(const gsl_complex_float& a, const gsl_complex_float&b)
+{
+    gsl_complex_float res;
+    res.dat[0] = a.dat[0] + b.dat[0];
+    res.dat[1] = a.dat[1] + b.dat[1];
+    return res;
+}
+
+gsl_complex_float operator-(const gsl_complex_float& a, const gsl_complex_float&b)
+{
+    gsl_complex_float res;
+    res.dat[0] = a.dat[0] - b.dat[0];
+    res.dat[1] = a.dat[1] - b.dat[1];
+    return res;
+}
+
+gsl_complex_float operator*(const gsl_complex_float& a, const gsl_complex_float&b)
+{
+    gsl_complex_float res;
+    res.dat[0] = a.dat[0]*b.dat[0] - a.dat[1]*b.dat[1];
+    res.dat[1] = a.dat[1]*b.dat[0] + a.dat[0]*b.dat[1];
+    return res;
+}
+
 template Complex_t<double, gsl_complex>::Complex_t(const gsl_complex& a);
 template Complex_t<float, gsl_complex_float>::Complex_t(const gsl_complex_float& a);
 template Complex_t<long double, gsl_complex_long_double>::Complex_t(const gsl_complex_long_double& a);
-template Complex_t<double, gsl_complex>::Complex_t(const double& a, const double& b);
-template Complex_t<float, gsl_complex_float>::Complex_t(const float& a, const float& b);
-template Complex_t<long double, gsl_complex_long_double>::Complex_t(const long double& a, const long double& b);
 
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator+(const Complex_t& b) const;
+template float Complex_t<float, gsl_complex_float>::abs() const;
+template long double Complex_t<long double, gsl_complex_long_double>::abs() const;
+template float Complex_t<float, gsl_complex_float>::abs2() const;
+template long double Complex_t<long double, gsl_complex_long_double>::abs2() const;
+template float Complex_t<float, gsl_complex_float>::logabs() const;
+template long double Complex_t<long double, gsl_complex_long_double>::logabs() const;
+
+template float Complex_t<float, gsl_complex_float>::arg() const;
+template long double Complex_t<long double, gsl_complex_long_double>::arg() const;
+
+template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::conjugate() const;
+template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::conjugate() const;
+
+template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::recipr() const;
+template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::recipr() const;
+
+template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::negate() const;
+template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::negate() const;
+
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator+(const Complex_t& b) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator+(const Complex_t& b) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator-(const Complex_t& b) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator-(const Complex_t& b) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator-(const Complex_t& b) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator*(const Complex_t& b) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator*(const Complex_t& b) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator*(const Complex_t& b) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator/(const Complex_t& b) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator/(const Complex_t& b) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator/(const Complex_t& b) const;
 
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator+(const double& s) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator+(const float& s) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator+(const long double& s) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator-(const double& s) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator-(const float& s) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator-(const long double& s) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator*(const double& s) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator*(const float& s) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator*(const long double& s) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator/(const double& s) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator/(const float& s) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator/(const long double& s) const;
 
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator+(const gsl_complex& s) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator+(const gsl_complex_float& s) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator+(const gsl_complex_long_double& s) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator-(const gsl_complex& s) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator-(const gsl_complex_float& s) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator-(const gsl_complex_long_double& s) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator*(const gsl_complex& s) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator*(const gsl_complex_float& s) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator*(const gsl_complex_long_double& s) const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator/(const gsl_complex& s) const;
 template Complex_t<float, gsl_complex_float> Complex_t<float, gsl_complex_float>::operator/(const gsl_complex_float& s) const;
 template Complex_t<long double, gsl_complex_long_double> Complex_t<long double, gsl_complex_long_double>::operator/(const gsl_complex_long_double& s) const;
-
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::operator-() const;
-
-template double Complex_t<double, gsl_complex>::abs() const;
-template double Complex_t<double, gsl_complex>::abs2() const;
-template double Complex_t<double, gsl_complex>::logabs() const;
-template double Complex_t<double, gsl_complex>::arg() const;
-
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::conjugate() const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::recipr() const;
-template Complex_t<double, gsl_complex> Complex_t<double, gsl_complex>::negate() const;
-
-template class Complex_t<double, gsl_complex>;
-template class Complex_t<float, gsl_complex_float>;
-template class Complex_t<long double, gsl_complex_long_double>;
-
 }

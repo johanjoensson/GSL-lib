@@ -6,8 +6,8 @@
 #include <cmath>
 #include <gsl/gsl_complex.h>
 #include <gsl/gsl_complex_math.h>
-#include <GSLpp/vector.h>
-#include <GSLpp/matrix.h>
+#include <gsl/gsl_vector.h>
+#include <gsl/gsl_matrix.h>
 
 /**************************************************************************//***
 * A class for using GSL complex numbers with a simpler interface than          *
@@ -56,12 +56,12 @@ public:
     Complex_t& operator=(const Complex_t& z) = default;
     Complex_t& operator=(Complex_t&& z) = default;
 
-    operator GSL_COMPLEX() const;
+    operator GSL_COMPLEX() const {return *gsl_c;}
 
-    T re() const;
-    T im() const;
-    T& re();
-    T& im();
+    T re() const {return gsl_c->dat[0];}
+    T im() const {return gsl_c->dat[1];}
+    T& re() {return gsl_c->dat[0];}
+    T& im() {return gsl_c->dat[1];}
     T abs() const;
     T abs2() const;
     T logabs() const;
@@ -201,58 +201,6 @@ public:
 
 };
 
-    inline gsl_complex operator*(const gsl_complex& a, const gsl_complex&b) {return gsl_complex_mul(a, b);}
-    inline gsl_complex operator+(const gsl_complex& a, const gsl_complex&b) {return gsl_complex_add(a, b);}
-    inline gsl_complex operator-(const gsl_complex& a, const gsl_complex&b) {return gsl_complex_sub(a, b);}
-
-    inline gsl_complex_long_double operator+(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
-    {
-        gsl_complex_long_double res;
-        res.dat[0] = a.dat[0] + b.dat[0];
-        res.dat[1] = a.dat[1] + b.dat[1];
-
-        return res;
-    }
-    inline gsl_complex_long_double operator-(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
-    {
-        gsl_complex_long_double res;
-        res.dat[0] = a.dat[0] - b.dat[0];
-        res.dat[1] = a.dat[1] - b.dat[1];
-
-        return res;
-    }
-    inline gsl_complex_long_double operator*(const gsl_complex_long_double& a, const gsl_complex_long_double&b)
-    {
-        gsl_complex_long_double res;
-        res.dat[0] = a.dat[0]*b.dat[0] - a.dat[1]*b.dat[1];
-        res.dat[1] = a.dat[1]*b.dat[0] + a.dat[0]*b.dat[1];
-
-        return res;
-    }
-    inline gsl_complex_float operator+(const gsl_complex_float& a, const gsl_complex_float&b)
-    {
-        gsl_complex_float res;
-        res.dat[0] = a.dat[0] + b.dat[0];
-        res.dat[1] = a.dat[1] + b.dat[1];
-
-        return res;
-    }
-    inline gsl_complex_float operator-(const gsl_complex_float& a, const gsl_complex_float&b)
-    {
-        gsl_complex_float res;
-        res.dat[0] = a.dat[0] - b.dat[0];
-        res.dat[1] = a.dat[1] - b.dat[1];
-
-        return res;
-    }
-    inline gsl_complex_float operator*(const gsl_complex_float& a, const gsl_complex_float&b)
-    {
-        gsl_complex_float res;
-        res.dat[0] = a.dat[0]*b.dat[0] - a.dat[1]*b.dat[1];
-        res.dat[1] = a.dat[1]*b.dat[0] + a.dat[0]*b.dat[1];
-
-        return res;
-    }
 
     Complex_t<double, gsl_complex> sqrt(const double& a);
     Complex_t<double, gsl_complex> exp(const Complex_t<double, gsl_complex>& a);
@@ -304,7 +252,16 @@ public:
     bool operator==( const gsl_complex_long_double&, const gsl_complex_long_double&);
     inline bool operator!=( const gsl_complex_long_double&a, const gsl_complex_long_double&b){ return !(a == b);}
 
+    gsl_complex operator*(const gsl_complex& a, const gsl_complex&b);
+    gsl_complex operator+(const gsl_complex& a, const gsl_complex&b);
+    gsl_complex operator-(const gsl_complex& a, const gsl_complex&b);
 
+    gsl_complex_long_double operator+(const gsl_complex_long_double& a, const gsl_complex_long_double&b);
+    gsl_complex_long_double operator-(const gsl_complex_long_double& a, const gsl_complex_long_double&b);
+    gsl_complex_long_double operator*(const gsl_complex_long_double& a, const gsl_complex_long_double&b);
+    gsl_complex_float operator+(const gsl_complex_float& a, const gsl_complex_float&b);
+    gsl_complex_float operator-(const gsl_complex_float& a, const gsl_complex_float&b);
+    gsl_complex_float operator*(const gsl_complex_float& a, const gsl_complex_float&b);
 }
 
 namespace std{

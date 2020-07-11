@@ -1,8 +1,10 @@
 #ifndef MATRIX_GSLPP_LIB_H
 #define MATRIX_GSLPP_LIB_H
-#include <gsl/gsl_matrix.h>
 #include <GSLpp/complex.h>
 #include <GSLpp/vector.h>
+#include <gsl/gsl_matrix.h>
+#include <memory>
+#include <iostream>
 
 namespace GSL{
 
@@ -245,7 +247,7 @@ public:
         const_iterator& operator++() {++this->row_m;return *this;}
         const_iterator operator++(int) {auto tmp = *this; ++this->row_m; return tmp;}
         const_iterator& operator--() {--this->row_m; return *this;}
-        const_iterator operator--(int) {auto tmp = *this; --this->row_m; return *this;}
+        const_iterator operator--(int) {auto tmp = *this; --this->row_m; return tmp;}
         const_iterator& operator+=(difference_type n) {this->row_m += n; return *this;}
         const_iterator operator+(difference_type n) const {const_iterator tmp = *this; return tmp += n;}
         friend const_iterator operator+(difference_type n, const const_iterator& it)

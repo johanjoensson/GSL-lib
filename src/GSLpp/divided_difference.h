@@ -30,9 +30,9 @@ namespace GSL {
         {
             int stat = 0;
             std::unique_ptr<double[]> y(new double[n]);
-            double delta = (b - a)/(n - 1);
+            double delta = (b - a)/static_cast<double>(n - 1);
             for(size_t i = 0; i < n; i++){
-                x[i] = a + delta*i;
+                x[i] = a + delta*static_cast<double>(i);
                 y[i] = f(a + delta*i);
             }
             stat = gsl_poly_dd_init(this->dd.get(), this->x.get(), y.get(), n);
