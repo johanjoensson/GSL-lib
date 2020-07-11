@@ -115,6 +115,7 @@ $(BUILD_DIR)/%.o: $(TEST_DIR)/%.cpp
 
 lib$(LIB).so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -shared -Wl,-soname,$@
+	cp $(SRC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)
 
 lib$(LIB)cov.so: $(OBJS)
 	$(CXX) $^ -o $(LIB_DIR)/$(LIB)/$@ $(LDFLAGS) -shared -Wl,-soname,$@
