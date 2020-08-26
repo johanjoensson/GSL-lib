@@ -11,6 +11,8 @@ namespace GSL{
     template<typename T, typename GSL_COMPLEX> class Complex_t;
     template<class T, class GSL_VEC, class A> class Vector_t;
 
+    enum class SORTING;
+
     template<class D, class GSL_MAT, class GSL_VEC, class A> class Matrix_t;
     using Matrix = Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>;
     using Matrix_ld = Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double, std::allocator<long double>>;
@@ -57,8 +59,7 @@ protected:
     // Store a reference to the gsl_matrix
     friend class Vector_t<D, GSL_VEC, A>;
     std::shared_ptr<GSL_MAT> gsl_mat;
-    Matrix_t(const GSL_MAT& v);
-    Matrix_t(const std::shared_ptr<GSL_MAT>& v);
+    Matrix_t(GSL_MAT m) : gsl_mat(std::make_shared<GSL_MAT>(m)){}
 
 
 public:
@@ -91,6 +92,8 @@ public:
 
     // Actually copy data from the other matrix, don't just reference it
     Matrix_t& copy(const Matrix_t& a);
+    Matrix_t& copy(Matrix_t&& a){std::swap(this->gsl_mat, a.gsl_mat); return *this;}
+
 
 
     Matrix_t& operator= (const Matrix_t& a) = default;
@@ -166,6 +169,30 @@ public:
     Column get_col(const size_type i);
     const Row get_row(const size_type i) const;
     const Column get_col(const size_type i) const;
+
+    Row diagonal();
+    const Row diagonal() const;
+    Row diagonal(long int k)
+    {
+        if(k < 0){
+            return this->subdiagonal(static_cast<size_t>(-k));
+        }else{
+            return this->subdiagonal(static_cast<size_t>(k));
+        }
+    }
+    const Row diagonal(int k) const
+    {
+        if(k < 0){
+            return this->subdiagonal(static_cast<size_t>(-k));
+        }else{
+            return this->subdiagonal(static_cast<size_t>(k));
+        }
+    }
+
+    Row subdiagonal(size_t k);
+    const Row subdiagonal(size_t k) const;
+    Row superdiagonal(size_t k);
+    const Row superdiagonal(size_t k) const;
 
     class iterator {
     public:
@@ -341,8 +368,8 @@ public:
         return (*this)[row][column];
     }
 
-    pointer data(){ return reinterpret_cast<pointer>(gsl_mat->data);}
-    size_t tda(){ return gsl_mat->tda;}
+    pointer data() { return reinterpret_cast<pointer>(gsl_mat->data);}
+    size_t tda() { return gsl_mat->tda;}
 
 
     friend Matrix cholesky_decomp(const Matrix&);
@@ -359,6 +386,48 @@ public:
 
     friend std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>>general_hermitian_eigen(const Matrix_cx&,
             const Matrix_cx&);
+
+    friend std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> sort_hermitian_eigen(
+        const Vector_t<double, gsl_vector, std::allocator<double>>& evals, const Matrix_cx& evecs, SORTING sorting);
+    friend std::pair<Matrix_cx, Vector_t<double, gsl_vector, std::allocator<double>>> sort_general_hermitian_eigen(
+        const Vector_t<double, gsl_vector, std::allocator<double>>& evals, const Matrix_cx& evecs, SORTING sorting);
+
+
+
+    class View;
+
+    View view();
+    View view(size_t i, size_t j, size_t rows, size_t columns);
+    const View view() const;
+    const View view(size_t i, size_t j, size_t rows, size_t columns) const;
+
+};
+
+
+template<class D, class GSL_MAT, class GSL_VEC, class A>
+class Matrix_t<D, GSL_MAT, GSL_VEC, A>::View : public Matrix_t
+{
+private:
+    friend Matrix_t;
+    View(GSL_MAT m) : Matrix_t(m)
+    {
+        gsl_mat->owner = 0;
+    }
+
+public:
+    explicit View() = default;
+    View(const View&) = default;
+    View(View&&) = default;
+
+    explicit View(Matrix_t);
+    explicit View(pointer data, size_type rows, size_type columns);
+    explicit View(pointer data, size_type rows, size_type columns, size_type tda);
+
+
+    View& operator=(const View&) = default;
+    View& operator=(View&&) = default;
+
+    View& operator=(Matrix_t m){this->copy(m); return *this;}
 };
 
 

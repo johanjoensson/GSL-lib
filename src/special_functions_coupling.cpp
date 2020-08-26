@@ -18,19 +18,7 @@ Result GSL::wigner_3j(const int& ja, const int& jb, const int& jc,
     const int& ma, const int& mb, const int& mc)
 {
     gsl_sf_result res{0., 0.};
-    // Reduce computational costs slightly by using symmetry relations
-    if(ma + mb + mc != 0){
-        res.val = 0.;
-        res.err = 0.;
-        return Result(res);
-    }else if(ma == 0 && mb == 0 && mc == 0){
-        if((ja + jb + jc) % 2 != 0){
-            res.val = 0.;
-            res.err = 0.;
-            return Result(res);
-        }
 
-    }
     int stat = gsl_sf_coupling_3j_e(2*ja, 2*jb, 2*jc, 2*ma, 2*mb, 2*mc, &res);
 
     if(stat){

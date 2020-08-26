@@ -6,7 +6,7 @@
 #include <functional>
 
 namespace GSL{
-
+/*
 template<>
 Vector::Vector_t(const std::shared_ptr<GSL_Vec>& v)
  : gsl_vec(v)
@@ -77,7 +77,7 @@ template<>
 Vector_cxf::Vector_t(const std::shared_ptr<GSL_Vec>& v)
  : gsl_vec(v)
 {}
-
+*/
 
 template<>
 Vector::Vector_t
@@ -2587,58 +2587,10 @@ typename Vector_cxf::const_iterator Vector_cxf::cbegin() const
     return const_iterator(gsl_vector_complex_float_ptr(gsl_vec.get(), 0), this->gsl_vec->stride);
 }
 
-/*
 template<>
-std::string Vector_cx::to_string() const
-{
-    std::string res = "(";
-    Complex tmp;
-    for(Vector_cx::size_type i = 0; i < this->size(); i++){
-        tmp = (*this)[i];
-        res += tmp.to_string();
-        if(i < this->size() - 1){
-            res += ",";
-        }
-        res += " ";
-    }
-    res += ")";
-    return res;
-}
-
-template<>
-std::string Vector_cxld::to_string() const
-{
-    std::string res = "(";
-    Complex_ld tmp;
-    for(Vector_cxld::size_type i = 0; i < this->size(); i++){
-        tmp = (*this)[i];
-        res += tmp.to_string();
-        if(i < this->size() - 1){
-            res += ",";
-        }
-        res += " ";
-    }
-    res += ")";
-    return res;
-}
-
-template<>
-std::string Vector_cxf::to_string() const
-{
-    std::string res = "(";
-    Complex_f tmp;
-    for(Vector_cxf::size_type i = 0; i < this->size(); i++){
-        tmp = (*this)[i];
-        res += tmp.to_string();
-        if(i < this->size() - 1){
-            res += ",";
-        }
-        res += " ";
-    }
-    res += ")";
-    return res;
-}
-*/
+Vector::View::View(Vector v)
+ : Vector_t(gsl_vector_subvector(v.gsl_vec.get(), 0, v.gsl_vec->size).vector)
+{}
 
 template double Vector_t<long double, gsl_vector_long_double, std::allocator<long double> >::norm<double>() const;
 template long double Vector_t<long double, gsl_vector_long_double, std::allocator<long double> >::norm<long double>() const;

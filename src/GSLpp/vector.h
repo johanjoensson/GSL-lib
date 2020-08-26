@@ -17,6 +17,8 @@ namespace GSL{
     template<typename T, typename GSL_COMPLEX> class Complex_t;
     template<class D, class GSL_MAT, class GSL_VEC, class A> class Matrix_t;
 
+    enum class SORTING;
+
     template<class T, class GSL_VEC, class A> class Vector_t;
     using Vector = Vector_t<double, gsl_vector, std::allocator<double>>;
     using Vector_ld = Vector_t<long double, gsl_vector_long_double, std::allocator<long double>>;
@@ -39,10 +41,7 @@ class Vector_t
 protected:
     // Store a reference to the gsl_vector
     std::shared_ptr<GSL_VEC> gsl_vec;
-    Vector_t(const std::shared_ptr<GSL_VEC>& v);
-    Vector_t(const GSL_VEC& v);
-    Vector_t(const GSL_VEC* v);
-
+    Vector_t(GSL_VEC v) : gsl_vec(std::make_shared<GSL_VEC>(v)) {}
 
     friend class Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>;
     friend class Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double, std::allocator<long double>>;
@@ -91,6 +90,7 @@ public:
     // Actually copy data from the other vector, don't just reference it
     Vector_t copy() const;
     Vector_t& copy(const Vector_t& a);
+    Vector_t& copy( Vector_t&& a){std::swap(this->gsl_vec, a.gsl_vec); return *this;}
 
     Vector_t& operator= (Vector_t&& a) = default;
     Vector_t& operator= (const Vector_t& a) = default;
@@ -172,6 +172,13 @@ public:
     friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>, Vector>
         general_hermitian_eigen(const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>&,
             const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>&);
+
+    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>, Vector>
+        sort_hermitian_eigen(
+        const Vector& evals, const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& evecs, SORTING sorting);
+    friend std::pair<Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>, Vector>
+    sort_general_hermitian_eigen(
+        const Vector& evals, const Matrix_t<Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>& evecs, SORTING sorting);
 
 
     class const_iterator;
@@ -343,6 +350,7 @@ public:
 template<class D, class GSL_VEC, class A>
 class Vector_t<D, GSL_VEC, A>::View : public Vector_t
 {
+private:
     friend class Matrix_t<double, gsl_matrix, gsl_vector, std::allocator<double>>;
     friend class Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double, std::allocator<long double>>;
     friend class Matrix_t<float, gsl_matrix_float, gsl_vector_float, std::allocator<float>>;
@@ -357,24 +365,20 @@ class Vector_t<D, GSL_VEC, A>::View : public Vector_t
     friend class Matrix_t<GSL::Complex_t<double, gsl_complex>, gsl_matrix_complex, gsl_vector_complex, std::allocator<gsl_complex>>;
     friend class Matrix_t<GSL::Complex_t<long double, gsl_complex_long_double>, gsl_matrix_complex_long_double, gsl_vector_complex_long_double,  std::allocator<gsl_complex_long_double>>;
     friend class Matrix_t<GSL::Complex_t<float, gsl_complex_float>, gsl_matrix_complex_float, gsl_vector_complex_float, std::allocator<gsl_complex_float>>;
-    View(const GSL_VEC& v) : Vector_t()
+    View(GSL_VEC v) : Vector_t(v)
     {
-        gsl_vec = std::make_shared<GSL_VEC>(v);
         gsl_vec->owner = 0;
     }
 
 public:
-   View() = default;
+   explicit View() = default;
    View(const View&) = default;
    View(View&&) = default;
+   explicit View(Vector_t v);
 
    View& operator=(const View&) = default;
    View& operator=(View&&) = default;
-   View& operator=(const Vector_t& v)
-   {
-       this->copy(v);
-       return *this;
-   }
+   View& operator=(Vector_t v){this->copy(v); return *this;}
 
    ~View() = default;
 };

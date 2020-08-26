@@ -6,6 +6,7 @@
 
 namespace GSL{
 
+/*
 template<>
 Matrix::Matrix_t(const std::shared_ptr<GSL_Mat>& m)
  : gsl_mat(m)
@@ -75,6 +76,7 @@ template<>
 Matrix_cxf::Matrix_t(const std::shared_ptr<GSL_Mat>& m)
  : gsl_mat(m)
 {}
+*/
 
 template<>
 Matrix::Matrix_t(const Matrix_t::size_type n1, const Matrix_t::size_type n2)
@@ -2371,6 +2373,507 @@ const Matrix_cxf::Column Matrix_cxf::get_col(const Matrix_t::size_type i) const
 }
 
 template<>
+Matrix::Row Matrix::diagonal()
+{
+    return gsl_matrix_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_f::Row Matrix_f::diagonal()
+{
+    return gsl_matrix_float_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_ld::Row Matrix_ld::diagonal()
+{
+    return gsl_matrix_long_double_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_l::Row Matrix_l::diagonal()
+{
+    return gsl_matrix_long_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_ul::Row Matrix_ul::diagonal()
+{
+    return gsl_matrix_ulong_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_i::Row Matrix_i::diagonal()
+{
+    return gsl_matrix_int_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_ui::Row Matrix_ui::diagonal()
+{
+    return gsl_matrix_uint_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_s::Row Matrix_s::diagonal()
+{
+    return gsl_matrix_short_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_us::Row Matrix_us::diagonal()
+{
+    return gsl_matrix_ushort_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_c::Row Matrix_c::diagonal()
+{
+    return gsl_matrix_char_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_uc::Row Matrix_uc::diagonal()
+{
+    return gsl_matrix_uchar_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_cx::Row Matrix_cx::diagonal()
+{
+    return gsl_matrix_complex_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_cxld::Row Matrix_cxld::diagonal()
+{
+    return gsl_matrix_complex_long_double_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix_cxf::Row Matrix_cxf::diagonal()
+{
+    return gsl_matrix_complex_float_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix::Row Matrix::diagonal() const
+{
+    return gsl_matrix_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_f::Row Matrix_f::diagonal() const
+{
+    return gsl_matrix_float_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_ld::Row Matrix_ld::diagonal() const
+{
+    return gsl_matrix_long_double_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_l::Row Matrix_l::diagonal() const
+{
+    return gsl_matrix_long_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_ul::Row Matrix_ul::diagonal() const
+{
+    return gsl_matrix_ulong_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_i::Row Matrix_i::diagonal() const
+{
+    return gsl_matrix_int_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_ui::Row Matrix_ui::diagonal() const
+{
+    return gsl_matrix_uint_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_s::Row Matrix_s::diagonal() const
+{
+    return gsl_matrix_short_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_us::Row Matrix_us::diagonal() const
+{
+    return gsl_matrix_ushort_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_c::Row Matrix_c::diagonal() const
+{
+    return gsl_matrix_char_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_uc::Row Matrix_uc::diagonal() const
+{
+    return gsl_matrix_uchar_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_cx::Row Matrix_cx::diagonal() const
+{
+    return gsl_matrix_complex_const_diagonal(this->gsl_mat.get()).vector;
+}
+template<>
+const Matrix_cxld::Row Matrix_cxld::diagonal() const
+{
+    return gsl_matrix_complex_long_double_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+const Matrix_cxf::Row Matrix_cxf::diagonal() const
+{
+    return gsl_matrix_complex_float_const_diagonal(this->gsl_mat.get()).vector;
+}
+
+template<>
+Matrix::Row Matrix::subdiagonal(size_t k)
+{
+    return gsl_matrix_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_ld::Row Matrix_ld::subdiagonal(size_t k)
+{
+    return gsl_matrix_long_double_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_f::Row Matrix_f::subdiagonal(size_t k)
+{
+    return gsl_matrix_float_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_l::Row Matrix_l::subdiagonal(size_t k)
+{
+    return gsl_matrix_long_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_ul::Row Matrix_ul::subdiagonal(size_t k)
+{
+    return gsl_matrix_ulong_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_i::Row Matrix_i::subdiagonal(size_t k)
+{
+    return gsl_matrix_int_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_ui::Row Matrix_ui::subdiagonal(size_t k)
+{
+    return gsl_matrix_uint_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_s::Row Matrix_s::subdiagonal(size_t k)
+{
+    return gsl_matrix_short_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_us::Row Matrix_us::subdiagonal(size_t k)
+{
+    return gsl_matrix_ushort_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_c::Row Matrix_c::subdiagonal(size_t k)
+{
+    return gsl_matrix_char_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_uc::Row Matrix_uc::subdiagonal(size_t k)
+{
+    return gsl_matrix_uchar_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_cx::Row Matrix_cx::subdiagonal(size_t k)
+{
+    return gsl_matrix_complex_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_cxld::Row Matrix_cxld::subdiagonal(size_t k)
+{
+    return gsl_matrix_complex_long_double_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_cxf::Row Matrix_cxf::subdiagonal(size_t k)
+{
+    return gsl_matrix_complex_float_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix::Row Matrix::subdiagonal(size_t k) const
+{
+    return gsl_matrix_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_ld::Row Matrix_ld::subdiagonal(size_t k) const
+{
+    return gsl_matrix_long_double_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_f::Row Matrix_f::subdiagonal(size_t k) const
+{
+    return gsl_matrix_float_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_l::Row Matrix_l::subdiagonal(size_t k) const
+{
+    return gsl_matrix_long_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_ul::Row Matrix_ul::subdiagonal(size_t k) const
+{
+    return gsl_matrix_ulong_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_i::Row Matrix_i::subdiagonal(size_t k) const
+{
+    return gsl_matrix_int_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_ui::Row Matrix_ui::subdiagonal(size_t k) const
+{
+    return gsl_matrix_uint_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+template<>
+const Matrix_s::Row Matrix_s::subdiagonal(size_t k) const
+{
+    return gsl_matrix_short_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_us::Row Matrix_us::subdiagonal(size_t k) const
+{
+    return gsl_matrix_ushort_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_c::Row Matrix_c::subdiagonal(size_t k) const
+{
+    return gsl_matrix_char_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+template<>
+const Matrix_uc::Row Matrix_uc::subdiagonal(size_t k) const
+{
+    return gsl_matrix_uchar_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_cx::Row Matrix_cx::subdiagonal(size_t k) const
+{
+    return gsl_matrix_complex_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_cxld::Row Matrix_cxld::subdiagonal(size_t k) const
+{
+    return gsl_matrix_complex_long_double_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_cxf::Row Matrix_cxf::subdiagonal(size_t k) const
+{
+    return gsl_matrix_complex_float_const_subdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix::Row Matrix::superdiagonal(size_t k)
+{
+    return gsl_matrix_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_ld::Row Matrix_ld::superdiagonal(size_t k)
+{
+    return gsl_matrix_long_double_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_f::Row Matrix_f::superdiagonal(size_t k)
+{
+    return gsl_matrix_float_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_l::Row Matrix_l::superdiagonal(size_t k)
+{
+    return gsl_matrix_long_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_ul::Row Matrix_ul::superdiagonal(size_t k)
+{
+    return gsl_matrix_ulong_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_i::Row Matrix_i::superdiagonal(size_t k)
+{
+    return gsl_matrix_int_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_ui::Row Matrix_ui::superdiagonal(size_t k)
+{
+    return gsl_matrix_uint_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_s::Row Matrix_s::superdiagonal(size_t k)
+{
+    return gsl_matrix_short_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_us::Row Matrix_us::superdiagonal(size_t k)
+{
+    return gsl_matrix_ushort_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_c::Row Matrix_c::superdiagonal(size_t k)
+{
+    return gsl_matrix_char_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_uc::Row Matrix_uc::superdiagonal(size_t k)
+{
+    return gsl_matrix_uchar_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_cx::Row Matrix_cx::superdiagonal(size_t k)
+{
+    return gsl_matrix_complex_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_cxld::Row Matrix_cxld::superdiagonal(size_t k)
+{
+    return gsl_matrix_complex_long_double_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+Matrix_cxf::Row Matrix_cxf::superdiagonal(size_t k)
+{
+    return gsl_matrix_complex_float_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix::Row Matrix::superdiagonal(size_t k) const
+{
+    return gsl_matrix_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_ld::Row Matrix_ld::superdiagonal(size_t k) const
+{
+    return gsl_matrix_long_double_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_f::Row Matrix_f::superdiagonal(size_t k) const
+{
+    return gsl_matrix_float_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_l::Row Matrix_l::superdiagonal(size_t k) const
+{
+    return gsl_matrix_long_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_ul::Row Matrix_ul::superdiagonal(size_t k) const
+{
+    return gsl_matrix_ulong_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_i::Row Matrix_i::superdiagonal(size_t k) const
+{
+    return gsl_matrix_int_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_ui::Row Matrix_ui::superdiagonal(size_t k) const
+{
+    return gsl_matrix_uint_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_s::Row Matrix_s::superdiagonal(size_t k) const
+{
+    return gsl_matrix_short_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_us::Row Matrix_us::superdiagonal(size_t k) const
+{
+    return gsl_matrix_ushort_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_c::Row Matrix_c::superdiagonal(size_t k) const
+{
+    return gsl_matrix_char_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_uc::Row Matrix_uc::superdiagonal(size_t k) const
+{
+    return gsl_matrix_uchar_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_cx::Row Matrix_cx::superdiagonal(size_t k) const
+{
+    return gsl_matrix_complex_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_cxld::Row Matrix_cxld::superdiagonal(size_t k) const
+{
+    return gsl_matrix_complex_long_double_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
+const Matrix_cxf::Row Matrix_cxf::superdiagonal(size_t k) const
+{
+    return gsl_matrix_complex_float_const_superdiagonal(this->gsl_mat.get(), k).vector;
+}
+
+template<>
 typename Matrix::reference Matrix::
     operator() (const typename Matrix_t::size_type row, const typename Matrix_t::size_type column)
 {
@@ -2573,114 +3076,84 @@ typename Matrix_cxf::const_reference Matrix_cxf::
 	return *gsl_matrix_complex_float_const_ptr(this->gsl_mat.get(), row, column);
 }
 
-/*
-template<class D, class M, class V, class A>
-std::string Matrix_t<D, M, V, A>::to_string() const
+template<>
+Matrix::View::View(Matrix_t m)
+ : Matrix_t(gsl_matrix_submatrix(m.gsl_mat.get(), 0, 0, m.gsl_mat->size1, m.gsl_mat->size2).matrix)
+{}
+
+template<>
+Matrix_cx::View::View(Matrix_t m)
+ : Matrix_t(gsl_matrix_complex_submatrix(m.gsl_mat.get(), 0, 0, m.gsl_mat->size1, m.gsl_mat->size2).matrix)
+{}
+
+template<>
+Matrix::View Matrix::view()
 {
-    std::string res = "[";
-    size_t i = 0, j = 0;
-    for(auto& row : *this){
-        if(i > 0 && i < this->size().first){
-            res += ", ";
-        }
-        res += "( ";
-        j = 0;
-        for(auto& el : row){
-            res += std::to_string(el);
-            if(j < this->size().second - 1){
-                res += ",";
-            }
-            res += " ";
-            j++;
-        }
-        res += ")";
-        i++;
-    }
-    res += "]";
-    return res;
+    return gsl_matrix_submatrix(this->gsl_mat.get(), 0, 0, this->gsl_mat->size1, this->gsl_mat->size2).matrix;
 }
 
 template<>
-std::string Matrix_cx::to_string() const
+Matrix_cx::View Matrix_cx::view()
 {
-    std::string res = "[";
-    size_t i = 0, j = 0;
-    for(auto& row : *this){
-        if(i > 0 && i < this->size().first){
-            res += ", ";
-        }
-        res += "( ";
-        j = 0;
-        for(auto& el : row){
-            res += Complex_t<double, gsl_complex>(el).to_string();
-            if(j < this->size().second - 1){
-                res += ",";
-            }
-            res += " ";
-            j++;
-        }
-        res += ")";
-        i++;
-    }
-    res += "]";
-
-    return res;
+    return gsl_matrix_complex_submatrix(this->gsl_mat.get(), 0, 0, this->gsl_mat->size1, this->gsl_mat->size2).matrix;
 }
 
 template<>
-std::string Matrix_cxld::to_string() const
+const Matrix::View Matrix::view() const
 {
-    std::string res = "[";
-    size_t i = 0, j = 0;
-    for(auto& row : *this){
-        if(i > 0 && i < this->size().first){
-            res += ", ";
-        }
-        res += "( ";
-        j = 0;
-        for(auto& el : row){
-            res += Complex_t<long double, gsl_complex_long_double>(el).to_string();
-            if(j < this->size().second - 1){
-                res += ",";
-            }
-            res += " ";
-            j++;
-        }
-        res += ")";
-        i++;
-    }
-    res += "]";
-
-    return res;
+    return gsl_matrix_const_submatrix(this->gsl_mat.get(), 0, 0, this->gsl_mat->size1, this->gsl_mat->size2).matrix;
 }
 
 template<>
-std::string Matrix_cxf::to_string() const
+const Matrix_cx::View Matrix_cx::view() const
 {
-    std::string res = "[";
-    size_t i = 0, j = 0;
-    for(auto& row : *this){
-        if(i > 0 && i < this->size().first){
-            res += ", ";
-        }
-        res += "( ";
-        j = 0;
-        for(auto& el : row){
-            res += Complex_f(el).to_string();
-            if(j < this->size().second - 1){
-                res += ",";
-            }
-            res += " ";
-            j++;
-        }
-        res += ")";
-        i++;
-    }
-    res += "]";
-
-    return res;
+    return gsl_matrix_complex_const_submatrix(this->gsl_mat.get(), 0, 0, this->gsl_mat->size1, this->gsl_mat->size2).matrix;
 }
-*/
+
+template<>
+Matrix::View Matrix::view(Matrix_t::size_type i, Matrix_t::size_type j, Matrix_t::size_type rows, Matrix_t::size_type columns)
+{
+    return gsl_matrix_submatrix(this->gsl_mat.get(), i, j, rows, columns).matrix;
+}
+
+template<>
+Matrix_cx::View Matrix_cx::view(Matrix_t::size_type i, Matrix_t::size_type j, Matrix_t::size_type rows, Matrix_t::size_type columns)
+{
+    return gsl_matrix_complex_submatrix(this->gsl_mat.get(), i, j, rows, columns).matrix;
+}
+
+template<>
+const Matrix::View Matrix::view(Matrix_t::size_type i, Matrix_t::size_type j, Matrix_t::size_type rows, Matrix_t::size_type columns) const
+{
+    return gsl_matrix_const_submatrix(this->gsl_mat.get(), i, j, rows, columns).matrix;
+}
+
+template<>
+const Matrix_cx::View Matrix_cx::view(Matrix_t::size_type i, Matrix_t::size_type j, Matrix_t::size_type rows, Matrix_t::size_type columns) const
+{
+    return gsl_matrix_complex_const_submatrix(this->gsl_mat.get(), i, j, rows, columns).matrix;
+}
+
+template<>
+Matrix::View::View(Matrix_t::pointer data, Matrix_t::size_type rows, Matrix_t::size_type columns)
+ : Matrix_t(gsl_matrix_view_array(data, rows, columns).matrix)
+{}
+
+template<>
+Matrix_cx::View::View(Matrix_t::pointer data, Matrix_t::size_type rows, Matrix_t::size_type columns)
+ : Matrix_t(gsl_matrix_complex_view_array(reinterpret_cast<double*>(data), rows, columns).matrix)
+{}
+
+template<>
+Matrix::View::View(Matrix_t::pointer data, size_t rows, Matrix_t::size_type columns, Matrix_t::size_type tda)
+ : Matrix_t(gsl_matrix_view_array_with_tda(data, rows, columns, tda).matrix)
+{}
+
+template<>
+Matrix_cx::View::View(Matrix_t::pointer data, size_t rows, Matrix_t::size_type columns, Matrix_t::size_type tda)
+ : Matrix_t(gsl_matrix_complex_view_array_with_tda(reinterpret_cast<double*>(data), rows, columns, tda).matrix)
+{}
+
 template class Matrix_t<double, gsl_matrix, gsl_vector>;
 template class Matrix_t<long double, gsl_matrix_long_double, gsl_vector_long_double>;
 template class Matrix_t<float, gsl_matrix_float, gsl_vector_float>;
