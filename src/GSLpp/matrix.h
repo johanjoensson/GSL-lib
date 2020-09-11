@@ -199,30 +199,30 @@ public:
         typedef typename A::difference_type difference_type;
         typedef Row value_type;
         typedef Row reference;
-        typedef typename A::pointer pointer;
+        typedef GSL_VEC* pointer;
         typedef std::random_access_iterator_tag iterator_category;
 
         iterator() = default;
-        iterator(const Matrix_t& mat, const difference_type n = 0)
-         : mat_m(mat), row_m(n){}
+        iterator(const Matrix_t& mat, const pointer p)
+         : mat_m(mat), vector_ptr(p){}
         iterator(const iterator& it) = default;
         iterator(iterator&& it) = default;
         ~iterator() = default;
 
         iterator& operator=(const iterator&) = default;
         iterator& operator=(iterator&&) = default;
-        bool operator==(const iterator& b) const {return (this->mat_m == b.mat_m) && (this->row_m == b.row_m);}
+        bool operator==(const iterator& b) const {return (this->mat_m == b.mat_m) && (this->vector_ptr->data == b.vector_ptr->data);}
         bool operator!=(const iterator& b) const {return !(*this == b);}
-        bool operator<(const iterator& b) const {return (this->row_m < b.row_m);}
-        bool operator>(const iterator& b) const {return (this->row_m > b.row_m);}
-        bool operator<=(const iterator& b) const {return !(this->row_m > b.row_m);}
-        bool operator>=(const iterator& b) const {return !(this->row_m < b.row_m);}
+        bool operator<(const iterator& b) const {return (this->vector_ptr->data < b.vector_ptr->data);}
+        bool operator>(const iterator& b) const {return (this->vector_ptr->data > b.vector_ptr->data);}
+        bool operator<=(const iterator& b) const {return !(this->vector_ptr->data > b.vector_ptr->data);}
+        bool operator>=(const iterator& b) const {return !(this->vector_ptr->data < b.vector_ptr->data);}
 
-        iterator& operator++(){++this->row_m; return *this;}
-        iterator operator++(int){iterator tmp = *this; ++this->row_m; return tmp;}
+        iterator& operator++(){*this = iterator(mat_m, ); return *this;}
+        iterator operator++(int){iterator tmp = *this; this->vector_ptr->data += ; return tmp;}
 
         iterator& operator--(){--this->row_m; return *this;}
-        iterator operator--(int){iterator tmp = *this; --this->row_m; return tmp;}
+        iterator operator--(int){iterator tmp = *this; this->; return tmp;}
         iterator& operator+=(difference_type n){this->row_m += n; return *this;}
 
         iterator operator+(difference_type n) const{iterator tmp = *this; return tmp += n;}
@@ -238,19 +238,20 @@ public:
         }
 
 
-        value_type operator*(){return this->mat_m.get_row(static_cast<size_type>(this->row_m));}
+        value_type operator*(){return *vector_ptr;}
         friend class const_iterator;
     private:
         const Matrix_t& mat_m;
-        difference_type row_m;
+        int step_m;
+        pointer vector_ptr;
     };
 
     class const_iterator{
     public:
         typedef typename A::difference_type difference_type;
         typedef const Row value_type;
-        typedef const Row reference;
-        typedef const typename A::pointer pointer;
+        typedef const Row& reference;
+        typedef const GSL_VEC* pointer;
         typedef std::random_access_iterator_tag iterator_category;
 
 
@@ -293,14 +294,15 @@ public:
             return this->row_m - it.row_m;
         }
 
-        value_type operator*() const
+        value_type& operator*() const
         {
-            return this->mat_m.get_row(static_cast<size_type>(this->row_m));
+            return *vector_ptr;
         }
 
     private:
         const Matrix_t& mat_m;
-        difference_type row_m;
+        int step_m;
+        pointer vector_ptr;
     };
 
 
