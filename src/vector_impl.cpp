@@ -6,78 +6,6 @@
 #include <functional>
 
 namespace GSL{
-/*
-template<>
-Vector::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_ld::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_f::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_i::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_ui::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_l::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_ul::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_s::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_us::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_c::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_uc::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_cx::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-template<>
-Vector_cxld::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-
-
-template<>
-Vector_cxf::Vector_t(const std::shared_ptr<GSL_Vec>& v)
- : gsl_vec(v)
-{}
-*/
 
 template<>
 Vector::Vector_t
@@ -960,6 +888,189 @@ long double Vector_cxld::norm<long double>() const
         n += tmp.re()*tmp.re() + tmp.im()*tmp.im();
     }
     return std::sqrt(n);
+}
+
+template<class T, class G, class A>
+Vector_t<T, G, A>& Vector_t<T, G, A>::conjugate()
+{
+    return *this;
+}
+
+template<>
+Vector_cx& Vector_cx::conjugate()
+{
+    for(Vector_cx::size_type i = 0; i < this->size(); i++){
+        (*this)[i] = Complex((*this)[i]).conjugate();
+    }
+    return *this;
+}
+
+template<>
+Vector_cxf& Vector_cxf::conjugate()
+{
+    for(Vector_cxf::size_type i = 0; i < this->size(); i++){
+        (*this)[i] = Complex_f((*this)[i]).conjugate();
+    }
+    return *this;
+}
+
+template<>
+Vector_cxld& Vector_cxld::conjugate()
+{
+    for(Vector_cxld::size_type i = 0; i < this->size(); i++){
+        (*this)[i] = Complex_ld((*this)[i]).conjugate();
+    }
+    return *this;
+}
+
+template<class T, class GSL_VEC, class A> template<class GSL_MAT>
+Matrix_t<T, GSL_MAT, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::outer() const
+{
+    Matrix_t<T, GSL_MAT, GSL_VEC, A> res(this->size(), this->size());
+    for(Vector_t::size_type i = 0; i < this->size(); i++){
+        for(Vector_t::size_type j = 0; j < this->size(); j++){
+            res(i, j) = (*this)[i]*(*this)[j];
+        }
+    }
+    return res;
+}
+
+template<> template<>
+Matrix Vector::outer() const
+{
+    Matrix res(this->size(), this->size());
+    int stat = gsl_blas_dsyr(CblasUpper, 1.0, this->gsl_vec.get(), res.gsl_mat.get());
+    if(stat){
+        std::string error_str =   gsl_strerror(stat);
+		throw std::runtime_error("Error in outer product.\nGSL error: "
+        + error_str);
+    }
+    for(Vector::size_type i = 0; i < this->size(); i++){
+        for(Vector::size_type j = 0; j < i; j++){
+            res[i][j] = res[j][i];
+        }
+    }
+    return res;
+}
+
+template<> template<>
+Matrix_f Vector_f::outer() const
+{
+    Matrix_f res(this->size(), this->size());
+    int stat = gsl_blas_ssyr(CblasUpper, 1.0, this->gsl_vec.get(), res.gsl_mat.get());
+    if(stat){
+        std::string error_str =   gsl_strerror(stat);
+		throw std::runtime_error("Error in outer product.\nGSL error: "
+        + error_str);
+    }
+    for(Vector_f::size_type i = 0; i < this->size(); i++){
+        for(Vector_f::size_type j = 0; j < i; j++){
+            res[i][j] = res[j][i];
+        }
+    }
+
+    return res;
+}
+
+template<> template<>
+Matrix_cx Vector_cx::outer() const
+{
+    Matrix_cx res(this->size(), this->size());
+    int stat = gsl_blas_zher(CblasUpper, 1.0, this->gsl_vec.get(), res.gsl_mat.get());
+    if(stat){
+        std::string error_str =   gsl_strerror(stat);
+		throw std::runtime_error("Error in outer product.\nGSL error: "
+        + error_str);
+    }
+    for(Vector_cx::size_type i = 0; i < this->size(); i++){
+        for(Vector_cx::size_type j = 0; j < i; j++){
+            res[i][j] = Complex(res[j][i]).conjugate();
+        }
+    }
+
+    return res;
+}
+
+template<> template<>
+Matrix_cxf Vector_cxf::outer() const
+{
+    Matrix_cxf res(this->size(), this->size());
+    int stat = gsl_blas_cher(CblasUpper, 1.0, this->gsl_vec.get(), res.gsl_mat.get());
+    if(stat){
+        std::string error_str =   gsl_strerror(stat);
+		throw std::runtime_error("Error in outer product.\nGSL error: "
+        + error_str);
+    }
+    for(Vector_cxf::size_type i = 0; i < this->size(); i++){
+        for(Vector_cxf::size_type j = 0; j < i; j++){
+            res[i][j] = Complex_f(res[j][i]).conjugate();
+        }
+    }
+    return res;
+}
+
+template<class T, class GSL_VEC, class A> template<class GSL_MAT>
+Matrix_t<T, GSL_MAT, GSL_VEC, A> Vector_t<T, GSL_VEC, A>::outer(const Vector_t& other) const
+{
+    Matrix_t<T, GSL_MAT, GSL_VEC, A> res(this->size(), other.size());
+    for(Vector_t::size_type i = 0; i < this->size(); i++){
+        for(Vector_t::size_type j = 0; j < other.size(); j++){
+            res(i, j) = (*this)[i]*other[j];
+        }
+    }
+    return res;
+}
+
+template<> template<>
+Matrix Vector::outer(const Vector& other) const
+{
+    Matrix res(this->size(), other.size());
+    int stat = gsl_blas_dger(1.0, this->gsl_vec.get(), other.gsl_vec.get(), res.gsl_mat.get());
+    if(stat){
+        std::string error_str =   gsl_strerror(stat);
+		throw std::runtime_error("Error in outer product.\nGSL error: "
+        + error_str);
+    }
+    return res;
+}
+
+template<> template<>
+Matrix_f Vector_f::outer(const Vector_f& other) const
+{
+    Matrix_f res(this->size(), other.size());
+    int stat = gsl_blas_sger(1.0, this->gsl_vec.get(), other.gsl_vec.get(), res.gsl_mat.get());
+    if(stat){
+        std::string error_str =   gsl_strerror(stat);
+		throw std::runtime_error("Error in outer product.\nGSL error: "
+        + error_str);
+    }
+    return res;
+}
+
+template<> template<>
+Matrix_cx Vector_cx::outer(const Vector_cx& other) const
+{
+    Matrix_cx res(this->size(), other.size());
+    int stat = gsl_blas_zgerc({1.0, 0}, this->gsl_vec.get(), other.gsl_vec.get(), res.gsl_mat.get());
+    if(stat){
+        std::string error_str =   gsl_strerror(stat);
+		throw std::runtime_error("Error in outer product.\nGSL error: "
+        + error_str);
+    }
+    return res;
+}
+
+template<> template<>
+Matrix_cxf Vector_cxf::outer(const Vector_cxf& other) const
+{
+    Matrix_cxf res(this->size(), other.size());
+    int stat = gsl_blas_cgerc({1.0, 0}, this->gsl_vec.get(), other.gsl_vec.get(), res.gsl_mat.get());
+    if(stat){
+        std::string error_str =   gsl_strerror(stat);
+		throw std::runtime_error("Error in outer product.\nGSL error: "
+        + error_str);
+    }
+    return res;
 }
 
 template<>
