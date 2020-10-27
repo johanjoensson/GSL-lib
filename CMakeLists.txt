@@ -69,6 +69,7 @@ set(TEST_FILES 	tests/matrix_cx_test.cpp
 				tests/matrix_uc_test.cpp
 				tests/vector_test.cpp
 				tests/interp_test.cpp
+				tests/ode_test.cpp
 				tests/matrix_ui_test.cpp
 				tests/vector_uc_test.cpp
 				tests/main_tests.cpp
