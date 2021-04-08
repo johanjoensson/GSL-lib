@@ -25,7 +25,7 @@ LIB_DIR = lib
 INC_DIR = include
 
 # Flags for the above defined compilers
-CXXFLAGS = -std=c++11 -I$(SRC_DIR) -fPIC -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
+CXXFLAGS = -std=c++11 -I$(INC_DIR) -fPIC -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF
 
 # Libraries to link against
 LDFLAGS = -lgsl -lopenblas -fPIC
@@ -97,7 +97,7 @@ TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
 .PHONY: clean cleanall $(LIB_DIR) $(INC_DIR)
 
 # Build all executables
-all: $(LIB_DIR) $(INC_DIR) $(BUILD_DIR) lib$(LIB).so $(TEST)
+all: $(LIB_DIR) $(BUILD_DIR) lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -115,8 +115,8 @@ lib$(LIB)cov.so: $(OBJS)
 test:  CXXFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline --coverage
 test:  LDFLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline --coverage
 test:  lib$(LIB)cov.so
-test: 	$(INC_DIR) $(LIB_DIR) $(BUILD_DIR) $(TEST_OBJS)
-	$(CXX) $(TEST_OBJS) -o $@ -lgtest -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS)
+test: 	$(LIB_DIR) $(BUILD_DIR) $(TEST_OBJS)
+	$(CXX) $(TEST_OBJS) -o $@ -lgtest -L $(LIB_DIR)/$(LIB) -I $(INC_DIR) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS)
 
 $(BUILD_DIR) :
 	mkdir -p $(BUILD_DIR)
@@ -124,15 +124,10 @@ $(BUILD_DIR) :
 $(LIB_DIR) :
 	mkdir -p $(LIB_DIR)/$(LIB)
 
-$(INC_DIR) :
-	mkdir -p $(INC_DIR)/$(LIB)
-#	cp $(SRC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)
-#	cp $(SRC_DIR)/*.tpp $(INC_DIR)/$(LIB)
-
 # Remove object files
 clean:
 	rm -f $(BUILD_DIR)/*.o $(BUILD_DIR)/*.gcda $(BUILD_DIR)/*.gcno
 
 # Remove executables and object files
 cleanall: clean
-	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(LIB_DIR)/$(LIB)/lib$(LIB)cov.so* $(INC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)/*.tpp tests tester
+	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(LIB_DIR)/$(LIB)/lib$(LIB)cov.so* tests tester
