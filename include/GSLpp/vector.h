@@ -92,6 +92,8 @@ public:
     Vector_t& copy(const Vector_t& a);
     Vector_t& copy( Vector_t&& a){std::swap(this->gsl_vec, a.gsl_vec); return *this;}
 
+    Vector_t& conjugate();
+
     Vector_t& operator= (Vector_t&& a) = default;
     Vector_t& operator= (const Vector_t& a) = default;
 
@@ -100,6 +102,14 @@ public:
 
     template <class S=double>
     Vector_t& normalize() {return *this /= static_cast<value_type>(this->norm<S>());}
+    template<class S=double> S lp_norm(const double p) const
+    {
+        S sum = 0;
+        for(auto elem : *this){
+            sum += std::pow(std::abs(elem), p);
+        }
+        return std::pow(sum, 1./p);
+    }
 
 
     // Define dot and cross products of vectors
@@ -116,6 +126,12 @@ public:
 
         return res;
     }
+
+    template<class GSL_MAT>
+    Matrix_t<T, GSL_MAT, GSL_VEC, A> outer() const;
+
+    template<class GSL_MAT>
+    Matrix_t<T, GSL_MAT, GSL_VEC, A> outer(const Vector_t& other) const;
 
     template<class S = double>
     Vector_t mirror(const Vector_t& b) const

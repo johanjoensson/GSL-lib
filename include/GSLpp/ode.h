@@ -29,11 +29,15 @@ namespace GSL{
     public:
         std::function<
             void(double, const std::vector<double>&, std::vector<double>&)> rhs_m;
+
         std::function<
             void(double, const std::vector<double>&, std::vector<double>&,
                 std::vector<double>&)> jacobian_m;
+
         ODE_solver(ode_stepper stepper, size_t dim, const double abs_err = 1e-6, const double rel_err = 0);
+
         size_t dim() const {return dim_m;}
+
         void set_rhs(std::function<void(double, const std::vector<double>&, std::vector<double>&)> rhs)
         {
             rhs_m = rhs;
@@ -44,8 +48,9 @@ namespace GSL{
             jacobian_m = jacobian;
         }
 
-        void init_system();
+        void reset();
 
         void apply(double& t, const double t1, double& h, std::vector<double>& y);
+        void apply_fixed_step(double& t, const double h, std::vector<double>& y);
     };
 }

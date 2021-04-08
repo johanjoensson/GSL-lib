@@ -12,39 +12,45 @@ void print_error_message(std::string function_name, int& gsl_err_code)
 
 using namespace GSL;
 
-std::unique_ptr<gsl_interp_type> gsl_interp_type_translate(Interpolation_type type)
+const gsl_interp_type* gsl_interp_type_translate(Interpolation_type type)
 {
-    auto res = std::unique_ptr<gsl_interp_type>(new gsl_interp_type);
     switch(type){
-        case Linear : *res = *gsl_interp_linear;
+        case Linear : return gsl_interp_linear;
             break;
-        case Polynomial : *res = *gsl_interp_polynomial;
+        case Polynomial : return gsl_interp_polynomial;
             break;
-        case CSpline : *res = *gsl_interp_cspline;
+        case CSpline : return gsl_interp_cspline;
             break;
-        case CSpline_periodic : *res = *gsl_interp_cspline_periodic;
+        case CSpline_periodic : return gsl_interp_cspline_periodic;
             break;
-        case Akima : *res = *gsl_interp_akima;
+        case Akima : return gsl_interp_akima;
             break;
-        case Akima_periodic : *res = *gsl_interp_akima_periodic;
+        case Akima_periodic : return gsl_interp_akima_periodic;
             break;
-        case Steffen : *res = *gsl_interp_steffen;
+        case Steffen : return gsl_interp_steffen;
             break;
     }
-    return res;
+    return nullptr;
 }
 
 Interpolation::Interpolation(const std::vector<double>& xa, const std::vector<double>& ya, Interpolation_type type)
- : gsl_interp_accel_m(gsl_interp_accel_alloc(), gsl_interp_accel_free), gsl_spline_m(gsl_spline_alloc(gsl_interp_type_translate(type).get(), xa.size()), gsl_spline_free)
+ // : gsl_interp_accel_m(gsl_interp_accel_alloc()), gsl_spline_m(gsl_spline_alloc(gsl_interp_type_translate(type), xa.size()))
+ : gsl_interp_accel_m(gsl_interp_accel_alloc(), gsl_interp_accel_free), gsl_spline_m(gsl_spline_alloc(gsl_interp_type_translate(type), xa.size()), gsl_spline_free)
+
 {
     if(xa.size() != ya.size()){
         throw std::runtime_error("length of x-input vector not equal to length of y-input vector!");
     }
-    size_t size = xa.size();
     // gsl_interp_type interp_type = gsl_interp_type_trans(type);
     // gsl_spline_m = std::shared_ptr<gsl_spline>(gsl_spline_alloc(&interp_type, size), gsl_spline_free);
-    gsl_spline_init(gsl_spline_m.get(), &(*xa.cbegin()), &(*ya.cbegin() ), size);
+    gsl_spline_init(gsl_spline_m.get(), &(*xa.cbegin()), &(*ya.cbegin() ), xa.size());
 }
+
+// Interpolation::~Interpolation()
+// {
+    // gsl_interp_accel_free(gsl_interp_accel_m);
+    // gsl_spline_free(gsl_spline_m);
+// }
 
 double Interpolation::operator()(const double x) const
 {

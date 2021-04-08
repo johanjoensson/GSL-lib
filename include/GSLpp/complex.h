@@ -268,6 +268,12 @@ namespace std{
     inline string to_string(const GSL::Complex_t<double, gsl_complex>& c) {return c.to_string();}
     inline string to_string(const GSL::Complex_t<long double, gsl_complex_long_double>& c) {return c.to_string();}
     inline string to_string(const GSL::Complex_t<float, gsl_complex_float>& c) {return c.to_string();}
+    template<class T, class GSL_COMPLEX>
+    T abs(const GSL::Complex_t<T, GSL_COMPLEX>& c)
+    {
+        return c.abs();
+    }
+
 
     template<class T, class GSL_COMPLEX>
     struct hash<GSL::Complex_t<T, GSL_COMPLEX>>{

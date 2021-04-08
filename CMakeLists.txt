@@ -87,7 +87,7 @@ set(TEST_FILES 	tests/matrix_cx_test.cpp
 				)
 
 add_library(GSLpp SHARED ${SOURCE_FILES})
-target_include_directories(GSLpp PUBLIC src)
+target_include_directories(GSLpp PUBLIC include)
 target_link_libraries(GSLpp ${GSL_LIBRARIES} openblas m)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -108,5 +108,4 @@ endif()
 
 install(TARGETS GSLpp
 		LIBRARY DESTINATION lib/GSLpp)
-install(DIRECTORY src/GSLpp DESTINATION include)
-
+# install(DIRECTORY include/GSLpp DESTINATION include)

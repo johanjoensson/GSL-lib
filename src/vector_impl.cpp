@@ -1812,7 +1812,7 @@ Vector_ui& Vector_ui::operator*=(const unsigned int& b)
 template<>
 Vector_l& Vector_l::operator*=(const long& b)
 {
-    int stat = gsl_vector_long_scale(this->gsl_vec.get(), static_cast<double>(b));
+    int stat = gsl_vector_long_scale(this->gsl_vec.get(), b);
     if(stat){
 		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
@@ -1824,7 +1824,7 @@ Vector_l& Vector_l::operator*=(const long& b)
 template<>
 Vector_ul& Vector_ul::operator*=(const unsigned long& b)
 {
-    int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), static_cast<double>(b));
+    int stat = gsl_vector_ulong_scale(this->gsl_vec.get(), b);
     if(stat){
 		std::string error_str = gsl_strerror(stat);
 		throw std::runtime_error("Error in vector addition.\nGSL error: "
