@@ -30,7 +30,7 @@ INC_DIR = include
 
 WFLAGS = -Werror -Wall -Wextra -pedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Weffc++ -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op  -Wuseless-cast
 #CXXFLAGS = -std=c++11 $(WFLAGS) -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -fPIC -g -pg -O3 -flto
-CXXFLAGS = -std=c++11 $(WFLAGS) -I$(SRC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -fPIC -O0 -flto -DDEBUG -g
+CXXFLAGS = -std=c++11 $(WFLAGS) -I$(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -fPIC -O0 -flto -DDEBUG -g
 
 CXXCHECKS =clang-analyzer-*,-clang-analyzer-cplusplus*,cppcoreguidelines-*,bugprone-*
 CXXCHECKFLAGS = -checks=$(CXXCHECKS) -header-filter=.* -- -std=c++11
@@ -105,7 +105,7 @@ TEST_OBJS = $(addprefix $(BUILD_DIR)/, $(TEST_OBJ))
 .PHONY: clean cleanall $(LIB_DIR) $(INC_DIR)
 
 # Build all executables
-all: $(LIB_DIR) $(INC_DIR) $(BUILD_DIR) lib$(LIB).so $(TEST)
+all: $(LIB_DIR) $(BUILD_DIR) lib$(LIB).so $(TEST)
 
 # Create object files from c++ sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -128,11 +128,11 @@ checkall: $(addprefix $(SRC_DIR)/, $(LIB_OBJ:o=cpp))
 test:  CXXFLAGS += --coverage
 test:  LDFLAGS += --coverage -lgtest
 test:  lib$(LIB)cov.so
-test: 	$(INC_DIR) $(BUILD_DIR) $(LIB_DIR) $(TEST_OBJS)
-	$(CXX) $(TEST_OBJS) -o $@ -L $(LIB_DIR)/$(LIB) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS)
+test: 	$(BUILD_DIR) $(LIB_DIR) $(TEST_OBJS)
+	$(CXX) $(TEST_OBJS) -o $@ -L $(LIB_DIR)/$(LIB) -I$(INC_DIR) -Wl,-rpath=$(LIB_DIR)/$(LIB) -l$(LIB)cov $(LDFLAGS)
 
-travis : -std=c++11 -I $(SRC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
-travis: $(BUILD_DIR) $(LIB_DIR) $(INC_DIR) lib$(LIB).so
+travis : -std=c++11 -I $(INC_DIR) -DHAVE_INLINE -DGSL_RANGE_CHECK_OFF -Ofast -flto -fPIC
+travis: $(BUILD_DIR) $(LIB_DIR) lib$(LIB).so
 
 $(BUILD_DIR) :
 	mkdir -p $(BUILD_DIR)
@@ -140,8 +140,8 @@ $(BUILD_DIR) :
 $(LIB_DIR) :
 	mkdir -p $(LIB_DIR)/$(LIB)
 
-$(INC_DIR) :
-	mkdir -p $(INC_DIR)/$(LIB)
+#$(INC_DIR) :
+#	mkdir -p $(INC_DIR)/$(LIB)
 #	cp $(SRC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)
 
 # Remove object files
@@ -150,4 +150,4 @@ clean:
 
 # Remove executables and object files
 cleanall: clean
-	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(LIB_DIR)/$(LIB)/lib$(LIB)cov.so* $(INC_DIR)/$(LIB)/*.h $(INC_DIR)/$(LIB)/*.tpp test tester
+	rm -f $(LIB_DIR)/$(LIB)/lib$(LIB).so* $(LIB_DIR)/$(LIB)/lib$(LIB)cov.so* test tester
