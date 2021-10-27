@@ -1,26 +1,33 @@
-#ifndef BLOCK_GSLPP_LIB_H
-#define BLOCK_GSLPP_LIB_H
-#include<gsl/gsl_block.h>
+#ifndef NEW_BLOCK_GLSPP_LIB_H
+#define NEW_BLOCK_GLSPP_LIB_H
+
+#include <gsl/gsl_block.h>
 #include <memory>
 
 namespace GSL{
 
-template<class D, class GSL_BLOCK, class A = std::allocator<D>>
-class Block_t
-{
+class Block {
 private:
-    std::shared_ptr<GSL_BLOCK> block;
+    std::unique_ptr<gsl_block, decltype(&gsl_block_free)> gsl_block_m;
 public:
-    Block_t() = default;
-    Block_t(const Block&) = default;
-    Block_t(Block_t&&) = default;
+    Block() = default;
+    Block(const Block&) = default;
+    Block(Block&&) = default;
+    ~Block() = default;
 
-    Block_t(size_t n);
+    Block& operator=(const Block&) = default;
+    Block& operator=(Block&&) = default;
 
-    Block_t& operator=(const Block_t&) = default;
-    Block_t& operator=(Block&_t&) = default;
+    Block(size_t);
+
+    double* data();
+    const double* data() const;
+    size_t size() const;
+
+    gsl_block* gsl_data();
+    const gsl_block* gsl_data() const;
 };
 
 }
 
-#endif //BLOCK_GSLPP_LIB_H
+#endif // NEW_BLOCK_GLSPP_LIB_H
