@@ -24,19 +24,19 @@ gsl_eigen_sort_t gsl_sort(SORTING sorting)
     return GSL_EIGEN_SORT_VAL_ASC;
 }
 
-std::pair<Matrix_cx, Vector> GSL::hermitian_eigen(const Matrix_cx& A)
+std::pair<Matrix_Complex, Vector> GSL::hermitian_eigen(const Matrix_Complex& A)
 {
-    size_t N = A.gsl_mat->size1;
-    Matrix_cx a(N,N);
+    size_t N = A.num_rows();
+    Matrix_Complex a(N,N);
     std::unique_ptr<gsl_eigen_hermv_workspace,
         std::function<void(gsl_eigen_hermv_workspace*)>>
             w(gsl_eigen_hermv_alloc(N),
                 gsl_eigen_hermv_free);
-    Matrix_cx eigvecs(N, N);
+    Matrix_Complex eigvecs(N, N);
     Vector eigvals(N);
     a.copy(A);
-    int status = gsl_eigen_hermv(a.gsl_mat.get(), eigvals.gsl_vec.get(),
-        eigvecs.gsl_mat.get(), w.get());
+    int status = gsl_eigen_hermv(a.gsl_data(), eigvals.gsl_data(),
+        eigvecs.gsl_data(), w.get());
 
     if(status){
         std::string error_str =   gsl_strerror(status);
@@ -44,32 +44,32 @@ std::pair<Matrix_cx, Vector> GSL::hermitian_eigen(const Matrix_cx& A)
         + error_str + "\n");
     }
 
-    return std::pair<Matrix_cx, Vector>(eigvecs, eigvals);
+    return std::pair<Matrix_Complex, Vector> (std::move(eigvecs), std::move(eigvals));
 }
 
-std::pair<Matrix_cx, Vector> GSL::sort_hermitian_eigen(const Vector& evals, const Matrix_cx& evecs, SORTING sorting)
+std::pair<Matrix_Complex, Vector> GSL::sort_hermitian_eigen(const Vector& evals, const Matrix_Complex& evecs, SORTING sorting)
 {
-    Matrix_cx A;
-    Vector v;
+    Matrix_Complex A(evecs.num_rows(), evecs.num_columns());
+    Vector v(evals.size());
     A.copy(evecs);
     v.copy(evals);
-    int status = gsl_eigen_hermv_sort(v.gsl_vec.get(), A.gsl_mat.get(), gsl_sort(sorting));
+    int status = gsl_eigen_hermv_sort(v.gsl_data(), A.gsl_data(), gsl_sort(sorting));
     if(status){
         std::string error_str =   gsl_strerror(status);
         throw std::runtime_error("Error in sorting Hermitian eigenvalues and eigenvectors.\nGSL error: "
         + error_str + "\n");
     }
 
-    return std::pair<Matrix_cx, Vector>(A, v);
+    return std::pair<Matrix_Complex, Vector> (std::move(A), std::move(v));
 }
 
-std::pair<Matrix_cx, Vector> GSL::general_hermitian_eigen(
-    const Matrix_cx&A, const Matrix_cx&B)
+std::pair<Matrix_Complex, Vector> GSL::general_hermitian_eigen(
+    const Matrix_Complex& A, const Matrix_Complex&B)
 {
-    size_t N = A.gsl_mat.get()->size1;
-    Matrix_cx a(N,N), b(N,N);
-    GSL::Vector eigvals(N);
-    Matrix_cx eigvecs(N, N);
+    size_t N = A.num_rows();
+    Matrix_Complex a(N,N), b(N,N);
+    Vector eigvals(N);
+    Matrix_Complex eigvecs(N, N);
     a.copy(A);
     b.copy(B);
 
@@ -77,29 +77,29 @@ std::pair<Matrix_cx, Vector> GSL::general_hermitian_eigen(
         std::function<void(gsl_eigen_genhermv_workspace*)>>
             w(gsl_eigen_genhermv_alloc(N),
                 gsl_eigen_genhermv_free);
-    int status = gsl_eigen_genhermv(a.gsl_mat.get(), b.gsl_mat.get(), eigvals.gsl_vec.get(),
-        eigvecs.gsl_mat.get(), w.get());
+    int status = gsl_eigen_genhermv(a.gsl_data(), b.gsl_data(), eigvals.gsl_data(),
+        eigvecs.gsl_data(), w.get());
     if(status){
         std::string error_str =   gsl_strerror(status);
         throw std::runtime_error("Error in solving general Hermitian eigenproblem.\nGSL error: "
         + error_str + "\n");
     }
 
-    return std::pair<Matrix_cx, Vector>(eigvecs, eigvals);
+    return std::pair<Matrix_Complex, Vector> (std::move(eigvecs), std::move(eigvals));
 }
 
-std::pair<Matrix_cx, Vector> GSL::sort_general_hermitian_eigen(const Vector& evals, const Matrix_cx& evecs, SORTING sorting)
+std::pair<Matrix_Complex, Vector> GSL::sort_general_hermitian_eigen(const Vector& evals, const Matrix_Complex& evecs, SORTING sorting)
 {
-    Matrix_cx A;
-    Vector v;
+    Matrix_Complex A(evecs.num_rows(), evecs.num_columns());
+    Vector v(evals.size());
     A.copy(evecs);
     v.copy(evals);
-    int status = gsl_eigen_genhermv_sort(v.gsl_vec.get(), A.gsl_mat.get(), gsl_sort(sorting));
+    int status = gsl_eigen_genhermv_sort(v.gsl_data(), A.gsl_data(), gsl_sort(sorting));
     if(status){
         std::string error_str =   gsl_strerror(status);
         throw std::runtime_error("Error in sorting generalHermitian eigenvalues and eigenvectors.\nGSL error: "
         + error_str + "\n");
     }
 
-    return std::pair<Matrix_cx, Vector>(A, v);
+    return std::pair<Matrix_Complex, Vector> (std::move(A), std::move(v));
 }
