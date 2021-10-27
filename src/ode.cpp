@@ -65,7 +65,7 @@ const gsl_odeiv2_step_type* gsl_stepper(ode_stepper stepper)
         break;
         case Runge_Kutta_Cash_Karp: return gsl_odeiv2_step_rkck;
         break;
-        case Runge_Kutta_Prince_Diamond: return gsl_odeiv2_step_rk8pd;
+        case Runge_Kutta_Prince_Dormand: return gsl_odeiv2_step_rk8pd;
         break;
         case Runge_Kutta_1_implicit: return gsl_odeiv2_step_rk1imp;
         break;

@@ -27,17 +27,17 @@ namespace GSL{
 
         Complex evaluate_polynomial(const std::vector<double>& coeffs, const size_t order, const Complex& z)
         {
-            return Complex(gsl_poly_complex_eval(&coeffs[0], static_cast<int>(order + 1), *z.gsl_c));
+            return Complex(gsl_poly_complex_eval(&coeffs[0], static_cast<int>(order + 1), z.gsl_c_m));
         }
 
         Complex evaluate_polynomial(const std::vector<Complex>& coeffs, const size_t order, const Complex& z)
         {
             std::unique_ptr<gsl_complex[]> ar(new gsl_complex[order + 1]);
             for(size_t i = 0; i < order + 1; i++){
-                ar[i] = *coeffs[i].gsl_c;
+                ar[i] = coeffs[i].gsl_c_m;
             }
 
-            gsl_complex res = gsl_complex_poly_complex_eval(ar.get(), static_cast<int>(order + 1), *z.gsl_c);
+            gsl_complex res = gsl_complex_poly_complex_eval(ar.get(), static_cast<int>(order + 1), z.gsl_c_m);
 
             return res;
         }

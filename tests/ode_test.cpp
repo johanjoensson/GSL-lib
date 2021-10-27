@@ -27,7 +27,7 @@ TEST(ODETest, TestVdPolOscillator)
     };
 
 
-    GSL::ODE_solver solver(GSL::Runge_Kutta_Prince_Diamond, 2);
+    GSL::ODE_solver solver(GSL::Runge_Kutta_Prince_Dormand, 2);
 
     solver.set_rhs(func);
     solver.set_jacobian(jac);
@@ -74,7 +74,7 @@ TEST(ODETest, TestDirac)
         dfdt[1] = -1/c*Vp(r)*y[0] - kappa/(r*r)*y[1];
     };
 
-    GSL::ODE_solver solver(GSL::Runge_Kutta_Prince_Diamond, 2, 1e-12, 0);
+    GSL::ODE_solver solver(GSL::Runge_Kutta_Prince_Dormand, 2, 1e-12, 0);
 
     solver.set_rhs(func);
     solver.set_jacobian(jac);
@@ -82,10 +82,7 @@ TEST(ODETest, TestDirac)
     const double r_end = 40, midpoint = 30;
     double h = 1e-6, r = h;
     std::vector<double> y{r, r/c};
-    std::vector<double> g(100), f(100), r_v(100);
-
-    g.push_back(y[0]);
-    f.push_back(y[1]);
+    std::vector<double> g, f, r_v;
 
     std::ofstream os;
     os.open("radDirac_test.dat", std::fstream::out);
@@ -110,6 +107,7 @@ TEST(ODETest, TestDirac)
     scale_g /= y[0];
     scale_f /= y[1];
 
+    std::cout << "g.size() = " << g.size() << "\n";;
     for(size_t i = g.size() - 1; i > 0 ; i--){
         os << r_v[i] << " " << g[i]*scale_g << " " << f[i]*scale_f << "\n";
     }

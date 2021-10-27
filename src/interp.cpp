@@ -58,6 +58,7 @@ double Interpolation::operator()(const double x) const
     int stat;
     stat = gsl_spline_eval_e(gsl_spline_m.get(), x, gsl_interp_accel_m.get(), &res);
     if(stat){
+        std::cout << "\tx = " << x << "\n";
         print_error_message("Interpolation operator()", stat);
     }
     return res;

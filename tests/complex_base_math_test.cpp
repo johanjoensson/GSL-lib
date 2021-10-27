@@ -36,8 +36,8 @@ TEST(ComplexBaseMathTest, TestScaleC)
     GSL::Complex dz(re/10, im/5);
     GSL::Complex z2(-0.7, 0.6);
     z *= dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_DOUBLE_EQ(z.real(), z2.real());
+    EXPECT_DOUBLE_EQ(z.imag(), z2.imag());
 }
 
 TEST(ComplexBaseMathTest, TestDivC)
@@ -48,8 +48,8 @@ TEST(ComplexBaseMathTest, TestDivC)
     GSL::Complex z2 = z;
     z /= dz;
     z2 *= dz.recipr();
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_DOUBLE_EQ(z.real(), z2.real());
+    EXPECT_DOUBLE_EQ(z.imag(), z2.imag());
 }
 
 TEST(ComplexBaseMathTest, TestIncrementR)
@@ -79,8 +79,8 @@ TEST(ComplexBaseMathTest, TestScaleR)
     double dz = 0.1;
     GSL::Complex z2(0.1, 0.2);
     z *= dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_DOUBLE_EQ(z.real(), z2.real());
+    EXPECT_DOUBLE_EQ(z.imag(), z2.imag());
 }
 
 TEST(ComplexBaseMathTest, TestDivR)
@@ -90,8 +90,8 @@ TEST(ComplexBaseMathTest, TestDivR)
     double dz = 0.1;
     z /= dz;
     z2 *= 1/dz;
-    EXPECT_DOUBLE_EQ(z.re(), z2.re());
-    EXPECT_DOUBLE_EQ(z.im(), z2.im());
+    EXPECT_DOUBLE_EQ(z.real(), z2.real());
+    EXPECT_DOUBLE_EQ(z.imag(), z2.imag());
 }
 
 TEST(ComplexBaseMathTest, TestAddC)
@@ -118,8 +118,8 @@ TEST(ComplexBaseMathTest, TestMultC)
     GSL::Complex z(re, im);
     GSL::Complex dz(re/10, im/5); // re : 1/10 - 4/5 = -7/10, im : 2/5 + 2/10 = 6/10
     GSL::Complex z2(-0.7, 0.6);
-    EXPECT_DOUBLE_EQ((z*dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z*dz).im(), z2.im());
+    EXPECT_DOUBLE_EQ((z*dz).real(), z2.real());
+    EXPECT_DOUBLE_EQ((z*dz).imag(), z2.imag());
 }
 
 TEST(ComplexBaseMathTest, TestDivideC)
@@ -128,8 +128,8 @@ TEST(ComplexBaseMathTest, TestDivideC)
     GSL::Complex z(re, im);
     GSL::Complex dz(re/10, im/5);
     GSL::Complex z2 = z * dz.recipr();
-    EXPECT_DOUBLE_EQ((z/dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z/dz).im(), z2.im());
+    EXPECT_DOUBLE_EQ((z/dz).real(), z2.real());
+    EXPECT_DOUBLE_EQ((z/dz).imag(), z2.imag());
 }
 
 TEST(ComplexBaseMathTest, TestAddR)
@@ -156,8 +156,8 @@ TEST(ComplexBaseMathTest, TestMulR)
     GSL::Complex z(re, im);
     double dz = 0.1;
     GSL::Complex z2(0.1, 0.2);
-    EXPECT_DOUBLE_EQ((z*dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z*dz).im(), z2.im());
+    EXPECT_DOUBLE_EQ((z*dz).real(), z2.real());
+    EXPECT_DOUBLE_EQ((z*dz).imag(), z2.imag());
 }
 
 TEST(ComplexBaseMathTest, TestDivideR)
@@ -166,6 +166,6 @@ TEST(ComplexBaseMathTest, TestDivideR)
     GSL::Complex z(re, im);
     double dz = 0.1;
     GSL::Complex z2 = z*(1/dz);
-    EXPECT_DOUBLE_EQ((z/dz).re(), z2.re());
-    EXPECT_DOUBLE_EQ((z/dz).im(), z2.im());
+    EXPECT_DOUBLE_EQ((z/dz).real(), z2.real());
+    EXPECT_DOUBLE_EQ((z/dz).imag(), z2.imag());
 }

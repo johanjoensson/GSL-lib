@@ -10,7 +10,7 @@ namespace GSL{
         Runge_Kutta_4,
         Runge_Kutta_45,
         Runge_Kutta_Cash_Karp,
-        Runge_Kutta_Prince_Diamond,
+        Runge_Kutta_Prince_Dormand,
         Runge_Kutta_1_implicit,
         Runge_Kutta_2_implicit,
         Runge_Kutta_4_implicit,
