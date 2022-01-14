@@ -495,6 +495,16 @@ Vector::View::operator Vector()
     return Vector(&this->gsl_vec_view_m.vector);
 }
 
+gsl_vector* Vector::View::gsl_data()
+{
+    return &this->gsl_vec_view_m.vector;
+}
+
+const gsl_vector* Vector::View::gsl_data() const
+{
+    return &this->gsl_vec_view_m.vector;
+}
+
 Vector::View::operator const Vector() const
 {
     return Vector(const_cast<gsl_vector*>(&this->gsl_vec_view_m.vector));
@@ -536,16 +546,16 @@ const double& Vector::View::at(const size_t i) const
     return (*this)[i];
 }
 
-Vector::View& Vector::View::swap(Vector& v)
-{
-    gsl_vector_swap(&this->gsl_vec_view_m.vector, v.gsl_vec_m.get());
-    return *this;
-}
-Vector::View& Vector::View::swap(View& vv)
-{
-    gsl_vector_swap(&this->gsl_vec_view_m.vector, &vv.gsl_vec_view_m.vector);
-    return *this;
-}
+// Vector::View& Vector::View::swap(Vector& v)
+// {
+//     gsl_vector_swap(&this->gsl_vec_view_m.vector, v.gsl_vec_m.get());
+//     return *this;
+// }
+// Vector::View& Vector::View::swap(View& vv)
+// {
+//     gsl_vector_swap(&this->gsl_vec_view_m.vector, &vv.gsl_vec_view_m.vector);
+//     return *this;
+// }
 
 Vector::View& Vector::View::swap(Vector&& v)
 {
@@ -564,11 +574,11 @@ Vector::View& Vector::View::copy(const View& vv)
     return *this;
 }
 
-Vector::View& Vector::View::copy(View&& vv)
-{
-    gsl_vector_swap(&this->gsl_vec_view_m.vector, &vv.gsl_vec_view_m.vector);
-    return *this;
-}
+// Vector::View& Vector::View::copy(View&& vv)
+// {
+//     gsl_vector_swap(&this->gsl_vec_view_m.vector, &vv.gsl_vec_view_m.vector);
+//     return *this;
+// }
 
 Vector::View& Vector::View::copy(const Vector& vv)
 {
@@ -576,11 +586,11 @@ Vector::View& Vector::View::copy(const Vector& vv)
     return *this;
 }
 
-Vector::View& Vector::View::copy(Vector&& vv)
-{
-    gsl_vector_swap(&this->gsl_vec_view_m.vector, vv.gsl_vec_m.get());
-    return *this;
-}
+// Vector::View& Vector::View::copy(Vector&& vv)
+// {
+//     gsl_vector_swap(&this->gsl_vec_view_m.vector, vv.gsl_vec_m.get());
+//     return *this;
+// }
 
 
 Vector::View& Vector::View::swap_elements(size_t i, size_t j)
@@ -664,7 +674,6 @@ std::pair<size_t, size_t> Vector::View::minmax_index() const
     gsl_vector_minmax_index(&this->gsl_vec_view_m.vector, &res.first, &res.second);
     return res;
 }
-
 
 bool Vector::View::isnull() const
 {
@@ -1107,27 +1116,27 @@ Vector::Const_View::Const_View(const Vector& v, size_t offset, size_t stride, si
  : gsl_vec_view_m(gsl_vector_const_subvector_with_stride(v.gsl_vec_m.get(), offset, stride, size))
 {}
 
-Vector::Const_View::Const_View(Block& b)
+Vector::Const_View::Const_View(const Block& b)
  : Const_View(b, 0, b.size())
 {}
 
-Vector::Const_View::Const_View(Block& b, size_t offset, size_t size)
+Vector::Const_View::Const_View(const Block& b, size_t offset, size_t size)
  : gsl_vec_view_m(gsl_vector_const_view_array(b.data() + offset, size))
 {}
 
-Vector::Const_View::Const_View(Block& b, size_t offset, size_t stride, size_t size)
+Vector::Const_View::Const_View(const Block& b, size_t offset, size_t stride, size_t size)
  : gsl_vec_view_m(gsl_vector_const_view_array_with_stride(b.data() + offset, stride, size))
 {}
 
-Vector::Const_View::Const_View(double* data, size_t size)
+Vector::Const_View::Const_View(const double* data, size_t size)
  : Const_View(data, 0, size)
 {}
 
-Vector::Const_View::Const_View(double* data, size_t offset, size_t size)
+Vector::Const_View::Const_View(const double* data, size_t offset, size_t size)
  : gsl_vec_view_m(gsl_vector_const_view_array(data + offset, size))
 {}
 
-Vector::Const_View::Const_View(double* data, size_t offset, size_t stride, size_t size)
+Vector::Const_View::Const_View(const double* data, size_t offset, size_t stride, size_t size)
  : gsl_vec_view_m(gsl_vector_const_view_array_with_stride(data + offset, stride, size))
 {}
 
@@ -1138,6 +1147,11 @@ Vector::Const_View::Const_View(gsl_vector_const_view v)
 Vector::Const_View::operator const Vector() const
 {
     return Vector(const_cast<gsl_vector*>(&this->gsl_vec_view_m.vector));
+}
+
+const gsl_vector* Vector::Const_View::gsl_data() const
+{
+    return &this->gsl_vec_view_m.vector;
 }
 
 const double& Vector::Const_View::operator[](const size_t i) const

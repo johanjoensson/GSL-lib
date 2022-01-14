@@ -1,6 +1,6 @@
-#include "GSLpp/matrix_complex.h"
-#include "GSLpp/vector_complex.h"
-#include "GSLpp/complex.h"
+#include <GSLpp/matrix_complex.h>
+#include <GSLpp/vector_complex.h>
+#include <GSLpp/complex.h>
 #include <gtest/gtest.h>
 
 TEST(Matrix_cxTest, TestConstruction)

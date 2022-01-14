@@ -39,6 +39,11 @@ public:
     operator Matrix();
     operator const Matrix() const;
 
+    gsl_matrix* gsl_data();
+    const gsl_matrix* gsl_data() const;
+
+    Matrix clone() const;
+
     View& operator=(const Matrix& m);
     View& operator=(Matrix&& m);
 
@@ -515,21 +520,27 @@ public:
 
     Const_View(const Matrix& m, size_t k1, size_t k2, size_t n1, size_t n2);
 
-    Const_View(GSL::Block& b, size_t n1, size_t n2);
-    Const_View(GSL::Block& b, size_t offset, size_t n1, size_t n2);
-    Const_View(GSL::Block& b, size_t offset, size_t n1, size_t n2, size_t tda);
+    Const_View(const GSL::Block& b, size_t n1, size_t n2);
+    Const_View(const GSL::Block& b, size_t offset, size_t n1, size_t n2);
+    Const_View(const GSL::Block& b, size_t offset, size_t n1, size_t n2, size_t tda);
 
-    Const_View(double* data, size_t n1, size_t n2);
-    Const_View(double* data, size_t offset, size_t n1, size_t n2);
-    Const_View(double* data, size_t offset, size_t n1, size_t n2, size_t tda);
+    Const_View(const double* data, size_t n1, size_t n2);
+    Const_View(const double* data, size_t offset, size_t n1, size_t n2);
+    Const_View(const double* data, size_t offset, size_t n1, size_t n2, size_t tda);
 
-    Const_View(Vector& v, size_t n1, size_t n2);
-    Const_View(Vector& v, size_t n1, size_t n2, size_t tda);
+    Const_View(const Vector& v, size_t n1, size_t n2);
+    Const_View(const Vector& v, size_t n1, size_t n2, size_t tda);
 
     operator const Matrix() const;
 
+    const gsl_matrix* gsl_data() const;
+
+    Matrix clone() const;
+
     Const_View view() const;
     Const_View cview() const;
+    Const_View view(size_t k1, size_t k2, size_t n1, size_t n2) const;
+    Const_View cview(size_t k1, size_t k2, size_t n1, size_t n2) const;
 
     size_t num_rows() const;
     size_t num_columns() const;

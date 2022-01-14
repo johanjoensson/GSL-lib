@@ -4,14 +4,22 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
 if(NOT DEFINED CMAKE_BUILD_TYPE)
 	message(STATUS "CMAKE_BUILD_TYPE not set by user, setting to Release")
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-message(STATUS "CMAKE_BUILD_TYPE : ${CMAKE_BUILD_TYPE}")
+message( STATUS "======== BUILD-TYPE: ${CMAKE_BUILD_TYPE} =============")
 
-project(GSLpp CXX)
+project(
+	GSLpp
+	VERSION 0.5
+	DESCRIPTION "C++ wrapper library for the GNU scientific library (GSL)"
+	LANGUAGES CXX
+)
+
 find_package(GSL REQUIRED)
 include_directories(${GSL_INCLUDE_DIRS})
 
@@ -94,7 +102,7 @@ set(TEST_FILES 	tests/matrix_cx_test.cpp
 				)
 
 add_library(GSLpp SHARED ${SOURCE_FILES})
-target_include_directories(GSLpp PUBLIC include)
+target_include_directories(GSLpp PRIVATE include)
 target_link_libraries(GSLpp ${GSL_LIBRARIES} openblas m)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -108,11 +116,55 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	find_package(GTest REQUIRED)
 	include_directories(${GTEST_INCLUDE_DIRS})
 	add_executable(GSLppUnitTest ${TEST_FILES})
+	target_include_directories(GSLppUnitTest PRIVATE include)
 	target_link_libraries(GSLppUnitTest GSLpp ${GTEST_LIBRARIES})
 	GTEST_ADD_TESTS(GSLppUnitTest "" ${TEST_FILES})
 	message(STATUS "CXX flags : ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG}")
 endif()
 
 install(TARGETS GSLpp
-		LIBRARY DESTINATION lib/GSLpp)
-# install(DIRECTORY include/GSLpp DESTINATION include)
+	EXPORT GSLpp-targets
+	LIBRARY
+	INCLUDES DESTINATION include/GSLpp)
+
+install(EXPORT GSLpp-targets
+	NAMESPACE GSLpp::
+	DESTINATION share/GSLpp
+	)
+
+install(DIRECTORY include/GSLpp DESTINATION include/GSLpp
+	FILES_MATCHING PATTERN "*.h")
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+	"${CMAKE_CURRENT_BINARY_DIR}/GSLpp/gslpp-config-version.cmake"
+	VERSION ${PROJECT_VERSION}
+	COMPATIBILITY AnyNewerVersion
+)
+export(EXPORT GSLpp-targets
+	FILE "${CMAKE_CURRENT_BINARY_DIR}/GSLpp/gslpp-targets.cmake"
+	NAMESPACE GSLpp::
+)
+configure_file(cmake/gslpp-config.cmake
+	"${CMAKE_CURRENT_BINARY_DIR}/GSLpp/gslpp-config.cmake"
+	COPYONLY
+)
+
+set(ConfigPackageLocation share/cmake/GSLpp)
+install(EXPORT GSLpp-targets
+	FILE
+	gslpp-targets.cmake
+	NAMESPACE
+	GSLpp::
+	DESTINATION
+	${ConfigPackageLocation}
+)
+install(
+	FILES
+	cmake/gslpp-config.cmake
+	"${CMAKE_CURRENT_BINARY_DIR}/GSLpp/gslpp-config-version.cmake"
+	DESTINATION
+	${ConfigPackageLocation}
+	COMPONENT
+	Devel
+)

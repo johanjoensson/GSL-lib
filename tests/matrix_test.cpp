@@ -416,3 +416,37 @@ TEST(MatrixTest, TestcRend)
     auto it1 = m.view().crend();
     EXPECT_EQ(*--it1, *(m.view().crbegin() + 2));
 }
+
+TEST(MatrixTest, TestViewLoop)
+{
+    GSL::Matrix m{{1, 2}, {3, 4}, {5, 6}};
+    std::vector<GSL::Vector> rows;
+    rows.reserve(3);
+    rows.emplace_back(GSL::Vector{1,2});
+    rows.emplace_back(GSL::Vector{3,4});
+    rows.emplace_back(GSL::Vector{5,6});
+    size_t row_index = 0;
+    for(auto row : m.view()){
+        EXPECT_EQ(row, rows[row_index]);
+        row_index++;
+    }
+}
+
+TEST(MatrixTest, TestcViewLoop)
+{
+    GSL::Vector a{1, 2, 0}, b{0, 3, 4}, c{5, 0, 6};
+    // GSL::Matrix m{{1, 2, 0}, {0, 3, 4}, {5, 0, 6}};
+    GSL::Matrix m{{std::move(a), std::move(b), std::move(c)}};
+    std::vector<GSL::Vector> rows;
+    rows.reserve(3);
+    rows.emplace_back(GSL::Vector{1, 2, 0});
+    rows.emplace_back(GSL::Vector{0, 3, 4});
+    rows.emplace_back(GSL::Vector{5, 0, 6});
+    size_t row_index = 0;
+    for(auto row : m.cview()){
+        EXPECT_EQ(row, rows[row_index]);
+        std::cerr << "(row == rows[row_index])\n\t" << row << " == ";
+        std::cerr << rows[row_index] << "\n";
+        row_index++;
+    }
+}

@@ -28,8 +28,8 @@ namespace GSL{
         Matrix(size_t n1, size_t n2);
         Matrix(size_t n1, size_t n2, double val);
 
-        Matrix(std::initializer_list<Vector> l);
-        Matrix(std::initializer_list<std::initializer_list<double>> l);
+        Matrix(const std::initializer_list<Vector>& l);
+        // Matrix(const std::initializer_list<std::initializer_list<double>>& l);
 
         gsl_matrix* gsl_data();
         const gsl_matrix* gsl_data() const;

@@ -36,18 +36,21 @@ public:
     operator Vector();
     operator const Vector() const;
 
+    gsl_vector* gsl_data();
+    const gsl_vector* gsl_data() const;
+
     View& operator=(const Vector& v);
     View& operator=(Vector&& v);
 
-    View& swap(Vector& v);
+    // View& swap(Vector& v);
     View& swap(Vector&& v);
-    View& swap(View& vv);
+    // View& swap(View& vv);
     View& swap(View&& vv);
 
     View& copy(const View& vv);
-    View& copy(View&& vv);
+    // View& copy(View&& vv);
     View& copy(const Vector& vv);
-    View& copy(Vector&& vv);
+    // View& copy(Vector&& vv);
 
     View& swap_elements(size_t i, size_t j);
     View& reverse();
@@ -250,17 +253,19 @@ public:
     Const_View(const Vector& v, const size_t offset, const size_t size);
     Const_View(const Vector& v, const size_t offset, const size_t stride, const size_t size);
 
-    Const_View(Block& b);
-    Const_View(Block& b, size_t offset, size_t size);
-    Const_View(Block& b, size_t offset, size_t stride, size_t size);
+    Const_View(const Block& b);
+    Const_View(const Block& b, size_t offset, size_t size);
+    Const_View(const Block& b, size_t offset, size_t stride, size_t size);
 
-    Const_View(double* data, size_t size);
-    Const_View(double* data, size_t offset, size_t size);
-    Const_View(double* data, size_t offset, size_t stride, size_t size);
+    Const_View(const double* data, size_t size);
+    Const_View(const double* data, size_t offset, size_t size);
+    Const_View(const double* data, size_t offset, size_t stride, size_t size);
 
     Const_View(gsl_vector_const_view v);
 
     operator const Vector() const;
+
+    const gsl_vector* gsl_data() const;
 
     size_t size() const;
     size_t stride() const;

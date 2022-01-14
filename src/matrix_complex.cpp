@@ -32,6 +32,7 @@ Matrix_Complex::Matrix_Complex(std::initializer_list<Vector_Complex> l)
     }
 }
 
+/*
 Matrix_Complex::Matrix_Complex(std::initializer_list<std::initializer_list<Complex>> l)
  : Matrix_Complex(l.size(), l.begin()->size())
 {
@@ -45,6 +46,7 @@ Matrix_Complex::Matrix_Complex(std::initializer_list<std::initializer_list<Compl
         row++;
     }
 }
+*/
 
 Matrix_Complex::Matrix_Complex(gsl_matrix_complex* v)
  : gsl_mat_m(v, [](gsl_matrix_complex*){})
@@ -627,6 +629,16 @@ Matrix_Complex::View::operator Matrix_Complex()
 Matrix_Complex::View::operator const Matrix_Complex() const
 {
     return Matrix_Complex(const_cast<gsl_matrix_complex*>(&this->gsl_mat_view_m.matrix));
+}
+
+gsl_matrix_complex* Matrix_Complex::View::gsl_data()
+{
+    return &this->gsl_mat_view_m.matrix;
+}
+
+const gsl_matrix_complex* Matrix_Complex::View::gsl_data() const
+{
+    return &this->gsl_mat_view_m.matrix;
 }
 
 Matrix_Complex::View Matrix_Complex::View::view()
@@ -1620,35 +1632,35 @@ Matrix_Complex::Const_View::Const_View(const Matrix_Complex& m, size_t k1, size_
  : gsl_mat_view_m(gsl_matrix_complex_const_submatrix(m.gsl_mat_m.get(), k1, k2, n1, n2))
 {}
 
-Matrix_Complex::Const_View::Const_View(GSL::Block& b, size_t n1, size_t n2)
+Matrix_Complex::Const_View::Const_View(const GSL::Block& b, size_t n1, size_t n2)
  : Const_View(b, 0, n1, n2)
 {}
 
-Matrix_Complex::Const_View::Const_View(GSL::Block& b, size_t offset, size_t n1, size_t n2)
+Matrix_Complex::Const_View::Const_View(const GSL::Block& b, size_t offset, size_t n1, size_t n2)
  : gsl_mat_view_m(gsl_matrix_complex_const_view_array(b.data() + offset, n1, n2))
 {}
 
-Matrix_Complex::Const_View::Const_View(GSL::Block& b, size_t offset, size_t n1, size_t n2, size_t tda)
+Matrix_Complex::Const_View::Const_View(const GSL::Block& b, size_t offset, size_t n1, size_t n2, size_t tda)
  : gsl_mat_view_m(gsl_matrix_complex_const_view_array_with_tda(b.data() + offset, n1, n2, tda))
 {}
 
-Matrix_Complex::Const_View::Const_View(double* data, size_t n1, size_t n2)
+Matrix_Complex::Const_View::Const_View(const double* data, size_t n1, size_t n2)
  : Const_View(data, 0, n1, n2)
 {}
 
-Matrix_Complex::Const_View::Const_View(double* data, size_t offset, size_t n1, size_t n2)
+Matrix_Complex::Const_View::Const_View(const double* data, size_t offset, size_t n1, size_t n2)
  : gsl_mat_view_m(gsl_matrix_complex_const_view_array(data + offset, n1, n2))
 {}
 
-Matrix_Complex::Const_View::Const_View(double* data, size_t offset, size_t n1, size_t n2, size_t tda)
+Matrix_Complex::Const_View::Const_View(const double* data, size_t offset, size_t n1, size_t n2, size_t tda)
  : gsl_mat_view_m(gsl_matrix_complex_const_view_array_with_tda(data + offset, n1, n2, tda))
 {}
 
-Matrix_Complex::Const_View::Const_View(Vector_Complex& v, size_t n1, size_t n2)
+Matrix_Complex::Const_View::Const_View(const Vector_Complex& v, size_t n1, size_t n2)
  : gsl_mat_view_m(gsl_matrix_complex_const_view_vector(v.gsl_data(), n1, n2))
 {}
 
-Matrix_Complex::Const_View::Const_View(Vector_Complex& v, size_t n1, size_t n2, size_t tda)
+Matrix_Complex::Const_View::Const_View(const Vector_Complex& v, size_t n1, size_t n2, size_t tda)
  : gsl_mat_view_m(gsl_matrix_complex_const_view_vector_with_tda(v.gsl_data(), n1, n2, tda))
 {}
 
@@ -1800,6 +1812,11 @@ const Complex& Matrix_Complex::Const_View::at(size_t row, size_t column) const
 Matrix_Complex::Const_View::operator const Matrix_Complex() const
 {
     return Matrix_Complex(const_cast<gsl_matrix_complex*>(&this->gsl_mat_view_m.matrix));
+}
+
+const gsl_matrix_complex* Matrix_Complex::Const_View::gsl_data() const
+{
+    return &this->gsl_mat_view_m.matrix;
 }
 
 Matrix_Complex::Const_View::const_row_iterator Matrix_Complex::Const_View::rows_begin() const noexcept

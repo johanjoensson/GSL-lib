@@ -39,6 +39,9 @@ public:
     operator Matrix_Complex();
     operator const Matrix_Complex() const;
 
+    gsl_matrix_complex* gsl_data();
+    const gsl_matrix_complex* gsl_data() const;
+
     View& operator=(const Matrix_Complex& m);
     View& operator=(Matrix_Complex&& m);
 
@@ -522,18 +525,20 @@ public:
 
     Const_View(const Matrix_Complex& m, size_t k1, size_t k2, size_t n1, size_t n2);
 
-    Const_View(GSL::Block& b, size_t n1, size_t n2);
-    Const_View(GSL::Block& b, size_t offset, size_t n1, size_t n2);
-    Const_View(GSL::Block& b, size_t offset, size_t n1, size_t n2, size_t tda);
+    Const_View(const GSL::Block& b, size_t n1, size_t n2);
+    Const_View(const GSL::Block& b, size_t offset, size_t n1, size_t n2);
+    Const_View(const GSL::Block& b, size_t offset, size_t n1, size_t n2, size_t tda);
 
-    Const_View(double* data, size_t n1, size_t n2);
-    Const_View(double* data, size_t offset, size_t n1, size_t n2);
-    Const_View(double* data, size_t offset, size_t n1, size_t n2, size_t tda);
+    Const_View(const double* data, size_t n1, size_t n2);
+    Const_View(const double* data, size_t offset, size_t n1, size_t n2);
+    Const_View(const double* data, size_t offset, size_t n1, size_t n2, size_t tda);
 
-    Const_View(Vector_Complex& v, size_t n1, size_t n2);
-    Const_View(Vector_Complex& v, size_t n1, size_t n2, size_t tda);
+    Const_View(const Vector_Complex& v, size_t n1, size_t n2);
+    Const_View(const Vector_Complex& v, size_t n1, size_t n2, size_t tda);
 
     operator const Matrix_Complex() const;
+
+    const gsl_matrix_complex* gsl_data() const;
 
     Const_View view() const;
     Const_View cview() const;

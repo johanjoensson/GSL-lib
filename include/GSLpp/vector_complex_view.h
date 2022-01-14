@@ -36,6 +36,9 @@ public:
     operator Vector_Complex();
     operator const Vector_Complex() const;
 
+    gsl_vector_complex* gsl_data();
+    const gsl_vector_complex* gsl_data() const;
+
     View& operator=(const Vector_Complex& v);
     View& operator=(Vector_Complex&& v);
 
@@ -276,17 +279,19 @@ public:
     Const_View(const Vector_Complex& v, const size_t offset, const size_t size);
     Const_View(const Vector_Complex& v, const size_t offset, const size_t stride, const size_t size);
 
-    Const_View(Block& b);
-    Const_View(Block& b, size_t offset, size_t size);
-    Const_View(Block& b, size_t offset, size_t stride, size_t size);
+    Const_View(const Block& b);
+    Const_View(const Block& b, size_t offset, size_t size);
+    Const_View(const Block& b, size_t offset, size_t stride, size_t size);
 
-    Const_View(double* data, size_t size);
-    Const_View(double* data, size_t offset, size_t size);
-    Const_View(double* data, size_t offset, size_t stride, size_t size);
+    Const_View(const double* data, size_t size);
+    Const_View(const double* data, size_t offset, size_t size);
+    Const_View(const double* data, size_t offset, size_t stride, size_t size);
 
     Const_View(gsl_vector_complex_const_view v);
 
     operator const Vector_Complex() const;
+
+    const gsl_vector_complex* gsl_data() const;
 
     size_t size() const;
     size_t stride() const;

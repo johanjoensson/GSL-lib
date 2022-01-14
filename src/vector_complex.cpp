@@ -624,6 +624,16 @@ Vector_Complex::View::operator const Vector_Complex() const
     return Vector_Complex(const_cast<gsl_vector_complex*>(&this->gsl_vec_view_m.vector));
 }
 
+gsl_vector_complex* Vector_Complex::View::gsl_data()
+{
+    return &this->gsl_vec_view_m.vector;
+}
+
+const gsl_vector_complex* Vector_Complex::View::gsl_data() const
+{
+    return &this->gsl_vec_view_m.vector;
+}
+
 size_t Vector_Complex::View::size() const
 {
     return this->gsl_vec_view_m.vector.size;
@@ -1310,27 +1320,27 @@ Vector_Complex::Const_View::Const_View(const Vector_Complex& v, size_t offset, s
  : gsl_vec_view_m(gsl_vector_complex_const_subvector_with_stride(v.gsl_vec_m.get(), offset, stride, size))
 {}
 
-Vector_Complex::Const_View::Const_View(Block& b)
+Vector_Complex::Const_View::Const_View(const Block& b)
  : Const_View(b, 0, b.size())
 {}
 
-Vector_Complex::Const_View::Const_View(Block& b, size_t offset, size_t size)
+Vector_Complex::Const_View::Const_View(const Block& b, size_t offset, size_t size)
  : gsl_vec_view_m(gsl_vector_complex_const_view_array(b.data() + offset, size))
 {}
 
-Vector_Complex::Const_View::Const_View(Block& b, size_t offset, size_t stride, size_t size)
+Vector_Complex::Const_View::Const_View(const Block& b, size_t offset, size_t stride, size_t size)
  : gsl_vec_view_m(gsl_vector_complex_const_view_array_with_stride(b.data() + offset, stride, size))
 {}
 
-Vector_Complex::Const_View::Const_View(double* data, size_t size)
+Vector_Complex::Const_View::Const_View(const double* data, size_t size)
  : Const_View(data, 0, size)
 {}
 
-Vector_Complex::Const_View::Const_View(double* data, size_t offset, size_t size)
+Vector_Complex::Const_View::Const_View(const double* data, size_t offset, size_t size)
  : gsl_vec_view_m(gsl_vector_complex_const_view_array(data + offset, size))
 {}
 
-Vector_Complex::Const_View::Const_View(double* data, size_t offset, size_t stride, size_t size)
+Vector_Complex::Const_View::Const_View(const double* data, size_t offset, size_t stride, size_t size)
  : gsl_vec_view_m(gsl_vector_complex_const_view_array_with_stride(data + offset, stride, size))
 {}
 
@@ -1342,6 +1352,12 @@ Vector_Complex::Const_View::operator const Vector_Complex() const
 {
     return Vector_Complex(const_cast<gsl_vector_complex*>(&this->gsl_vec_view_m.vector));
 }
+
+const gsl_vector_complex* Vector_Complex::Const_View::gsl_data() const
+{
+    return &this->gsl_vec_view_m.vector;
+}
+
 
 const Complex& Vector_Complex::Const_View::operator[](const size_t i) const
 {

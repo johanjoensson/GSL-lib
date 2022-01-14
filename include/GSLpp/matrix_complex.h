@@ -30,7 +30,7 @@ namespace GSL{
         Matrix_Complex(size_t n1, size_t n2, Complex val);
 
         Matrix_Complex(std::initializer_list<Vector_Complex> l);
-        Matrix_Complex(std::initializer_list<std::initializer_list<Complex>> l);
+        // Matrix_Complex(std::initializer_list<std::initializer_list<Complex>> l);
 
         gsl_matrix_complex* gsl_data();
         const gsl_matrix_complex* gsl_data() const;

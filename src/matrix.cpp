@@ -18,21 +18,22 @@ Matrix::Matrix(size_t n1, size_t n2, double val)
     gsl_matrix_set_all(this->gsl_mat_m.get(), val);
 }
 
-Matrix::Matrix(std::initializer_list<Vector> l)
+Matrix::Matrix(const std::initializer_list<Vector>& l)
  : Matrix(l.size(), l.begin()->size())
 {
-    size_t row = 0, column = 0;
-    for(auto it = l.begin(); it != l.end(); it++){
-        for(double v : it->cview()){
-            this->set(row, column, v);
-            column++;
-        }
-        column = 0;
-        row++;
+    size_t row = 0/*, column = 0*/;
+    for(auto it = l.begin(); it != l.end(); it++, row++){
+        this->row(row).copy(*it);
+        // for(double v : it->cview()){
+            // this->set(row, column, v);
+            // column++;
+        // }
+        // column = 0;
     }
 }
 
-Matrix::Matrix(std::initializer_list<std::initializer_list<double>> l)
+/*
+Matrix::Matrix(const std::initializer_list<std::initializer_list<double>>& l)
  : Matrix(l.size(), l.begin()->size())
 {
     size_t row = 0, column = 0;
@@ -45,7 +46,7 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<double>> l)
         row++;
     }
 }
-
+*/
 Matrix::Matrix(gsl_matrix* v)
  : gsl_mat_m(v, [](gsl_matrix*){})
 {}
@@ -647,6 +648,24 @@ Matrix::View::operator const Matrix() const
 {
     return Matrix(const_cast<gsl_matrix*>(&this->gsl_mat_view_m.matrix));
 }
+
+gsl_matrix* Matrix::View::gsl_data()
+{
+    return &this->gsl_mat_view_m.matrix;
+}
+
+const gsl_matrix* Matrix::View::gsl_data() const
+{
+    return &this->gsl_mat_view_m.matrix;
+}
+
+Matrix Matrix::View::clone() const
+{
+    Matrix res(this->gsl_mat_view_m.matrix.size1, this->gsl_mat_view_m.matrix.size2);
+    res.copy(*this);
+    return res;
+}
+
 
 Matrix::View Matrix::View::view()
 {
@@ -1634,35 +1653,35 @@ Matrix::Const_View::Const_View(const Matrix& m, size_t k1, size_t k2, size_t n1,
  : gsl_mat_view_m(gsl_matrix_const_submatrix(m.gsl_mat_m.get(), k1, k2, n1, n2))
 {}
 
-Matrix::Const_View::Const_View(GSL::Block& b, size_t n1, size_t n2)
+Matrix::Const_View::Const_View(const GSL::Block& b, size_t n1, size_t n2)
  : Const_View(b, 0, n1, n2)
 {}
 
-Matrix::Const_View::Const_View(GSL::Block& b, size_t offset, size_t n1, size_t n2)
+Matrix::Const_View::Const_View(const GSL::Block& b, size_t offset, size_t n1, size_t n2)
  : gsl_mat_view_m(gsl_matrix_const_view_array(b.data() + offset, n1, n2))
 {}
 
-Matrix::Const_View::Const_View(GSL::Block& b, size_t offset, size_t n1, size_t n2, size_t tda)
+Matrix::Const_View::Const_View(const GSL::Block& b, size_t offset, size_t n1, size_t n2, size_t tda)
  : gsl_mat_view_m(gsl_matrix_const_view_array_with_tda(b.data() + offset, n1, n2, tda))
 {}
 
-Matrix::Const_View::Const_View(double* data, size_t n1, size_t n2)
+Matrix::Const_View::Const_View(const double* data, size_t n1, size_t n2)
  : Const_View(data, 0, n1, n2)
 {}
 
-Matrix::Const_View::Const_View(double* data, size_t offset, size_t n1, size_t n2)
+Matrix::Const_View::Const_View(const double* data, size_t offset, size_t n1, size_t n2)
  : gsl_mat_view_m(gsl_matrix_const_view_array(data + offset, n1, n2))
 {}
 
-Matrix::Const_View::Const_View(double* data, size_t offset, size_t n1, size_t n2, size_t tda)
+Matrix::Const_View::Const_View(const double* data, size_t offset, size_t n1, size_t n2, size_t tda)
  : gsl_mat_view_m(gsl_matrix_const_view_array_with_tda(data + offset, n1, n2, tda))
 {}
 
-Matrix::Const_View::Const_View(Vector& v, size_t n1, size_t n2)
+Matrix::Const_View::Const_View(const Vector& v, size_t n1, size_t n2)
  : gsl_mat_view_m(gsl_matrix_const_view_vector(v.gsl_data(), n1, n2))
 {}
 
-Matrix::Const_View::Const_View(Vector& v, size_t n1, size_t n2, size_t tda)
+Matrix::Const_View::Const_View(const Vector& v, size_t n1, size_t n2, size_t tda)
  : gsl_mat_view_m(gsl_matrix_const_view_vector_with_tda(v.gsl_data(), n1, n2, tda))
 {}
 
@@ -1749,6 +1768,25 @@ bool Matrix::Const_View::isnonneg() const
     return gsl_matrix_isnonneg(&this->gsl_mat_view_m.matrix);
 }
 
+Matrix::Const_View Matrix::Const_View::view() const
+{
+    return Const_View(*this, 0, 0, this->num_rows(), this->num_columns());
+}
+
+Matrix::Const_View Matrix::Const_View::cview() const
+{
+    return Const_View(*this, 0, 0, this->num_rows(), this->num_columns());
+}
+
+Matrix::Const_View Matrix::Const_View::view(size_t k1, size_t k2, size_t n1, size_t n2) const
+{
+    return Const_View(*this, k1, k2, n1, n2);
+}
+
+Matrix::Const_View Matrix::Const_View::cview(size_t k1, size_t k2, size_t n1, size_t n2) const
+{
+    return Const_View(*this, k1, k2, n1, n2);
+}
 
 Vector::Const_View Matrix::Const_View::row(size_t row) const
 {
@@ -1854,6 +1892,20 @@ Matrix::Const_View::operator const Matrix() const
 {
     return Matrix(const_cast<gsl_matrix*>(&this->gsl_mat_view_m.matrix));
 }
+
+const gsl_matrix* Matrix::Const_View::gsl_data() const
+{
+    return &this->gsl_mat_view_m.matrix;
+}
+
+Matrix Matrix::Const_View::clone() const
+{
+    Matrix res(this->gsl_mat_view_m.matrix.size1, this->gsl_mat_view_m.matrix.size2);
+    res.copy(*this);
+    return res;
+}
+
+
 
 Matrix::Const_View::const_row_iterator Matrix::Const_View::rows_begin() const noexcept
 {
