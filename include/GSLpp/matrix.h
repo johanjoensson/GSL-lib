@@ -15,13 +15,13 @@ namespace GSL{
     protected:
         std::unique_ptr<gsl_matrix, decltype(&gsl_matrix_free)> gsl_mat_m;
 
-        Matrix() = default;
+        Matrix() = delete;
         Matrix(gsl_matrix* v);
 
     public:
-        Matrix(const Matrix&) = default;
+        Matrix(const Matrix&) = delete;
         Matrix(Matrix&&) = default;
-        Matrix& operator=(const Matrix&) = default;
+        Matrix& operator=(const Matrix&) = delete;
         Matrix& operator=(Matrix&&) = default;
         virtual ~Matrix() = default;
 

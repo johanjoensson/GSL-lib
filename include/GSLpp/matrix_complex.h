@@ -16,13 +16,13 @@ namespace GSL{
     protected:
         std::unique_ptr<gsl_matrix_complex, decltype(&gsl_matrix_complex_free)> gsl_mat_m;
 
-        Matrix_Complex() = default;
+        Matrix_Complex() = delete;
         Matrix_Complex(gsl_matrix_complex* v);
 
     public:
-        Matrix_Complex(const Matrix_Complex&) = default;
+        Matrix_Complex(const Matrix_Complex&) = delete;
         Matrix_Complex(Matrix_Complex&&) = default;
-        Matrix_Complex& operator=(const Matrix_Complex&) = default;
+        Matrix_Complex& operator=(const Matrix_Complex&) = delete;
         Matrix_Complex& operator=(Matrix_Complex&&) = default;
         virtual ~Matrix_Complex() = default;
 

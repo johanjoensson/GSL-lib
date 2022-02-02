@@ -110,7 +110,7 @@ public:
 
     class Iterator {
     private:
-        Vector::View* v_m;
+        gsl_vector_view const v_m;
         double* data_m;
     public:
         using value_type = double;
@@ -129,10 +129,10 @@ public:
         ~Iterator() = default;
 
         reference operator*();
-        const reference operator*() const;
+        const_reference operator*() const;
         pointer operator->();
         reference       operator[](size_t n);
-        const reference operator[](size_t n) const;
+        const_reference operator[](size_t n) const;
 
         Iterator& operator++();
         Iterator& operator--();
@@ -157,7 +157,7 @@ public:
     };
     class Const_Iterator {
     private:
-        const Vector::View* v_m;
+        gsl_vector_view v_m;
         double* data_m;
     public:
         using value_type = const double;
@@ -177,10 +177,10 @@ public:
         ~Const_Iterator() = default;
 
         reference operator*();
-        const reference operator*() const;
+        const_reference operator*() const;
         pointer operator->();
         reference       operator[](size_t n);
-        const reference operator[](size_t n) const;
+        const_reference operator[](size_t n) const;
 
         Const_Iterator& operator++();
         Const_Iterator& operator--();
@@ -240,13 +240,13 @@ class Vector::Const_View{
 private:
     gsl_vector_const_view gsl_vec_view_m;
 protected:
-    Const_View() = default;
+    Const_View() = delete;
 public:
     Const_View(const Const_View&) = default;
     Const_View(Const_View&&) = default;
 
-    Const_View& operator=(const Const_View&) = default;
-    Const_View& operator=(Const_View&&) = default;
+    Const_View& operator=(const Const_View&) = delete;
+    Const_View& operator=(Const_View&&) = delete;
     ~Const_View() = default;
 
     Const_View(const Vector& v);
@@ -304,7 +304,7 @@ public:
 
     class Const_Iterator {
     private:
-        const Vector::Const_View* v_m;
+        gsl_vector_const_view v_m;
         double const * data_m;
     public:
         using value_type = const double;
@@ -324,10 +324,10 @@ public:
         ~Const_Iterator() = default;
 
         reference operator*();
-        const reference operator*() const;
+        const_reference operator*() const;
         pointer operator->();
         reference       operator[](size_t n);
-        const reference operator[](size_t n) const;
+        const_reference operator[](size_t n) const;
 
         Const_Iterator& operator++();
         Const_Iterator& operator--();

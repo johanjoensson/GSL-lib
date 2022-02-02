@@ -10,12 +10,12 @@ class Block {
 private:
     std::unique_ptr<gsl_block, decltype(&gsl_block_free)> gsl_block_m;
 public:
-    Block() = default;
-    Block(const Block&) = default;
+    Block() = delete;
+    Block(const Block&) = delete;
     Block(Block&&) = default;
     ~Block() = default;
 
-    Block& operator=(const Block&) = default;
+    Block& operator=(const Block&) = delete;
     Block& operator=(Block&&) = default;
 
     Block(size_t);

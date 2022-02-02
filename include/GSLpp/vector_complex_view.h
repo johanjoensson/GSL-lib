@@ -136,7 +136,7 @@ public:
 
     class Iterator {
     private:
-        Vector_Complex::View* v_m;
+        gsl_vector_complex_view v_m;
         gsl_complex* data_m;
     public:
         using value_type = Complex;
@@ -155,10 +155,10 @@ public:
         ~Iterator() = default;
 
         reference operator*();
-        const reference operator*() const;
+        const_reference operator*() const;
         pointer operator->();
         reference       operator[](size_t n);
-        const reference operator[](size_t n) const;
+        const_reference operator[](size_t n) const;
 
         Iterator& operator++();
         Iterator& operator--();
@@ -183,8 +183,8 @@ public:
     };
     class Const_Iterator {
     private:
-        const Vector_Complex::View* v_m;
-        gsl_complex* data_m;
+        gsl_vector_complex_view v_m;
+        const gsl_complex* data_m;
     public:
         using value_type = const Complex;
         using difference_type = std::ptrdiff_t;
@@ -203,10 +203,10 @@ public:
         ~Const_Iterator() = default;
 
         reference operator*();
-        const reference operator*() const;
+        const_reference operator*() const;
         pointer operator->();
         reference       operator[](size_t n);
-        const reference operator[](size_t n) const;
+        const_reference operator[](size_t n) const;
 
         Const_Iterator& operator++();
         Const_Iterator& operator--();
@@ -266,13 +266,13 @@ class Vector_Complex::Const_View{
 private:
     gsl_vector_complex_const_view gsl_vec_view_m;
 protected:
-    Const_View() = default;
+    Const_View() = delete;
 public:
     Const_View(const Const_View&) = default;
     Const_View(Const_View&&) = default;
 
-    Const_View& operator=(const Const_View&) = default;
-    Const_View& operator=(Const_View&&) = default;
+    Const_View& operator=(const Const_View&) = delete;
+    Const_View& operator=(Const_View&&) = delete;
     ~Const_View() = default;
 
     Const_View(const Vector_Complex& v);
@@ -349,8 +349,8 @@ public:
 
     class Const_Iterator {
     private:
-        const Vector_Complex::Const_View* v_m;
-        gsl_complex * data_m;
+        gsl_vector_complex_const_view const v_m;
+        const gsl_complex * data_m;
     public:
         using value_type = const Complex;
         using difference_type = std::ptrdiff_t;
@@ -369,10 +369,10 @@ public:
         ~Const_Iterator() = default;
 
         reference operator*();
-        const reference operator*() const;
+        const_reference operator*() const;
         pointer operator->();
         reference       operator[](size_t n);
-        const reference operator[](size_t n) const;
+        const_reference operator[](size_t n) const;
 
         Const_Iterator& operator++();
         Const_Iterator& operator--();

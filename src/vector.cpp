@@ -909,11 +909,11 @@ const double& Vector::View::back() const
 * VECTOR VIEW ITERATOR                                                                                                          *
 **********************************************************************************************/
 Vector::View::Iterator::Iterator()
- : v_m(nullptr), data_m(nullptr)
+ : v_m(), data_m(nullptr)
 {}
 
 Vector::View::Iterator::Iterator(Vector::View* v, size_t i)
- : v_m(v), data_m(v->gsl_vec_view_m.vector.data + i*v->gsl_vec_view_m.vector.stride)
+ : v_m(v->gsl_vec_view_m), data_m(v->gsl_vec_view_m.vector.data + i*v->gsl_vec_view_m.vector.stride)
 {}
 
 Vector::View::Iterator::reference
@@ -922,7 +922,7 @@ Vector::View::Iterator::reference
     return *data_m;
 }
 
-const Vector::View::Iterator::reference
+Vector::View::Iterator::const_reference
   Vector::View::Iterator::operator*() const
 {
     return *data_m;
@@ -937,55 +937,55 @@ Vector::View::Iterator::pointer
 Vector::View::Iterator::reference
   Vector::View::Iterator::operator[](size_t n)
 {
-    return *(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *(data_m + n*v_m.vector.stride);
 }
 
-const Vector::View::Iterator::reference
+Vector::View::Iterator::const_reference
   Vector::View::Iterator::operator[](size_t n) const
 {
-    return *(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *(data_m + n*v_m.vector.stride);
 }
 
 Vector::View::Iterator& Vector::View::Iterator::operator++()
 {
-    data_m += v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m += v_m.vector.stride;return *this;
 }
 
 Vector::View::Iterator& Vector::View::Iterator::operator--()
 {
-    data_m -= v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m -= v_m.vector.stride;return *this;
 }
 
 Vector::View::Iterator  Vector::View::Iterator::operator++(int)
 {
-    Iterator tmp(*this);data_m += v_m->gsl_vec_view_m.vector.stride;
+    Iterator tmp(*this);data_m += v_m.vector.stride;
     return tmp;
 }
 
 Vector::View::Iterator  Vector::View::Iterator::operator--(int)
 {
-    Iterator tmp(*this);data_m -= v_m->gsl_vec_view_m.vector.stride;return tmp;
+    Iterator tmp(*this);data_m -= v_m.vector.stride;return tmp;
 }
 
 Vector::View::Iterator& Vector::View::Iterator::operator+=(size_t n)
 {
-    data_m += n*v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m += n*v_m.vector.stride;return *this;
 }
 
 Vector::View::Iterator& Vector::View::Iterator::operator-=(size_t n)
 {
-    data_m -= n*v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m -= n*v_m.vector.stride;return *this;
 }
 
 Vector::View::Iterator Vector::View::Iterator::operator+(size_t n)   const
 {
-    Iterator tmp(*this);return tmp += n*v_m->gsl_vec_view_m.vector.stride;
+    Iterator tmp(*this);return tmp += n*v_m.vector.stride;
 }
 
 Vector::View::Iterator Vector::View::Iterator::operator-(size_t n)   const
 {
     Iterator tmp(*this);
-    return tmp -= n*v_m->gsl_vec_view_m.vector.stride;
+    return tmp -= n*v_m.vector.stride;
 }
 
 Vector::View::Iterator::difference_type
@@ -993,7 +993,7 @@ Vector::View::Iterator::difference_type
 {
     return (data_m - other.data_m)
         /
-        static_cast<difference_type>(v_m->gsl_vec_view_m.vector.stride);
+        static_cast<difference_type>(v_m.vector.stride);
 }
 
 bool Vector::View::Iterator::operator<(Iterator const& other)  const
@@ -1035,35 +1035,35 @@ bool Vector::View::Iterator::operator==(const Iterator &other) const
 **********************************************************************************************/
 
 Vector::View::Const_Iterator::Const_Iterator()
- : v_m(nullptr), data_m(nullptr)
+ : v_m(), data_m(nullptr)
 {}
 
 Vector::View::Const_Iterator::Const_Iterator(const Vector::View* v, size_t i)
- : v_m(v), data_m(v->gsl_vec_view_m.vector.data + i*v->gsl_vec_view_m.vector.stride)
+ : v_m(v->gsl_vec_view_m), data_m(v->gsl_vec_view_m.vector.data + i*v->gsl_vec_view_m.vector.stride)
 {}
 
 Vector::View::Const_Iterator::reference Vector::View::Const_Iterator::operator*() {return *data_m;}
-const Vector::View::Const_Iterator::reference Vector::View::Const_Iterator::operator*() const {return *data_m;}
+Vector::View::Const_Iterator::const_reference Vector::View::Const_Iterator::operator*() const {return *data_m;}
 Vector::View::Const_Iterator::pointer Vector::View::Const_Iterator::operator->() {return &(*data_m);}
-Vector::View::Const_Iterator::reference       Vector::View::Const_Iterator::operator[](size_t n)       {return *(data_m + n*v_m->gsl_vec_view_m.vector.stride);}
-const Vector::View::Const_Iterator::reference Vector::View::Const_Iterator::operator[](size_t n) const {return *(data_m + n*v_m->gsl_vec_view_m.vector.stride);}
+Vector::View::Const_Iterator::reference       Vector::View::Const_Iterator::operator[](size_t n)       {return *(data_m + n*v_m.vector.stride);}
+Vector::View::Const_Iterator::const_reference Vector::View::Const_Iterator::operator[](size_t n) const {return *(data_m + n*v_m.vector.stride);}
 
-Vector::View::Const_Iterator& Vector::View::Const_Iterator::operator++()       {data_m += v_m->gsl_vec_view_m.vector.stride;return *this;}
-Vector::View::Const_Iterator& Vector::View::Const_Iterator::operator--()       {data_m -= v_m->gsl_vec_view_m.vector.stride;return *this;}
-Vector::View::Const_Iterator  Vector::View::Const_Iterator::operator++(int)    {Const_Iterator tmp(*this);data_m += v_m->gsl_vec_view_m.vector.stride;return tmp;}
-Vector::View::Const_Iterator  Vector::View::Const_Iterator::operator--(int)    {Const_Iterator tmp(*this);data_m -= v_m->gsl_vec_view_m.vector.stride;return tmp;}
+Vector::View::Const_Iterator& Vector::View::Const_Iterator::operator++()       {data_m += v_m.vector.stride;return *this;}
+Vector::View::Const_Iterator& Vector::View::Const_Iterator::operator--()       {data_m -= v_m.vector.stride;return *this;}
+Vector::View::Const_Iterator  Vector::View::Const_Iterator::operator++(int)    {Const_Iterator tmp(*this);data_m += v_m.vector.stride;return tmp;}
+Vector::View::Const_Iterator  Vector::View::Const_Iterator::operator--(int)    {Const_Iterator tmp(*this);data_m -= v_m.vector.stride;return tmp;}
 
-Vector::View::Const_Iterator& Vector::View::Const_Iterator::operator+=(size_t n)  {data_m += n*v_m->gsl_vec_view_m.vector.stride;return *this;}
-Vector::View::Const_Iterator& Vector::View::Const_Iterator::operator-=(size_t n)  {data_m -= n*v_m->gsl_vec_view_m.vector.stride;return *this;}
+Vector::View::Const_Iterator& Vector::View::Const_Iterator::operator+=(size_t n)  {data_m += n*v_m.vector.stride;return *this;}
+Vector::View::Const_Iterator& Vector::View::Const_Iterator::operator-=(size_t n)  {data_m -= n*v_m.vector.stride;return *this;}
 
-Vector::View::Const_Iterator Vector::View::Const_Iterator::operator+(size_t n)   const {Const_Iterator tmp(*this);return tmp += n*v_m->gsl_vec_view_m.vector.stride;}
-Vector::View::Const_Iterator Vector::View::Const_Iterator::operator-(size_t n)   const {Const_Iterator tmp(*this);return tmp -= n*v_m->gsl_vec_view_m.vector.stride;}
+Vector::View::Const_Iterator Vector::View::Const_Iterator::operator+(size_t n)   const {Const_Iterator tmp(*this);return tmp += n*v_m.vector.stride;}
+Vector::View::Const_Iterator Vector::View::Const_Iterator::operator-(size_t n)   const {Const_Iterator tmp(*this);return tmp -= n*v_m.vector.stride;}
 
 Vector::View::Const_Iterator::difference_type Vector::View::Const_Iterator::operator-(const Const_Iterator& other) const
 {
     return (data_m - other.data_m)
         /
-        static_cast<difference_type>(v_m->gsl_vec_view_m.vector.stride);
+        static_cast<difference_type>(v_m.vector.stride);
 }
 
 bool Vector::View::Const_Iterator::operator<(const Const_Iterator& other)  const
@@ -1355,11 +1355,11 @@ const double& Vector::Const_View::back() const
 **********************************************************************************************/
 
 Vector::Const_View::Const_Iterator::Const_Iterator()
- : v_m(nullptr), data_m(nullptr)
+ : v_m(), data_m(nullptr)
 {}
 
 Vector::Const_View::Const_Iterator::Const_Iterator(const Vector::Const_View* v, size_t i)
- : v_m(v), data_m(v->gsl_vec_view_m.vector.data + i*v->gsl_vec_view_m.vector.stride)
+ : v_m(v->gsl_vec_view_m), data_m(v->gsl_vec_view_m.vector.data + i*v->gsl_vec_view_m.vector.stride)
 {}
 
 Vector::Const_View::Const_Iterator::reference
@@ -1368,7 +1368,7 @@ Vector::Const_View::Const_Iterator::reference
     return *data_m;
 }
 
-const Vector::Const_View::Const_Iterator::reference
+Vector::Const_View::Const_Iterator::const_reference
   Vector::Const_View::Const_Iterator::operator*() const
 {
     return *data_m;
@@ -1383,60 +1383,60 @@ Vector::Const_View::Const_Iterator::pointer
 Vector::Const_View::Const_Iterator::reference
   Vector::Const_View::Const_Iterator::operator[](size_t n)
 {
-    return *(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *(data_m + n*v_m.vector.stride);
 }
 
-const Vector::Const_View::Const_Iterator::reference
+Vector::Const_View::Const_Iterator::const_reference
   Vector::Const_View::Const_Iterator::operator[](size_t n) const
 {
-    return *(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *(data_m + n*v_m.vector.stride);
 }
 
 Vector::Const_View::Const_Iterator& Vector::Const_View::Const_Iterator::operator++()
 {
-    data_m += v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m += v_m.vector.stride;return *this;
 }
 
 Vector::Const_View::Const_Iterator& Vector::Const_View::Const_Iterator::operator--()
 {
-    data_m -= v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m -= v_m.vector.stride;return *this;
 }
 
 Vector::Const_View::Const_Iterator  Vector::Const_View::Const_Iterator::operator++(int)
 {
-    Const_Iterator tmp(*this);data_m += v_m->gsl_vec_view_m.vector.stride;return tmp;
+    Const_Iterator tmp(*this);data_m += v_m.vector.stride;return tmp;
 }
 
 Vector::Const_View::Const_Iterator  Vector::Const_View::Const_Iterator::operator--(int)
 {
-    Const_Iterator tmp(*this);data_m -= v_m->gsl_vec_view_m.vector.stride;return tmp;
+    Const_Iterator tmp(*this);data_m -= v_m.vector.stride;return tmp;
 }
 
 Vector::Const_View::Const_Iterator& Vector::Const_View::Const_Iterator::operator+=(size_t n)
 {
-    data_m += n*v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m += n*v_m.vector.stride;return *this;
 }
 
 Vector::Const_View::Const_Iterator& Vector::Const_View::Const_Iterator::operator-=(size_t n)
 {
-    data_m -= n*v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m -= n*v_m.vector.stride;return *this;
 }
 
 Vector::Const_View::Const_Iterator Vector::Const_View::Const_Iterator::operator+(size_t n)   const
 {
-    Const_Iterator tmp(*this);return tmp += n*v_m->gsl_vec_view_m.vector.stride;
+    Const_Iterator tmp(*this);return tmp += n*v_m.vector.stride;
 }
 
 Vector::Const_View::Const_Iterator Vector::Const_View::Const_Iterator::operator-(size_t n)   const
 {
-    Const_Iterator tmp(*this);return tmp -= n*v_m->gsl_vec_view_m.vector.stride;
+    Const_Iterator tmp(*this);return tmp -= n*v_m.vector.stride;
 }
 
 Vector::Const_View::Const_Iterator::difference_type Vector::Const_View::Const_Iterator::operator-(const Const_Iterator& other) const
 {
     return (data_m - other.data_m)
         /
-        static_cast<difference_type>(v_m->gsl_vec_view_m.vector.stride);
+        static_cast<difference_type>(v_m.vector.stride);
 }
 
 bool Vector::Const_View::Const_Iterator::operator<(const Const_Iterator& other)  const

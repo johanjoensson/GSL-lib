@@ -380,8 +380,7 @@ TEST(Matrix_cxTest, TestIterNeq)
 {
     GSL::Matrix_Complex m{{1, 2}, {3, 4}, {5, 6}};
     auto it = m.view().begin();
-    GSL::Vector_Complex res{*it};
-    EXPECT_NE(res, *(it + 1));
+    EXPECT_FALSE(it == (it + 1));
 }
 
 TEST(Matrix_cxTest, TestEnd)

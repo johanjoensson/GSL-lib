@@ -1092,11 +1092,11 @@ const Complex& Vector_Complex::View::back() const
 * VECTOR VIEW ITERATOR                                                                                                          *
 **********************************************************************************************/
 Vector_Complex::View::Iterator::Iterator()
- : v_m(nullptr), data_m(nullptr)
+ : v_m(), data_m(nullptr)
 {}
 
 Vector_Complex::View::Iterator::Iterator(Vector_Complex::View* v, size_t i)
- : v_m(v), data_m(reinterpret_cast<gsl_complex*>(v->gsl_vec_view_m.vector.data + sizeof(gsl_complex)/sizeof(double)*i*v->gsl_vec_view_m.vector.stride))
+ : v_m(v->gsl_vec_view_m), data_m(reinterpret_cast<gsl_complex*>(v->gsl_vec_view_m.vector.data + sizeof(gsl_complex)/sizeof(double)*i*v->gsl_vec_view_m.vector.stride))
 {}
 
 Vector_Complex::View::Iterator::reference
@@ -1105,7 +1105,7 @@ Vector_Complex::View::Iterator::reference
     return *reinterpret_cast<pointer>(data_m);
 }
 
-const Vector_Complex::View::Iterator::reference
+Vector_Complex::View::Iterator::const_reference
   Vector_Complex::View::Iterator::operator*() const
 {
     return *reinterpret_cast<pointer>(data_m);
@@ -1120,58 +1120,58 @@ Vector_Complex::View::Iterator::pointer
 Vector_Complex::View::Iterator::reference
   Vector_Complex::View::Iterator::operator[](size_t n)
 {
-    return *reinterpret_cast<pointer>(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *reinterpret_cast<pointer>(data_m + n*v_m.vector.stride);
 }
 
-const Vector_Complex::View::Iterator::reference
+Vector_Complex::View::Iterator::const_reference
   Vector_Complex::View::Iterator::operator[](size_t n) const
 {
-    return *reinterpret_cast<pointer>(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *reinterpret_cast<pointer>(data_m + n*v_m.vector.stride);
 }
 
 Vector_Complex::View::Iterator& Vector_Complex::View::Iterator::operator++()
 {
-    data_m += v_m->gsl_vec_view_m.vector.stride;
+    data_m += v_m.vector.stride;
     return *this;
 }
 
 Vector_Complex::View::Iterator& Vector_Complex::View::Iterator::operator--()
 {
-    data_m -= v_m->gsl_vec_view_m.vector.stride;
+    data_m -= v_m.vector.stride;
     return *this;
 }
 
 Vector_Complex::View::Iterator  Vector_Complex::View::Iterator::operator++(int)
 {
     Iterator tmp(*this);
-    data_m += v_m->gsl_vec_view_m.vector.stride;
+    data_m += v_m.vector.stride;
     return tmp;
 }
 
 Vector_Complex::View::Iterator  Vector_Complex::View::Iterator::operator--(int)
 {
-    Iterator tmp(*this);data_m -= v_m->gsl_vec_view_m.vector.stride;return tmp;
+    Iterator tmp(*this);data_m -= v_m.vector.stride;return tmp;
 }
 
 Vector_Complex::View::Iterator& Vector_Complex::View::Iterator::operator+=(size_t n)
 {
-    data_m += n*v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m += n*v_m.vector.stride;return *this;
 }
 
 Vector_Complex::View::Iterator& Vector_Complex::View::Iterator::operator-=(size_t n)
 {
-    data_m -= n*v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m -= n*v_m.vector.stride;return *this;
 }
 
 Vector_Complex::View::Iterator Vector_Complex::View::Iterator::operator+(size_t n)   const
 {
-    Iterator tmp(*this);return tmp += n*v_m->gsl_vec_view_m.vector.stride;
+    Iterator tmp(*this);return tmp += n*v_m.vector.stride;
 }
 
 Vector_Complex::View::Iterator Vector_Complex::View::Iterator::operator-(size_t n)   const
 {
     Iterator tmp(*this);
-    return tmp -= n*v_m->gsl_vec_view_m.vector.stride;
+    return tmp -= n*v_m.vector.stride;
 }
 
 Vector_Complex::View::Iterator::difference_type
@@ -1179,7 +1179,7 @@ Vector_Complex::View::Iterator::difference_type
 {
     return (data_m - other.data_m)
         /
-        static_cast<difference_type>(v_m->gsl_vec_view_m.vector.stride);
+        static_cast<difference_type>(v_m.vector.stride);
 }
 
 bool Vector_Complex::View::Iterator::operator<(Iterator const& other)  const
@@ -1221,18 +1221,18 @@ bool Vector_Complex::View::Iterator::operator==(const Iterator &other) const
 **********************************************************************************************/
 
 Vector_Complex::View::Const_Iterator::Const_Iterator()
- : v_m(nullptr), data_m(nullptr)
+ : v_m(), data_m(nullptr)
 {}
 
 Vector_Complex::View::Const_Iterator::Const_Iterator(const Vector_Complex::View* v, size_t i)
- : v_m(v), data_m(reinterpret_cast<gsl_complex*>(v->gsl_vec_view_m.vector.data + sizeof(gsl_complex)/sizeof(double)*i*v->gsl_vec_view_m.vector.stride))
+ : v_m(v->gsl_vec_view_m), data_m(reinterpret_cast<gsl_complex*>(v->gsl_vec_view_m.vector.data + sizeof(gsl_complex)/sizeof(double)*i*v->gsl_vec_view_m.vector.stride))
 {}
 
 Vector_Complex::View::Const_Iterator::reference Vector_Complex::View::Const_Iterator::operator*()
 {
     return *reinterpret_cast<pointer>(data_m);
 }
-const Vector_Complex::View::Const_Iterator::reference Vector_Complex::View::Const_Iterator::operator*() const
+Vector_Complex::View::Const_Iterator::const_reference Vector_Complex::View::Const_Iterator::operator*() const
 {
     return *reinterpret_cast<pointer>(data_m);
 }
@@ -1244,30 +1244,30 @@ Vector_Complex::View::Const_Iterator::pointer Vector_Complex::View::Const_Iterat
 
 Vector_Complex::View::Const_Iterator::reference       Vector_Complex::View::Const_Iterator::operator[](size_t n)
 {
-    return *reinterpret_cast<pointer>(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *reinterpret_cast<pointer>(data_m + n*v_m.vector.stride);
 }
 
-const Vector_Complex::View::Const_Iterator::reference Vector_Complex::View::Const_Iterator::operator[](size_t n) const
+Vector_Complex::View::Const_Iterator::const_reference Vector_Complex::View::Const_Iterator::operator[](size_t n) const
 {
-    return *reinterpret_cast<pointer>(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *reinterpret_cast<pointer>(data_m + n*v_m.vector.stride);
 }
 
-Vector_Complex::View::Const_Iterator& Vector_Complex::View::Const_Iterator::operator++()       {data_m += v_m->gsl_vec_view_m.vector.stride;return *this;}
-Vector_Complex::View::Const_Iterator& Vector_Complex::View::Const_Iterator::operator--()       {data_m -= v_m->gsl_vec_view_m.vector.stride;return *this;}
-Vector_Complex::View::Const_Iterator  Vector_Complex::View::Const_Iterator::operator++(int)    {Const_Iterator tmp(*this);data_m += v_m->gsl_vec_view_m.vector.stride;return tmp;}
-Vector_Complex::View::Const_Iterator  Vector_Complex::View::Const_Iterator::operator--(int)    {Const_Iterator tmp(*this);data_m -= v_m->gsl_vec_view_m.vector.stride;return tmp;}
+Vector_Complex::View::Const_Iterator& Vector_Complex::View::Const_Iterator::operator++()       {data_m += v_m.vector.stride;return *this;}
+Vector_Complex::View::Const_Iterator& Vector_Complex::View::Const_Iterator::operator--()       {data_m -= v_m.vector.stride;return *this;}
+Vector_Complex::View::Const_Iterator  Vector_Complex::View::Const_Iterator::operator++(int)    {Const_Iterator tmp(*this);data_m += v_m.vector.stride;return tmp;}
+Vector_Complex::View::Const_Iterator  Vector_Complex::View::Const_Iterator::operator--(int)    {Const_Iterator tmp(*this);data_m -= v_m.vector.stride;return tmp;}
 
-Vector_Complex::View::Const_Iterator& Vector_Complex::View::Const_Iterator::operator+=(size_t n)  {data_m += n*v_m->gsl_vec_view_m.vector.stride;return *this;}
-Vector_Complex::View::Const_Iterator& Vector_Complex::View::Const_Iterator::operator-=(size_t n)  {data_m -= n*v_m->gsl_vec_view_m.vector.stride;return *this;}
+Vector_Complex::View::Const_Iterator& Vector_Complex::View::Const_Iterator::operator+=(size_t n)  {data_m += n*v_m.vector.stride;return *this;}
+Vector_Complex::View::Const_Iterator& Vector_Complex::View::Const_Iterator::operator-=(size_t n)  {data_m -= n*v_m.vector.stride;return *this;}
 
-Vector_Complex::View::Const_Iterator Vector_Complex::View::Const_Iterator::operator+(size_t n)   const {Const_Iterator tmp(*this);return tmp += n*v_m->gsl_vec_view_m.vector.stride;}
-Vector_Complex::View::Const_Iterator Vector_Complex::View::Const_Iterator::operator-(size_t n)   const {Const_Iterator tmp(*this);return tmp -= n*v_m->gsl_vec_view_m.vector.stride;}
+Vector_Complex::View::Const_Iterator Vector_Complex::View::Const_Iterator::operator+(size_t n)   const {Const_Iterator tmp(*this);return tmp += n*v_m.vector.stride;}
+Vector_Complex::View::Const_Iterator Vector_Complex::View::Const_Iterator::operator-(size_t n)   const {Const_Iterator tmp(*this);return tmp -= n*v_m.vector.stride;}
 
 Vector_Complex::View::Const_Iterator::difference_type Vector_Complex::View::Const_Iterator::operator-(const Const_Iterator& other) const
 {
     return (data_m - other.data_m)
         /
-        static_cast<difference_type>(v_m->gsl_vec_view_m.vector.stride);
+        static_cast<difference_type>(v_m.vector.stride);
 }
 
 bool Vector_Complex::View::Const_Iterator::operator<(const Const_Iterator& other)  const
@@ -1621,11 +1621,11 @@ const Complex& Vector_Complex::Const_View::back() const
 **********************************************************************************************/
 
 Vector_Complex::Const_View::Const_Iterator::Const_Iterator()
- : v_m(nullptr), data_m(nullptr)
+ : v_m(), data_m(nullptr)
 {}
 
 Vector_Complex::Const_View::Const_Iterator::Const_Iterator(const Vector_Complex::Const_View* v, size_t i)
- : v_m(v), data_m(reinterpret_cast<gsl_complex*>(v->gsl_vec_view_m.vector.data + sizeof(gsl_complex)/sizeof(double)*i*v->gsl_vec_view_m.vector.stride))
+ : v_m(v->gsl_vec_view_m), data_m(reinterpret_cast<gsl_complex*>(v->gsl_vec_view_m.vector.data + sizeof(gsl_complex)/sizeof(double)*i*v->gsl_vec_view_m.vector.stride))
 {}
 
 Vector_Complex::Const_View::Const_Iterator::reference
@@ -1634,7 +1634,7 @@ Vector_Complex::Const_View::Const_Iterator::reference
     return *reinterpret_cast<pointer>(data_m);
 }
 
-const Vector_Complex::Const_View::Const_Iterator::reference
+Vector_Complex::Const_View::Const_Iterator::const_reference
   Vector_Complex::Const_View::Const_Iterator::operator*() const
 {
     return *reinterpret_cast<pointer>(data_m);
@@ -1649,60 +1649,60 @@ Vector_Complex::Const_View::Const_Iterator::pointer
 Vector_Complex::Const_View::Const_Iterator::reference
   Vector_Complex::Const_View::Const_Iterator::operator[](size_t n)
 {
-    return *reinterpret_cast<pointer>(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *reinterpret_cast<pointer>(data_m + n*v_m.vector.stride);
 }
 
-const Vector_Complex::Const_View::Const_Iterator::reference
+Vector_Complex::Const_View::Const_Iterator::const_reference
   Vector_Complex::Const_View::Const_Iterator::operator[](size_t n) const
 {
-    return *reinterpret_cast<pointer>(data_m + n*v_m->gsl_vec_view_m.vector.stride);
+    return *reinterpret_cast<pointer>(data_m + n*v_m.vector.stride);
 }
 
 Vector_Complex::Const_View::Const_Iterator& Vector_Complex::Const_View::Const_Iterator::operator++()
 {
-    data_m += v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m += v_m.vector.stride;return *this;
 }
 
 Vector_Complex::Const_View::Const_Iterator& Vector_Complex::Const_View::Const_Iterator::operator--()
 {
-    data_m -= v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m -= v_m.vector.stride;return *this;
 }
 
 Vector_Complex::Const_View::Const_Iterator  Vector_Complex::Const_View::Const_Iterator::operator++(int)
 {
-    Const_Iterator tmp(*this);data_m += v_m->gsl_vec_view_m.vector.stride;return tmp;
+    Const_Iterator tmp(*this);data_m += v_m.vector.stride;return tmp;
 }
 
 Vector_Complex::Const_View::Const_Iterator  Vector_Complex::Const_View::Const_Iterator::operator--(int)
 {
-    Const_Iterator tmp(*this);data_m -= v_m->gsl_vec_view_m.vector.stride;return tmp;
+    Const_Iterator tmp(*this);data_m -= v_m.vector.stride;return tmp;
 }
 
 Vector_Complex::Const_View::Const_Iterator& Vector_Complex::Const_View::Const_Iterator::operator+=(size_t n)
 {
-    data_m += n*v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m += n*v_m.vector.stride;return *this;
 }
 
 Vector_Complex::Const_View::Const_Iterator& Vector_Complex::Const_View::Const_Iterator::operator-=(size_t n)
 {
-    data_m -= n*v_m->gsl_vec_view_m.vector.stride;return *this;
+    data_m -= n*v_m.vector.stride;return *this;
 }
 
 Vector_Complex::Const_View::Const_Iterator Vector_Complex::Const_View::Const_Iterator::operator+(size_t n)   const
 {
-    Const_Iterator tmp(*this);return tmp += n*v_m->gsl_vec_view_m.vector.stride;
+    Const_Iterator tmp(*this);return tmp += n*v_m.vector.stride;
 }
 
 Vector_Complex::Const_View::Const_Iterator Vector_Complex::Const_View::Const_Iterator::operator-(size_t n)   const
 {
-    Const_Iterator tmp(*this);return tmp -= n*v_m->gsl_vec_view_m.vector.stride;
+    Const_Iterator tmp(*this);return tmp -= n*v_m.vector.stride;
 }
 
 Vector_Complex::Const_View::Const_Iterator::difference_type Vector_Complex::Const_View::Const_Iterator::operator-(const Const_Iterator& other) const
 {
     return (data_m - other.data_m)
         /
-        static_cast<difference_type>(v_m->gsl_vec_view_m.vector.stride);
+        static_cast<difference_type>(v_m.vector.stride);
 }
 
 bool Vector_Complex::Const_View::Const_Iterator::operator<(const Const_Iterator& other)  const

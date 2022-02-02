@@ -1050,6 +1050,59 @@ Matrix_Complex::View& Matrix_Complex::View::operator=(Matrix_Complex&& m)
     return this->swap(m);
 }
 
+
+Matrix_Complex::View::iterator Matrix_Complex::View::begin() noexcept
+{
+        return this->rows_begin();
+}
+Matrix_Complex::View::const_iterator Matrix_Complex::View::begin() const noexcept
+{
+        return this->rows_begin();
+}
+Matrix_Complex::View::const_iterator Matrix_Complex::View::cbegin() const noexcept
+{
+        return this->rows_cbegin();
+}
+
+Matrix_Complex::View::iterator Matrix_Complex::View::end() noexcept
+{
+        return this->rows_end();
+}
+Matrix_Complex::View::const_iterator Matrix_Complex::View::end() const noexcept
+{
+        return this->rows_end();
+}
+
+Matrix_Complex::View::const_iterator Matrix_Complex::View::cend() const noexcept
+{
+        return this->rows_cend();
+}
+Matrix_Complex::View::reverse_iterator Matrix_Complex::View::rbegin() noexcept
+{
+        return rows_rbegin();
+}
+Matrix_Complex::View::const_reverse_iterator Matrix_Complex::View::rbegin() const noexcept
+{
+        return rows_rbegin();
+}
+Matrix_Complex::View::const_reverse_iterator Matrix_Complex::View::crbegin() const noexcept
+{
+        return rows_crbegin();
+}
+
+Matrix_Complex::View::reverse_iterator Matrix_Complex::View::rend() noexcept
+{
+        return this->rows_rend();
+}
+Matrix_Complex::View::const_reverse_iterator Matrix_Complex::View::rend() const noexcept
+{
+        return this->rows_rend();
+}
+Matrix_Complex::View::const_reverse_iterator Matrix_Complex::View::crend() const noexcept
+{
+        return this->rows_crend();
+}
+
 Matrix_Complex::View::iterator Matrix_Complex::View::rows_begin() noexcept
 {
     return Row_Iterator(this, 0);
@@ -1298,60 +1351,60 @@ Matrix_Complex::View::const_value_type Matrix_Complex::View::diagonals_back() co
 **********************************************************************************************/
 
 Matrix_Complex::View::Iterator::Iterator()
- : m_m(nullptr), vector_view_m(nullptr, 0), index_m()
+ : m_m(), vector_view_m(nullptr, 0), index_m()
 {}
 
 Matrix_Complex::View::Iterator::Iterator(Matrix_Complex::View* m, size_t i)
- : m_m(m), vector_view_m(nullptr, 0), index_m(i)
+ : m_m(m->gsl_mat_view_m), vector_view_m(nullptr, 0), index_m(i)
 {}
 
 Matrix_Complex::View::Const_Iterator::Const_Iterator()
- : m_m(nullptr), vector_view_m(nullptr, 0), index_m()
+ : m_m(), vector_view_m(nullptr, 0), index_m()
 {}
 
 Matrix_Complex::View::Const_Iterator::Const_Iterator(const Matrix_Complex::View* m, size_t i)
- : m_m(m), vector_view_m(nullptr, 0), index_m(i)
+ : m_m(m->gsl_mat_view_m), vector_view_m(nullptr, 0), index_m(i)
 {}
 
 Matrix_Complex::View::Row_Iterator::reference Matrix_Complex::View::Row_Iterator::operator*()
 {
-    return gsl_matrix_complex_row(&this->m_m->gsl_mat_view_m.matrix, this->index_m);
+    return gsl_matrix_complex_row(&this->m_m.matrix, this->index_m);
 }
 
 Matrix_Complex::View::Row_Iterator::pointer Matrix_Complex::View::Row_Iterator::operator->()
 {
-    this->vector_view_m = gsl_matrix_complex_row(&this->m_m->gsl_mat_view_m.matrix, this->index_m);
+    this->vector_view_m = gsl_matrix_complex_row(&this->m_m.matrix, this->index_m);
     return &vector_view_m;
 }
 
 Matrix_Complex::View::Column_Iterator::reference Matrix_Complex::View::Column_Iterator::operator*()
 {
-    return gsl_matrix_complex_column(&this->m_m->gsl_mat_view_m.matrix, this->index_m);
+    return gsl_matrix_complex_column(&this->m_m.matrix, this->index_m);
 }
 
 Matrix_Complex::View::Column_Iterator::pointer Matrix_Complex::View::Column_Iterator::operator->()
 {
-    this->vector_view_m = gsl_matrix_complex_column(&this->m_m->gsl_mat_view_m.matrix, this->index_m);
+    this->vector_view_m = gsl_matrix_complex_column(&this->m_m.matrix, this->index_m);
     return &vector_view_m;
 }
 
 Matrix_Complex::View::Diagonal_Iterator::reference Matrix_Complex::View::Diagonal_Iterator::operator*()
 {
-    size_t max_dim = std::max(this->m_m->gsl_mat_view_m.matrix.size1, this->m_m->gsl_mat_view_m.matrix.size2) ;
+    size_t max_dim = std::max(this->m_m.matrix.size1, this->m_m.matrix.size2) ;
     if(this->index_m < max_dim){
-        return gsl_matrix_complex_subdiagonal(&this->m_m->gsl_mat_view_m.matrix, max_dim - this->index_m - 1);
+        return gsl_matrix_complex_subdiagonal(&this->m_m.matrix, max_dim - this->index_m - 1);
     }else{
-        return gsl_matrix_complex_superdiagonal(&this->m_m->gsl_mat_view_m.matrix, this->index_m % max_dim);
+        return gsl_matrix_complex_superdiagonal(&this->m_m.matrix, this->index_m % max_dim);
     }
 }
 
 Matrix_Complex::View::Diagonal_Iterator::pointer Matrix_Complex::View::Diagonal_Iterator::operator->()
 {
-    size_t max_dim = std::max(this->m_m->gsl_mat_view_m.matrix.size1, this->m_m->gsl_mat_view_m.matrix.size2) ;
+    size_t max_dim = std::max(this->m_m.matrix.size1, this->m_m.matrix.size2) ;
     if(this->index_m < max_dim){
-        this->vector_view_m = gsl_matrix_complex_subdiagonal(&this->m_m->gsl_mat_view_m.matrix, max_dim - this->index_m - 1);
+        this->vector_view_m = gsl_matrix_complex_subdiagonal(&this->m_m.matrix, max_dim - this->index_m - 1);
     }else{
-        this->vector_view_m = gsl_matrix_complex_superdiagonal(&this->m_m->gsl_mat_view_m.matrix, this->index_m % max_dim);
+        this->vector_view_m = gsl_matrix_complex_superdiagonal(&this->m_m.matrix, this->index_m % max_dim);
     }
     return &vector_view_m;
 }
@@ -1409,11 +1462,11 @@ bool Matrix_Complex::View::Iterator::operator>(const Iterator& other)
 * MATRIX VIEW CONST ITERATOR                                                                                               *
 **********************************************************************************************/
 
-Matrix_Complex::View::Const_Row_Iterator::difference_type
+/*Matrix_Complex::View::Const_Row_Iterator::difference_type
   Matrix_Complex::View::Const_Row_Iterator::operator-(Const_Row_Iterator const& other)
 {
     return this->index_m - other.index_m;
-}
+    }*/
 
 Matrix_Complex::View::Const_Column_Iterator::difference_type
   Matrix_Complex::View::Const_Column_Iterator::operator-(Const_Column_Iterator const& other)
@@ -1430,7 +1483,7 @@ Matrix_Complex::View::Const_Diagonal_Iterator::difference_type
 Matrix_Complex::View::Const_Row_Iterator::const_reference Matrix_Complex::View::Const_Row_Iterator::operator*()
 {
     return gsl_matrix_complex_const_row(
-            const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+            &this->m_m.matrix
             , this->index_m);
 }
 
@@ -1439,7 +1492,7 @@ Matrix_Complex::View::Const_Row_Iterator::pointer
 {
     this->vector_view_m =
         gsl_matrix_complex_row(
-            const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+            &this->m_m.matrix
             , this->index_m);
     return reinterpret_cast<Vector_Complex::Const_View*>(&vector_view_m);
 }
@@ -1448,7 +1501,7 @@ Matrix_Complex::View::Const_Row_Iterator::pointer
 Matrix_Complex::View::Const_Column_Iterator::const_reference Matrix_Complex::View::Const_Column_Iterator::operator*()
 {
     return gsl_matrix_complex_const_column(
-            const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+            &this->m_m.matrix
             , this->index_m);
 }
 
@@ -1457,7 +1510,7 @@ Matrix_Complex::View::Const_Column_Iterator::pointer
 {
     this->vector_view_m =
         gsl_matrix_complex_column(
-            const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+            &this->m_m.matrix
             , this->index_m);
     return reinterpret_cast<Vector_Complex::Const_View*>(&vector_view_m);
 }
@@ -1465,14 +1518,14 @@ Matrix_Complex::View::Const_Column_Iterator::pointer
 Matrix_Complex::View::Const_Diagonal_Iterator::const_reference Matrix_Complex::View::Const_Diagonal_Iterator::operator*()
 {
     size_t max_dim =
-        std::max(this->m_m->gsl_mat_view_m.matrix.size1, this->m_m->gsl_mat_view_m.matrix.size2) ;
+        std::max(this->m_m.matrix.size1, this->m_m.matrix.size2) ;
     if(this->index_m < max_dim){
         return gsl_matrix_complex_const_subdiagonal(
-                const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+                &this->m_m.matrix
                 , max_dim - this->index_m - 1);
     }else{
         return gsl_matrix_complex_const_superdiagonal(
-                const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+                &this->m_m.matrix
                 , this->index_m % max_dim);
     }
 }
@@ -1481,16 +1534,16 @@ Matrix_Complex::View::Const_Diagonal_Iterator::pointer
   Matrix_Complex::View::Const_Diagonal_Iterator::operator->()
 {
     size_t max_dim =
-        std::max(this->m_m->gsl_mat_view_m.matrix.size1, this->m_m->gsl_mat_view_m.matrix.size2) ;
+        std::max(this->m_m.matrix.size1, this->m_m.matrix.size2) ;
     if(this->index_m < max_dim){
         this->vector_view_m =
             gsl_matrix_complex_subdiagonal(
-                const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+                &this->m_m.matrix
                 , max_dim - this->index_m - 1);
     }else{
         this->vector_view_m =
             gsl_matrix_complex_superdiagonal(
-                const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+                &this->m_m.matrix
                 , this->index_m % max_dim);
     }
     return reinterpret_cast<Vector_Complex::Const_View*>(&vector_view_m);
@@ -1819,6 +1872,44 @@ const gsl_matrix_complex* Matrix_Complex::Const_View::gsl_data() const
     return &this->gsl_mat_view_m.matrix;
 }
 
+
+Matrix_Complex::Const_View::const_iterator Matrix_Complex::Const_View::begin() const noexcept
+{
+        return this->rows_begin();
+}
+Matrix_Complex::Const_View::const_iterator Matrix_Complex::Const_View::cbegin() const noexcept
+{
+        return this->rows_cbegin();
+}
+
+Matrix_Complex::Const_View::const_iterator Matrix_Complex::Const_View::end() const noexcept
+{
+        return this->rows_end();
+}
+Matrix_Complex::Const_View::const_iterator Matrix_Complex::Const_View::cend() const noexcept
+{
+        return this->rows_cend();
+}
+
+Matrix_Complex::Const_View::const_reverse_iterator Matrix_Complex::Const_View::rbegin() const noexcept
+{
+        return rows_rbegin();
+}
+Matrix_Complex::Const_View::const_reverse_iterator Matrix_Complex::Const_View::crbegin() const noexcept
+{
+        return rows_crbegin();
+}
+
+Matrix_Complex::Const_View::const_reverse_iterator Matrix_Complex::Const_View::rend() const noexcept
+{
+        return this->rows_rend();
+}
+Matrix_Complex::Const_View::const_reverse_iterator Matrix_Complex::Const_View::crend() const noexcept
+{
+        return this->rows_crend();
+}
+
+
 Matrix_Complex::Const_View::const_row_iterator Matrix_Complex::Const_View::rows_begin() const noexcept
 {
     return const_row_iterator(this, 0);
@@ -1979,18 +2070,18 @@ Matrix_Complex::Const_View::const_value_type Matrix_Complex::Const_View::diagona
 **********************************************************************************************/
 
 Matrix_Complex::Const_View::Const_Iterator::Const_Iterator()
- : m_m(nullptr), vector_view_m(nullptr, 0), index_m()
+ : m_m(), vector_view_m(nullptr, 0), index_m()
 {}
 
 Matrix_Complex::Const_View::Const_Iterator::Const_Iterator(const Matrix_Complex::Const_View* m, size_t i)
- : m_m(m), vector_view_m(nullptr, 0), index_m(i)
+ : m_m(m->gsl_mat_view_m), vector_view_m(nullptr, 0), index_m(i)
 {}
 
 Matrix_Complex::Const_View::Const_Row_Iterator::pointer Matrix_Complex::Const_View::Const_Row_Iterator::operator->()
 {
     this->vector_view_m =
         gsl_matrix_complex_row(
-            const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+            const_cast<gsl_matrix_complex*>(&this->m_m.matrix)
             , this->index_m);
     return reinterpret_cast<Vector_Complex::Const_View*>(&vector_view_m);
 }
@@ -1998,7 +2089,7 @@ Matrix_Complex::Const_View::Const_Row_Iterator::pointer Matrix_Complex::Const_Vi
 Matrix_Complex::Const_View::Const_Row_Iterator::const_reference Matrix_Complex::Const_View::Const_Row_Iterator::operator*()
 {
     return gsl_matrix_complex_const_row(
-            const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+            const_cast<gsl_matrix_complex*>(&this->m_m.matrix)
             , this->index_m);
 }
 
@@ -2006,7 +2097,7 @@ Matrix_Complex::Const_View::Const_Column_Iterator::pointer Matrix_Complex::Const
 {
     this->vector_view_m =
         gsl_matrix_complex_column(
-            const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+            const_cast<gsl_matrix_complex*>(&this->m_m.matrix)
             , this->index_m);
 return reinterpret_cast<Vector_Complex::Const_View*>(&vector_view_m);
 }
@@ -2014,23 +2105,23 @@ return reinterpret_cast<Vector_Complex::Const_View*>(&vector_view_m);
 Matrix_Complex::Const_View::Const_Column_Iterator::const_reference Matrix_Complex::Const_View::Const_Column_Iterator::operator*()
 {
     return gsl_matrix_complex_const_column(
-            const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+            const_cast<gsl_matrix_complex*>(&this->m_m.matrix)
             , this->index_m);
 }
 
 Matrix_Complex::Const_View::Const_Diagonal_Iterator::pointer Matrix_Complex::Const_View::Const_Diagonal_Iterator::operator->()
 {
     size_t max_dim =
-        std::max(this->m_m->gsl_mat_view_m.matrix.size1, this->m_m->gsl_mat_view_m.matrix.size2) ;
+        std::max(this->m_m.matrix.size1, this->m_m.matrix.size2) ;
     if(this->index_m < max_dim){
         this->vector_view_m =
             gsl_matrix_complex_subdiagonal(
-                const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+                const_cast<gsl_matrix_complex*>(&this->m_m.matrix)
                 , max_dim - this->index_m - 1);
     }else{
         this->vector_view_m =
             gsl_matrix_complex_superdiagonal(
-                const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+                const_cast<gsl_matrix_complex*>(&this->m_m.matrix)
                 , this->index_m % max_dim);
     }
     return reinterpret_cast<Vector_Complex::Const_View*>(&vector_view_m);
@@ -2039,14 +2130,14 @@ Matrix_Complex::Const_View::Const_Diagonal_Iterator::pointer Matrix_Complex::Con
 Matrix_Complex::Const_View::Const_Diagonal_Iterator::const_reference Matrix_Complex::Const_View::Const_Diagonal_Iterator::operator*()
 {
     size_t max_dim =
-        std::max(this->m_m->gsl_mat_view_m.matrix.size1, this->m_m->gsl_mat_view_m.matrix.size2) ;
+        std::max(this->m_m.matrix.size1, this->m_m.matrix.size2) ;
     if(this->index_m < max_dim){
         return gsl_matrix_complex_const_subdiagonal(
-                const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+                const_cast<gsl_matrix_complex*>(&this->m_m.matrix)
                 , max_dim - this->index_m - 1);
     }else{
         return gsl_matrix_complex_const_superdiagonal(
-                const_cast<gsl_matrix_complex*>(&this->m_m->gsl_mat_view_m.matrix)
+                const_cast<gsl_matrix_complex*>(&this->m_m.matrix)
                 , this->index_m % max_dim);
     }
 }
@@ -2057,17 +2148,17 @@ Matrix_Complex::Const_View::Const_Row_Iterator::difference_type
     return this->index_m - other.index_m;
 }
 
-Matrix_Complex::Const_View::Const_Column_Iterator::difference_type
+/*Matrix_Complex::Const_View::Const_Column_Iterator::difference_type
   Matrix_Complex::Const_View::Const_Column_Iterator::operator-(Const_Column_Iterator const& other)
 {
     return this->index_m - other.index_m;
-}
+}*/
 
-Matrix_Complex::Const_View::Const_Diagonal_Iterator::difference_type
+/*Matrix_Complex::Const_View::Const_Diagonal_Iterator::difference_type
   Matrix_Complex::Const_View::Const_Diagonal_Iterator::operator-(Const_Diagonal_Iterator const& other)
 {
     return this->index_m - other.index_m;
-}
+}*/
 
 bool Matrix_Complex::Const_View::Const_Iterator::operator==(const Const_Iterator& other)
 {
@@ -2101,7 +2192,6 @@ bool Matrix_Complex::Const_View::Const_Iterator::operator>(const Const_Iterator&
 
 /**********************************************************************************************
 **********************************************************************************************/
-
 
 /**********************************************************************************************
 * MATRIX CONST VIEW  CONST ROW ITERATOR                                                                          *

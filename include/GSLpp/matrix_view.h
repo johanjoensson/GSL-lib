@@ -138,272 +138,22 @@ public:
     double& at(size_t i, size_t j);
     const double& at(size_t i, size_t j) const;
 
-    class Iterator{
-    protected:
-        Matrix::View* m_m;
-        Vector::View vector_view_m;
-        size_t index_m;
+    class Iterator;
+    class Row_Iterator;
+    class Column_Iterator;
+    class Diagonal_Iterator;
 
-    public:
-        using difference_type = size_t;
-        using iterator_category = std::random_access_iterator_tag;
+    class Const_Iterator;
+    class Const_Row_Iterator;
+    class Const_Column_Iterator;
+    class Const_Diagonal_Iterator;
 
-        Iterator();
-        Iterator(Matrix::View* m, size_t i);
-
-        Iterator(const Iterator&) = default;
-        Iterator(Iterator&&)  = default;
-        virtual ~Iterator(){}
-
-        Iterator& operator=(const Iterator&) = default;
-        Iterator& operator=(Iterator&&) = default;
-
-        bool operator==(const Iterator& other);
-        bool operator!=(const Iterator& other);
-        bool operator<=(const Iterator& other);
-        bool operator>=(const Iterator& other);
-        bool operator<(const Iterator& other);
-        bool operator>(const Iterator& other);
-    };
-
-    class Row_Iterator : public Iterator {
-    public:
-        using value_type = Vector::View;
-        using reference = value_type;
-        using const_reference = const value_type;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-
-        Row_Iterator();
-        Row_Iterator(Matrix::View* m, size_t i);
-
-        Row_Iterator(const Row_Iterator&) = default;
-        Row_Iterator(Row_Iterator&&)  = default;
-        ~Row_Iterator(){}
-
-        reference operator*();
-        pointer operator->();
-
-        Row_Iterator operator++(int) {Row_Iterator tmp(*this); ++(*this); return tmp;}
-        Row_Iterator operator--(int) {Row_Iterator tmp(*this); --(*this); return tmp;}
-        Row_Iterator& operator++(){this->index_m += 1; return *this;}
-        Row_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Row_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Row_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-
-        friend Row_Iterator operator+(Row_Iterator it, size_t n) {return it += n;}
-        friend Row_Iterator operator+(size_t n, Row_Iterator it) {return it + n;}
-        friend Row_Iterator operator-(Row_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Row_Iterator& it1, const Row_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Row_Iterator       operator[](size_t n) {return *this + n;}
-        const Row_Iterator operator[](size_t n) const {return *this + n;}
-    };
-
-    class Column_Iterator : public Iterator {
-    public:
-        using value_type = Vector::View;
-        using reference = value_type;
-        using const_reference = const value_type;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-
-        Column_Iterator();
-        Column_Iterator(Matrix::View* m, size_t i);
-
-        Column_Iterator(const Column_Iterator&) = default;
-        Column_Iterator(Column_Iterator&&)  = default;
-        ~Column_Iterator(){}
-
-        reference operator*();
-        pointer operator->();
-
-        Column_Iterator operator++(int) {Column_Iterator tmp(*this); ++(*this); return tmp;}
-        Column_Iterator operator--(int) {Column_Iterator tmp(*this); --(*this); return tmp;}
-        Column_Iterator& operator++(){this->index_m += 1; return *this;}
-        Column_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Column_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Column_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-        friend Column_Iterator operator+(Column_Iterator it, size_t n) {return it += n;}
-        friend Column_Iterator operator+(size_t n, Column_Iterator it) {return it + n;}
-        friend Column_Iterator operator-(Column_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Column_Iterator& it1, const Column_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Column_Iterator       operator[](size_t n) {return *this + n;}
-        const Column_Iterator operator[](size_t n) const {return *this + n;}
-    };
-
-    class Diagonal_Iterator : public Iterator {
-    public:
-        using value_type = Vector::View;
-        using reference = value_type;
-        using const_reference = const value_type;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-
-        reference operator*();
-        pointer operator->();
-
-        Diagonal_Iterator();
-        Diagonal_Iterator(Matrix::View* m, size_t i);
-
-        Diagonal_Iterator(const Diagonal_Iterator&) = default;
-        Diagonal_Iterator(Diagonal_Iterator&&)  = default;
-        ~Diagonal_Iterator(){}
-
-        Diagonal_Iterator operator++(int) {Diagonal_Iterator tmp(*this); ++(*this); return tmp;}
-        Diagonal_Iterator operator--(int) {Diagonal_Iterator tmp(*this); --(*this); return tmp;}
-        Diagonal_Iterator& operator++(){this->index_m += 1; return *this;}
-        Diagonal_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Diagonal_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Diagonal_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-        friend Diagonal_Iterator operator+(Diagonal_Iterator it, size_t n) {return it += n;}
-        friend Diagonal_Iterator operator+(size_t n, Diagonal_Iterator it) {return it + n;}
-        friend Diagonal_Iterator operator-(Diagonal_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Diagonal_Iterator& it1, const Diagonal_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Diagonal_Iterator       operator[](size_t n) {return *this + n;}
-        const Diagonal_Iterator operator[](size_t n) const {return *this + n;}
-    };
-
-    class Const_Iterator{
-    protected:
-        const Matrix::View* m_m;
-        Vector::View vector_view_m;
-        size_t index_m;
-
-    public:
-        using difference_type = size_t;
-        using iterator_category = std::random_access_iterator_tag;
-
-        Const_Iterator();
-        Const_Iterator(const Matrix::View* m, size_t i);
-
-        Const_Iterator(const Const_Iterator&) = default;
-        Const_Iterator(Const_Iterator&&)  = default;
-        virtual ~Const_Iterator(){}
-
-        Const_Iterator& operator=(const Const_Iterator&) = default;
-        Const_Iterator& operator=(Const_Iterator&&) = default;
-
-        bool operator==(const Const_Iterator& other);
-        bool operator!=(const Const_Iterator& other);
-        bool operator<=(const Const_Iterator& other);
-        bool operator>=(const Const_Iterator& other);
-        bool operator<(const Const_Iterator& other);
-        bool operator>(const Const_Iterator& other);
-    };
-
-    class Const_Row_Iterator : public Const_Iterator {
-    public:
-        using value_type = const Vector::Const_View;
-        using reference = value_type;
-        using const_reference = value_type;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-
-        Const_Row_Iterator();
-        Const_Row_Iterator(const Matrix::View* m, size_t i);
-
-        Const_Row_Iterator(const Const_Row_Iterator&) = default;
-        Const_Row_Iterator(Const_Row_Iterator&&)  = default;
-        ~Const_Row_Iterator(){}
-
-        const_reference operator*();
-        pointer operator->();
-
-        Const_Row_Iterator operator++(int) {Const_Row_Iterator tmp(*this); ++(*this); return tmp;}
-        Const_Row_Iterator operator--(int) {Const_Row_Iterator tmp(*this); --(*this); return tmp;}
-        Const_Row_Iterator& operator++(){this->index_m += 1; return *this;}
-        Const_Row_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Const_Row_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Const_Row_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-        friend Const_Row_Iterator operator+(Const_Row_Iterator it, size_t n) {return it += n;}
-        friend Const_Row_Iterator operator+(size_t n, Const_Row_Iterator it) {return it + n;}
-        friend Const_Row_Iterator operator-(Const_Row_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Const_Row_Iterator& it1, const Const_Row_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Const_Row_Iterator       operator[](size_t n) {return *this + n;}
-        const Const_Row_Iterator operator[](size_t n) const {return *this + n;}
-    };
-
-    class Const_Column_Iterator : public Const_Iterator {
-    public:
-        using value_type = const Vector::Const_View;
-        using reference = const value_type;
-        using const_reference = const value_type;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-
-        Const_Column_Iterator();
-        Const_Column_Iterator(const Matrix::View* m, size_t i);
-
-        Const_Column_Iterator(const Const_Column_Iterator&) = default;
-        Const_Column_Iterator(Const_Column_Iterator&&)  = default;
-        ~Const_Column_Iterator(){}
-
-        const_reference operator*();
-        pointer operator->();
-
-        Const_Column_Iterator operator++(int) {Const_Column_Iterator tmp(*this); ++(*this); return tmp;}
-        Const_Column_Iterator operator--(int) {Const_Column_Iterator tmp(*this); --(*this); return tmp;}
-        Const_Column_Iterator& operator++(){this->index_m += 1; return *this;}
-        Const_Column_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Const_Column_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Const_Column_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-        friend Const_Column_Iterator operator+(Const_Column_Iterator it, size_t n) {return it += n;}
-        friend Const_Column_Iterator operator+(size_t n, Const_Column_Iterator it) {return it + n;}
-        friend Const_Column_Iterator operator-(Const_Column_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Const_Column_Iterator& it1, const Const_Column_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Const_Column_Iterator       operator[](size_t n) {return *this + n;}
-        const Const_Column_Iterator operator[](size_t n) const {return *this + n;}
-    };
-
-    class Const_Diagonal_Iterator : public Const_Iterator {
-    public:
-        using value_type = const Vector::Const_View;
-        using reference = const value_type;
-        using const_reference = const value_type;
-        using pointer = value_type*;
-        using const_pointer = const value_type*;
-
-        Const_Diagonal_Iterator();
-        Const_Diagonal_Iterator(const Matrix::View* m, size_t i);
-
-        Const_Diagonal_Iterator(const Const_Diagonal_Iterator&) = default;
-        Const_Diagonal_Iterator(Const_Diagonal_Iterator&&)  = default;
-        ~Const_Diagonal_Iterator(){}
-
-        const_reference operator*();
-        pointer operator->();
-
-        Const_Diagonal_Iterator operator++(int) {Const_Diagonal_Iterator tmp(*this); ++(*this); return tmp;}
-        Const_Diagonal_Iterator operator--(int) {Const_Diagonal_Iterator tmp(*this); --(*this); return tmp;}
-        Const_Diagonal_Iterator& operator++(){this->index_m += 1; return *this;}
-        Const_Diagonal_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Const_Diagonal_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Const_Diagonal_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-        friend Const_Diagonal_Iterator operator+(Const_Diagonal_Iterator it, size_t n) {return it += n;}
-        friend Const_Diagonal_Iterator operator+(size_t n, Const_Diagonal_Iterator it) {return it + n;}
-        friend Const_Diagonal_Iterator operator-(Const_Diagonal_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Const_Diagonal_Iterator& it1, const Const_Diagonal_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Const_Diagonal_Iterator       operator[](size_t n) {return *this + n;}
-        const Const_Diagonal_Iterator operator[](size_t n) const {return *this + n;}
-    };
 
     using value_type = Vector::View;
     using const_value_type = Vector::Const_View;
     using difference_type = size_t;
     using reference = value_type;
-    using const_reference = const value_type;
+    using const_reference = const_value_type;
     using pointer = value_type*;
     using const_pointer = const value_type*;
     using iterator = Row_Iterator;
@@ -421,21 +171,21 @@ public:
     using reverse_diagonal_iterator = std::reverse_iterator<diagonal_iterator>;
     using const_reverse_diagonal_iterator = std::reverse_iterator<const_diagonal_iterator>;
 
-    iterator begin() noexcept {return this->rows_begin();}
-    const_iterator begin() const noexcept {return this->rows_begin();}
-    const_iterator cbegin() const noexcept {return this->rows_cbegin();}
+    iterator begin() noexcept; // {return this->rows_begin();}
+    const_iterator begin() const noexcept; // {return this->rows_begin();}
+    const_iterator cbegin() const noexcept; // {return this->rows_cbegin();}
 
-    iterator end() noexcept {return this->rows_end();}
-    const_iterator end() const noexcept {return this->rows_end();}
+    iterator end() noexcept; // {return this->rows_end();}
+    const_iterator end() const noexcept; // {return this->rows_end();}
+    const_iterator cend() const noexcept; // {return this->rows_cend();}
 
-    const_iterator cend() const noexcept {return this->rows_cend();}
-    reverse_iterator rbegin() noexcept {return rows_rbegin();}
-    const_reverse_iterator rbegin() const noexcept {return rows_rbegin();}
-    const_reverse_iterator crbegin() const noexcept  {return rows_crbegin();}
+    reverse_iterator rbegin() noexcept; // {return rows_rbegin();}
+    const_reverse_iterator rbegin() const noexcept; // {return rows_rbegin();}
+    const_reverse_iterator crbegin() const noexcept; //  {return rows_crbegin();}
 
-    reverse_iterator rend() noexcept {return this->rows_rend();}
-    const_reverse_iterator rend() const noexcept {return this->rows_rend();}
-    const_reverse_iterator crend() const noexcept {return this->rows_crend();}
+    reverse_iterator rend() noexcept; // {return this->rows_rend();}
+    const_reverse_iterator rend() const noexcept; // {return this->rows_rend();}
+    const_reverse_iterator crend() const noexcept; // {return this->rows_crend();}
 
     value_type front() {return rows_front();}
     const_value_type front() const {return rows_front();}
@@ -507,15 +257,297 @@ public:
 
 };
 
+
+class Matrix::View::Iterator{
+    protected:
+        gsl_matrix_view m_m;
+        Vector::View vector_view_m;
+        size_t index_m;
+
+    public:
+        using difference_type = size_t;
+        using iterator_category = std::random_access_iterator_tag;
+
+        Iterator();
+        Iterator(const Matrix::View* m, size_t i);
+
+        Iterator(const Iterator& other) : m_m(other.m_m), vector_view_m(other.vector_view_m), index_m(other.index_m) {}
+        Iterator(Iterator&& other) : m_m(std::move(other.m_m)), vector_view_m(std::move(other.vector_view_m)), index_m(std::move(other.index_m)) {}
+        virtual ~Iterator(){}
+
+        Iterator& operator=(const Iterator&) = delete;
+        Iterator& operator=(Iterator&&) = delete;
+
+        bool operator==(const Iterator& other);
+        bool operator!=(const Iterator& other);
+        bool operator<=(const Iterator& other);
+        bool operator>=(const Iterator& other);
+        bool operator<(const Iterator& other);
+        bool operator>(const Iterator& other);
+
+        virtual Iterator& add_n(const size_t n) {this->index_m += n; return *this;}
+        virtual Iterator& sub_n(const size_t n) {this->index_m -= n; return *this;}
+};
+
+class Matrix::View::Row_Iterator : public Matrix::View::Iterator {
+    public:
+        using value_type = Vector::View;
+        using reference = value_type;
+        using const_reference = const value_type;
+        using pointer = value_type*;
+        using const_pointer = const value_type*;
+
+        Row_Iterator();
+        Row_Iterator(const Matrix::View* m, size_t i);
+
+        Row_Iterator(const Iterator& it) : Iterator(it) {}
+        Row_Iterator(Iterator&& it) : Iterator(std::move(it)) {}
+
+        Row_Iterator(const Row_Iterator& other) : Iterator(other) {}
+        Row_Iterator(Row_Iterator&& other) : Iterator(std::move(other)) {}
+        ~Row_Iterator(){}
+
+        reference operator*();
+        pointer operator->();
+
+        Row_Iterator operator++(int) 
+        {
+                Row_Iterator tmp = *this; 
+                this->add_n(1); 
+                return tmp;
+        }
+
+        Row_Iterator operator--(int) {Row_Iterator tmp = *this; this->sub_n(1); return tmp;}
+        Row_Iterator& operator++(){this->add_n(1); return *this;}
+        Row_Iterator& operator--(){this->sub_n(1); return *this;}
+        Row_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Row_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Row_Iterator operator+(Row_Iterator it, size_t n) {return it += n;}
+        friend Row_Iterator operator+(size_t n, Row_Iterator it) {return it + n;}
+        friend Row_Iterator operator-(Row_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Row_Iterator& it1, const Row_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Row_Iterator       operator[](size_t n) {return *this + n;}
+        const Row_Iterator operator[](size_t n) const {return *this + n;}
+};
+
+class Matrix::View::Column_Iterator : public Matrix::View::Iterator {
+    public:
+        using value_type = Vector::View;
+        using reference = value_type;
+        using const_reference = const value_type;
+        using pointer = value_type*;
+        using const_pointer = const value_type*;
+
+        Column_Iterator();
+        Column_Iterator(const Matrix::View* m, size_t i);
+
+        Column_Iterator(const Iterator& it) : Iterator(it) {}
+        Column_Iterator(Iterator&& it) : Iterator(std::move(it)) {}
+
+        Column_Iterator(const Column_Iterator&) = default;
+        Column_Iterator(Column_Iterator&&)  = default;
+        ~Column_Iterator(){}
+
+        reference operator*();
+        pointer operator->();
+
+        Column_Iterator operator++(int) {Column_Iterator tmp = *this; this->add_n(1); return tmp;}
+        Column_Iterator operator--(int) {Column_Iterator tmp = *this; this->sub_n(1); return tmp;}
+        Column_Iterator& operator++(){this->add_n(1); return *this;}
+        Column_Iterator& operator--(){this->sub_n(1); return *this;}
+        Column_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Column_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Column_Iterator operator+(Column_Iterator it, size_t n) {return it += n;}
+        friend Column_Iterator operator+(size_t n, Column_Iterator it) {return it + n;}
+        friend Column_Iterator operator-(Column_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Column_Iterator& it1, const Column_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Column_Iterator       operator[](size_t n) {return *this + n;}
+        const Column_Iterator operator[](size_t n) const {return *this + n;}
+};
+
+class Matrix::View::Diagonal_Iterator : public Matrix::View::Iterator {
+    public:
+        using value_type = Vector::View;
+        using reference = value_type;
+        using const_reference = const value_type;
+        using pointer = value_type*;
+        using const_pointer = const value_type*;
+
+        reference operator*();
+        pointer operator->();
+
+        Diagonal_Iterator();
+        Diagonal_Iterator(const Matrix::View* m, size_t i);
+
+        Diagonal_Iterator(const Iterator& it) : Iterator(it) {}
+        Diagonal_Iterator(Iterator&& it) : Iterator(std::move(it)) {}
+
+        Diagonal_Iterator(const Diagonal_Iterator&) = default;
+        Diagonal_Iterator(Diagonal_Iterator&&)  = default;
+        ~Diagonal_Iterator(){}
+
+        Diagonal_Iterator operator++(int) {Diagonal_Iterator tmp = *this; this->add_n(1); return tmp;}
+        Diagonal_Iterator operator--(int) {Diagonal_Iterator tmp = *this; this->sub_n(1); return tmp;}
+        Diagonal_Iterator& operator++(){this->add_n(1); return *this;}
+        Diagonal_Iterator& operator--(){this->sub_n(1); return *this;}
+        Diagonal_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Diagonal_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Diagonal_Iterator operator+(Diagonal_Iterator it, size_t n) {return it += n;}
+        friend Diagonal_Iterator operator+(size_t n, Diagonal_Iterator it) {return it + n;}
+        friend Diagonal_Iterator operator-(Diagonal_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Diagonal_Iterator& it1, const Diagonal_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Diagonal_Iterator       operator[](size_t n) {return *this + n;}
+        const Diagonal_Iterator operator[](size_t n) const {return *this + n;}
+};
+
+class Matrix::View::Const_Iterator{
+    protected:
+        gsl_matrix_view m_m;
+        Vector::View vector_view_m;
+        size_t index_m;
+
+    public:
+        using difference_type = size_t;
+        using iterator_category = std::random_access_iterator_tag;
+
+        Const_Iterator();
+        Const_Iterator(const Matrix::View* m, size_t i);
+
+        Const_Iterator(const Const_Iterator&) = default;
+        Const_Iterator(Const_Iterator&&)  = default;
+        virtual ~Const_Iterator(){}
+
+        Const_Iterator& operator=(const Const_Iterator&) = delete;
+        Const_Iterator& operator=(Const_Iterator&&) = delete;
+        
+        Const_Iterator& add_n(const size_t n) noexcept {this->index_m += n; return *this;}
+        Const_Iterator& sub_n(const size_t n) noexcept {this->index_m -= n; return *this;}
+
+        bool operator==(const Const_Iterator& other);
+        bool operator!=(const Const_Iterator& other);
+        bool operator<=(const Const_Iterator& other);
+        bool operator>=(const Const_Iterator& other);
+        bool operator<(const Const_Iterator& other);
+        bool operator>(const Const_Iterator& other);
+};
+
+class Matrix::View::Const_Row_Iterator : public Matrix::View::Const_Iterator {
+    public:
+        using value_type = const Vector::Const_View;
+        using reference = value_type;
+        using const_reference = value_type;
+        using pointer = value_type*;
+        using const_pointer = const value_type*;
+
+        Const_Row_Iterator();
+        Const_Row_Iterator(const Matrix::View* m, size_t i);
+
+        Const_Row_Iterator(const Const_Row_Iterator&) = default;
+        Const_Row_Iterator(Const_Row_Iterator&&)  = default;
+        ~Const_Row_Iterator(){}
+
+        const_reference operator*();
+        pointer operator->();
+
+        Const_Row_Iterator operator++(int) {Const_Row_Iterator tmp(*this); this->add_n(1); return tmp;}
+        Const_Row_Iterator operator--(int) {Const_Row_Iterator tmp(*this); this->sub_n(1); return tmp;}
+        Const_Row_Iterator& operator++(){this->add_n(1); return *this;}
+        Const_Row_Iterator& operator--(){this->sub_n(1); return *this;}
+        Const_Row_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Const_Row_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Const_Row_Iterator operator+(Const_Row_Iterator it, size_t n) {return it += n;}
+        friend Const_Row_Iterator operator+(size_t n, Const_Row_Iterator it) {return it + n;}
+        friend Const_Row_Iterator operator-(Const_Row_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Const_Row_Iterator& it1, const Const_Row_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Const_Row_Iterator       operator[](size_t n) {return *this + n;}
+        const Const_Row_Iterator operator[](size_t n) const {return *this + n;}
+};
+
+class Matrix::View::Const_Column_Iterator : public Matrix::View::Const_Iterator {
+    public:
+        using value_type = const Vector::Const_View;
+        using reference = const value_type;
+        using const_reference = const value_type;
+        using pointer = value_type*;
+        using const_pointer = const value_type*;
+
+        Const_Column_Iterator();
+        Const_Column_Iterator(const Matrix::View* m, size_t i);
+
+        Const_Column_Iterator(const Const_Column_Iterator&) = default;
+        Const_Column_Iterator(Const_Column_Iterator&&)  = default;
+        ~Const_Column_Iterator(){}
+
+        const_reference operator*();
+        pointer operator->();
+
+        Const_Column_Iterator operator++(int) {Const_Column_Iterator tmp(*this); this->add_n(1); return tmp;}
+        Const_Column_Iterator operator--(int) {Const_Column_Iterator tmp(*this); this->sub_n(1); return tmp;}
+        Const_Column_Iterator& operator++(){this->add_n(1); return *this;}
+        Const_Column_Iterator& operator--(){this->sub_n(1); return *this;}
+        Const_Column_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Const_Column_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Const_Column_Iterator operator+(Const_Column_Iterator it, size_t n) {return it += n;}
+        friend Const_Column_Iterator operator+(size_t n, Const_Column_Iterator it) {return it + n;}
+        friend Const_Column_Iterator operator-(Const_Column_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Const_Column_Iterator& it1, const Const_Column_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Const_Column_Iterator       operator[](size_t n) {return *this + n;}
+        const Const_Column_Iterator operator[](size_t n) const {return *this + n;}
+};
+
+class Matrix::View::Const_Diagonal_Iterator : public Matrix::View::Const_Iterator {
+    public:
+        using value_type = const Vector::Const_View;
+        using reference = const value_type;
+        using const_reference = const value_type;
+        using pointer = value_type*;
+        using const_pointer = const value_type*;
+
+        Const_Diagonal_Iterator();
+        Const_Diagonal_Iterator(const Matrix::View* m, size_t i);
+
+        Const_Diagonal_Iterator(const Const_Diagonal_Iterator&) = default;
+        Const_Diagonal_Iterator(Const_Diagonal_Iterator&&)  = default;
+        ~Const_Diagonal_Iterator(){}
+
+        const_reference operator*();
+        pointer operator->();
+
+        Const_Diagonal_Iterator operator++(int) {Const_Diagonal_Iterator tmp(*this); this->add_n(1); return tmp;}
+        Const_Diagonal_Iterator operator--(int) {Const_Diagonal_Iterator tmp(*this); this->sub_n(1); return tmp;}
+        Const_Diagonal_Iterator& operator++(){this->add_n(1); return *this;}
+        Const_Diagonal_Iterator& operator--(){this->sub_n(1); return *this;}
+        Const_Diagonal_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Const_Diagonal_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Const_Diagonal_Iterator operator+(Const_Diagonal_Iterator it, size_t n) {return it += n;}
+        friend Const_Diagonal_Iterator operator+(size_t n, Const_Diagonal_Iterator it) {return it + n;}
+        friend Const_Diagonal_Iterator operator-(Const_Diagonal_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Const_Diagonal_Iterator& it1, const Const_Diagonal_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Const_Diagonal_Iterator       operator[](size_t n) {return *this + n;}
+        const Const_Diagonal_Iterator operator[](size_t n) const {return *this + n;}
+};
+
 class Matrix::Const_View{
 private:
     gsl_matrix_const_view gsl_mat_view_m;
 public:
-    Const_View() = default;
+    Const_View() = delete;
     Const_View(const Const_View&) = default;
     Const_View(Const_View&&) = default;
-    Const_View& operator=(const Const_View&) = default;
-    Const_View& operator=(Const_View&&) = default;
+    Const_View& operator=(const Const_View&) = delete;
+    Const_View& operator=(Const_View&&) = delete;
     ~Const_View() = default;
 
     Const_View(const Matrix& m, size_t k1, size_t k2, size_t n1, size_t n2);
@@ -587,138 +619,10 @@ public:
 
     const double& at(size_t i, size_t j) const;
 
-    class Const_Iterator{
-    protected:
-        const Matrix::Const_View* m_m;
-        Vector::View vector_view_m;
-        size_t index_m;
-
-    public:
-        using difference_type = size_t;
-        using iterator_category = std::random_access_iterator_tag;
-
-        Const_Iterator();
-        Const_Iterator(const Matrix::Const_View* m, size_t i);
-
-        Const_Iterator(const Const_Iterator&) = default;
-        Const_Iterator(Const_Iterator&&)  = default;
-        virtual ~Const_Iterator(){}
-
-        Const_Iterator& operator=(const Const_Iterator&) = default;
-        Const_Iterator& operator=(Const_Iterator&&) = default;
-
-        bool operator==(const Const_Iterator& other);
-        bool operator!=(const Const_Iterator& other);
-        bool operator<=(const Const_Iterator& other);
-        bool operator>=(const Const_Iterator& other);
-        bool operator<(const Const_Iterator& other);
-        bool operator>(const Const_Iterator& other);
-    };
-
-    class Const_Row_Iterator : public Const_Iterator {
-    public:
-        using value_type = Vector::Const_View;
-        using const_value_type = Vector::Const_View;
-        using reference = const_value_type;
-        using const_reference = const_value_type;
-        using pointer = value_type*;
-        using const_pointer = const_value_type*;
-
-        Const_Row_Iterator();
-        Const_Row_Iterator(const Matrix::Const_View* m, size_t i);
-
-        Const_Row_Iterator(const Const_Row_Iterator&) = default;
-        Const_Row_Iterator(Const_Row_Iterator&&)  = default;
-        ~Const_Row_Iterator(){}
-
-        const_reference operator*();
-        pointer operator->();
-
-        Const_Row_Iterator operator++(int) {Const_Row_Iterator tmp(*this); ++(*this); return tmp;}
-        Const_Row_Iterator operator--(int) {Const_Row_Iterator tmp(*this); --(*this); return tmp;}
-        Const_Row_Iterator& operator++(){this->index_m += 1; return *this;}
-        Const_Row_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Const_Row_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Const_Row_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-        friend Const_Row_Iterator operator+(Const_Row_Iterator it, size_t n) {return it += n;}
-        friend Const_Row_Iterator operator+(size_t n, Const_Row_Iterator it) {return it + n;}
-        friend Const_Row_Iterator operator-(Const_Row_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Const_Row_Iterator& it1, const Const_Row_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Const_Row_Iterator       operator[](size_t n) {return *this + n;}
-        const Const_Row_Iterator operator[](size_t n) const {return *this + n;}
-    };
-
-    class Const_Column_Iterator : public Const_Iterator {
-    public:
-        using value_type = Vector::Const_View;
-        using const_value_type = Vector::Const_View;
-        using reference = const_value_type;
-        using const_reference = const_value_type;
-        using pointer = value_type*;
-        using const_pointer = const_value_type*;
-
-        Const_Column_Iterator();
-        Const_Column_Iterator(const Matrix::Const_View* m, size_t i);
-
-        Const_Column_Iterator(const Const_Column_Iterator&) = default;
-        Const_Column_Iterator(Const_Column_Iterator&&)  = default;
-        ~Const_Column_Iterator(){}
-
-        const_reference operator*();
-        pointer operator->();
-
-        Const_Column_Iterator operator++(int) {Const_Column_Iterator tmp(*this); ++(*this); return tmp;}
-        Const_Column_Iterator operator--(int) {Const_Column_Iterator tmp(*this); --(*this); return tmp;}
-        Const_Column_Iterator& operator++(){this->index_m += 1; return *this;}
-        Const_Column_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Const_Column_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Const_Column_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-        friend Const_Column_Iterator operator+(Const_Column_Iterator it, size_t n) {return it += n;}
-        friend Const_Column_Iterator operator+(size_t n, Const_Column_Iterator it) {return it + n;}
-        friend Const_Column_Iterator operator-(Const_Column_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Const_Column_Iterator& it1, const Const_Column_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Const_Column_Iterator       operator[](size_t n) {return *this + n;}
-        const Const_Column_Iterator operator[](size_t n) const {return *this + n;}
-    };
-
-    class Const_Diagonal_Iterator : public Const_Iterator {
-    public:
-        using value_type = Vector::Const_View;
-        using const_value_type = Vector::Const_View;
-        using reference = const_value_type;
-        using const_reference = const_value_type;
-        using pointer = value_type*;
-        using const_pointer = const_value_type*;
-
-        Const_Diagonal_Iterator();
-        Const_Diagonal_Iterator(const Matrix::Const_View* m, size_t i);
-
-        Const_Diagonal_Iterator(const Const_Diagonal_Iterator&) = default;
-        Const_Diagonal_Iterator(Const_Diagonal_Iterator&&)  = default;
-        ~Const_Diagonal_Iterator(){}
-
-        const_reference operator*();
-        pointer operator->();
-
-        Const_Diagonal_Iterator operator++(int) {Const_Diagonal_Iterator tmp(*this); ++(*this); return tmp;}
-        Const_Diagonal_Iterator operator--(int) {Const_Diagonal_Iterator tmp(*this); --(*this); return tmp;}
-        Const_Diagonal_Iterator& operator++(){this->index_m += 1; return *this;}
-        Const_Diagonal_Iterator& operator--(){this->index_m -= 1; return *this;}
-        Const_Diagonal_Iterator& operator+=(size_t n){this->index_m += n; return *this;}
-        Const_Diagonal_Iterator& operator-=(size_t n){this->index_m -= n; return *this;}
-
-        friend Const_Diagonal_Iterator operator+(Const_Diagonal_Iterator it, size_t n) {return it += n;}
-        friend Const_Diagonal_Iterator operator+(size_t n, Const_Diagonal_Iterator it) {return it + n;}
-        friend Const_Diagonal_Iterator operator-(Const_Diagonal_Iterator it, size_t n) {return it -= n;}
-        friend size_t operator-(const Const_Diagonal_Iterator& it1, const Const_Diagonal_Iterator& it2) {return it1.index_m - it2.index_m;}
-
-        Const_Diagonal_Iterator       operator[](size_t n) {return *this + n;}
-        const Const_Diagonal_Iterator operator[](size_t n) const {return *this + n;}
-    };
+    class Const_Iterator;
+    class Const_Row_Iterator;
+    class Const_Column_Iterator;
+    class Const_Diagonal_Iterator;
 
     using value_type = Vector::Const_View;
     using const_value_type = Vector::Const_View;
@@ -740,17 +644,17 @@ public:
     using const_iterator = const_row_iterator;
     using const_reverse_iterator = const_reverse_row_iterator;
 
-    const_iterator begin() const noexcept {return this->rows_begin();}
-    const_iterator cbegin() const noexcept {return this->rows_cbegin();}
+    const_iterator begin() const noexcept; // {return this->rows_begin();}
+    const_iterator cbegin() const noexcept; // {return this->rows_cbegin();}
 
-    const_iterator end() const noexcept {return this->rows_end();}
-    const_iterator cend() const noexcept {return this->rows_cend();}
+    const_iterator end() const noexcept; // {return this->rows_end();}
+    const_iterator cend() const noexcept; // {return this->rows_cend();}
 
-    const_reverse_iterator rbegin() const noexcept {return rows_rbegin();}
-    const_reverse_iterator crbegin() const noexcept  {return rows_crbegin();}
+    const_reverse_iterator rbegin() const noexcept; // {return rows_rbegin();}
+    const_reverse_iterator crbegin() const noexcept; //  {return rows_crbegin();}
 
-    const_reverse_iterator rend() const noexcept {return this->rows_rend();}
-    const_reverse_iterator crend() const noexcept {return this->rows_crend();}
+    const_reverse_iterator rend() const noexcept; // {return this->rows_rend();}
+    const_reverse_iterator crend() const noexcept; // {return this->rows_crend();}
 
     const_value_type front() const {return rows_front();}
     const_value_type back() const {return rows_back();}
@@ -802,6 +706,142 @@ public:
     const_value_type diagonals_back() const;
 
 };
+
+class Matrix::Const_View::Const_Iterator{
+    protected:
+        gsl_matrix_const_view m_m;
+        Vector::View vector_view_m;
+        size_t index_m;
+
+    public:
+        using difference_type = size_t;
+        using iterator_category = std::random_access_iterator_tag;
+
+        Const_Iterator();
+        Const_Iterator(const Matrix::Const_View* m, size_t i);
+
+        Const_Iterator(const Const_Iterator&) = default;
+        Const_Iterator(Const_Iterator&&)  = default;
+        virtual ~Const_Iterator(){}
+
+        Const_Iterator& operator=(const Const_Iterator&) = delete;
+        Const_Iterator& operator=(Const_Iterator&&) = delete;
+
+        Const_Iterator& add_n(const size_t n) {this->index_m += n; return *this;}
+        Const_Iterator& sub_n(const size_t n) {this->index_m -= n; return *this;}
+
+        bool operator==(const Const_Iterator& other);
+        bool operator!=(const Const_Iterator& other);
+        bool operator<=(const Const_Iterator& other);
+        bool operator>=(const Const_Iterator& other);
+        bool operator<(const Const_Iterator& other);
+        bool operator>(const Const_Iterator& other);
+    };
+
+class Matrix::Const_View::Const_Row_Iterator : public Matrix::Const_View::Const_Iterator {
+    public:
+        using value_type = Vector::Const_View;
+        using const_value_type = Vector::Const_View;
+        using reference = const_value_type;
+        using const_reference = const_value_type;
+        using pointer = value_type*;
+        using const_pointer = const_value_type*;
+
+        Const_Row_Iterator();
+        Const_Row_Iterator(const Matrix::Const_View* m, size_t i);
+
+        Const_Row_Iterator(const Const_Row_Iterator&) = default;
+        Const_Row_Iterator(Const_Row_Iterator&&)  = default;
+        ~Const_Row_Iterator(){}
+
+        const_reference operator*();
+        pointer operator->();
+
+        Const_Row_Iterator operator++(int) {Const_Row_Iterator tmp(*this); this->add_n(1); return tmp;}
+        Const_Row_Iterator operator--(int) {Const_Row_Iterator tmp(*this); this->sub_n(1); return tmp;}
+        Const_Row_Iterator& operator++(){this->add_n(1); return *this;}
+        Const_Row_Iterator& operator--(){this->sub_n(1); return *this;}
+        Const_Row_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Const_Row_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Const_Row_Iterator operator+(Const_Row_Iterator it, size_t n) {return it += n;}
+        friend Const_Row_Iterator operator+(size_t n, Const_Row_Iterator it) {return it + n;}
+        friend Const_Row_Iterator operator-(Const_Row_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Const_Row_Iterator& it1, const Const_Row_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Const_Row_Iterator       operator[](size_t n) {return *this + n;}
+        const Const_Row_Iterator operator[](size_t n) const {return *this + n;}
+    };
+
+class Matrix::Const_View::Const_Column_Iterator : public Matrix::Const_View::Const_Iterator {
+    public:
+        using value_type = Vector::Const_View;
+        using const_value_type = Vector::Const_View;
+        using reference = const_value_type;
+        using const_reference = const_value_type;
+        using pointer = value_type*;
+        using const_pointer = const_value_type*;
+
+        Const_Column_Iterator();
+        Const_Column_Iterator(const Matrix::Const_View* m, size_t i);
+
+        Const_Column_Iterator(const Const_Column_Iterator&) = default;
+        Const_Column_Iterator(Const_Column_Iterator&&)  = default;
+        ~Const_Column_Iterator(){}
+
+        const_reference operator*();
+        pointer operator->();
+
+        Const_Column_Iterator operator++(int) {Const_Column_Iterator tmp(*this); this->add_n(1); return tmp;}
+        Const_Column_Iterator operator--(int) {Const_Column_Iterator tmp(*this); this->sub_n(1); return tmp;}
+        Const_Column_Iterator& operator++(){this->add_n(1); return *this;}
+        Const_Column_Iterator& operator--(){this->sub_n(1); return *this;}
+        Const_Column_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Const_Column_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Const_Column_Iterator operator+(Const_Column_Iterator it, size_t n) {return it += n;}
+        friend Const_Column_Iterator operator+(size_t n, Const_Column_Iterator it) {return it + n;}
+        friend Const_Column_Iterator operator-(Const_Column_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Const_Column_Iterator& it1, const Const_Column_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Const_Column_Iterator       operator[](size_t n) {return *this + n;}
+        const Const_Column_Iterator operator[](size_t n) const {return *this + n;}
+    };
+
+class Matrix::Const_View::Const_Diagonal_Iterator : public Matrix::Const_View::Const_Iterator {
+    public:
+        using value_type = Vector::Const_View;
+        using const_value_type = Vector::Const_View;
+        using reference = const_value_type;
+        using const_reference = const_value_type;
+        using pointer = value_type*;
+        using const_pointer = const_value_type*;
+
+        Const_Diagonal_Iterator();
+        Const_Diagonal_Iterator(const Matrix::Const_View* m, size_t i);
+
+        Const_Diagonal_Iterator(const Const_Diagonal_Iterator&) = default;
+        Const_Diagonal_Iterator(Const_Diagonal_Iterator&&)  = default;
+        ~Const_Diagonal_Iterator(){}
+
+        const_reference operator*();
+        pointer operator->();
+
+        Const_Diagonal_Iterator operator++(int) {Const_Diagonal_Iterator tmp(*this); this->add_n(1); return tmp;}
+        Const_Diagonal_Iterator operator--(int) {Const_Diagonal_Iterator tmp(*this); this->sub_n(1); return tmp;}
+        Const_Diagonal_Iterator& operator++(){this->add_n(1); return *this;}
+        Const_Diagonal_Iterator& operator--(){this->sub_n(1); return *this;}
+        Const_Diagonal_Iterator& operator+=(size_t n){this->add_n(n); return *this;}
+        Const_Diagonal_Iterator& operator-=(size_t n){this->sub_n(n); return *this;}
+
+        friend Const_Diagonal_Iterator operator+(Const_Diagonal_Iterator it, size_t n) {return it += n;}
+        friend Const_Diagonal_Iterator operator+(size_t n, Const_Diagonal_Iterator it) {return it + n;}
+        friend Const_Diagonal_Iterator operator-(Const_Diagonal_Iterator it, size_t n) {return it -= n;}
+        friend size_t operator-(const Const_Diagonal_Iterator& it1, const Const_Diagonal_Iterator& it2) {return it1.index_m - it2.index_m;}
+
+        Const_Diagonal_Iterator       operator[](size_t n) {return *this + n;}
+        const Const_Diagonal_Iterator operator[](size_t n) const {return *this + n;}
+    };
 }
 
 #endif

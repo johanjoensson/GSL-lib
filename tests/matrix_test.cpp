@@ -292,7 +292,12 @@ TEST(MatrixTest, TestIterPreIncrement)
 TEST(MatrixTest, TestIterPostIncrement)
 {
     GSL::Matrix m{{1, 2}, {3, 4}, {5, 6}};
-    auto it = m.view().begin();
+    GSL::Matrix::View::Row_Iterator it = m.view().begin();
+    std::cout << " m :\n" << m << std::endl; 
+//    std::cout << "*m.view().begin() :\n" << *(it) << std::endl;
+//    std::cout << "*m.view().begin() + 1 :\n" << *(it + 1) << std::endl;
+//    std::cout << " m[0] :\n" << m.at(0) << std::endl; 
+//    std::cout << " m[1] :\n" << m.at(1) << std::endl; 
     EXPECT_EQ(*it++, m.at(0));
     EXPECT_EQ(*it, m.at(1));
 }
@@ -369,9 +374,8 @@ TEST(MatrixTest, TestIterEq)
 TEST(MatrixTest, TestIterNeq)
 {
     GSL::Matrix m{{1, 2}, {3, 4}, {5, 6}};
-    auto it = m.view().begin();
-    GSL::Vector res{*it};
-    EXPECT_NE(res, *(it + 1));
+    GSL::Matrix::View::Row_Iterator it = m.view().begin();
+    EXPECT_FALSE(it == (it + 1));
 }
 
 TEST(MatrixTest, TestEnd)

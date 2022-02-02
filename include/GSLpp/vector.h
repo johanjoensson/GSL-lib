@@ -14,12 +14,12 @@ private:
     std::unique_ptr<gsl_vector, decltype(&gsl_vector_free)> gsl_vec_m;
     Vector(gsl_vector* v);
 protected:
-    Vector() = default;
+    Vector() = delete;
 
 public:
-    Vector(const Vector&) = default;
+    Vector(const Vector&) = delete;
     Vector(Vector&& other) = default;
-    Vector& operator=(const Vector&) = default;
+    Vector& operator=(const Vector&) = delete;
     Vector& operator=(Vector&& other) = default;
     ~Vector() = default;
 

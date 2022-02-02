@@ -17,12 +17,12 @@ private:
     std::unique_ptr<gsl_vector_complex, decltype(&gsl_vector_complex_free)> gsl_vec_m;
     Vector_Complex(gsl_vector_complex* v);
 protected:
-    Vector_Complex() = default;
+    Vector_Complex() = delete;
 
 public:
-    Vector_Complex(const Vector_Complex&) = default;
+    Vector_Complex(const Vector_Complex&) = delete;
     Vector_Complex(Vector_Complex&& other) = default;
-    Vector_Complex& operator=(const Vector_Complex&) = default;
+    Vector_Complex& operator=(const Vector_Complex&) = delete;
     Vector_Complex& operator=(Vector_Complex&& other) = default;
     ~Vector_Complex() = default;
 
